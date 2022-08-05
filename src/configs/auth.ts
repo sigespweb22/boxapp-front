@@ -3,7 +3,7 @@ const endpointAccountPrefix = 'http://localhost:5000/api/v1/account'
 
 export default {
   meEndpoint: '/auth/me',
-  loginEndpoint: endpointAccountSSLPrefix + '/authenticate',
+  loginEndpoint: endpointAccountPrefix + '/authenticate',
   // loginEndpoint: '/jwt/login',
   registerEndpoint: '/jwt/register',
   storageTokenKeyName: 'accessToken'
