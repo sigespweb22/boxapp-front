@@ -52,6 +52,9 @@ import { UsersType } from 'src/types/apps/userTypes'
 import TableHeader from 'src/views/apps/user/list/TableHeader'
 import AddUserDrawer from 'src/views/apps/user/list/AddUserDrawer'
 
+// ** Internationalization
+import { useTranslation } from 'react-i18next'
+
 interface UserRoleType {
   [key: string]: ReactElement
 }

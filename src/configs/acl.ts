@@ -19,13 +19,14 @@ export type ACLObj = {
 const defineRulesFor = (role: string, subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
-  if (role === 'admin') {
+  if (role === 'master') {
     can('manage', 'all')
   } else if (role === 'suporte') {
     can('read', 'dashboard-client-page')
-    can('read', 'dashboard-acl-page')
+    can('read', 'ac-user-page')
+    can('read', 'ac-user-page-search')
   } else if (role === 'client') {
-    can(['read'], 'acl-page')
+    can('read', 'dashboard-client-page')
   } else {
     can(['read', 'create', 'update', 'delete'], subject)
   }

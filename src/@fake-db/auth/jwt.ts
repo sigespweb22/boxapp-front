@@ -26,7 +26,7 @@ const users: UserDataType[] = [
   },
   {
     id: "8e445865-a24d-4543-a6c6-9443d048cdb9",
-    role: 'admin',
+    role: 'suporte',
     password: 'client',
     fullName: 'Alan Rezende',
     username: 'alan.rezende@boxtecnologia.com.br',
@@ -34,7 +34,7 @@ const users: UserDataType[] = [
   },
   {
     id: "4",
-    role: 'user',
+    role: 'suporte',
     password: 'box@#123',
     fullName: 'Suporte Box',
     username: 'suporte@boxtecnologia.com.br',
