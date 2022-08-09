@@ -4,6 +4,9 @@ import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement 
 // ** Next Import
 import Link from 'next/link'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -195,7 +198,7 @@ const columns = [
     field: 'fullName',
     headerName: 'User',
     renderCell: ({ row }: CellType) => {
-      const { id, fullName, username } = row
+      const { id, fullName, userName } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -213,7 +216,7 @@ const columns = [
             </Link>
             <Link href={`/apps/user/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                @{username}
+                @{userName}
               </Typography>
             </Link>
           </Box>
@@ -251,19 +254,6 @@ const columns = [
     }
   },
   {
-    flex: 0.15,
-    minWidth: 120,
-    headerName: 'Plan',
-    field: 'currentPlan',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap sx={{ textTransform: 'capitalize' }}>
-          {row.currentPlan}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.1,
     minWidth: 110,
     field: 'status',
@@ -296,7 +286,6 @@ const UserList = () => {
    
   // ** State
   const [role, setRole] = useState<string>('')
-  const [plan, setPlan] = useState<string>('')
   const [value, setValue] = useState<string>('')
   const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
@@ -311,11 +300,10 @@ const UserList = () => {
       fetchData({
         role,
         status,
-        q: value,
-        currentPlan: plan
+        q: value
       })
     )
-  }, [dispatch, plan, role, status, value])
+  }, [dispatch, role, status, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
@@ -325,29 +313,27 @@ const UserList = () => {
     setRole(e.target.value)
   }, [])
 
-  const handlePlanChange = useCallback((e: SelectChangeEvent) => {
-    setPlan(e.target.value)
-  }, [])
-
   const handleStatusChange = useCallback((e: SelectChangeEvent) => {
     setStatus(e.target.value)
   }, [])
 
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
 
+  // ** Hook
+  const { t } = useTranslation()
+
   return (
     <Grid container spacing={6}>
-      
       <Grid container spacing={6}>
         {ability?.can('read', 'ac-user-page-search') ? (
           <Grid item xs={12}>
             <Card>
-              <CardHeader title='Search Filters' />
+              <CardHeader title={t('Search Filters')} />
               <CardContent>
                 <Grid container spacing={6}>
-                  <Grid item sm={4} xs={12}>
+                  <Grid item sm={6} xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel id='role-select'>Select Role</InputLabel>
+                      <InputLabel id='role-select'>{t("Select Role")}</InputLabel>
                       <Select
                         fullWidth
                         value={role}
@@ -357,7 +343,7 @@ const UserList = () => {
                         onChange={handleRoleChange}
                         inputProps={{ placeholder: 'Select Role' }}
                       >
-                        <MenuItem value=''>Select Role</MenuItem>
+                        <MenuItem value=''>{t("Select Role")}</MenuItem>
                         <MenuItem value='admin'>Admin</MenuItem>
                         <MenuItem value='author'>Author</MenuItem>
                         <MenuItem value='editor'>Editor</MenuItem>
@@ -366,29 +352,9 @@ const UserList = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item sm={4} xs={12}>
+                  <Grid item sm={6} xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel id='plan-select'>Select Plan</InputLabel>
-                      <Select
-                        fullWidth
-                        value={plan}
-                        id='select-plan'
-                        label='Select Plan'
-                        labelId='plan-select'
-                        onChange={handlePlanChange}
-                        inputProps={{ placeholder: 'Select Plan' }}
-                      >
-                        <MenuItem value=''>Select Plan</MenuItem>
-                        <MenuItem value='basic'>Basic</MenuItem>
-                        <MenuItem value='company'>Company</MenuItem>
-                        <MenuItem value='enterprise'>Enterprise</MenuItem>
-                        <MenuItem value='team'>Team</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={4} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='status-select'>Select Status</InputLabel>
+                      <InputLabel id='status-select'>{t("Select Status")}</InputLabel>
                       <Select
                         fullWidth
                         value={status}
@@ -396,9 +362,9 @@ const UserList = () => {
                         label='Select Status'
                         labelId='status-select'
                         onChange={handleStatusChange}
-                        inputProps={{ placeholder: 'Select Role' }}
+                        inputProps={{ placeholder: 'Select Status' }}
                       >
-                        <MenuItem value=''>Select Role</MenuItem>
+                        <MenuItem value=''>{t("Select Status")}</MenuItem>
                         <MenuItem value='pending'>Pending</MenuItem>
                         <MenuItem value='active'>Active</MenuItem>
                         <MenuItem value='inactive'>Inactive</MenuItem>

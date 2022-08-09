@@ -251,19 +251,6 @@ const columns = [
     }
   },
   {
-    flex: 0.15,
-    minWidth: 120,
-    headerName: 'Plan',
-    field: 'currentPlan',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap sx={{ textTransform: 'capitalize' }}>
-          {row.currentPlan}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.1,
     minWidth: 110,
     field: 'status',
@@ -308,8 +295,7 @@ const UserList = () => {
       fetchData({
         role,
         status,
-        q: value,
-        currentPlan: plan
+        q: value
       })
     )
   }, [dispatch, plan, role, status, value])
@@ -394,7 +380,7 @@ const UserList = () => {
                   >
                     <MenuItem value=''>Select Role</MenuItem>
                     <MenuItem value='pending'>Pending</MenuItem>
-                    <MenuItem value='active'>Active</MenuItem>
+                    <MenuItem value='active'>ACTIVE</MenuItem>
                     <MenuItem value='inactive'>Inactive</MenuItem>
                   </Select>
                 </FormControl>

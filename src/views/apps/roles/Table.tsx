@@ -163,19 +163,6 @@ const columns = [
     }
   },
   {
-    flex: 0.15,
-    minWidth: 120,
-    headerName: 'Plan',
-    field: 'currentPlan',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap sx={{ textTransform: 'capitalize' }}>
-          {row.currentPlan}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.1,
     minWidth: 110,
     field: 'status',
@@ -210,7 +197,6 @@ const columns = [
 
 const UserList = () => {
   // ** State
-  const [plan, setPlan] = useState<string>('')
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
 
@@ -223,25 +209,19 @@ const UserList = () => {
       fetchData({
         role: '',
         q: value,
-        status: '',
-        currentPlan: plan
+        status: ''
       })
     )
-  }, [dispatch, plan, value])
+  }, [dispatch, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
-  }, [])
-
-  const handlePlanChange = useCallback((e: SelectChangeEvent) => {
-    setPlan(e.target.value)
   }, [])
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <TableHeader plan={plan} value={value} handleFilter={handleFilter} handlePlanChange={handlePlanChange} />
           <DataGrid
             autoHeight
             rows={store.data}

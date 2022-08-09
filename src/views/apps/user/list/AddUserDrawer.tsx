@@ -96,7 +96,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   const { open, toggle } = props
 
   // ** State
-  const [plan, setPlan] = useState<string>('basic')
   const [role, setRole] = useState<string>('subscriber')
 
   // ** Hooks
@@ -114,13 +113,12 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   })
 
   const onSubmit = (data: UserData) => {
-    dispatch(addUser({ ...data, role, currentPlan: plan }))
+    dispatch(addUser({ ...data, role }))
     toggle()
     reset()
   }
 
   const handleClose = () => {
-    setPlan('basic')
     setRole('subscriber')
     setValue('contact', '')
     toggle()
@@ -262,23 +260,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
               <MenuItem value='editor'>Editor</MenuItem>
               <MenuItem value='maintainer'>Maintainer</MenuItem>
               <MenuItem value='subscriber'>Subscriber</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <InputLabel id='plan-select'>Select Plan</InputLabel>
-            <Select
-              fullWidth
-              value={plan}
-              id='select-plan'
-              label='Select Plan'
-              labelId='plan-select'
-              onChange={e => setPlan(e.target.value)}
-              inputProps={{ placeholder: 'Select Plan' }}
-            >
-              <MenuItem value='basic'>Basic</MenuItem>
-              <MenuItem value='company'>Company</MenuItem>
-              <MenuItem value='enterprise'>Enterprise</MenuItem>
-              <MenuItem value='team'>Team</MenuItem>
             </Select>
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -5,11 +5,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // ** Axios Imports
 import axios from 'axios'
 
+// ** Api Services
+import userApi from 'src/services/user/userServices'
+
 interface DataParams {
   q: string
   role: string
   status: string
-  currentPlan: string
 }
 
 interface Redux {
@@ -19,9 +21,14 @@ interface Redux {
 
 // ** Fetch Users
 export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: DataParams) => {
-  const response = await axios.get('/apps/users/list', {
-    params
-  })
+  const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+  const response = await axios
+                            .get(userApi.list, {
+                                  headers: {
+                                    Authorization: storedToken
+                                  },
+                                  params
+                            })
 
   return response.data
 })

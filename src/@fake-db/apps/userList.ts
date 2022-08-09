@@ -713,6 +713,8 @@ mock.onGet('/apps/users/list').reply(config => {
       user.status === (status || user.status)
   )
 
+  debugger;
+
   return [
     200,
     {

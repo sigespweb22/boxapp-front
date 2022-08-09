@@ -45,6 +45,7 @@ import CardBulletedSettingsOutline from 'mdi-material-ui/CardBulletedSettingsOut
 
 // ** Third Party Imports
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 
 // ** Types Imports
 import { AppBarSearchType } from 'src/@core/layouts/components/vertical/appBar/types'
@@ -276,18 +277,21 @@ const Dialog = styled(MuiDialog)({
 })
 
 const NoResult = ({ value, setOpenDialog }: NoResultProps) => {
+  // ** Hook
+  const { t } = useTranslation()
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
       <FileRemoveOutline sx={{ mb: 2.5, fontSize: '5rem', color: 'text.primary' }} />
       <Typography variant='h6' sx={{ mb: 11.5, wordWrap: 'break-word' }}>
-        No results for{' '}
+        {`${t("No results for")}`}{' '}
         <Typography variant='h6' component='span' sx={{ wordWrap: 'break-word' }}>
           {`"${value}"`}
         </Typography>
       </Typography>
 
       <Typography variant='body2' sx={{ mb: 2.5, color: 'text.disabled' }}>
-        Try searching for
+      {`${t("Try searching for")}`}
       </Typography>
       <List sx={{ py: 0 }}>
         <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
@@ -387,6 +391,9 @@ const DefaultSuggestions = ({ setOpenDialog }: DefaultSuggestionsProps) => {
 }
 
 const AutocompleteComponent = ({ hidden, settings }: Props) => {
+  // ** Hook
+  const { t } = useTranslation()
+
   // ** States
   const [isMounted, setIsMounted] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>('')
@@ -475,7 +482,7 @@ const AutocompleteComponent = ({ hidden, settings }: Props) => {
           <Magnify />
         </IconButton>
         {!hidden && layout === 'vertical' ? (
-          <Typography sx={{ color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
+          <Typography sx={{ color: 'text.disabled' }}>{`${t("Search")}`} (Ctrl+/)</Typography>
         ) : null}
         <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
           <Box sx={{ top: 0, width: '100%', position: 'sticky' }}>
