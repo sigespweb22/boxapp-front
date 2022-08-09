@@ -29,7 +29,6 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
                                   },
                                   params
                             })
-
   return response.data
 })
 

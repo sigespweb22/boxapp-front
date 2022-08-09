@@ -1,4 +1,7 @@
 {
+    "ACTIVE": "ATIVO",
+    "PENDING": "PENDENTE",
+    "INACTIVE": "INATIVO",
     "Add User": "Novo",
     "Search User": "Busca usuário",
     "Select Status": "Selecione um status",

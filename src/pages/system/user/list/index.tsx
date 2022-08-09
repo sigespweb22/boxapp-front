@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
@@ -80,9 +80,9 @@ interface CellType {
 }
 
 const userStatusObj: UserStatusType = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
+  ACTIVE: 'success',
+  PENDING: 'warning',
+  INACTIVE: 'secondary'
 }
 
 // ** Styled component for the link for the avatar with image
@@ -144,7 +144,6 @@ const RowOptions = ({ id }: { id: number | string }) => {
   const handleRowOptionsClose = () => {
     setAnchorEl(null)
   }
-
   const handleDelete = () => {
     dispatch(deleteUser(id))
     handleRowOptionsClose()
@@ -191,12 +190,16 @@ const RowOptions = ({ id }: { id: number | string }) => {
   )
 }
 
+const columnsTranslation = (tmp) => {
+  return tmp
+}
+
 const columns = [
   {
     flex: 0.2,
     minWidth: 230,
     field: 'fullName',
-    headerName: 'User',
+    headerName: columnsTranslation('User'),
     renderCell: ({ row }: CellType) => {
       const { id, fullName, userName } = row
 
@@ -280,9 +283,12 @@ const columns = [
   }
 ]
 
+
+
 const UserList = () => {
-   // ** Hooks
-   const ability = useContext(AbilityContext)
+  // ** Hooks
+  const ability = useContext(AbilityContext)
+  const { t } = useTranslation()
    
   // ** State
   const [role, setRole] = useState<string>('')
@@ -318,9 +324,6 @@ const UserList = () => {
   }, [])
 
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
-
-  // ** Hook
-  const { t } = useTranslation()
 
   return (
     <Grid container spacing={6}>
@@ -366,7 +369,7 @@ const UserList = () => {
                       >
                         <MenuItem value=''>{t("Select Status")}</MenuItem>
                         <MenuItem value='pending'>Pending</MenuItem>
-                        <MenuItem value='active'>Active</MenuItem>
+                        <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
                         <MenuItem value='inactive'>Inactive</MenuItem>
                       </Select>
                     </FormControl>
@@ -381,6 +384,7 @@ const UserList = () => {
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />
               <DataGrid
+                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
                 rows={store.data}
                 columns={columns}
