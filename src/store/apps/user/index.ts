@@ -25,7 +25,7 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
   const response = await axios
                             .get(userApi.list, {
                                   headers: {
-                                    Authorization: storedToken
+                                    Authorization: "Bearer " + storedToken
                                   },
                                   params
                             })

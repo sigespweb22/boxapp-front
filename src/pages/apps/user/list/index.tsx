@@ -53,7 +53,7 @@ import TableHeader from 'src/views/apps/user/list/TableHeader'
 import AddUserDrawer from 'src/views/apps/user/list/AddUserDrawer'
 
 // ** Internationalization
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'  
 
 interface UserRoleType {
   [key: string]: ReactElement
@@ -77,9 +77,9 @@ interface CellType {
 }
 
 const userStatusObj: UserStatusType = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
+  ACTIVE: 'success',
+  PENDING: 'warning',
+  INACTIVE: 'secondary'
 }
 
 // ** Styled component for the link for the avatar with image
@@ -404,7 +404,6 @@ const UserList = () => {
           />
         </Card>
       </Grid>
-
       <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
     </Grid>
   )

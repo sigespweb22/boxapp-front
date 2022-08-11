@@ -42,7 +42,7 @@ interface UserData {
   country: string
   contact: number
   fullName: string
-  username: string
+  userName: string
 }
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -76,9 +76,9 @@ const schema = yup.object().shape({
     .string()
     .min(3, obj => showErrors('First Name', obj.value.length, obj.min))
     .required(),
-  username: yup
+  userName: yup
     .string()
-    .min(3, obj => showErrors('Username', obj.value.length, obj.min))
+    .min(3, obj => showErrors('UserName', obj.value.length, obj.min))
     .required()
 })
 
@@ -88,7 +88,7 @@ const defaultValues = {
   country: '',
   contact: '',
   fullName: '',
-  username: ''
+  userName: ''
 }
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
@@ -157,22 +157,22 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             />
             {errors.fullName && <FormHelperText sx={{ color: 'error.main' }}>{errors.fullName.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }}>;
             <Controller
-              name='username'
+              name='userName'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Username'
+                  label='UserName'
                   onChange={onChange}
                   placeholder='johndoe'
-                  error={Boolean(errors.username)}
+                  error={Boolean(errors.userName)}
                 />
               )}
             />
-            {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
+            {errors.userName && <FormHelperText sx={{ color: 'error.main' }}>{errors.userName.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller

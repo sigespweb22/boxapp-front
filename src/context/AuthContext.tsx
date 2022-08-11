@@ -76,6 +76,15 @@ const AuthProvider = ({ children }: Props) => {
       .post(authConfig.loginEndpoint, params)
       .then(async res => {
         window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.accessToken)
+
+        const returnUrl = router.query.returnUrl
+        setUser({ ...response.data.userData })
+
+        await window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+
+        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+
+        router.replace(redirectURL as string)
       })
       .then(() => {
         axios

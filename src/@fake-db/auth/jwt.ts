@@ -10,7 +10,7 @@ import { UserDataType } from 'src/context/types'
 const users: UserDataType[] = [
   {
     id: "1",
-    role: 'admin',
+    role: ['admin'],
     password: 'admin',
     fullName: 'John Doe',
     username: 'johndoe',
@@ -18,7 +18,7 @@ const users: UserDataType[] = [
   },
   {
     id: "2",
-    role: 'client',
+    role: ['client'],
     password: 'client',
     fullName: 'Jane Doe',
     username: 'janedoe',
@@ -26,7 +26,7 @@ const users: UserDataType[] = [
   },
   {
     id: "8e445865-a24d-4543-a6c6-9443d048cdb9",
-    role: 'suporte',
+    role: ['USER_LIST', 'suporte'],
     password: 'client',
     fullName: 'Alan Rezende',
     username: 'alan.rezende@boxtecnologia.com.br',
@@ -34,7 +34,7 @@ const users: UserDataType[] = [
   },
   {
     id: "4",
-    role: 'suporte',
+    role: ['suporte'],
     password: 'box@#123',
     fullName: 'Suporte Box',
     username: 'suporte@boxtecnologia.com.br',
@@ -121,6 +121,7 @@ mock.onPost('/jwt/register').reply(request => {
 
 mock.onGet('/auth/me').reply(config => {
   // @ts-ignore
+  debugger;
   const token = config.headers.Authorization as string
 
   // get the decoded payload and header

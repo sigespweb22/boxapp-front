@@ -25,6 +25,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // ** Icons Imports
 import Laptop from 'mdi-material-ui/Laptop'
+import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
 import ChartDonut from 'mdi-material-ui/ChartDonut'
 import CogOutline from 'mdi-material-ui/CogOutline'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -68,13 +69,13 @@ interface UserStatusType {
 
 // ** Vars
 const userRoleObj: UserRoleType = {
-  admin: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
-  author: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  editor: <PencilOutline fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
+  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
+  // USER_LIST: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
+  // MASTER: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
+  // editor: <PencilOutline fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  // maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
+  // subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
 }
-
 interface CellType {
   row: UsersType
 }
@@ -190,8 +191,12 @@ const RowOptions = ({ id }: { id: number | string }) => {
   )
 }
 
-const columnsTranslation = (tmp) => {
-  return tmp
+const roleTransform = (roles) => {
+  var elem = []
+  roles.forEach(element => {
+    elem.push("| " + element + " | ")
+  });
+  return elem
 }
 
 const columns = [
@@ -199,7 +204,7 @@ const columns = [
     flex: 0.2,
     minWidth: 230,
     field: 'fullName',
-    headerName: columnsTranslation('User'),
+    headerName: 'User',
     renderCell: ({ row }: CellType) => {
       const { id, fullName, userName } = row
 
@@ -244,14 +249,21 @@ const columns = [
     flex: 0.15,
     field: 'role',
     minWidth: 150,
-    headerName: 'Role',
+    headerName: 'Roles',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userRoleObj[row.role]}
-          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.role}
-          </Typography>
+          {userRoleObj["GENERALS"]}
+          <CustomChip
+            skin='light'
+            size='small'
+            label={roleTransform(row.roles)}
+            color={'success'}
+            sx={{ textTransform: 'capitalize' }}
+          />
+          {/* <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {transformRole(row.roles)}
+          </Typography> */}
         </Box>
       )
     }
@@ -282,8 +294,6 @@ const columns = [
     renderCell: ({ row }: CellType) => <RowOptions id={row.id} />
   }
 ]
-
-
 
 const UserList = () => {
   // ** Hooks
