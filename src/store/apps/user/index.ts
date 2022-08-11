@@ -23,7 +23,7 @@ interface Redux {
 export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
   const response = await axios
-                            .get(userApi.list, {
+                            .get(userApi.listAsync, {
                                   headers: {
                                     Authorization: "Bearer " + storedToken
                                   },
@@ -36,10 +36,15 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
 export const addUser = createAsyncThunk(
   'appUsers/addUser',
   async (data: { [key: string]: number | string }, { getState, dispatch }: Redux) => {
-    const response = await axios.post('/apps/users/add-user', {
+    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    const response = await axios.post(userApi.addAsync, {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      },
       data
     })
     dispatch(fetchData(getState().user.params))
+    debugger;
 
     return response.data
   }
