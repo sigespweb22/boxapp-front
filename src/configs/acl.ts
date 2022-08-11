@@ -20,13 +20,13 @@ const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
   role.forEach((item) => {
-    if (item === 'master') {
+    if (item === 'MASTER') {
       can('manage', 'all')
-    } else if (item === 'suporte') {
+    } else if (item === 'SUPORTE') {
       can('read', 'dashboard-client-page')
       can('read', 'ac-user-page')
       can('read', 'ac-user-page-search')
-    } else if (item === 'user') {
+    } else if (item === 'USER_LIST') {
       can('read', 'dashboard-client-page')
     } else if (item === 'client') {
       can('read', 'dashboard-client-page')

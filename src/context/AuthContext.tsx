@@ -10,6 +10,9 @@ import axios from 'axios'
 // ** Config
 import authConfig from 'src/configs/auth'
 
+// ** Api services
+import apiAccount from 'src/services/account/accountServices'
+
 // ** Types
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType, UserDataType } from './types'
 
@@ -48,9 +51,9 @@ const AuthProvider = ({ children }: Props) => {
       if (storedToken) {
         setLoading(true)
         await axios
-          .get(authConfig.meEndpoint, {
+          .get(apiAccount.me, {
             headers: {
-              Authorization: storedToken
+              Authorization: "Bearer " + storedToken
             }
           })
           .then(async response => {
@@ -75,12 +78,12 @@ const AuthProvider = ({ children }: Props) => {
     axios
       .post(authConfig.loginEndpoint, params)
       .then(async res => {
-        window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.accessToken)
-
+        window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.userData.accessToken)
+        
         const returnUrl = router.query.returnUrl
-        setUser({ ...response.data.userData })
+        setUser({ ...res.data.userData })
 
-        await window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+        await window.localStorage.setItem('userData', JSON.stringify(res.data.userData))
 
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
 
@@ -88,9 +91,9 @@ const AuthProvider = ({ children }: Props) => {
       })
       .then(() => {
         axios
-          .get(authConfig.meEndpoint, {
+          .get(apiAccount.me, {
             headers: {
-              Authorization: window.localStorage.getItem(authConfig.storageTokenKeyName)!
+              Authorization: "Bearer " + window.localStorage.getItem(apiAccount.storageTokenKeyName)!
             }
           })
           .then(async response => {
