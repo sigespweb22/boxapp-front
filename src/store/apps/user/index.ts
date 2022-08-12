@@ -8,6 +8,9 @@ import axios from 'axios'
 // ** Api Services
 import userApi from 'src/services/user/userServices'
 
+// ** Toast
+import toast, { Toaster } from 'react-hot-toast'
+
 interface DataParams {
   q: string
   role: string
@@ -37,16 +40,30 @@ export const addUser = createAsyncThunk(
   'appUsers/addUser',
   async (data: { [key: string]: number | string }, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
-    const response = await axios.post(userApi.addAsync, {
+    
+    axios.post(userApi.addAsync, {
       headers: {
         Authorization: "Bearer " + storedToken
       },
-      data
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password
+    }).then((resp) => {
+      dispatch(fetchData(getState().user.params))
+      toast.success(resp.data.message)
+      return resp.data.data
+    }).catch((resp) => {
+      if (resp.response.data.length >= 1)
+      {
+        resp.response.data.forEach(element => {
+          toast.error(element.description)
+        })
+      }
+      else
+      {
+        toast.error(resp.response.data)
+      }
     })
-    dispatch(fetchData(getState().user.params))
-    debugger;
-
-    return response.data
   }
 )
 

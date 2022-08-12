@@ -191,9 +191,9 @@ const RowOptions = ({ id }: { id: number | string }) => {
   )
 }
 
-const roleTransform = (roles) => {
+const roleTransform = (role) => {
   var elem = []
-  roles.forEach(element => {
+  role.forEach(element => {
     elem.push("| " + element + " | ")
   });
   return elem
@@ -257,7 +257,7 @@ const columns = [
           <CustomChip
             skin='light'
             size='small'
-            label={roleTransform(row.roles)}
+            label={roleTransform(row.role)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
