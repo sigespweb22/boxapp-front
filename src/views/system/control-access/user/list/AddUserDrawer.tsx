@@ -8,7 +8,6 @@ import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
@@ -18,6 +17,9 @@ import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
+
+// ** Copmponents Imports
+import SelectMultiple from 'src/views/system/control-access/user/list/SelectMultiple'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -40,6 +42,7 @@ interface UserData {
   fullName: string
   email: string
   password: string
+  applicationUserGroups: string[]
 }
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -79,15 +82,13 @@ const schema = yup.object().shape({
 const defaultValues = {
   fullName: '',
   email: '',
-  password: ''
+  password: '',
+  applicationUserGroups: ''
 }
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
   // ** Props
   const { open, toggle } = props
-
-  // ** State
-  const [role, setRole] = useState<string>('suporte')
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -110,7 +111,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   }
 
   const handleClose = () => {
-    setRole('suporte')
     toggle()
     reset()
   }
@@ -184,19 +184,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <InputLabel id='role-select'>Grupo usuário</InputLabel>
-            <Select
-              fullWidth
-              value={role}
-              id='select-role'
-              label='Select Role'
-              labelId='role-select'
-              onChange={e => setRole(e.target.value)}
-              inputProps={{ placeholder: 'Select Role' }}
-            >
-              <MenuItem value='master'>MASTER</MenuItem>
-              <MenuItem value='suporte'>SUPORTE</MenuItem>
-            </Select>
+            <SelectMultiple />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
