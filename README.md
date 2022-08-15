@@ -15,7 +15,7 @@ oferecendo uma arquitetura madura e sustentável.
 * [Material UI](https://github.com/mui/material-ui) - Conjunto de bibliotecas de componentes fundamentais do React UI 
 * [SASS/SCSS](https://sass-lang.com/) styling
 * [Axios](https://github.com/axios/axios) - Cliente HTTP baseado em promessa para o navegador e node.js
-* [Redux~](https://github.com/reduxjs/react-redux) - Contêiner de estado
+* [Redux](https://github.com/reduxjs/react-redux) - Contêiner de estado
 * [CASL](https://github.com/stalniy/casl) - Biblioteca JavaScript de autorização isomórfica
 * [React-i18next](https://github.com/i18next/react-i18next) - Framework de internacionalização para React
 * [Yup](https://github.com/jquense/yup) - Validação de esquema de objeto
