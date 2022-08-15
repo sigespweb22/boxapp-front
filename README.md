@@ -23,7 +23,7 @@ oferecendo uma arquitetura madura e sustentável.
 
 ## Características de Arquitetura, modelagem, ferramentas, padrões, especificações:
 
-* [Coesão e Acoplamento]((https://engineering.contaazul.com/princ%C3%ADpios-solid-srp-e-sopa-de-letrinhas-d569fd0f80d9))
+* [Coesão e Acoplamento](https://engineering.contaazul.com/princ%C3%ADpios-solid-srp-e-sopa-de-letrinhas-d569fd0f80d9)
 * [SOLID](https://engineering.contaazul.com/princ%C3%ADpios-solid-srp-e-sopa-de-letrinhas-d569fd0f80d9) - Princípios de engenharia de software
 * [Clean Code](https://github.com/sigespweb22/clean-code-javascript) - Princípios de engenharia de software
 
