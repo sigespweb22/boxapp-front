@@ -9,7 +9,7 @@ oferecendo uma arquitetura madura e sustentável.
 
 * [NodeJS](https://github.com/nodejs/node) - Ambiente em tempo de execução JavaScript
 * [ReactJS do Facebook](https://github.com/facebook/react) - Biblioteca JavaScript
-* [Next.js da Vercel](https://github.com/sigespweb22/next.js) - Framework que implementa diversas funcionalidades encima do ReactJS
+* [Next.js da Vercel](https://nextjs.org/) - Framework que implementa diversas funcionalidades encima do ReactJS
 * Webpack - Gerenciador de módulos e ativos
 * [Yarn](https://github.com/yarnpkg/yarn) - Gerenciador de pacotes
 * [Material UI] (https://github.com/mui/material-ui) - Conjunto de bibliotecas de componentes fundamentais do React UI 
