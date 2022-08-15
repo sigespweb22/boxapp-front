@@ -7,7 +7,7 @@ oferecendo uma arquitetura madura e sustentável.
 
 ## Tecnologias implementadas:
 
-* NodeJS
+* [NodeJS](https://github.com/nodejs/node) - Ambiente em tempo de execução JavaScript
 * [ReactJS do Facebook](https://github.com/facebook/react) - Biblioteca JavaScript
 * [Next.js da Vercel](https://github.com/sigespweb22/next.js) - Framework que implementa diversas funcionalidades encima do ReactJS
 * Webpack - Gerenciador de módulos e ativos
