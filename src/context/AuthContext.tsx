@@ -11,7 +11,7 @@ import axios from 'axios'
 import authConfig from 'src/configs/auth'
 
 // ** Api services
-import apiAccount from 'src/services/account/accountServices'
+import apiAccount from 'src/@api-center/account/accountServices'
 
 // ** Types
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType, UserDataType } from './types'

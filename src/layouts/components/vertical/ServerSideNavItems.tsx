@@ -8,7 +8,7 @@ import * as Icons from 'mdi-material-ui'
 import axios from 'axios'
 
 // ** Api Services
-import navigationApi from 'src/services/navigationServices'
+import navigationApi from 'src/@api-center/navigationServices'
 
 // ** Type Import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'

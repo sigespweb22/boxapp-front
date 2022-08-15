@@ -95,7 +95,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   const {
     reset,
     control,
-    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -105,6 +104,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   })
 
   const onSubmit = (data: UserData) => {
+    debugger;
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()
