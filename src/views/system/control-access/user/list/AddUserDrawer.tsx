@@ -66,7 +66,7 @@ interface UserData {
   applicationUserGroups: string[]
 }
 
-const groups = []
+const groups = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -102,6 +102,7 @@ const schema = yup.object().shape({
     .required(),
   applicationUserGroups: yup
     .array()
+    .min(1, obj => showErrors('Grupo usuário', obj.value.length, obj.min))
     .required()
 })
 
@@ -124,7 +125,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     axios
       .get(apiGroup.listToSelectAsync, config)
       .then(response => {
-        debugger
         groups = response.data
       })
   }, []);
@@ -149,7 +149,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   })
 
   const onSubmit = (data: UserData) => {
-    debugger;
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()
@@ -238,6 +237,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                   <FormControl fullWidth>
                     <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
                     <Select
+                        name="applicationUserGroups"
                         multiple
                         label="User Group"
                         value={value}
@@ -245,6 +245,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                         id='multiple-group'
                         onChange={onChange}
                         labelId='multiple-group-label'
+                        error={Boolean(errors.applicationUserGroups)}
                         renderValue={selected => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {(selected as unknown as string[]).map(value => (
@@ -261,6 +262,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                           ))
                         }
                     </Select>
+                    {errors.applicationUserGroups && <FormHelperText sx={{ color: 'error.main' }}>{errors.applicationUserGroups.message}</FormHelperText>}
                   </FormControl>
                 )
               }}

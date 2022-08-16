@@ -8,6 +8,7 @@ export type UserLayoutType = {
 export type UsersType = {
   id: string
   role: string[]
+  applicationUserGroups: string[]
   email: string
   status: string
   avatar: string

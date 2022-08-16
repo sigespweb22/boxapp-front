@@ -38,7 +38,7 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
 // ** Add User
 export const addUser = createAsyncThunk(
   'appUsers/addUser',
-  async (data: { [key: string]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
     let config = {
       headers: {
@@ -53,20 +53,29 @@ export const addUser = createAsyncThunk(
       applicationUserGroups: data.applicationUserGroups
     }
 
-    debugger;
     axios.post(userApi.addAsync, data2, config).then((resp) => {
       dispatch(fetchData(getState().user.params))
       toast.success(resp.data.message)
       return resp.data.data
     }).catch((resp) => {
-      if (resp.response.data.length >= 1)
+      
+
+      if (typeof resp.response.data != 'undefined' &&
+          resp.response.data.length >= 1)
       {
         resp.response.data.forEach(element => {
           toast.error(element.description)
         })
       }
-      else
+      else if (typeof resp.response.data.errors != 'undefined')
       {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach(function(err) {
+          err[1].forEach(function (ie) {
+            toast.error(ie)
+          })
+        });
+      } else {
         toast.error(resp.response.data)
       }
     })

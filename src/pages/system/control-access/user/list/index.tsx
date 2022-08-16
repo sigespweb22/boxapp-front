@@ -24,15 +24,11 @@ import CardContent from '@mui/material/CardContent'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // ** Icons Imports
-import Laptop from 'mdi-material-ui/Laptop'
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
-import ChartDonut from 'mdi-material-ui/ChartDonut'
-import CogOutline from 'mdi-material-ui/CogOutline'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import DeleteOutline from 'mdi-material-ui/DeleteOutline'
-import AccountOutline from 'mdi-material-ui/AccountOutline'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,7 +55,7 @@ import AddUserDrawer from 'src/views/system/control-access/user/list/AddUserDraw
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface UserRoleType {
+interface UserGroupType {
   [key: string]: ReactElement
 }
 
@@ -68,7 +64,7 @@ interface UserStatusType {
 }
 
 // ** Vars
-const userRoleObj: UserRoleType = {
+const userGroupObj: UserGroupType = {
   GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
   // USER_LIST: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
   // MASTER: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
@@ -133,6 +129,7 @@ const MenuItemLink = styled('a')(({ theme }) => ({
 const RowOptions = ({ id }: { id: number | string }) => {
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
+  const { t } = useTranslation()
 
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -191,11 +188,11 @@ const RowOptions = ({ id }: { id: number | string }) => {
   )
 }
 
-const roleTransform = (role) => {
+const groupTransform = (groups) => {
   var elem = []
-  role.forEach(element => {
+  groups.forEach(element => {
     elem.push("| " + element + " | ")
-  });
+  })
   return elem
 }
 
@@ -247,17 +244,17 @@ const columns = [
   },
   {
     flex: 0.15,
-    field: 'role',
+    field: 'applicationUserGroups',
     minWidth: 150,
-    headerName: 'Roles',
+    headerName: 'User group',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userRoleObj["GENERALS"]}
+          {userGroupObj["GENERALS"]}
           <CustomChip
             skin='light'
             size='small'
-            label={roleTransform(row.role)}
+            label={groupTransform(row.applicationUserGroups)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
@@ -301,7 +298,7 @@ const UserList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [role, setRole] = useState<string>('')
+  const [group, setGroup] = useState<string>('')
   const [value, setValue] = useState<string>('')
   const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
@@ -314,19 +311,19 @@ const UserList = () => {
   useEffect(() => {
     dispatch(
       fetchData({
-        role,
+        group,
         status,
         q: value
       })
     )
-  }, [dispatch, role, status, value])
+  }, [dispatch, group, status, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
 
-  const handleRoleChange = useCallback((e: SelectChangeEvent) => {
-    setRole(e.target.value)
+  const handleGroupChange = useCallback((e: SelectChangeEvent) => {
+    setGroup(e.target.value)
   }, [])
 
   const handleStatusChange = useCallback((e: SelectChangeEvent) => {
@@ -346,22 +343,20 @@ const UserList = () => {
                 <Grid container spacing={6}>
                   <Grid item sm={6} xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel id='role-select'>{t("Select Role")}</InputLabel>
+                      <InputLabel id='group-select'>{t("Select Group")}</InputLabel>
                       <Select
                         fullWidth
-                        value={role}
-                        id='select-role'
-                        label='Select Role'
-                        labelId='role-select'
-                        onChange={handleRoleChange}
-                        inputProps={{ placeholder: 'Select Role' }}
+                        value={group}
+                        id='select-group'
+                        label='Select Group'
+                        labelId='group-select'
+                        onChange={handleGroupChange}
+                        inputProps={{ placeholder: 'Select Group' }}
                       >
-                        <MenuItem value=''>{t("Select Role")}</MenuItem>
-                        <MenuItem value='admin'>Admin</MenuItem>
-                        <MenuItem value='author'>Author</MenuItem>
-                        <MenuItem value='editor'>Editor</MenuItem>
-                        <MenuItem value='maintainer'>Maintainer</MenuItem>
-                        <MenuItem value='subscriber'>Subscriber</MenuItem>
+                        <MenuItem value=''>{t("Select Group")}</MenuItem>
+                        <MenuItem value='Master'>Master</MenuItem>
+                        <MenuItem value='Suporte N1'>Suporte N1</MenuItem>
+                        <MenuItem value='Suporte N2'>Suporte N2</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -378,9 +373,9 @@ const UserList = () => {
                         inputProps={{ placeholder: 'Select Status' }}
                       >
                         <MenuItem value=''>{t("Select Status")}</MenuItem>
-                        <MenuItem value='pending'>Pending</MenuItem>
+                        <MenuItem value='PENDING'>PENDING</MenuItem>
                         <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
-                        <MenuItem value='inactive'>Inactive</MenuItem>
+                        <MenuItem value='INACTIVE'>INACTIVE</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
