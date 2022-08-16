@@ -1,9 +1,8 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
-import Select from '@mui/material/Select'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
@@ -12,6 +11,8 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
+import InputLabel from '@mui/material/InputLabel'
+import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -19,7 +20,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
-import SelectMultiple from 'src/views/system/control-access/user/list/SelectMultiple'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+
+// Import Translate
+import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -33,6 +37,23 @@ import { addUser } from 'src/store/apps/user'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 
+// ** Api Services
+import apiGroup from 'src/@api-center/group/groupApi'
+
+// ** Axios Imports
+import axios from 'axios'
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+  PaperProps: {
+    style: {
+      width: 250,
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
+    }
+  }
+}
+
 interface SidebarAddUserType {
   open: boolean
   toggle: () => void
@@ -44,6 +65,8 @@ interface UserData {
   password: string
   applicationUserGroups: string[]
 }
+
+const groups = []
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -76,6 +99,9 @@ const schema = yup.object().shape({
     .string()
     .min(3, obj => showErrors('Senha', obj.value.length, obj.min))
     .typeError('Senha é requerida')
+    .required(),
+  applicationUserGroups: yup
+    .array()
     .required()
 })
 
@@ -83,10 +109,29 @@ const defaultValues = {
   fullName: '',
   email: '',
   password: '',
-  applicationUserGroups: ''
+  applicationUserGroups: [],
 }
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
+  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
+  let config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(apiGroup.listToSelectAsync, config)
+      .then(response => {
+        debugger
+        groups = response.data
+      })
+  }, []);
+
+  // ** Hook
+  const { t } = useTranslation()
+
   // ** Props
   const { open, toggle } = props
 
@@ -184,7 +229,42 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <SelectMultiple />
+            <Controller
+              name="applicationUserGroups"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <FormControl fullWidth>
+                    <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
+                    <Select
+                        multiple
+                        label="User Group"
+                        value={value}
+                        MenuProps={MenuProps}
+                        id='multiple-group'
+                        onChange={onChange}
+                        labelId='multiple-group-label'
+                        renderValue={selected => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                            {(selected as unknown as string[]).map(value => (
+                              <Chip key={value.id} label={value} sx={{ m: 0.75 }} />
+                            ))}
+                          </Box>
+                        )}
+                      >
+                        {
+                          groups.map(group => (
+                            <MenuItem key={group} value={group.name}>
+                              {group.name}
+                            </MenuItem>
+                          ))
+                        }
+                    </Select>
+                  </FormControl>
+                )
+              }}
+            />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
