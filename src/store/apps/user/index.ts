@@ -60,12 +60,24 @@ export const addUser = createAsyncThunk(
     }).catch((resp) => {
       
 
-      if (typeof resp.response.data != 'undefined' &&
-          resp.response.data.length >= 1)
+      // ** Quando exception vem de uma trown o padrão é este comentando, solucionar isso...
+      // if (typeof resp.response.data != 'undefined' &&
+      //     resp.response.data.length >= 1)
+      // {
+      //   debugger;
+      //   resp.response.data.forEach(element => {
+      //     toast.error(element.description)
+      //   })
+      // }
+
+      debugger;
+      if (resp.response.data.status != null && resp.response.data.status == 500)
       {
-        resp.response.data.forEach(element => {
-          toast.error(element.description)
-        })
+        toast.error(resp.response.data.title)
+      }
+      else if (typeof resp.response.data != 'undefined')
+      {
+        toast.error(resp.response.data)
       }
       else if (typeof resp.response.data.errors != 'undefined')
       {

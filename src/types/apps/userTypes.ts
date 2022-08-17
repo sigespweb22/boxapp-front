@@ -9,6 +9,7 @@ export type UsersType = {
   id: string
   role: string[]
   applicationUserGroups: string[]
+  applicationUserGroupsNames: string[]
   email: string
   status: string
   avatar: string

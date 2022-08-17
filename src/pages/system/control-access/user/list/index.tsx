@@ -189,6 +189,7 @@ const RowOptions = ({ id }: { id: number | string }) => {
 }
 
 const groupTransform = (groups) => {
+  debugger;
   var elem = []
   groups.forEach(element => {
     elem.push("| " + element + " | ")
@@ -201,7 +202,7 @@ const columns = [
     flex: 0.2,
     minWidth: 230,
     field: 'fullName',
-    headerName: 'User',
+    headerName: 'Usuário',
     renderCell: ({ row }: CellType) => {
       const { id, fullName, userName } = row
 
@@ -233,7 +234,7 @@ const columns = [
     flex: 0.2,
     minWidth: 250,
     field: 'email',
-    headerName: 'Email',
+    headerName: 'E-mail',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -246,7 +247,7 @@ const columns = [
     flex: 0.15,
     field: 'applicationUserGroups',
     minWidth: 150,
-    headerName: 'User group',
+    headerName: 'Grupos',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -254,7 +255,7 @@ const columns = [
           <CustomChip
             skin='light'
             size='small'
-            label={groupTransform(row.applicationUserGroups)}
+            label={groupTransform(row.applicationUserGroupsNames)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
@@ -270,6 +271,8 @@ const columns = [
     minWidth: 110,
     field: 'status',
     headerName: 'Status',
+    headerAlign: 'center',
+    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <CustomChip
@@ -287,7 +290,9 @@ const columns = [
     minWidth: 90,
     sortable: false,
     field: 'actions',
-    headerName: 'Actions',
+    headerName: 'Ações',
+    headerAlign: 'right',
+    align: 'right',
     renderCell: ({ row }: CellType) => <RowOptions id={row.id} />
   }
 ]
