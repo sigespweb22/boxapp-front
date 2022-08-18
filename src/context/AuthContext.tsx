@@ -78,6 +78,7 @@ const AuthProvider = ({ children }: Props) => {
     axios
       .post(authConfig.loginEndpoint, params)
       .then(async res => {
+        debugger;
         window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.userData.accessToken)
         
         const returnUrl = router.query.returnUrl
@@ -97,6 +98,7 @@ const AuthProvider = ({ children }: Props) => {
             }
           })
           .then(async response => {
+            debugger;
             const returnUrl = router.query.returnUrl
             setUser({ ...response.data.userData })
 
