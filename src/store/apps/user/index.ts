@@ -59,27 +59,19 @@ export const addUser = createAsyncThunk(
       return resp.data.data
     }).catch((resp) => {
       
-
-      // ** Quando exception vem de uma trown o padrão é este comentando, solucionar isso...
-      // if (typeof resp.response.data != 'undefined' &&
-      //     resp.response.data.length >= 1)
-      // {
-      //   debugger;
-      //   resp.response.data.forEach(element => {
-      //     toast.error(element.description)
-      //   })
-      // }
-
       debugger;
-      if (resp.response.data.status != null && resp.response.data.status == 500)
+      if (typeof resp.response.data != 'undefined' && 
+         typeof resp.response.data.errors != 'undefined')
       {
-        toast.error(resp.response.data.title)
-      }
-      else if (typeof resp.response.data != 'undefined')
+        resp.response.data.errors.forEach(err => {
+          toast.error(err)
+        });
+      } else if (typeof resp.response.data != 'undefined' && typeof resp.response.data.errors == 'undefined')
       {
-        toast.error(resp.response.data)
-      }
-      else if (typeof resp.response.data.errors != 'undefined')
+        resp.response.data.forEach(err => {
+          toast.error(err.description)
+        });
+      } else if (typeof resp.response.data.errors != 'undefined')
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err) {
@@ -87,9 +79,9 @@ export const addUser = createAsyncThunk(
             toast.error(ie)
           })
         });
-      } else {
-        toast.error(resp.response.data)
-      }
+      } 
+      else if (resp.response.data.status != null && resp.response.data.status == 500) toast.error(resp.response.data.title)
+      else toast.error(resp.response.data)
     })
   }
 )

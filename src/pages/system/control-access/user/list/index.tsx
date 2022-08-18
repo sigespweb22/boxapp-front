@@ -189,7 +189,6 @@ const RowOptions = ({ id }: { id: number | string }) => {
 }
 
 const groupTransform = (groups) => {
-  debugger;
   var elem = []
   groups.forEach(element => {
     elem.push("| " + element + " | ")

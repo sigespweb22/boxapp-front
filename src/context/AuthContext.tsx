@@ -97,6 +97,7 @@ const AuthProvider = ({ children }: Props) => {
             }
           })
           .then(async response => {
+            debugger;
             const returnUrl = router.query.returnUrl
             setUser({ ...response.data.userData })
 
