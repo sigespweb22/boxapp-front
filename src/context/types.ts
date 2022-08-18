@@ -1,3 +1,5 @@
+import { StatusObjType } from "src/types/apps/chatTypes"
+
 export type ErrCallbackType = (err: { [key: string]: string }) => void
 
 export type LoginParams = {
@@ -14,6 +16,10 @@ export type RegisterParams = {
 export type UserDataType = {
   id: string
   role: string[]
+  applicationUserGroupsNames: string[]
+  funcao: string
+  setor: string
+  status: string
   email: string
   fullName: string
   username: string
