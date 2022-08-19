@@ -27,6 +27,7 @@ const UserView = ({ id, invoiceData }: Props) => {
   // ** State
   const [error, setError] = useState<boolean>(false)
   const [data, setData] = useState<null | UsersType>(null)
+  debugger;
 
   useEffect(() => {
     axios

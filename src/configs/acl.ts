@@ -1,7 +1,7 @@
 import { AbilityBuilder, Ability } from '@casl/ability'
 
 export type Subjects = string
-export type Actions = 'manage' | 'create' | 'read' | 'update' | 'delete'
+export type Actions = 'manage' | 'create' | 'read' | 'update' | 'delete' | 'list'
 
 export type AppAbility = Ability<[Actions, Subjects]> | undefined
 
@@ -18,23 +18,36 @@ export type ACLObj = {
  */
 const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
-  debugger;
+
   role.forEach((item) => {
-    if (item === 'MASTER') {
+    debugger;
+    /// begin - master
+    if (item === 'Master') {
       can('manage', 'all')
-    } else if (item === 'SUPORTE') {
-      can('read', 'dashboard-client-page')
+    /// end - master
+
+    /// begin - users
+    } else if (item === 'CanUserAll') {
+      can(['create', 'read', 'update', 'delete'], 'ac-user-page')
+    } else if (item === 'CanUserList') {
+      can('list', 'ac-user-page')
+    } else if (item === 'CanUserView') {
       can('read', 'ac-user-page')
-      can('read', 'ac-user-page-search')
-    } else if (item === 'USER_LIST') {
-      can('read', 'dashboard-client-page')
-    } else if (item === 'client') {
+    } else if (item === 'CanUserUpdate') {
+      can('update', 'ac-user-page')
+    } else if (item === 'CanUserCreate') {
+      can('create', 'ac-user-page')
+    } else if (item === 'CanUserDelete') {
+      can('delete', 'ac-user-page')
+    }
+    /// end - users
+
+    /// begin - dashboard cliente
+    else if (item === 'CanDashboardClientRead') {
       can('read', 'dashboard-client-page')
     }
+    /// end - dashboard cliente
 
-    // else {
-    //   can(['read', 'create', 'update', 'delete'], subject)
-    // }
   });
 
   return rules

@@ -1,4 +1,6 @@
 {
+    "User listing": "Listagem dos usuários",
+    "Users": "Usuários",
     "User Group": "Grupo Usuário",
     "ACTIVE": "ATIVO",
     "PENDING": "PENDENTE",
@@ -33,7 +35,8 @@
     "Edit": "Editar",
     "Add": "Adicionar",
     "User": "Usuário",
-    "View": "Vizualização",
+    "View": "Vizualizar",
+    "Delete": "Deletar",
     "Roles & Permissions": "Roles & Permissões",
     "Roles": "Roles",
     "Permissions": "Permissões",

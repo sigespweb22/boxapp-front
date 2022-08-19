@@ -17,11 +17,6 @@ import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
-import CardContent from '@mui/material/CardContent'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
@@ -36,6 +31,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
+import PageHeader from 'src/@core/components/page-header'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -128,6 +124,7 @@ const MenuItemLink = styled('a')(({ theme }) => ({
 
 const RowOptions = ({ id }: { id: number | string }) => {
   // ** Hooks
+  const ability = useContext(AbilityContext)
   const dispatch = useDispatch<AppDispatch>()
   const { t } = useTranslation()
 
@@ -148,7 +145,7 @@ const RowOptions = ({ id }: { id: number | string }) => {
   }
 
   return (
-    <>
+    <>      
       <IconButton size='small' onClick={handleRowOptionsClick}>
         <DotsVertical />
       </IconButton>
@@ -167,22 +164,28 @@ const RowOptions = ({ id }: { id: number | string }) => {
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        <MenuItem sx={{ p: 0 }}>
-          <Link href={`/apps/user/view/${id}`} passHref>
-            <MenuItemLink>
-              <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-              View
-            </MenuItemLink>
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleRowOptionsClose}>
-          <PencilOutline fontSize='small' sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDelete}>
-          <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
+        {ability?.can('read', 'ac-user-page') &&
+          <MenuItem sx={{ p: 0 }}>
+            <Link href={`/apps/user/view/${id}`} passHref>
+              <MenuItemLink>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+                {t("View")}
+              </MenuItemLink>
+            </Link>
+          </MenuItem>
+        }
+        {ability?.can('update', 'ac-user-page') &&
+          <MenuItem onClick={handleRowOptionsClose}>
+            <PencilOutline fontSize='small' sx={{ mr: 2 }} />
+            {t("Edit")}
+          </MenuItem>
+        }
+        {ability?.can('delete', 'ac-user-page') &&
+          <MenuItem onClick={handleDelete}>
+            <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
+            {t("Delete")}
+          </MenuItem>
+        }
       </Menu>
     </>
   )
@@ -339,7 +342,7 @@ const UserList = () => {
   return (
     <Grid container spacing={6}>
       <Grid container spacing={6}>
-        {ability?.can('read', 'ac-user-page-search') ? (
+        {/* {ability?.can('read', 'ac-user-page-search') ? (
           <Grid item xs={12}>
             <Card>
               <CardHeader title={t('Search Filters')} />
@@ -387,8 +390,18 @@ const UserList = () => {
               </CardContent>
             </Card>
           </Grid>
-        ) : null}
-        {ability?.can('read', 'ac-user-page') ? (
+        ) : null} */}
+        <Grid item xs={12}>
+          <PageHeader
+            title={<Typography variant='h5'>{t("Users")}</Typography>}
+            subtitle={
+              <Typography variant='body2'>
+                {t("User listing")}.
+              </Typography>
+            }
+          />
+        </Grid>
+        {ability?.can('list', 'ac-user-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />
@@ -405,7 +418,7 @@ const UserList = () => {
               />
             </Card>
           </Grid>
-        ) : null}
+        ) : "Você não tem permissão para ver este recurso."}
         <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
       </Grid>
     </Grid>
@@ -413,7 +426,7 @@ const UserList = () => {
 }
 
 UserList.acl = {
-  action: 'read',
+  action: 'list',
   subject: 'ac-user-page'
 }
 

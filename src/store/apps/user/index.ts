@@ -59,7 +59,6 @@ export const addUser = createAsyncThunk(
       return resp.data.data
     }).catch((resp) => {
       
-      debugger;
       if (typeof resp.response.data != 'undefined' && 
          typeof resp.response.data.errors != 'undefined')
       {
@@ -90,12 +89,50 @@ export const addUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   'appUsers/deleteUser',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const response = await axios.delete('/apps/users/delete', {
-      data: id
-    })
-    dispatch(fetchData(getState().user.params))
+    debugger;
+    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    
+    let config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
 
-    return response.data
+    let data2 = {
+      id: id,
+    }
+
+    axios.post(userApi.deleteAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().user.params))
+      toast.success(resp.data.message)
+      return resp.data.data
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response != 'undefined' && resp.response.status === 500) return toast.error(resp.response.data.detail)
+      if (typeof resp.response.data != 'undefined' && 
+         typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data == 'object') return toast.error(resp.response.data)
+        resp.response.data.errors.forEach(err => {
+          toast.error(err)
+        });
+      } else if (typeof resp.response.data != 'undefined' && typeof resp.response.data.errors == 'undefined')
+      {
+        resp.response.data.forEach(err => {
+          toast.error(err.description)
+        });
+      } else if (typeof resp.response.data.errors != 'undefined')
+      {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach(function(err) {
+          err[1].forEach(function (ie) {
+            toast.error(ie)
+          })
+        });
+      } 
+      else if (resp.response.data.status != null && resp.response.data.status == 500) toast.error(resp.response.data.title)
+      else toast.error(resp.response.data)
+    })
   }
 )
 
