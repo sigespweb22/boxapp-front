@@ -16,6 +16,9 @@ import apiAccount from 'src/@api-center/account/accountServices'
 // ** Types
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType, UserDataType } from './types'
 
+// ** Toast
+import toast, { Toaster } from 'react-hot-toast'
+
 // ** Defaults
 const defaultProvider: AuthValuesType = {
   user: null,
@@ -78,7 +81,6 @@ const AuthProvider = ({ children }: Props) => {
     axios
       .post(authConfig.loginEndpoint, params)
       .then(async res => {
-        debugger;
         window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.userData.accessToken)
         
         const returnUrl = router.query.returnUrl
@@ -98,7 +100,6 @@ const AuthProvider = ({ children }: Props) => {
             }
           })
           .then(async response => {
-            debugger;
             const returnUrl = router.query.returnUrl
             setUser({ ...response.data.userData })
 
@@ -110,7 +111,16 @@ const AuthProvider = ({ children }: Props) => {
           })
       })
       .catch(err => {
-        if (errorCallback) errorCallback(err)
+        if (typeof err.response.data != 'undefined' &&
+            err.response.data.errors != 'undefined' && 
+            err.response.data.errors.length > 0)
+        {
+          err.response.data.errors.forEach(er => {
+            toast.error(er)
+          });
+        } else {
+          if (errorCallback) errorCallback(err)
+        }
       })
   }
 

@@ -24,6 +24,8 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import DeleteOutline from 'mdi-material-ui/DeleteOutline'
+import AccountReactivateOutline from 'mdi-material-ui/AccountReactivateOutline'
+
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,7 +39,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteUser } from 'src/store/apps/user'
+import { fetchData, deleteUser, alterStatusUser } from 'src/store/apps/user'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -68,6 +70,7 @@ const userGroupObj: UserGroupType = {
   // maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
   // subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
 }
+
 interface CellType {
   row: UsersType
 }
@@ -112,6 +115,22 @@ const renderClient = (row: UsersType) => {
   }
 }
 
+// ** renders status column
+const RenderStatus = ({ status } : { status: string }) => {
+  // ** Hooks
+  const { t } = useTranslation()
+
+  return (
+    <CustomChip
+        skin='light'
+        size='small'
+        label={t(status)}
+        color={userStatusObj[status]}
+        sx={{ textTransform: 'capitalize' }}
+    />
+  )
+}
+
 // ** Styled component for the link inside menu
 const MenuItemLink = styled('a')(({ theme }) => ({
   width: '100%',
@@ -122,7 +141,7 @@ const MenuItemLink = styled('a')(({ theme }) => ({
   color: theme.palette.text.primary
 }))
 
-const RowOptions = ({ id }: { id: number | string }) => {
+const RowOptions = ({ id, status } : { id: number | string, status: string }) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const dispatch = useDispatch<AppDispatch>()
@@ -143,9 +162,13 @@ const RowOptions = ({ id }: { id: number | string }) => {
     dispatch(deleteUser(id))
     handleRowOptionsClose()
   }
+  const handleAlterStatus = () => {
+    dispatch(alterStatusUser(id))
+    handleRowOptionsClose()
+  }
 
   return (
-    <>      
+    <> 
       <IconButton size='small' onClick={handleRowOptionsClick}>
         <DotsVertical />
       </IconButton>
@@ -164,6 +187,14 @@ const RowOptions = ({ id }: { id: number | string }) => {
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
+        {ability?.can('update', 'ac-user-page') &&
+          <MenuItem onClick={handleAlterStatus}>
+            <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
+            {
+              status == "PENDING" ? t("Activate") : status == "ACTIVE" ? t("Deactivate") : t("Activate")
+            }
+          </MenuItem>
+        }
         {ability?.can('read', 'ac-user-page') &&
           <MenuItem sx={{ p: 0 }}>
             <Link href={`/apps/user/view/${id}`} passHref>
@@ -275,17 +306,7 @@ const columns = [
     headerName: 'Status',
     headerAlign: 'center',
     align: 'center',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <CustomChip
-          skin='light'
-          size='small'
-          label={row.status}
-          color={userStatusObj[row.status]}
-          sx={{ textTransform: 'capitalize' }}
-        />
-      )
-    }
+    renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   },
   {
     flex: 0.1,
@@ -295,7 +316,7 @@ const columns = [
     headerName: 'Ações',
     headerAlign: 'right',
     align: 'right',
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} />
+    renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]
 
@@ -400,7 +421,7 @@ const UserList = () => {
               </Typography>
             }
           />
-        </Grid>gitp 
+        </Grid> 
         {ability?.can('list', 'ac-user-page') ? (
           <Grid item xs={12}>
             <Card>
@@ -425,8 +446,11 @@ const UserList = () => {
   )
 }
 
+// **Controle de acesso da página
+// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
+// **a esta página de subject abaixo
 UserList.acl = {
-  action: 'list',
+  action: ['list', 'read', 'create', 'update', 'delete'],
   subject: 'ac-user-page'
 }
 

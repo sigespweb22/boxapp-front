@@ -40,7 +40,7 @@ import { RootState, AppDispatch } from 'src/store'
 import { PermissionRowType } from 'src/types/apps/permissionTypes'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/apps/permissions'
+import { fetchData } from 'src/store/apps/permission'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'

@@ -1,12 +1,27 @@
 {
+    "Activate": "Ativar",
+    "ACTIVE": "ATIVO",
+    "Add User": "Novo",
+    "Add Permission": "Novo",
+    "Deactivate": "Desativar",
+    "Groups": "Grupos aplicação",
+    "Users Per Group": "Usuários por grupo",
+
+    "INACTIVE": "INATIVO",
+
+    "Permission New": "Nova Permissão",
+    "Permission listing": "Listagem das permissões",
+    "PENDING": "PENDENTE",
+
+    "Total users": "Total usuários",
+    "User New": "Novo Usuário",
     "User listing": "Listagem dos usuários",
     "Users": "Usuários",
     "User Group": "Grupo Usuário",
-    "ACTIVE": "ATIVO",
-    "PENDING": "PENDENTE",
-    "INACTIVE": "INATIVO",
-    "Add User": "Novo",
+    
+    
     "Search User": "Busca usuário",
+    "Search Permission": "Busca permissão",
     "Select Status": "Selecione um status",
     "Select Group": "Selecione um Grupo",
     "Select Role": "Selecione uma role",
