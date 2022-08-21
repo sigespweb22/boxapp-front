@@ -19,6 +19,7 @@ export type ACLObj = {
 const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
+  debugger;
   role.forEach((item) => {
     /// begin - master
     if (item === 'Master') {
@@ -70,9 +71,15 @@ const defineRulesFor = (role: string[], subject: string) => {
     can('delete', 'ac-group-page')
   /// end - group
 
+  /// begin - dashboard all
+  } else if (item === 'CanDashboardAll') {
+    can('list', 'ac-dashboard-client-page')
+    can('list', 'ac-dashboard-access-control-page')
+  /// end - dashboard client
+
   /// begin - dashboard client
-  } else if (item === 'CanDashboardClientRead') {
-    can('read', 'ac-dashboard-client-page')
+  } else if (item === 'CanDashboardClientList') {
+    can('list', 'ac-dashboard-client-page')
   /// end - dashboard client
 
   /// begin - dashboard client

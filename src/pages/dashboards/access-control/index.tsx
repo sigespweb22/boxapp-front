@@ -58,7 +58,7 @@ const CRMDashboard = () => {
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
 CRMDashboard.acl = {
-  action: ['list', 'read'],
+  action: 'list',
   subject: 'ac-dashboard-access-control-page'
 }
 

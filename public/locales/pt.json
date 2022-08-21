@@ -2,9 +2,10 @@
     "Activate": "Ativar",
     "ACTIVE": "ATIVO",
     "Add User": "Novo",
+    "Add Group": "Novo",
     "Add Permission": "Novo",
     "Deactivate": "Desativar",
-    "Groups": "Grupos aplicação",
+    "Groups": "Grupos permissões",
     "Users Per Group": "Usuários por grupo",
 
     "INACTIVE": "INATIVO",
@@ -15,11 +16,13 @@
 
     "Total users": "Total usuários",
     "User New": "Novo Usuário",
-    "User listing": "Listagem dos usuários",
+    "Group New": "Novo Grupo",
+    "Users listing": "Listagem dos usuários",
+    "Groups listing": "Listagem dos grupos",
     "Users": "Usuários",
     "User Group": "Grupo Usuário",
     
-    
+    "Search Group": "Busca grupo",
     "Search User": "Busca usuário",
     "Search Permission": "Busca permissão",
     "Select Status": "Selecione um status",

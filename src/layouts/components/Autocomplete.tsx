@@ -61,7 +61,7 @@ import UserIcon from 'src/layouts/components/UserIcon'
 import { autocompleteIconObj } from './autocompleteIconObj'
 
 // ** Api Services
-import appBarApis from 'src/@api-center/appBar/appBarServices'
+import appBarApis from 'src/@api-center/appBar/appBarApiService'
 
 interface Props {
   hidden: boolean

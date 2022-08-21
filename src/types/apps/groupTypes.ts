@@ -1,13 +1,15 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
-export type RoleLayoutType = {
+export type GroupLayoutType = {
   id: string | undefined
 }
 
-export type RolesType = {
+export type GroupsType = {
   id: string
   name: string
-  description: string
+  applicationRoleGroups: string[]
+  applicationRoleGroupsNames: string[]
+  status: string
   avatarColor?: ThemeColor
 }

@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import roleApi from 'src/@api-center/role/roleServices'
+import roleApi from 'src/@api-center/role/roleApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
@@ -54,28 +54,21 @@ export const addRole = createAsyncThunk(
       dispatch(fetchData(getState().role.params))
       if (resp.status === 201) return toast.success("Permissão criada com sucesso.")
     }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
-         typeof resp.response.data.errors != 'undefined')
+          typeof resp.response.data.errors != 'undefined')
       {
         resp.response.data.errors.forEach(err => {
           toast.error(err)
         });
-      } else if (typeof resp.response.data != 'undefined' && typeof resp.response.data.errors == 'undefined')
-      {
-        resp.response.data.forEach(err => {
-          toast.error(err.description)
-        });
-      } else if (typeof resp.response.data.errors != 'undefined')
-      {
+      } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err) {
           err[1].forEach(function (ie) {
-            toast.error(ie)
+            toast.error(ie)        
           })
         });
-      } 
-      else if (resp.response.data.status != null && resp.response.data.status == 500) toast.error(resp.response.data.title)
-      else toast.error(resp.response.data)
+      }
     })
   }
 )
@@ -95,30 +88,20 @@ export const deleteRole = createAsyncThunk(
       if (resp.status === 204) return toast.success("Permissão deletada com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
-      if (typeof resp.response != 'undefined' && resp.response.status === 500) return toast.error(resp.response.data.detail)
       if (typeof resp.response.data != 'undefined' && 
-         typeof resp.response.data.errors != 'undefined')
+          typeof resp.response.data.errors != 'undefined')
       {
-        if (typeof resp.response.data == 'object') return toast.error(resp.response.data)
         resp.response.data.errors.forEach(err => {
           toast.error(err)
         });
-      } else if (typeof resp.response.data != 'undefined' && typeof resp.response.data.errors == 'undefined')
-      {
-        resp.response.data.forEach(err => {
-          toast.error(err.description)
-        });
-      } else if (typeof resp.response.data.errors != 'undefined')
-      {
+      } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err) {
           err[1].forEach(function (ie) {
-            toast.error(ie)
+            toast.error(ie)        
           })
         });
-      } 
-      else if (resp.response.data.status != null && resp.response.data.status == 500) toast.error(resp.response.data.title)
-      else toast.error(resp.response.data)
+      }
     })
   }
 )
@@ -134,7 +117,6 @@ export const appRolesSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      debugger;
       state.data = action.payload.roles
       state.total = action.payload.total
       state.params = action.payload.params

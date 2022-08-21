@@ -70,15 +70,17 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 
 // ** renders client column
 const renderClient = (row: RolesType) => {
-  <AvatarWithoutImageLink href={`/apps/role/view/${row.id}`}>
-    <CustomAvatar
-      skin='light'
-      color={'primary'}
-      sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-    >
-      {getInitials(row.name ? row.name : 'CA')}
-    </CustomAvatar>
-  </AvatarWithoutImageLink>
+  return (
+    <AvatarWithoutImageLink href={`/apps/role/view/${row.id}`}>
+      <CustomAvatar
+        skin='light'
+        color={row.avatarColor || 'primary'}
+        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+      >
+        {getInitials(row.name ? row.name : 'AC')}
+      </CustomAvatar>
+    </AvatarWithoutImageLink>
+  )
 }
 
 const RowOptions = ({ id } : { id: number | string }) => {
@@ -164,15 +166,20 @@ const columns = [
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Link href={`/apps/role/view/${id}`} passHref>
-              <Typography
-                noWrap
-                component='a'
-                variant='body2'
-                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {name}
-              </Typography>
-            </Link>
+                <Typography
+                  noWrap
+                  component='a'
+                  variant='body2'
+                  sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+                >
+                  {name.toUpperCase()}
+                </Typography>
+              </Link>
+              <Link href={`/apps/role/view/${id}`} passHref>
+                <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+                  🔐{name}
+                </Typography>
+              </Link>
           </Box>
         </Box>
       )
@@ -272,7 +279,7 @@ const RoleList = () => {
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
 RoleList.acl = {
-  action: ['list', 'read', 'create', 'update', 'delete'],
+  action: 'list',
   subject: 'ac-role-page'
 }
 

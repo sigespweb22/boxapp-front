@@ -32,13 +32,13 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addUser } from 'src/store/apps/user'
+import { addGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 
 // ** Api Services
-import apiGroup from 'src/@api-center/group/groupApiService'
+import roleApiService from 'src/@api-center/role/roleApiService'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -54,19 +54,17 @@ const MenuProps = {
   }
 }
 
-interface SidebarAddUserType {
+interface SidebarAddGroupType {
   open: boolean
   toggle: () => void
 }
 
-interface UserData {
-  fullName: string
-  email: string
-  password: string
-  applicationUserGroups: string[]
+interface GroupData {
+  name: string
+  applicationRoleGroups: string[]
 }
 
-const groups = [];
+const roles = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -87,34 +85,23 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  fullName: yup
+  name: yup
     .string()
-    .min(3, obj => showErrors('Nome completo', obj.value.length, obj.min))
-    .required(),
-  email: yup
-    .string()
-    .email("E-mail deve ser um e-mail válido")
-    .required("E-mail é Requerido"),
-  password: yup
-    .string()
-    .min(3, obj => showErrors('Senha', obj.value.length, obj.min))
-    .typeError('Senha é requerida')
-    .required(),
-  applicationUserGroups: yup
+    .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
+    .required(),  
+  applicationRoleGroups: yup
     .array()
-    .min(1, obj => showErrors('Grupo usuário', obj.value.length, obj.min))
+    .min(1, obj => showErrors('Grupo permissões', obj.value.length, obj.min))
     .required()
 })
 
 const defaultValues = {
-  fullName: '',
-  email: '',
-  password: '',
-  applicationUserGroups: [],
+  name: '',  
+  applicationRoleGroups: [],
 }
 
-const SidebarAddUser = (props: SidebarAddUserType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
+const SidebarAddGroup = (props: SidebarAddGroupType) => {
+  const storedToken = window.localStorage.getItem(roleApiService.storageTokenKeyName)!
   let config = {
     headers: {
       Authorization: "Bearer " + storedToken
@@ -123,9 +110,9 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
 
   useEffect(() => {
     axios
-      .get(apiGroup.listToSelectAsync, config)
+      .get(roleApiService.listToSelectAsync, config)
       .then(response => {
-        groups = response.data
+        roles = response.data
       })
   }, []);
 
@@ -148,8 +135,8 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: UserData) => {
-    dispatch(addUser({ ...data,  }))
+  const onSubmit = (data: GroupData) => {
+    dispatch(addGroup({ ...data,  }))
     toggle()
     reset()
   }
@@ -169,83 +156,47 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("User New")}</Typography>
+        <Typography variant='h6'>{t("Group New")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='fullName'
+              name='name'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome completo'
+                  label='Nome do grupo'
                   onChange={onChange}
-                  placeholder='Alan Rezende'
-                  error={Boolean(errors.fullName)}
+                  placeholder='Suporte'
+                  error={Boolean(errors.name)}
                 />
               )}
             />
-            {errors.fullName && <FormHelperText sx={{ color: 'error.main' }}>{errors.fullName.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='email'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type='email'
-                  value={value}
-                  label='Email'
-                  onChange={onChange}
-                  placeholder='alan.rezende@email.com'
-                  error={Boolean(errors.email)}
-                />
-              )}
-            />
-            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='password'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="password"
-                  value={value}
-                  label='Senha'
-                  onChange={onChange}
-                  placeholder='Password123*'
-                  error={Boolean(errors.password)}
-                />
-              )}
-            />
-            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="applicationUserGroups"
+              name="applicationRoleGroups"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
+                    <InputLabel id='multiple-permission-label'>{t("Permissions")}</InputLabel>
                     <Select
-                        name="applicationUserGroups"
+                        name="applicationRoleGroups"
                         multiple
-                        label="User Group"
+                        label="Permissions"
                         value={value}
                         MenuProps={MenuProps}
-                        id='multiple-group'
+                        id='multiple-permission'
                         onChange={onChange}
-                        labelId='multiple-group-label'
-                        error={Boolean(errors.applicationUserGroups)}
+                        labelId='multiple-permission-label'
+                        error={Boolean(errors.applicationRoleGroups)}
                         renderValue={selected => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {(selected as unknown as string[]).map(value => (
@@ -255,14 +206,14 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                         )}
                       >
                         {
-                          groups.map(group => (
-                            <MenuItem key={group} value={group.name}>
-                              {group.name}
+                          roles.map(role => (
+                            <MenuItem key={role} value={role.name}>
+                              {role.name}
                             </MenuItem>
                           ))
                         }
                     </Select>
-                    {errors.applicationUserGroups && <FormHelperText sx={{ color: 'error.main' }}>{errors.applicationUserGroups.message}</FormHelperText>}
+                    {errors.applicationRoleGroups && <FormHelperText sx={{ color: 'error.main' }}>{errors.applicationRoleGroups.message}</FormHelperText>}
                   </FormControl>
                 )
               }}
@@ -282,4 +233,4 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   )
 }
 
-export default SidebarAddUser
+export default SidebarAddGroup

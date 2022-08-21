@@ -39,52 +39,41 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteUser, alterStatusUser } from 'src/store/apps/user'
+import { fetchData, deleteGroup, alterStatusGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { UsersType } from 'src/types/apps/userTypes'
+import { GroupsType } from 'src/types/apps/groupTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/system/control-access/user/list/TableHeader'
-import AddUserDrawer from 'src/views/system/control-access/user/list/AddUserDrawer'
+import TableHeader from 'src/views/system/control-access/group/list/TableHeader'
+import AddGroupDrawer from 'src/views/system/control-access/group/list/AddGroupDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface UserGroupType {
+interface RoleGroupType {
   [key: string]: ReactElement
 }
 
-interface UserStatusType {
+interface GroupStatusType {
   [key: string]: ThemeColor
 }
 
 // ** Vars
-const userGroupObj: UserGroupType = {
+const rolesGroupObj: RoleGroupType = {
   GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
-  // USER_LIST: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
-  // MASTER: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  // editor: <PencilOutline fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  // maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  // subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
 }
 
 interface CellType {
-  row: UsersType
+  row: GroupsType
 }
 
-const userStatusObj: UserStatusType = {
+const groupStatusObj: GroupStatusType = {
   ACTIVE: 'success',
-  PENDING: 'warning',
   INACTIVE: 'secondary'
 }
-
-// ** Styled component for the link for the avatar with image
-const AvatarWithImageLink = styled(Link)(({ theme }) => ({
-  marginRight: theme.spacing(3)
-}))
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -93,26 +82,18 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders client column
-const renderClient = (row: UsersType) => {
-  if (row.avatar.length) {
-    return (
-      <AvatarWithImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 30, height: 30 }} />
-      </AvatarWithImageLink>
-    )
-  } else {
-    return (
-      <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar
-          skin='light'
-          color={row.avatarColor || 'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.fullName ? row.fullName : 'John Doe')}
-        </CustomAvatar>
-      </AvatarWithoutImageLink>
-    )
-  }
+const renderClient = (row: GroupsType) => {
+  return (
+    <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
+      <CustomAvatar
+        skin='light'
+        color={row.avatarColor || 'primary'}
+        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+      >
+        {getInitials(row.name ? row.name : 'GP')}
+      </CustomAvatar>
+    </AvatarWithoutImageLink>
+  )
 }
 
 // ** renders status column
@@ -125,7 +106,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={userStatusObj[status]}
+        color={groupStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -159,11 +140,11 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
     setAnchorEl(null)
   }
   const handleDelete = () => {
-    dispatch(deleteUser(id))
+    dispatch(deleteGroup(id))
     handleRowOptionsClose()
   }
   const handleAlterStatus = () => {
-    dispatch(alterStatusUser(id))
+    dispatch(alterStatusGroup(id))
     handleRowOptionsClose()
   }
 
@@ -187,17 +168,17 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        {ability?.can('update', 'ac-user-page') &&
+        {ability?.can('delete', 'ac-group-page') &&
           <MenuItem onClick={handleAlterStatus}>
             <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
             {
-              status == "PENDING" ? t("Activate") : status == "ACTIVE" ? t("Deactivate") : t("Activate")
+              status == "ACTIVE" ? t("Deactivate") : t("Activate")
             }
           </MenuItem>
         }
-        {ability?.can('read', 'ac-user-page') &&
+        {ability?.can('read', 'ac-group-page') &&
           <MenuItem sx={{ p: 0 }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/group/view/${id}`} passHref>
               <MenuItemLink>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                 {t("View")}
@@ -205,13 +186,13 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
             </Link>
           </MenuItem>
         }
-        {ability?.can('update', 'ac-user-page') &&
+        {ability?.can('update', 'ac-group-page') &&
           <MenuItem onClick={handleRowOptionsClose}>
             <PencilOutline fontSize='small' sx={{ mr: 2 }} />
             {t("Edit")}
           </MenuItem>
         }
-        {ability?.can('delete', 'ac-user-page') &&
+        {ability?.can('delete', 'ac-group-page') &&
           <MenuItem onClick={handleDelete}>
             <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
             {t("Delete")}
@@ -222,7 +203,8 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
-const groupTransform = (groups) => {
+const permissionTransform = (groups) => {
+  if (!groups.length) return "Nenhuma permissão vinculada."
   var elem = []
   groups.forEach(element => {
     elem.push("| " + element + " | ")
@@ -234,28 +216,28 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 230,
-    field: 'fullName',
-    headerName: 'Usuário',
+    field: 'name',
+    headerName: 'Nome',
     renderCell: ({ row }: CellType) => {
-      const { id, fullName, userName } = row
+      const { id, name } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/group/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {fullName}
+                {name.toUpperCase()}
               </Typography>
             </Link>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/group/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🌟🌟🌟🌟🌟{userName}
+                🔑{name}
               </Typography>
             </Link>
           </Box>
@@ -264,37 +246,21 @@ const columns = [
     }
   },
   {
-    flex: 0.2,
-    minWidth: 250,
-    field: 'email',
-    headerName: 'E-mail',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.email}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.15,
-    field: 'applicationUserGroups',
+    field: 'applicationRoleGroups',
     minWidth: 150,
-    headerName: 'Grupos',
+    headerName: 'Permissões',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userGroupObj["GENERALS"]}
+          {rolesGroupObj["GENERALS"]}
           <CustomChip
             skin='light'
             size='small'
-            label={groupTransform(row.applicationUserGroupsNames)}
+            label={permissionTransform(row.applicationRoleGroupsNames)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
-          {/* <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {transformRole(row.roles)}
-          </Typography> */}
         </Box>
       )
     }
@@ -320,112 +286,51 @@ const columns = [
   }
 ]
 
-const UserList = () => {
+const GroupList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
    
   // ** State
-  const [group, setGroup] = useState<string>('')
   const [value, setValue] = useState<string>('')
-  const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addUserOpen, setAddUserOpen] = useState<boolean>(false)
+  const [addGroupOpen, setAddGroupOpen] = useState<boolean>(false)
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.user)
+  const store = useSelector((state: RootState) => state.group)
 
   useEffect(() => {
     dispatch(
       fetchData({
-        group,
-        status,
         q: value
       })
     )
-  }, [dispatch, group, status, value])
+  }, [dispatch, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
 
-  const handleGroupChange = useCallback((e: SelectChangeEvent) => {
-    setGroup(e.target.value)
-  }, [])
-
-  const handleStatusChange = useCallback((e: SelectChangeEvent) => {
-    setStatus(e.target.value)
-  }, [])
-
-  const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
+  const toggleAddGroupDrawer = () => setAddGroupOpen(!addGroupOpen)
 
   return (
     <Grid container spacing={6}>
       <Grid container spacing={6}>
-        {/* {ability?.can('read', 'ac-user-page-search') ? (
-          <Grid item xs={12}>
-            <Card>
-              <CardHeader title={t('Search Filters')} />
-              <CardContent>
-                <Grid container spacing={6}>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='group-select'>{t("Select Group")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={group}
-                        id='select-group'
-                        label='Select Group'
-                        labelId='group-select'
-                        onChange={handleGroupChange}
-                        inputProps={{ placeholder: 'Select Group' }}
-                      >
-                        <MenuItem value=''>{t("Select Group")}</MenuItem>
-                        <MenuItem value='Master'>Master</MenuItem>
-                        <MenuItem value='Suporte N1'>Suporte N1</MenuItem>
-                        <MenuItem value='Suporte N2'>Suporte N2</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='status-select'>{t("Select Status")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={status}
-                        id='select-status'
-                        label='Select Status'
-                        labelId='status-select'
-                        onChange={handleStatusChange}
-                        inputProps={{ placeholder: 'Select Status' }}
-                      >
-                        <MenuItem value=''>{t("Select Status")}</MenuItem>
-                        <MenuItem value='PENDING'>PENDING</MenuItem>
-                        <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
-                        <MenuItem value='INACTIVE'>INACTIVE</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ) : null} */}
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Users")}</Typography>}
+            title={<Typography variant='h5'>{t("Groups")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Users listing")}.
+                {t("Groups listing")}.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-user-page') ? (
+        {ability?.can('list', 'ac-group-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGroupDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -440,7 +345,7 @@ const UserList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
+        <AddGroupDrawer open={addGroupOpen} toggle={toggleAddGroupDrawer} />
       </Grid>
     </Grid>
   )
@@ -449,9 +354,9 @@ const UserList = () => {
 // **Controle de acesso da página
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
-UserList.acl = {
-  action: ['list', 'read', 'create', 'update', 'delete'],
-  subject: 'ac-user-page'
+GroupList.acl = {
+  action: 'list',
+  subject: 'ac-group-page'
 }
 
-export default UserList
+export default GroupList

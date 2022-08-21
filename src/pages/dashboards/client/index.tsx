@@ -38,7 +38,7 @@ const EcommerceDashboard = () => {
 
   return (
     <ApexChartWrapper>
-      {ability?.can('read', 'dashboard-client-page') ? (
+      {ability?.can('read', 'ac-dashboard-client-page') ? (
         <Grid container spacing={6}>
           <Grid item xs={12} md={8} sx={{ order: 0, alignSelf: 'flex-end' }}>
             <EcommerceCongratulations />
@@ -126,8 +126,8 @@ const EcommerceDashboard = () => {
 }
 
 EcommerceDashboard.acl = {
-  action: 'read',
-  subject: 'dashboard-client-page'
+  action: 'list',
+  subject: 'ac-dashboard-client-page'
 }
 
 export default EcommerceDashboard

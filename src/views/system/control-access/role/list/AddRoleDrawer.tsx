@@ -38,7 +38,7 @@ import { addRole } from 'src/store/apps/role'
 import { AppDispatch } from 'src/store'
 
 // ** Api Services
-import apiGroup from 'src/@api-center/group/groupApi'
+import apiGroup from 'src/@api-center/group/groupApiService'
 
 // ** Axios Imports
 import axios from 'axios'

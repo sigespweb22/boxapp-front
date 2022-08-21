@@ -6,15 +6,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import userApi from 'src/@api-center/user/userApiService'
+import groupApiService from 'src/@api-center/group/groupApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
 
 interface DataParams {
   q: string
-  role: string
-  status: string
 }
 
 interface Redux {
@@ -22,11 +20,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Users
-export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: DataParams) => {
-  const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+// ** Fetch Groups
+export const fetchData = createAsyncThunk('appGroups/fetchData', async (params: DataParams) => {
+  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const response = await axios
-                            .get(userApi.listAsync, {
+                            .get(groupApiService.listAsync, {
                                   headers: {
                                     Authorization: "Bearer " + storedToken
                                   },
@@ -35,11 +33,11 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
   return response.data
 })
 
-// ** Add User
-export const addUser = createAsyncThunk(
-  'appUsers/addUser',
+// ** Add Groups
+export const addGroup = createAsyncThunk(
+  'appGroups/addGroup',
   async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -47,16 +45,14 @@ export const addUser = createAsyncThunk(
     }
 
     const data2 = {
-      fullName: data.fullName,
-      email: data.email,
-      password: data.password,
-      applicationUserGroups: data.applicationUserGroups
+      name: data.name,
+      applicationRoleGroups: data.applicationRoleGroups
     }
 
-    axios.post(userApi.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().user.params))
+    axios.post(groupApiService.addAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().group.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
-      if (resp.status === 201) return toast.success("Usuário criado com sucesso.")
+      if (resp.status === 201) return toast.success("Grupo permissões criado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -78,18 +74,18 @@ export const addUser = createAsyncThunk(
 )
 
 // ** Delete User
-export const deleteUser = createAsyncThunk(
-  'appUsers/deleteUser',
+export const deleteGroup = createAsyncThunk(
+  'appGroups/deleteGroup',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
     
     let headers = {
       Authorization: "Bearer " + storedToken
     }
 
-    axios.delete(userApi.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().user.params))
-      if (resp.status === 204) return toast.success("Usuário deletado com sucesso.")
+    axios.delete(groupApiService.deleteAsync+id, { headers }).then((resp) => {
+      dispatch(fetchData(getState().group.params))
+      if (resp.status === 204) return toast.success("Grupo permissão deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -110,11 +106,11 @@ export const deleteUser = createAsyncThunk(
   }
 )
 
-// ** Alter Status User
-export const alterStatusUser = createAsyncThunk(
-  'appUsers/alterStatusUser',
+// ** Alter Status Group
+export const alterStatusGroup = createAsyncThunk(
+  'appGroups/alterStatusGroup',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
     
     const config = {
       headers: {
@@ -122,8 +118,8 @@ export const alterStatusUser = createAsyncThunk(
       }
     }
 
-    axios.put(userApi.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().user.params))
+    axios.put(groupApiService.alterStatusAsync+id, null, config).then((resp) => {
+      dispatch(fetchData(getState().group.params))
       toast.success(resp.data.message)
       return resp.data.data
     }).catch((resp) => {
@@ -146,8 +142,8 @@ export const alterStatusUser = createAsyncThunk(
   }
 )
 
-export const appUsersSlice = createSlice({
-  name: 'appUsers',
+export const appGroupsSlice = createSlice({
+  name: 'appGroups',
   initialState: {
     data: [],
     total: 0,
@@ -157,7 +153,7 @@ export const appUsersSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload.users
+      state.data = action.payload.groups
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData
@@ -165,4 +161,4 @@ export const appUsersSlice = createSlice({
   }
 })
 
-export default appUsersSlice.reducer
+export default appGroupsSlice.reducer
