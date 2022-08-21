@@ -213,20 +213,19 @@ const PermissionsTable = () => {
                     label='Permission Name'
                     onChange={onChange}
                     error={Boolean(errors.name)}
-                    placeholder='Enter Permission Name'
+                    placeholder='Exemplo CanUserList'
                     sx={{ mr: [0, 4], mb: [3, 0] }}
                   />
                 )}
               />
 
               <Button type='submit' variant='contained'>
-                Update
+                {t("Update")}
               </Button>
             </FormGroup>
             {errors.name && (
               <FormHelperText sx={{ color: 'error.main' }}>Please enter a valid permission name</FormHelperText>
             )}
-            <FormControlLabel control={<Checkbox />} label='Set as core permission' />
           </Box>
         </DialogContent>
       </Dialog>

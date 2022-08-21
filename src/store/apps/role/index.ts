@@ -54,6 +54,48 @@ export const addRole = createAsyncThunk(
       dispatch(fetchData(getState().role.params))
       if (resp.status === 201) return toast.success("Permissão criada com sucesso.")
     }).catch((resp) => {
+      debugger;
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        resp.response.data.errors.forEach(err => {
+          toast.error(err)
+        });
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach(function(err) {
+          err[1].forEach(function (ie) {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
+
+// ** Update Role
+export const updateRole = createAsyncThunk(
+  'appRoles/updateRole',
+  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
+    let config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    let data2 = {
+      id: data.id,
+      name: data.name,
+      description: data.description
+    }
+
+    axios.put(roleApi.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().role.params))
+      if (resp.status === 204) return toast.success("Permissão atualizada com sucesso.")
+    }).catch((resp) => {
+      debugger;
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')

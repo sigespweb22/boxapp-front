@@ -6,17 +6,29 @@ import Link from 'next/link'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
+import { useForm, Controller } from 'react-hook-form'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
+import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
+import Checkbox from '@mui/material/Checkbox'
+import FormGroup from '@mui/material/FormGroup'
+import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import AlertTitle from '@mui/material/AlertTitle'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import FormHelperText from '@mui/material/FormHelperText'
+import FormControlLabel from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -48,8 +60,17 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
 
+// ** Actions Imports
+import { updateRole } from 'src/store/apps/role'
+
 interface CellType {
   row: RolesType
+}
+
+interface RoleData {
+  id: string
+  name: string
+  description: string
 }
 
 // ** Styled component for the link inside menu
@@ -83,76 +104,7 @@ const renderClient = (row: RolesType) => {
   )
 }
 
-const RowOptions = ({ id } : { id: number | string }) => {
-  // ** Hooks
-  const ability = useContext(AbilityContext)
-  const dispatch = useDispatch<AppDispatch>()
-  const { t } = useTranslation()
-
-  // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const rowOptionsOpen = Boolean(anchorEl)
-
-  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-  const handleDelete = () => {
-    dispatch(deleteRole(id))
-    handleRowOptionsClose()
-  }
-
-  return (
-    <> 
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <DotsVertical />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        {ability?.can('read', 'ac-role-page') &&
-          <MenuItem sx={{ p: 0 }}>
-            <Link href={`/apps/role/view/${id}`} passHref>
-              <MenuItemLink>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                {t("View")}
-              </MenuItemLink>
-            </Link>
-          </MenuItem>
-        }
-        {ability?.can('update', 'ac-role-page') &&
-          <MenuItem onClick={handleRowOptionsClose}>
-            <PencilOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Edit")}
-          </MenuItem>
-        }
-        {ability?.can('delete', 'ac-role-page') &&
-          <MenuItem onClick={handleDelete}>
-            <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Delete")}
-          </MenuItem>
-        }
-      </Menu>
-    </>
-  )
-}
-
-const columns = [
+const defaultColumns = [
   {
     flex: 0.2,
     minWidth: 230,
@@ -172,7 +124,7 @@ const columns = [
                   variant='body2'
                   sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
                 >
-                  {name.toUpperCase()}
+                  {name}
                 </Typography>
               </Link>
               <Link href={`/apps/role/view/${id}`} passHref>
@@ -197,30 +149,41 @@ const columns = [
         </Typography>
       )
     }
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Ações',
-    headerAlign: 'right',
-    align: 'right',
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} />
   }
 ]
 
+const defaultValues = {
+  id: '',
+  name: '', 
+  description: ''
+}
+
 const RoleList = () => {
+  // ** State
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [value, setValue] = useState<string>('')
+  const [pageSize, setPageSize] = useState<number>(10)
+  const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false)
+  const [viewDialogOpen, setViewDialogOpen] = useState<boolean>(false)
+  const [addRoleOpen, setAddRoleOpen] = useState<boolean>(false)
+
+  const handleRowOptionsClose = () => {
+    setAnchorEl(null)
+  }
+
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
    
-  // ** State
-  const [value, setValue] = useState<string>('')
-  const [pageSize, setPageSize] = useState<number>(10)
-  const [addRoleOpen, setAddRoleOpen] = useState<boolean>(false)
-
   // ** Hooks
+  const {
+    control,
+    setValue: setFormValue,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ 
+    defaultValues
+  })
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.role)
 
@@ -236,42 +199,224 @@ const RoleList = () => {
     setValue(val)
   }, [])
 
+  const handleEditRole = ({ id, name, description } : RoleData) => {
+    setFormValue('id', id)
+    setFormValue('name', name)
+    setFormValue('description', description)
+    setEditDialogOpen(true)
+  }
+
+  const handleViewRole = ({ id, name, description } : RoleData) => {
+    setFormValue('id', id)
+    setFormValue('name', name)
+    setFormValue('description', description)
+    setViewDialogOpen(true)
+  }
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteRole(id))
+    handleRowOptionsClose()
+  }
+
   const toggleAddRoleDrawer = () => setAddRoleOpen(!addRoleOpen)
+  const handleDialogEditToggle = () => setEditDialogOpen(!editDialogOpen)
+  const handleDialogViewToggle = () => setViewDialogOpen(!viewDialogOpen)
+
+  const onSubmit = (data: RoleData) => {
+    setEditDialogOpen(false)
+    dispatch(updateRole({ ...data,  }))
+  }
+
+  const columns = [
+    ...defaultColumns,
+    {
+      flex: 0.1,
+      minWidth: 90,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Ações',
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('read', 'ac-role-page') &&
+            <IconButton onClick={() => handleViewRole(row)}>
+              <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+            </IconButton>
+          }
+          {ability?.can('update', 'ac-role-page') &&
+            <IconButton onClick={() => handleEditRole(row)}>
+              <PencilOutline fontSize='small' />
+            </IconButton>
+          }
+          {ability?.can('delete', 'ac-role-page') &&
+            <IconButton onClick={() => handleDelete(row.id)}>
+              <DeleteOutline fontSize='small' />
+            </IconButton>
+          }
+        </Box>
+      )
+    }
+  ]
 
   return (
-    <Grid container spacing={6}>
+    <>
       <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <PageHeader
-            title={<Typography variant='h5'>{t("Permissions")}</Typography>}
-            subtitle={
-              <Typography variant='body2'>
-                {t("Permission listing")}.
-              </Typography>
-            }
-          />
-        </Grid> 
-        {ability?.can('list', 'ac-role-page') ? (
+        <Grid container spacing={6}>
           <Grid item xs={12}>
-            <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddRoleDrawer} />
-              <DataGrid
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                autoHeight
-                rows={store.data}
-                columns={columns}
-                checkboxSelection
-                pageSize={pageSize}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10, 25, 50]}
-                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-              />
-            </Card>
-          </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
-        <AddRoleDrawer open={addRoleOpen} toggle={toggleAddRoleDrawer} />
+            <PageHeader
+              title={<Typography variant='h5'>{t("Permissions")}</Typography>}
+              subtitle={
+                <Typography variant='body2'>
+                  {t("Permission listing")}.
+                </Typography>
+              }
+            />
+          </Grid> 
+          {ability?.can('list', 'ac-role-page') ? (
+            <Grid item xs={12}>
+              <Card>
+                <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddRoleDrawer} />
+                <DataGrid
+                  localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+                  autoHeight
+                  rows={store.data}
+                  columns={columns}
+                  checkboxSelection
+                  pageSize={pageSize}
+                  disableSelectionOnClick
+                  rowsPerPageOptions={[10, 25, 50]}
+                  onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+                />
+              </Card>
+            </Grid>
+          ) : "Você não tem permissão para ver este recurso."}
+          <AddRoleDrawer open={addRoleOpen} toggle={toggleAddRoleDrawer} />
+        </Grid>
       </Grid>
-    </Grid>
+      <Dialog maxWidth='sm' fullWidth onClose={handleDialogEditToggle} open={editDialogOpen}>
+        <DialogTitle sx={{ mx: 'auto', textAlign: 'center' }}>
+          <Typography variant='h4' component='span' sx={{ mb: 2 }}>
+            {t("Edit Permission")}
+          </Typography>
+          <Typography variant='body2'>{t("Edit permission as per your requirements")}</Typography>
+        </DialogTitle>
+        <DialogContent sx={{ mx: 'auto' }}>
+          <Alert severity='warning' sx={{ maxWidth: '500px' }}>
+            <AlertTitle>{t("Warning")}!</AlertTitle>
+            {t("By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding")}.
+          </Alert>
+          <Box component='form' sx={{ mt: 5 }} onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup sx={{ mb: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+              <Controller
+                name='name'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    fullWidth
+                    size='large'
+                    value={value}
+                    label={t('Permission Name')}
+                    onChange={onChange}
+                    error={Boolean(errors.name)}
+                    placeholder="Exe.: CanUserList"
+                    sx={{ mr: [0, 0], mb: [3, 0] }}
+                  />
+                )}
+              />
+            </FormGroup>
+            {errors.name && (
+              <FormHelperText sx={{ color: 'error.main' }}>{t("Please enter a valid permission name")}</FormHelperText>
+            )}
+            <FormGroup sx={{ mb: 2, pt: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+              <Controller
+                name='description'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    fullWidth
+                    size='large'
+                    value={value}
+                    label={t('Permission Description')}
+                    onChange={onChange}
+                    error={Boolean(errors.description)}
+                    placeholder="Exe.: Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
+                    sx={{ mr: [0, 0], mb: [0, 0] }}
+                  />
+                )}
+              />
+
+              
+            </FormGroup>
+            {errors.description && (
+              <FormHelperText sx={{ color: 'error.main' }}>{t("Please enter a valid permission description")}</FormHelperText>
+            )}
+            <FormGroup sx={{ mb: 1, pt: 3, justifyContent: 'flex-end' }}>
+              <Button type='submit' variant='contained'>
+                {t("Update")}
+              </Button>
+            </FormGroup>
+          </Box>
+        </DialogContent>
+      </Dialog>
+      <Dialog maxWidth='sm' fullWidth onClose={handleDialogViewToggle} open={viewDialogOpen}>
+          <DialogTitle sx={{ mx: 'auto', textAlign: 'center' }}>
+            <Typography variant='h4' component='span' sx={{ mb: 2 }}>
+              {t("View Permission")}
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <Alert severity='warning'>
+              <AlertTitle>{t("Warning")}!</AlertTitle>
+              {t("In this mode you can only display the data. No changes can be made")}.
+            </Alert>
+            <Box component='form' sx={{ mt: 5 }} onSubmit={handleSubmit(onSubmit)}>
+              <FormGroup sx={{ mb: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+                <Controller
+                  name='name'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      fullWidth
+                      disabled='true'
+                      size='large'
+                      value={value}
+                      label={t('Permission Name')}
+                      onChange={onChange}
+                      error={Boolean(errors.name)}
+                      placeholder="Exe.: CanUserList"
+                      sx={{ mr: [0, 0], mb: [3, 0] }}
+                    />
+                  )}
+                />
+              </FormGroup>
+              <FormGroup sx={{ mb: 2, pt: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+                <Controller
+                  name='description'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      fullWidth
+                      disabled='true'
+                      size='large'
+                      value={value}
+                      label={t('Permission Description')}
+                      onChange={onChange}
+                      error={Boolean(errors.description)}
+                      placeholder="Exe.: Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
+                      sx={{ mr: [0, 0], mb: [0, 0] }}
+                    />
+                  )}
+                />
+              </FormGroup>
+            </Box>
+          </DialogContent>
+      </Dialog>
+    </>
   )
 }
 

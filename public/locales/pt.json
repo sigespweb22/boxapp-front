@@ -4,23 +4,39 @@
     "Add User": "Novo",
     "Add Group": "Novo",
     "Add Permission": "Novo",
+    "By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding": "Ao editar o nome da permissão, você pode quebrar a funcionalidade de permissões do sistema. Certifique-se de ter certeza absoluta antes de continuar",
+    "Documentation": "Documentação",
     "Deactivate": "Desativar",
+    "Description": "Descrição",
+    "Edit Permission": "Editar Permissão",
+    "Edit permission as per your requirements": "Edite a permissão de acordo com seus requisitos",
     "Groups": "Grupos permissões",
+    "In this mode you can only display the data. No changes can be made": "Neste modo você só pode visualizar os dados. Nenhuma alteração poderá ser feita",
     "Users Per Group": "Usuários por grupo",
+    
 
     "INACTIVE": "INATIVO",
 
     "Permission New": "Nova Permissão",
+    "Permission Name": "Nome permissão",
+    "Permission Description": "Descrição da permissão",
     "Permission listing": "Listagem das permissões",
     "PENDING": "PENDENTE",
+    "Please enter a valid permission name": "Entre com um nome de permissão válido",
+    "Please enter a valid permission description": "Entre com uma descrição de permissão válida",
 
     "Total users": "Total usuários",
     "User New": "Novo Usuário",
+
+    "View Permission": "Visualizar Permissão",
+
+
     "Group New": "Novo Grupo",
     "Users listing": "Listagem dos usuários",
     "Groups listing": "Listagem dos grupos",
     "Users": "Usuários",
     "User Group": "Grupo Usuário",
+    "Update": "Atualizar",
     
     "Search Group": "Busca grupo",
     "Search User": "Busca usuário",
@@ -146,6 +162,7 @@
     "Menu Level 3.2": "Menu Nível 3.2",
     "Disabled Menu": "Menu Desativado",
     "Raise Support": "Aumentar Suporte",
-    "Documentation": "Documentação"
+    
+    "Warning": "Atenção"
   }
   
