@@ -4,6 +4,8 @@
     "Add User": "Novo",
     "Add Group": "Novo",
     "Add Permission": "Novo",
+    "Assets" : "Ativos",
+    "Asset New": "Novo Ativo",
     "By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding": "Ao editar o nome da permissão, você pode quebrar a funcionalidade de permissões do sistema. Certifique-se de ter certeza absoluta antes de continuar",
     "BUSSINESS": "Negócios",
     "COMMERCIAL": "COMERCIAL",
@@ -14,8 +16,10 @@
     "Edit Permission": "Editar Permissão",
     "Edit permission as per your requirements": "Edite a permissão de acordo com seus requisitos",
     "Groups": "Grupos permissões",
+    "Group New": "Novo Grupo",
+    "Groups listing": "Listagem dos grupos",
     "In this mode you can only display the data. No changes can be made": "Neste modo você só pode visualizar os dados. Nenhuma alteração poderá ser feita",
-    "Users Per Group": "Usuários por grupo",
+    
     
 
     "INACTIVE": "INATIVO",
@@ -28,18 +32,21 @@
     "Please enter a valid permission name": "Entre com um nome de permissão válido",
     "Please enter a valid permission description": "Entre com uma descrição de permissão válida",
 
+    
     "Total users": "Total usuários",
+    "Type of Service": "Serviço tipo",
+    "Type": "Tipo",
     "User New": "Novo Usuário",
-
-    "View Permission": "Visualizar Permissão",
-
-
-    "Group New": "Novo Grupo",
+    "Users Per Group": "Usuários por grupo",
     "Users listing": "Listagem dos usuários",
-    "Groups listing": "Listagem dos grupos",
     "Users": "Usuários",
     "User Group": "Grupo Usuário",
     "Update": "Atualizar",
+    "Unit Measurement": "Unidade medida",
+
+    "View Permission": "Visualizar Permissão",
+    
+    
     
     "Search Group": "Busca grupo",
     "Search User": "Busca usuário",

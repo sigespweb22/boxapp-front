@@ -71,23 +71,38 @@ const defineRulesFor = (role: string[], subject: string) => {
     /// end - group
 
     /// begin - client
-    } else if (item === 'CanClienteAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
-    } else if (item === 'CanClienteList') {
-      can('list', 'ac-cliente-page')
-    } else if (item === 'CanClienteRead') {
-      can('read', 'ac-group-page')
-    } else if (item === 'CanClienteUpdate') {
-      can('update', 'ac-cliente-page')
-    } else if (item === 'CanClienteCreate') {
-      can('create', 'ac-cliente-page')
-    } else if (item === 'CanClienteDelete') {
-      can('delete', 'ac-cliente-page')
-    } else if (item === 'CanClienteTPListOne') {
-      can('list', 'ac-cliente-tp-page')
-    } else if (item === 'CanClienteDelete') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'CanClienteTPAll')
+    } else if (item === 'CanClientAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-client-page')
+    } else if (item === 'CanClientList') {
+      can('list', 'ac-client-page')
+    } else if (item === 'CanClientRead') {
+      can('read', 'ac-client-page')
+    } else if (item === 'CanClientUpdate') {
+      can('update', 'ac-client-page')
+    } else if (item === 'CanClientCreate') {
+      can('create', 'ac-client-page')
+    } else if (item === 'CanClientDelete') {
+      can('delete', 'ac-client-page')
+    } else if (item === 'CanClientTPListOne') {
+      can('list', 'ac-client-tp-page')
+    } else if (item === 'CanClientDelete') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'CanClientTPAll')
     /// end - client
+
+    /// begin - asset
+    } else if (item === 'CanAssetAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-asset-page')
+    } else if (item === 'CanAssetList') {
+      can('list', 'ac-asset-page')
+    } else if (item === 'CanAssetRead') {
+      can('read', 'ac-asset-page')
+    } else if (item === 'CanAssetUpdate') {
+      can('update', 'ac-asset-page')
+    } else if (item === 'CanAssetCreate') {
+      can('create', 'ac-asset-page')
+    } else if (item === 'CanAssetDelete') {
+      can('delete', 'ac-asset-page')
+    /// end - asset
 
     /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {

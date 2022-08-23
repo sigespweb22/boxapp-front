@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
+import CogOutline from 'mdi-material-ui/CogOutline'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
@@ -39,52 +40,63 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteUser, alterStatusUser } from 'src/store/apps/user'
+import { fetchData, deleteAsset, alterStatusAsset } from 'src/store/apps/asset'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { UsersType } from 'src/types/apps/userTypes'
+import { AssetsType } from 'src/types/apps/assetTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/system/control-access/user/list/TableHeader'
-import AddUserDrawer from 'src/views/system/control-access/user/list/AddUserDrawer'
+import TableHeader from 'src/views/bussiness/commercial/asset/list/TableHeader'
+import AddAssetDrawer from 'src/views/bussiness/commercial/asset/list/AddAssetDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface UserGroupType {
-  [key: string]: ReactElement
-}
-
-interface UserStatusType {
+interface AssetStatusType {
   [key: string]: ThemeColor
 }
 
-// ** Vars
-const userGroupObj: UserGroupType = {
-  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
-  // USER_LIST: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
-  // MASTER: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  // editor: <PencilOutline fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  // maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  // subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
+interface AssetTipoType {
+  [key: string]: ReactElement
 }
+
+interface ServicoTipoType {
+  [key: string]: ReactElement
+}
+
+interface UnidadeMedidaType {
+  [key: string]: ReactElement
+}
+
 
 interface CellType {
-  row: UsersType
+  row: AssetsType
 }
 
-const userStatusObj: UserStatusType = {
+const assetStatusObj: AssetStatusType = {
   ACTIVE: 'success',
-  PENDING: 'warning',
-  INACTIVE: 'secondary'
+  RECORRENTE: 'secondary'
 }
 
-// ** Styled component for the link for the avatar with image
-const AvatarWithImageLink = styled(Link)(({ theme }) => ({
-  marginRight: theme.spacing(3)
-}))
+// ** Vars
+const assetTipoObj: AssetTipoType = {
+  SERVICO:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
+  PRODUTO: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,  
+}
+
+const servicoTipoObj: ServicoTipoType = {
+  UNICO:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
+  RECORRENTE: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,  
+}
+
+const unidadeMedidaObj: UnidadeMedidaType = {
+  CPU:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
+  HR: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
+  GB: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
+  vCPU: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />
+}
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -93,26 +105,16 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders client column
-const renderClient = (row: UsersType) => {
-  if (row.avatar.length) {
-    return (
-      <AvatarWithImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 30, height: 30 }} />
-      </AvatarWithImageLink>
-    )
-  } else {
-    return (
-      <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar
-          skin='light'
-          color={row.avatarColor || 'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.fullName ? row.fullName : 'John Doe')}
-        </CustomAvatar>
-      </AvatarWithoutImageLink>
-    )
-  }
+const renderClient = (row: AssetsType) => {
+  <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
+    <CustomAvatar
+        skin='light'
+        color={'primary'}
+        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+      >
+        {getInitials(row.nome ? row.nome : 'NA')}
+    </CustomAvatar>
+  </AvatarWithoutImageLink>
 }
 
 // ** renders status column
@@ -125,7 +127,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={userStatusObj[status]}
+        color={assetStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -159,11 +161,11 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
     setAnchorEl(null)
   }
   const handleDelete = () => {
-    dispatch(deleteUser(id))
+    dispatch(deleteAsset(id))
     handleRowOptionsClose()
   }
   const handleAlterStatus = () => {
-    dispatch(alterStatusUser(id))
+    dispatch(alterStatusAsset(id))
     handleRowOptionsClose()
   }
 
@@ -187,15 +189,15 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        {ability?.can('update', 'ac-user-page') &&
+        {ability?.can('update', 'ac-asset-page') &&
           <MenuItem onClick={handleAlterStatus}>
             <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
             {
-              status == "PENDING" ? t("Activate") : status == "ACTIVE" ? t("Deactivate") : t("Activate")
+              status == "ACTIVE" ? t("Deactivate") : t("Activate")
             }
           </MenuItem>
         }
-        {ability?.can('read', 'ac-user-page') &&
+        {ability?.can('read', 'ac-asset-page') &&
           <MenuItem sx={{ p: 0 }}>
             <Link href={`/apps/user/view/${id}`} passHref>
               <MenuItemLink>
@@ -205,13 +207,13 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
             </Link>
           </MenuItem>
         }
-        {ability?.can('update', 'ac-user-page') &&
+        {ability?.can('update', 'ac-asset-page') &&
           <MenuItem onClick={handleRowOptionsClose}>
             <PencilOutline fontSize='small' sx={{ mr: 2 }} />
             {t("Edit")}
           </MenuItem>
         }
-        {ability?.can('delete', 'ac-user-page') &&
+        {ability?.can('delete', 'ac-asset-page') &&
           <MenuItem onClick={handleDelete}>
             <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
             {t("Delete")}
@@ -222,40 +224,32 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
-const groupTransform = (groups) => {
-  var elem = []
-  groups.forEach(element => {
-    elem.push("| " + element + " | ")
-  })
-  return elem
-}
-
 const columns = [
   {
     flex: 0.2,
     minWidth: 230,
-    field: 'fullName',
-    headerName: 'Usuário',
+    field: 'nome',
+    headerName: 'Nome',
     renderCell: ({ row }: CellType) => {
-      const { id, fullName, userName } = row
+      const { id, nome, unidadeMedida } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/asset/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {fullName}
+                {nome}
               </Typography>
             </Link>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/asset/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🌟🌟🌟🌟🌟{userName}
+                🩺{unidadeMedida}
               </Typography>
             </Link>
           </Box>
@@ -266,39 +260,128 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 250,
-    field: 'email',
-    headerName: 'E-mail',
+    field: 'referencia',
+    headerName: 'Referencia',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.email}
+          {row.referencia}
         </Typography>
       )
     }
   },
   {
     flex: 0.15,
-    field: 'applicationUserGroups',
+    field: 'tipo',
     minWidth: 150,
-    headerName: 'Grupos',
+    headerName: 'Tipo',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userGroupObj["GENERALS"]}
+          {assetTipoObj[row.tipo]}
           <CustomChip
             skin='light'
             size='small'
-            label={groupTransform(row.applicationUserGroupsNames)}
+            label={row.tipo}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
-          {/* <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {transformRole(row.roles)}
-          </Typography> */}
         </Box>
       )
     }
   },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'valorCusto',
+    headerName: 'Valor custo',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.valorCusto}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'valorVenda',
+    headerName: 'Valor venda',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.valorVenda}
+        </Typography>
+      )
+    }
+  },  
+  {
+    flex: 0.15,
+    field: 'unidadeMedida',
+    minWidth: 150,
+    headerName: 'Unidade medida',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {unidadeMedidaObj[row.unidadeMedida]}
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.unidadeMedida}
+            color={'success'}
+            sx={{ textTransform: 'capitalize' }}
+          />
+        </Box>
+      )
+    }
+  },
+  {
+    flex: 0.15,
+    field: 'clienteAtivoTipoServico',
+    minWidth: 150,
+    headerName: 'Serviço tipo',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {servicoTipoObj[row.clienteAtivoTipoServico]}
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.tipo}
+            color={'success'}
+            sx={{ textTransform: 'capitalize' }}
+          />
+        </Box>
+      )
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'caracteristica',
+    headerName: 'Caracteristica',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.caracteristica}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'observacao',
+    headerName: 'Observação',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.observacao}
+        </Typography>
+      )
+    }
+  }, 
   {
     flex: 0.1,
     minWidth: 110,
@@ -320,112 +403,63 @@ const columns = [
   }
 ]
 
-const UserList = () => {
+const AssetList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
    
   // ** State
-  const [group, setGroup] = useState<string>('')
+  const [tipo, setAtivo] = useState<string>('')
+  const [unidadeMedida, setUnidadeMedida] = useState<string>('')
+  const [servicoTipo, setServicoTipo] = useState<string>('')
   const [value, setValue] = useState<string>('')
   const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addUserOpen, setAddUserOpen] = useState<boolean>(false)
+  const [addAtivoOpen, setAddAtivoOpen] = useState<boolean>(false)
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.user)
+  const store = useSelector((state: RootState) => state.asset)
 
   useEffect(() => {
     dispatch(
       fetchData({
-        group,
-        status,
         q: value
       })
     )
-  }, [dispatch, group, status, value])
+  }, [dispatch, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
 
-  const handleGroupChange = useCallback((e: SelectChangeEvent) => {
-    setGroup(e.target.value)
+  const handleAssetChange = useCallback((e: SelectChangeEvent) => {
+    setAsset(e.target.value)
   }, [])
 
   const handleStatusChange = useCallback((e: SelectChangeEvent) => {
     setStatus(e.target.value)
   }, [])
 
-  const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
+  const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
 
   return (
     <Grid container spacing={6}>
       <Grid container spacing={6}>
-        {/* {ability?.can('read', 'ac-user-page-search') ? (
-          <Grid item xs={12}>
-            <Card>
-              <CardHeader title={t('Search Filters')} />
-              <CardContent>
-                <Grid container spacing={6}>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='group-select'>{t("Select Group")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={group}
-                        id='select-group'
-                        label='Select Group'
-                        labelId='group-select'
-                        onChange={handleGroupChange}
-                        inputProps={{ placeholder: 'Select Group' }}
-                      >
-                        <MenuItem value=''>{t("Select Group")}</MenuItem>
-                        <MenuItem value='Master'>Master</MenuItem>
-                        <MenuItem value='Suporte N1'>Suporte N1</MenuItem>
-                        <MenuItem value='Suporte N2'>Suporte N2</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='status-select'>{t("Select Status")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={status}
-                        id='select-status'
-                        label='Select Status'
-                        labelId='status-select'
-                        onChange={handleStatusChange}
-                        inputProps={{ placeholder: 'Select Status' }}
-                      >
-                        <MenuItem value=''>{t("Select Status")}</MenuItem>
-                        <MenuItem value='PENDING'>PENDING</MenuItem>
-                        <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
-                        <MenuItem value='INACTIVE'>INACTIVE</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ) : null} */}
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Users")}</Typography>}
+            title={<Typography variant='h5'>{t("Assets")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Users listing")}.
+                {t("Assets listing")}.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-user-page') ? (
+        {ability?.can('list', 'ac-asset-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddAssetDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -440,7 +474,7 @@ const UserList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
+        <AddAssetDrawer open={addAtivoOpen} toggle={toggleAddAssetDrawer} />
       </Grid>
     </Grid>
   )
@@ -449,9 +483,9 @@ const UserList = () => {
 // **Controle de acesso da página
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
-UserList.acl = {
+AssetList.acl = {
   action: 'list',
-  subject: 'ac-client-page'
+  subject: 'ac-asset-page'
 }
 
-export default UserList
+export default AssetList

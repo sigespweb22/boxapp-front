@@ -320,7 +320,7 @@ const RoleList = () => {
                     label={t('Permission Name')}
                     onChange={onChange}
                     error={Boolean(errors.name)}
-                    placeholder="Exe.: CanUserList"
+                    placeholder="e.g. CanUserList"
                     sx={{ mr: [0, 0], mb: [3, 0] }}
                   />
                 )}
@@ -342,7 +342,7 @@ const RoleList = () => {
                     label={t('Permission Description')}
                     onChange={onChange}
                     error={Boolean(errors.description)}
-                    placeholder="Exe.: Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
+                    placeholder="e.g. Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
                     sx={{ mr: [0, 0], mb: [0, 0] }}
                   />
                 )}
@@ -387,7 +387,7 @@ const RoleList = () => {
                       label={t('Permission Name')}
                       onChange={onChange}
                       error={Boolean(errors.name)}
-                      placeholder="Exe.: CanUserList"
+                      placeholder="e.g. CanUserList"
                       sx={{ mr: [0, 0], mb: [3, 0] }}
                     />
                   )}
@@ -407,7 +407,7 @@ const RoleList = () => {
                       label={t('Permission Description')}
                       onChange={onChange}
                       error={Boolean(errors.description)}
-                      placeholder="Exe.: Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
+                      placeholder="e.g. Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
                       sx={{ mr: [0, 0], mb: [0, 0] }}
                     />
                   )}
