@@ -56,38 +56,57 @@ const defineRulesFor = (role: string[], subject: string) => {
     /// end - role/permissions
 
     /// begin - group
-  } else if (item === 'CanGroupAll') {
-    can(['list', 'read', 'create', 'update', 'delete'], 'ac-group-page')
-  } else if (item === 'CanGroupList') {
-    can('list', 'ac-group-page')
-  } else if (item === 'CanGroupRead') {
-    can('read', 'ac-group-page')
-  } else if (item === 'CanGroupUpdate') {
-    can('update', 'ac-group-page')
-  } else if (item === 'CanGroupCreate') {
-    can('create', 'ac-group-page')
-  } else if (item === 'CanGroupDelete') {
-    can('delete', 'ac-group-page')
-  /// end - group
+    } else if (item === 'CanGroupAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-group-page')
+    } else if (item === 'CanGroupList') {
+      can('list', 'ac-group-page')
+    } else if (item === 'CanGroupRead') {
+      can('read', 'ac-group-page')
+    } else if (item === 'CanGroupUpdate') {
+      can('update', 'ac-group-page')
+    } else if (item === 'CanGroupCreate') {
+      can('create', 'ac-group-page')
+    } else if (item === 'CanGroupDelete') {
+      can('delete', 'ac-group-page')
+    /// end - group
 
-  /// begin - dashboard all
-  } else if (item === 'CanDashboardAll') {
-    can('list', 'ac-dashboard-client-page')
-    can('list', 'ac-dashboard-access-control-page')
-  /// end - dashboard client
+    /// begin - client
+    } else if (item === 'CanClienteAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
+    } else if (item === 'CanClienteList') {
+      can('list', 'ac-cliente-page')
+    } else if (item === 'CanClienteRead') {
+      can('read', 'ac-group-page')
+    } else if (item === 'CanClienteUpdate') {
+      can('update', 'ac-cliente-page')
+    } else if (item === 'CanClienteCreate') {
+      can('create', 'ac-cliente-page')
+    } else if (item === 'CanClienteDelete') {
+      can('delete', 'ac-cliente-page')
+    } else if (item === 'CanClienteTPListOne') {
+      can('list', 'ac-cliente-tp-page')
+    } else if (item === 'CanClienteDelete') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'CanClienteTPAll')
+    /// end - client
 
-  /// begin - dashboard client
-  } else if (item === 'CanDashboardClientList') {
-    can('list', 'ac-dashboard-client-page')
-  /// end - dashboard client
+    /// begin - dashboard all
+    } else if (item === 'CanDashboardAll') {
+      can('list', 'ac-dashboard-client-page')
+      can('list', 'ac-dashboard-access-control-page')
+    /// end - dashboard client
 
-  /// begin - dashboard client
-  } else if (item === 'CanDashboardACList') {
-    can('list', 'ac-dashboard-access-control-page')
-  } else {
-    can(['list', 'read', 'create', 'update', 'delete'], subject)
-  }
-  /// end - dashboard client
+    /// begin - dashboard client
+    } else if (item === 'CanDashboardClientList') {
+      can('list', 'ac-dashboard-client-page')
+    /// end - dashboard client
+
+    /// begin - dashboard client
+    } else if (item === 'CanDashboardACList') {
+      can('list', 'ac-dashboard-access-control-page')
+    } else {
+      can(['list', 'read', 'create', 'update', 'delete'], subject)
+    }
+    /// end - dashboard client'
 
   });
 
