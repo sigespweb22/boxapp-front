@@ -62,19 +62,26 @@ export const addAsset = createAsyncThunk(
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Ativo criado com sucesso.")
     }).catch((resp) => {
+      // ** generic connection error admitted for now as 401
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+
+      // ** check to length undefined
       if (typeof resp.response.data != 'undefined' && 
-          typeof resp.response.data.errors != 'undefined')
+          typeof resp.response.data.errors != 'undefined' &&
+          typeof resp.response.data.errors.length == 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
-          toast.error(err)
-        });
-      } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err) {
           err[1].forEach(function (ie) {
             toast.error(ie)        
           })
+        });
+      } else if (typeof resp.response.data != 'undefined' && 
+                 typeof resp.response.data.errors != 'undefined' &&
+                 typeof resp.response.data.errors.length != 'undefined') 
+      {
+        resp.response.data.errors.forEach(err => {
+          toast.error(err)
         });
       }
     })

@@ -19,8 +19,15 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
-import CogOutline from 'mdi-material-ui/CogOutline'
+import Cancel from 'mdi-material-ui/Cancel'
+import AccountWrenchOutline from 'mdi-material-ui/AccountWrenchOutline'
+import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
+import DesktopClassic from 'mdi-material-ui/DesktopClassic'
+import Matrix from 'mdi-material-ui/Matrix'
+import Alarm from 'mdi-material-ui/Alarm'
+import Numeric1BoxOutline from 'mdi-material-ui/Numeric1BoxOutline'
+import RouterNetwork from 'mdi-material-ui/RouterNetwork'
+import Autorenew from 'mdi-material-ui/Autorenew'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
@@ -82,20 +89,21 @@ const assetStatusObj: AssetStatusType = {
 
 // ** Vars
 const assetTipoObj: AssetTipoType = {
-  SERVICO:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  PRODUTO: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,  
+  SERVICO:  <AccountWrenchOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
+  PRODUTO: <RouterNetwork fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,  
 }
 
 const servicoTipoObj: ServicoTipoType = {
-  UNICO:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  RECORRENTE: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,  
+  NAO_INFORMADO:  <Cancel fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
+  UNICO:  <Numeric1BoxOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  RECORRENTE: <Autorenew fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,  
 }
 
 const unidadeMedidaObj: UnidadeMedidaType = {
-  CPU:  <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  HR: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  GB: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  vCPU: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />
+  CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
+  vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
 }
 
 // ** Styled component for the link for the avatar without image
@@ -106,15 +114,17 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 
 // ** renders client column
 const renderClient = (row: AssetsType) => {
-  <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
-    <CustomAvatar
-        skin='light'
-        color={'primary'}
-        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-      >
-        {getInitials(row.nome ? row.nome : 'NA')}
-    </CustomAvatar>
-  </AvatarWithoutImageLink>
+  return (
+    <AvatarWithoutImageLink href={`/apps/asset/view/${row.id}`}>
+      <CustomAvatar
+          skin='light'
+          color={'primary'}
+          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+        >
+          {getInitials(row.nome ? row.nome : 'NA')}
+      </CustomAvatar>
+    </AvatarWithoutImageLink>
+  )
 }
 
 // ** renders status column
@@ -224,12 +234,54 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
+const umResolveColor = (um) => {
+  switch (um) 
+  {
+    case 'CPU':
+      return 'info'
+    case 'HR':
+      return 'primary'
+    case 'GB':
+      return 'secondary'
+    case 'vCPU':
+      return 'error'
+    default: 
+      return 'primary'
+  }
+}
+
+const stResolveColor = (st) => {
+  switch (st) 
+  {
+    case 'RECORRENTE':
+      return 'success'
+    case 'UNICO':
+      return 'primary'
+    case 'NAO_INFORMADO':
+      return 'secondary'
+    default:
+    return 'primary'
+  }
+}
+
+const tipoResolveColor = (tipo) => {
+  switch (tipo) 
+  {
+    case 'SERVICO':
+      return 'success'
+    case 'PRODUTO':
+      return 'info'
+  }
+}
+
 const columns = [
   {
     flex: 0.2,
-    minWidth: 230,
+    minWidth: 300,
     field: 'nome',
     headerName: 'Nome',
+    headerAlign: 'left',
+    align: 'left',
     renderCell: ({ row }: CellType) => {
       const { id, nome, unidadeMedida } = row
 
@@ -259,9 +311,11 @@ const columns = [
   },
   {
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 120,
     field: 'referencia',
     headerName: 'Referencia',
+    headerAlign: 'left',
+    align: 'left',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -271,10 +325,27 @@ const columns = [
     }
   },
   {
+    flex: 0.2,
+    minWidth: 120,
+    field: 'codigoUnico',
+    headerName: 'Código único',
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.codigoUnico}
+        </Typography>
+      )
+    }
+  },
+  {
     flex: 0.15,
     field: 'tipo',
     minWidth: 150,
     headerName: 'Tipo',
+    headerAlign: 'left',
+    align: 'left',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -283,7 +354,7 @@ const columns = [
             skin='light'
             size='small'
             label={row.tipo}
-            color={'success'}
+            color={tipoResolveColor(row.tipo)}
             sx={{ textTransform: 'capitalize' }}
           />
         </Box>
@@ -292,9 +363,11 @@ const columns = [
   },
   {
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 110,
     field: 'valorCusto',
     headerName: 'Valor custo',
+    headerAlign: 'center',
+    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -305,9 +378,11 @@ const columns = [
   },
   {
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 110,
     field: 'valorVenda',
     headerName: 'Valor venda',
+    headerAlign: 'center',
+    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -319,8 +394,10 @@ const columns = [
   {
     flex: 0.15,
     field: 'unidadeMedida',
-    minWidth: 150,
+    minWidth: 130,
     headerName: 'Unidade medida',
+    headerAlign: 'left',
+    align: 'left',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -329,7 +406,7 @@ const columns = [
             skin='light'
             size='small'
             label={row.unidadeMedida}
-            color={'success'}
+            color={umResolveColor(row.unidadeMedida)}
             sx={{ textTransform: 'capitalize' }}
           />
         </Box>
@@ -338,50 +415,26 @@ const columns = [
   },
   {
     flex: 0.15,
-    field: 'clienteAtivoTipoServico',
-    minWidth: 150,
+    field: 'clienteAtivoTipoServicoTipo',
+    minWidth: 180,
     headerName: 'Serviço tipo',
+    headerAlign: 'left',
+    align: 'left',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {servicoTipoObj[row.clienteAtivoTipoServico]}
+          {servicoTipoObj[row.clienteAtivoTipoServicoTipo]}
           <CustomChip
             skin='light'
             size='small'
-            label={row.tipo}
-            color={'success'}
+            label={row.clienteAtivoTipoServicoTipo}
+            color={stResolveColor(row.clienteAtivoTipoServicoTipo)}
             sx={{ textTransform: 'capitalize' }}
           />
         </Box>
       )
     }
   },
-  {
-    flex: 0.2,
-    minWidth: 250,
-    field: 'caracteristica',
-    headerName: 'Caracteristica',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.caracteristica}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.2,
-    minWidth: 250,
-    field: 'observacao',
-    headerName: 'Observação',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.observacao}
-        </Typography>
-      )
-    }
-  }, 
   {
     flex: 0.1,
     minWidth: 110,
@@ -415,7 +468,7 @@ const AssetList = () => {
   const [value, setValue] = useState<string>('')
   const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addAtivoOpen, setAddAtivoOpen] = useState<boolean>(false)
+  const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -474,7 +527,7 @@ const AssetList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddAssetDrawer open={addAtivoOpen} toggle={toggleAddAssetDrawer} />
+        <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
       </Grid>
     </Grid>
   )

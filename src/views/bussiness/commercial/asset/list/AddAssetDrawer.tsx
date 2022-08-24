@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect  } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -64,8 +64,8 @@ interface AssetData {
   referencia: string
   codigoUnico: string
   tipo: string
-  valorCusto: number
-  valorVenda: number
+  valorCusto: string
+  valorVenda: string
   unidadeMedida: string
   clienteAtivoTipoServicoTipo: string
   caracteristica: string
@@ -116,8 +116,8 @@ const defaultValues = {
   codigoUnico: '',
   tipo: '',
   valorCusto: '',
-  valorVenda: 0,
-  unidadeMedida: 0,
+  valorVenda: '',
+  unidadeMedida: '',
   clienteAtivoTipoServicoTipo: '',
   caracteristica: '',
   observacao: '',
@@ -156,6 +156,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { errors }
@@ -175,6 +176,18 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
     toggle()
     reset()
   }
+
+  const resolveComma = (event: { currentTarget: { value: string; name: any } }) => {
+    if (event.currentTarget.value.includes(','))
+    {
+      var replace = event.currentTarget.value.replace(",", ".");
+      setValue(event.currentTarget.name, replace);
+    }
+    else
+    {
+      setValue(event.currentTarget.name, event.currentTarget.value);
+    }
+  } 
 
   return (
     <Drawer
@@ -225,6 +238,21 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
+              name='codigoUnico'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Código único'
+                  onChange={onChange}
+                  placeholder='(e.g.: #AB12345)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
               name="tipo"
               control={control}
               rules={{ required: true }}
@@ -249,25 +277,6 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       <MenuItem value={20}>Twenty</MenuItem>
                       <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
-                    <FormHelperText>Auto width</FormHelperText>
-                    <Select
-                        name="tipo"
-                        label="Tipo"
-                        value={value}
-                        MenuProps={MenuProps}
-                        id='single-select-tipo'
-                        onChange={onChange}
-                        labelId='single-select-chip-label'
-                        error={Boolean(errors.tipo)}
-                      >
-                        {
-                          tipos.map(tipo => (
-                            <MenuItem key={tipo} value={group.name}>
-                              {tipo.name}
-                            </MenuItem>
-                          ))
-                        }
-                    </Select>
                     {errors.tipo && <FormHelperText sx={{ color: 'error.main' }}>{errors.tipo.message}</FormHelperText>}
                   </FormControl>
                 )
@@ -283,7 +292,8 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                 <TextField
                   value={value}
                   label='Valor custo'
-                  onChange={onChange}
+                  name='valorCusto'
+                  onChange={onChange, resolveComma }
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -298,7 +308,8 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                 <TextField
                   value={value}
                   label='Valor venda'
-                  onChange={onChange}
+                  name='valorVenda'
+                  onChange={onChange, resolveComma }
                   placeholder='(e.g.: R$ 300,00)'
                 />
               )}
@@ -312,25 +323,23 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='single-select-unidade-medida-chip-label'>{t("Unit Measurement")}</InputLabel>
+                    <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
                     <Select
-                        name="unidadeMedida"
-                        multiple
-                        label="Unidade medida"
-                        value={value}
-                        MenuProps={MenuProps}
-                        id='single-select-unidade-medida'
-                        onChange={onChange}
-                        labelId='single-select-unidade-medida-chip-label'
-                        error={Boolean(errors.unidadeMedida)}
-                      >
-                        {
-                          unidadesMedida.map(tipo => (
-                            <MenuItem key={um} value={um.name}>
-                              {um.name}
-                            </MenuItem>
-                          ))
-                        }
+                      name="tipo"
+                      autoWidth
+                      label="Tipo"
+                      MenuProps={MenuProps}
+                      onChange={onChange}
+                      defaultValue=''
+                      id='single-select-um'
+                      labelId='single-select-um-chip-label'
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                     {errors.unidadeMedida && <FormHelperText sx={{ color: 'error.main' }}>{errors.unidadeMedida.message}</FormHelperText>}
                   </FormControl>
@@ -340,36 +349,29 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="clienteAtivoTipoServicoTipo"
+              name="clienteTipoServicoTipo"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='single-select-catst-chip-label'>{t("Type of Service")}</InputLabel>
+                    <InputLabel id='single-select-st-chip-label'>{t("Type of Service")}</InputLabel>
                     <Select
-                        name="clienteAtivoTipoServicoTipo"
-                        label="Serviço tipo"
-                        value={value} 
-                        MenuProps={MenuProps}
-                        id='single-select-catst'
-                        onChange={onChange}
-                        labelId='single-select-catst-chip-label'
-                        renderValue={selected => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(selected as unknown as string[]).map(value => (
-                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                            ))}
-                          </Box>
-                        )}
-                      >
-                        {
-                          servicoTipos.map(st => (
-                            <MenuItem key={st} value={st.name}>
-                              {st.name}
-                            </MenuItem>
-                          ))
-                        }
+                      name="clienteTipoServicoTipo"
+                      autoWidth
+                      label="Serviço tipo"
+                      MenuProps={MenuProps}
+                      onChange={onChange}
+                      defaultValue=''
+                      id='single-select-st'
+                      labelId='single-select-st-chip-label'
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                   </FormControl>
                 )
@@ -384,9 +386,9 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Característica'
+                  label='Características'
                   onChange={onChange}
-                  placeholder='(e.g.: #A5B30001)'
+                  placeholder='(e.g.: Produto frágil ou Serviço de baixa complexidade)'
                 />
               )}
             />
@@ -401,7 +403,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                   value={value}
                   label='Observação'
                   onChange={onChange}
-                  placeholder='(e.g.: #A5B30001)'
+                  placeholder='(e.g.: Sempre verificar disponibilidade)'
                 />
               )}
             />
