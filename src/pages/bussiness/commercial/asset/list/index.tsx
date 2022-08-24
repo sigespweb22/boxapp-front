@@ -57,6 +57,7 @@ import { AssetsType } from 'src/types/apps/assetTypes'
 // ** Custom Components Imports
 import TableHeader from 'src/views/bussiness/commercial/asset/list/TableHeader'
 import AddAssetDrawer from 'src/views/bussiness/commercial/asset/list/AddAssetDrawer'
+import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/ViewAssetDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -94,7 +95,7 @@ const assetTipoObj: AssetTipoType = {
 }
 
 const servicoTipoObj: ServicoTipoType = {
-  NAO_INFORMADO:  <Cancel fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
+  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
   UNICO:  <Numeric1BoxOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
   RECORRENTE: <Autorenew fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,  
 }
@@ -111,6 +112,10 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   marginRight: theme.spacing(3)
 }))
+
+interface AssetsProps {
+  toggle: () => void
+}
 
 // ** renders client column
 const renderClient = (row: AssetsType) => {
@@ -153,7 +158,7 @@ const MenuItemLink = styled('a')(({ theme }) => ({
   color: theme.palette.text.primary
 }))
 
-const RowOptions = ({ id, status } : { id: number | string, status: string }) => {
+const RowOptions = ({ id, status } : { id: string | string, status: string }, props: AssetsProps) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const dispatch = useDispatch<AppDispatch>()
@@ -161,6 +166,9 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
 
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  
+  // ** Props
+  const { toggle } = props
 
   const rowOptionsOpen = Boolean(anchorEl)
 
@@ -177,6 +185,12 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   const handleAlterStatus = () => {
     dispatch(alterStatusAsset(id))
     handleRowOptionsClose()
+  }
+
+  const handleViewRole = (id) => {
+    debugger;
+    var a = id;
+    // setViewDialogOpen(true)
   }
 
   return (
@@ -209,12 +223,10 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
         }
         {ability?.can('read', 'ac-asset-page') &&
           <MenuItem sx={{ p: 0 }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
-              <MenuItemLink>
+            <MenuItemLink onClick={toggle}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                 {t("View")}
-              </MenuItemLink>
-            </Link>
+            </MenuItemLink>
           </MenuItem>
         }
         {ability?.can('update', 'ac-asset-page') &&
@@ -257,7 +269,7 @@ const stResolveColor = (st) => {
       return 'success'
     case 'UNICO':
       return 'primary'
-    case 'NAO_INFORMADO':
+    case 'NENHUM':
       return 'secondary'
     default:
     return 'primary'
@@ -469,6 +481,7 @@ const AssetList = () => {
   const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
+  const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -495,6 +508,7 @@ const AssetList = () => {
   }, [])
 
   const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
+  const toggleAddEditDrawer = () => setEditAssetOpen(!editAssetOpen)
 
   return (
     <Grid container spacing={6}>
@@ -528,6 +542,7 @@ const AssetList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
+        <ViewAssetDrawer open={viewAssetOpen} toggle={toggleViewAssetDrawer} />
       </Grid>
     </Grid>
   )
