@@ -9,12 +9,12 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
+import { AssetsType } from 'src/types/apps/assetTypes'
 
 // ** Copmponents Imports
 import Select, { SelectChangeEvent } from '@mui/material/Select'
@@ -71,7 +71,7 @@ interface AssetData {
 }
 
 const tipos : string[] = ["SERVICO", "PRODUTO"];
-const servicoTipos : string[] = ["UNICO", "RECORRENTE"];
+const servicoTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 const unidadesMedida : string[] = ["CPU", "HR", "GB", "vCPU"];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -122,6 +122,7 @@ const defaultValues = {
 }
 
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
+  debugger
   const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
   let config = {
     headers: {
@@ -182,7 +183,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Asset New")}</Typography>
+        <Typography variant='h6'>{t("Asset View")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>

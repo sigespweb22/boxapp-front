@@ -6,14 +6,13 @@ import Link from 'next/link'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
+import { useForm, Controller } from 'react-hook-form'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -21,6 +20,8 @@ import Typography from '@mui/material/Typography'
 // ** Icons Imports
 import Cancel from 'mdi-material-ui/Cancel'
 import AccountWrenchOutline from 'mdi-material-ui/AccountWrenchOutline'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
 import DesktopClassic from 'mdi-material-ui/DesktopClassic'
 import Matrix from 'mdi-material-ui/Matrix'
@@ -29,10 +30,9 @@ import Numeric1BoxOutline from 'mdi-material-ui/Numeric1BoxOutline'
 import RouterNetwork from 'mdi-material-ui/RouterNetwork'
 import Autorenew from 'mdi-material-ui/Autorenew'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
-import DeleteOutline from 'mdi-material-ui/DeleteOutline'
-import AccountReactivateOutline from 'mdi-material-ui/AccountReactivateOutline'
+import Help from 'mdi-material-ui/Help'
+import Tooltip from '@mui/material/Tooltip';
 
 
 // ** Store Imports
@@ -47,7 +47,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteAsset, alterStatusAsset } from 'src/store/apps/asset'
+import { fetchData, alterStatusAsset } from 'src/store/apps/asset'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -57,7 +57,7 @@ import { AssetsType } from 'src/types/apps/assetTypes'
 // ** Custom Components Imports
 import TableHeader from 'src/views/bussiness/commercial/asset/list/TableHeader'
 import AddAssetDrawer from 'src/views/bussiness/commercial/asset/list/AddAssetDrawer'
-import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/ViewAssetDrawer'
+import ViewAssetDrawer from 'src/views/bussiness/commercial/asset/view/ViewAssetDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -78,6 +78,11 @@ interface UnidadeMedidaType {
   [key: string]: ReactElement
 }
 
+interface AssetData {
+  id: string
+  name: string
+  description: string
+}
 
 interface CellType {
   row: AssetsType
@@ -113,10 +118,6 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-interface AssetsProps {
-  toggle: () => void
-}
-
 // ** renders client column
 const renderClient = (row: AssetsType) => {
   return (
@@ -148,105 +149,7 @@ const RenderStatus = ({ status } : { status: string }) => {
   )
 }
 
-// ** Styled component for the link inside menu
-const MenuItemLink = styled('a')(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none',
-  padding: theme.spacing(1.5, 4),
-  color: theme.palette.text.primary
-}))
-
-const RowOptions = ({ id, status } : { id: string | string, status: string }, props: AssetsProps) => {
-  // ** Hooks
-  const ability = useContext(AbilityContext)
-  const dispatch = useDispatch<AppDispatch>()
-  const { t } = useTranslation()
-
-  // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  
-  // ** Props
-  const { toggle } = props
-
-  const rowOptionsOpen = Boolean(anchorEl)
-
-  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-  const handleDelete = () => {
-    dispatch(deleteAsset(id))
-    handleRowOptionsClose()
-  }
-  const handleAlterStatus = () => {
-    dispatch(alterStatusAsset(id))
-    handleRowOptionsClose()
-  }
-
-  const handleViewRole = (id) => {
-    debugger;
-    var a = id;
-    // setViewDialogOpen(true)
-  }
-
-  return (
-    <> 
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <DotsVertical />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        {ability?.can('update', 'ac-asset-page') &&
-          <MenuItem onClick={handleAlterStatus}>
-            <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
-            {
-              status == "ACTIVE" ? t("Deactivate") : t("Activate")
-            }
-          </MenuItem>
-        }
-        {ability?.can('read', 'ac-asset-page') &&
-          <MenuItem sx={{ p: 0 }}>
-            <MenuItemLink onClick={toggle}>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                {t("View")}
-            </MenuItemLink>
-          </MenuItem>
-        }
-        {ability?.can('update', 'ac-asset-page') &&
-          <MenuItem onClick={handleRowOptionsClose}>
-            <PencilOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Edit")}
-          </MenuItem>
-        }
-        {ability?.can('delete', 'ac-asset-page') &&
-          <MenuItem onClick={handleDelete}>
-            <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Delete")}
-          </MenuItem>
-        }
-      </Menu>
-    </>
-  )
-}
-
-const umResolveColor = (um) => {
+const umResolveColor = (um: string) => {
   switch (um) 
   {
     case 'CPU':
@@ -262,7 +165,7 @@ const umResolveColor = (um) => {
   }
 }
 
-const stResolveColor = (st) => {
+const stResolveColor = (st: string) => {
   switch (st) 
   {
     case 'RECORRENTE':
@@ -276,7 +179,7 @@ const stResolveColor = (st) => {
   }
 }
 
-const tipoResolveColor = (tipo) => {
+const tipoResolveColor = (tipo: string) => {
   switch (tipo) 
   {
     case 'SERVICO':
@@ -286,10 +189,10 @@ const tipoResolveColor = (tipo) => {
   }
 }
 
-const columns = [
+const defaultColumns = [
   {
     flex: 0.2,
-    minWidth: 300,
+    minWidth: 30,
     field: 'nome',
     headerName: 'Nome',
     headerAlign: 'left',
@@ -322,42 +225,12 @@ const columns = [
     }
   },
   {
-    flex: 0.2,
-    minWidth: 120,
-    field: 'referencia',
-    headerName: 'Referencia',
-    headerAlign: 'left',
-    align: 'left',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.referencia}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.2,
-    minWidth: 120,
-    field: 'codigoUnico',
-    headerName: 'Código único',
+    flex: 0.06,
+    field: 'tipo',
+    minWidth: 50,
+    headerName: 'Tipo',
     headerAlign: 'center',
     align: 'center',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.codigoUnico}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.15,
-    field: 'tipo',
-    minWidth: 150,
-    headerName: 'Tipo',
-    headerAlign: 'left',
-    align: 'left',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -374,8 +247,8 @@ const columns = [
     }
   },
   {
-    flex: 0.2,
-    minWidth: 110,
+    flex: 0.1,
+    minWidth: 100,
     field: 'valorCusto',
     headerName: 'Valor custo',
     headerAlign: 'center',
@@ -389,7 +262,7 @@ const columns = [
     }
   },
   {
-    flex: 0.2,
+    flex: 0.1,
     minWidth: 110,
     field: 'valorVenda',
     headerName: 'Valor venda',
@@ -404,12 +277,12 @@ const columns = [
     }
   },  
   {
-    flex: 0.15,
+    flex: 0.1,
     field: 'unidadeMedida',
     minWidth: 130,
     headerName: 'Unidade medida',
-    headerAlign: 'left',
-    align: 'left',
+    headerAlign: 'center',
+    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -426,12 +299,12 @@ const columns = [
     }
   },
   {
-    flex: 0.15,
+    flex: 0.1,
     field: 'clienteAtivoTipoServicoTipo',
-    minWidth: 180,
+    minWidth: 100,
     headerName: 'Serviço tipo',
-    headerAlign: 'left',
-    align: 'left',
+    headerAlign: 'center',
+    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -448,23 +321,13 @@ const columns = [
     }
   },
   {
-    flex: 0.1,
-    minWidth: 110,
+    flex: 0.09,
+    minWidth: 50,
     field: 'status',
     headerName: 'Status',
     headerAlign: 'center',
     align: 'center',
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Ações',
-    headerAlign: 'right',
-    align: 'right',
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]
 
@@ -474,16 +337,21 @@ const AssetList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [tipo, setAtivo] = useState<string>('')
-  const [unidadeMedida, setUnidadeMedida] = useState<string>('')
-  const [servicoTipo, setServicoTipo] = useState<string>('')
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [value, setValue] = useState<string>('')
-  const [status, setStatus] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
-  const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
+  const [viewDialogOpen, setViewDialogOpen] = useState<boolean>(false)
+
+  const handleRowOptionsClose = () => {
+    setAnchorEl(null)
+  }
 
   // ** Hooks
+  // ** Hooks
+  const {
+    setValue: setFormValue,
+  } = useForm()
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.asset)
 
@@ -499,16 +367,86 @@ const AssetList = () => {
     setValue(val)
   }, [])
 
-  const handleAssetChange = useCallback((e: SelectChangeEvent) => {
-    setAsset(e.target.value)
-  }, [])
+  const handleEditRole = ({ id, name, description } : AssetData) => {
+    // setFormValue('id', id)
+    // setFormValue('name', name)
+    // setFormValue('description', description)
+    // setEditDialogOpen(true)
+  }
 
-  const handleStatusChange = useCallback((e: SelectChangeEvent) => {
-    setStatus(e.target.value)
-  }, [])
+  const handleViewRole = (row : AssetsType) => {
+    setFormValue('nome', "teste")
+    setViewDialogOpen(true)
+  }
+
+  const handleAlterStatus = (id: string) => {
+    dispatch(alterStatusAsset(id))
+    handleRowOptionsClose()
+  }
+
+  const RenderButton = ({ id, status } : { id: string, status: string }) => {
+    if (status === 'INACTIVE')
+    {
+      return (
+        <Tooltip title={t("Activate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorUp fontSize='small' />
+          </IconButton>
+        </Tooltip>        
+      )
+    } else if (status === 'ACTIVE') {
+      return (
+        <Tooltip title={t("Deactivate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorDown fontSize='small' />
+          </IconButton>
+        </Tooltip>
+      )
+    } else {
+      return (
+        <IconButton onClick={() => handleAlterStatus(id)}>
+          <Help fontSize='small' />
+        </IconButton>
+      )
+    }
+  }
 
   const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
-  const toggleAddEditDrawer = () => setEditAssetOpen(!editAssetOpen)
+  const handleDialogViewToggle = () => setViewDialogOpen(!viewDialogOpen)
+
+  const columns = [
+    ...defaultColumns,
+    {
+      flex: 0.1,
+      minWidth: 90,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Ações',
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('read', 'ac-role-page') &&
+            <Tooltip title={t("View")}>
+              <IconButton onClick={() => handleViewRole(row)}>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('update', 'ac-role-page') &&
+            <Tooltip title={t("Edit")}>
+              <IconButton onClick={() => handleEditRole(row)}>
+                <PencilOutline fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('delete', 'ac-role-page') &&
+            <RenderButton id={row.id} status={row.status}/>
+          }
+        </Box>
+      )
+    }
+  ]
 
   return (
     <Grid container spacing={6}>
@@ -542,7 +480,7 @@ const AssetList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
+        <ViewAssetDrawer open={viewDialogOpen} toggle={handleDialogViewToggle} />
       </Grid>
     </Grid>
   )
