@@ -542,7 +542,7 @@ const AssetList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <ViewAssetDrawer open={viewAssetOpen} toggle={toggleViewAssetDrawer} />
+        <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
       </Grid>
     </Grid>
   )
