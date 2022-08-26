@@ -55,8 +55,8 @@ import { ThemeColor } from 'src/@core/layouts/types'
 import { AssetsType } from 'src/types/apps/assetTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/bussiness/commercial/asset/list/TableHeader'
-import AddAssetDrawer from 'src/views/bussiness/commercial/asset/list/AddAssetDrawer'
+import TableHeader from 'src/views/bussiness/commercial/asset/new/TableHeader'
+import AddAssetDrawer from 'src/views/bussiness/commercial/asset/new/AddAssetDrawer'
 import ViewAssetDrawer from 'src/views/bussiness/commercial/asset/view/ViewAssetDrawer'
 
 // ** Context Imports
@@ -342,6 +342,7 @@ const AssetList = () => {
   const [pageSize, setPageSize] = useState<number>(10)
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
   const [viewDialogOpen, setViewDialogOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<AssetsType>('')
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)
@@ -375,7 +376,7 @@ const AssetList = () => {
   }
 
   const handleViewRole = (row : AssetsType) => {
-    setFormValue('nome', "teste")
+    setRow(row)
     setViewDialogOpen(true)
   }
 
@@ -480,7 +481,7 @@ const AssetList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <ViewAssetDrawer open={viewDialogOpen} toggle={handleDialogViewToggle} />
+        <ViewAssetDrawer open={viewDialogOpen} toggle={handleDialogViewToggle} row={row}/>
       </Grid>
     </Grid>
   )

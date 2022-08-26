@@ -52,6 +52,7 @@ const MenuProps = {
 }
 
 interface SidebarAddAssetType {
+  row: AssetsType
   open: boolean
   toggle: () => void
 }
@@ -122,13 +123,14 @@ const defaultValues = {
 }
 
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
-  debugger
   const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
   let config = {
     headers: {
       Authorization: "Bearer " + storedToken
     }
   }
+
+  // **
 
   // ** Hook
   const { t } = useTranslation()
@@ -187,219 +189,146 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='nome'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Nome'
-                  onChange={onChange}
-                  placeholder='Hospedagem de sites 10GB'
-                  error={Boolean(errors.nome)}
+                  disabled='true'
+                  value={props.row.nome}
+                  placeholder='Nome'
                 />
               )}
             />
-            {errors.nome && <FormHelperText sx={{ color: 'error.main' }}>{errors.nome.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='referencia'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Referência'
-                  onChange={onChange}
-                  placeholder='(e.g.: #A5B30001)'
+                  disabled='true'
+                  value={props.row.referencia}
+                  placeholder='Referência'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='codigoUnico'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Código único'
-                  onChange={onChange}
-                  placeholder='(e.g.: #AB12345)'
+                  disabled='true'
+                  value={props.row.codigoUnico}
+                  placeholder='Código Único'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="tipo"
+            <Controller              
+              name='tipo'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-tipo-chip-label'>{t("Type")}</InputLabel>
-                    <Select
-                      name="tipo"
-                      autoWidth
-                      label="Tipo"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      defaultValue=''
-                      id='single-select-tipo'
-                      labelId='single-select-chip-label'
-                    >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
-                      {
-                        tipos.map(tipo => (
-                          <MenuItem key={tipo} value={tipo}>
-                            {tipo}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                    {errors.tipo && <FormHelperText sx={{ color: 'error.main' }}>{errors.tipo.message}</FormHelperText>}
-                  </FormControl>
-                )
-              }}
+              render={() => (
+                <TextField
+                  disabled='true'
+                  value={props.row.tipo}
+                  placeholder='Tipo'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='valorCusto'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Valor custo'
-                  name='valorCusto'
-                  onChange={onChange, resolveComma }
-                  placeholder='(e.g.: R$ 150,00)'
+                  disabled='true'
+                  value={props.row.valorCusto}
+                  placeholder='Valor custo'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='valorVenda'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Valor venda'
-                  name='valorVenda'
-                  onChange={onChange, resolveComma }
-                  placeholder='(e.g.: R$ 300,00)'
+                  disabled='true'
+                  value={props.row.valorVenda}
+                  placeholder='Valor venda'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="unidadeMedida"
+            <Controller              
+              name='unidadeMedida'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
-                    <Select
-                      name="tipo"
-                      autoWidth
-                      label="Tipo"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      defaultValue=''
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
-                      {
-                        unidadesMedida.map(tipo => (
-                          <MenuItem key={tipo} value={tipo}>
-                            {tipo}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                    {errors.unidadeMedida && <FormHelperText sx={{ color: 'error.main' }}>{errors.unidadeMedida.message}</FormHelperText>}
-                  </FormControl>
-                )
-              }}
+              render={() => (
+                <TextField
+                  disabled='true'
+                  value={props.row.unidadeMedida}
+                  placeholder='Unidade medida'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="clienteAtivoTipoServicoTipo"
+            <Controller              
+              name='clienteAtivoTipoServicoTipo'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-st-chip-label'>{t("Type of Service")}</InputLabel>
-                    <Select
-                      name="clienteAtivoTipoServicoTipo"
-                      autoWidth
-                      label="Serviço tipo"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      defaultValue=''
-                      id='single-select-st'
-                      labelId='single-select-st-chip-label'
-                    >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
-                      {
-                        servicoTipos.map(st => (
-                          <MenuItem key={st} value={st}>
-                            {st}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                )
-              }}
+              render={() => (
+                <TextField
+                  disabled='true'
+                  value={props.row.clienteAtivoTipoServicoTipo}
+                  placeholder='Serviço tipo'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='caracteristica'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Características'
-                  onChange={onChange}
-                  placeholder='(e.g.: Produto frágil ou Serviço de baixa complexidade)'
+                  disabled='true'
+                  value={props.row.caracteristica}
+                  placeholder='Característica'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <Controller              
               name='observacao'
               control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={() => (
                 <TextField
-                  value={value}
-                  label='Observação'
-                  onChange={onChange}
-                  placeholder='(e.g.: Sempre verificar disponibilidade)'
+                  disabled='true'
+                  value={props.row.observacao}
+                  placeholder='Observação'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller              
+              name='status'
+              control={control}
+              render={() => (
+                <TextField
+                  disabled='true'
+                  value={t(props.row.status)}
+                  placeholder='Status'
                 />
               )}
             />

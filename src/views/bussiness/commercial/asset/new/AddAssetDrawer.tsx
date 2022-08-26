@@ -61,8 +61,8 @@ interface AssetData {
   referencia: string
   codigoUnico: string
   tipo: string
-  valorCusto: string
-  valorVenda: string
+  valorCusto: number
+  valorVenda: number
   unidadeMedida: string
   clienteAtivoTipoServicoTipo: string
   caracteristica: string
@@ -71,7 +71,7 @@ interface AssetData {
 }
 
 const tipos : string[] = ["SERVICO", "PRODUTO"];
-const servicoTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
+const servicoTipos : string[] = ["UNICO", "RECORRENTE"];
 const unidadesMedida : string[] = ["CPU", "HR", "GB", "vCPU"];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -100,10 +100,6 @@ const schema = yup.object().shape({
   tipo: yup
     .string()
     .min(1, obj => showErrors('Tipo', obj.value.length, obj.min))
-    .required(),
-  unidadeMedida: yup
-    .string()
-    .min(1, obj => showErrors('Unidade medida', obj.value.length, obj.min))
     .required()
 })
 
@@ -111,11 +107,11 @@ const defaultValues = {
   nome: '',
   referencia: null,
   codigoUnico: null,
-  tipo: '',
-  valorCusto: '',
-  valorVenda: '',
-  unidadeMedida: '',
-  clienteAtivoTipoServicoTipo: '',
+  tipo: null,
+  valorCusto: 0,
+  valorVenda: 0,
+  unidadeMedida: 'NENHUM',
+  clienteAtivoTipoServicoTipo: 'NENHUM',
   caracteristica: '',
   observacao: '',
   status: ''
@@ -160,11 +156,10 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
     reset()
   }
 
-  const resolveComma = (event: { currentTarget: { value: string; name: any } }) => {
-    if (event.currentTarget.value.includes(','))
+  const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
+    if (event.currentTarget.value === '')
     {
-      var replace = event.currentTarget.value.replace(",", ".");
-      setValue(event.currentTarget.name, replace);
+      setValue(event.currentTarget.name, 0);
     }
     else
     {
@@ -253,9 +248,6 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       id='single-select-tipo'
                       labelId='single-select-chip-label'
                     >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
                       {
                         tipos.map(tipo => (
                           <MenuItem key={tipo} value={tipo}>
@@ -277,10 +269,11 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type='number'
                   value={value}
                   label='Valor custo'
                   name='valorCusto'
-                  onChange={onChange, resolveComma }
+                  onChange={onChange, resolveValor }
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -293,10 +286,11 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type='number'
                   value={value}
                   label='Valor venda'
                   name='valorVenda'
-                  onChange={onChange, resolveComma }
+                  onChange={onChange, resolveValor }
                   placeholder='(e.g.: R$ 300,00)'
                 />
               )}
@@ -332,7 +326,6 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                         ))
                       }
                     </Select>
-                    {errors.unidadeMedida && <FormHelperText sx={{ color: 'error.main' }}>{errors.unidadeMedida.message}</FormHelperText>}
                   </FormControl>
                 )
               }}
