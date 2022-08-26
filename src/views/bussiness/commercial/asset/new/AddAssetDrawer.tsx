@@ -9,7 +9,6 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -36,9 +35,6 @@ import { AppDispatch } from 'src/store'
 
 // ** Api Services
 import apiGroup from 'src/@api-center/group/groupApiService'
-
-// ** Axios Imports
-import axios from 'axios'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -118,13 +114,6 @@ const defaultValues = {
 }
 
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  let config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
   // ** Hook
   const { t } = useTranslation()
 

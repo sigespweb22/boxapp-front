@@ -6,7 +6,6 @@ import Link from 'next/link'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
-import { useForm, Controller } from 'react-hook-form'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -58,6 +57,7 @@ import { AssetsType } from 'src/types/apps/assetTypes'
 import TableHeader from 'src/views/bussiness/commercial/asset/new/TableHeader'
 import AddAssetDrawer from 'src/views/bussiness/commercial/asset/new/AddAssetDrawer'
 import ViewAssetDrawer from 'src/views/bussiness/commercial/asset/view/ViewAssetDrawer'
+import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/EditAssetDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -76,12 +76,6 @@ interface ServicoTipoType {
 
 interface UnidadeMedidaType {
   [key: string]: ReactElement
-}
-
-interface AssetData {
-  id: string
-  name: string
-  description: string
 }
 
 interface CellType {
@@ -341,7 +335,8 @@ const AssetList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
-  const [viewDialogOpen, setViewDialogOpen] = useState<boolean>(false)
+  const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
+  const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
   const [row, setRow] = useState<AssetsType>('')
 
   const handleRowOptionsClose = () => {
@@ -349,10 +344,6 @@ const AssetList = () => {
   }
 
   // ** Hooks
-  // ** Hooks
-  const {
-    setValue: setFormValue,
-  } = useForm()
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.asset)
 
@@ -368,16 +359,14 @@ const AssetList = () => {
     setValue(val)
   }, [])
 
-  const handleEditRole = ({ id, name, description } : AssetData) => {
-    // setFormValue('id', id)
-    // setFormValue('name', name)
-    // setFormValue('description', description)
-    // setEditDialogOpen(true)
+  const handleViewAsset = (row : AssetsType) => {
+    setRow(row)
+    setViewAssetOpen(true)
   }
 
-  const handleViewRole = (row : AssetsType) => {
+  const handleEditAsset = (row : AssetsType) => {
     setRow(row)
-    setViewDialogOpen(true)
+    setEditAssetOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
@@ -413,7 +402,8 @@ const AssetList = () => {
   }
 
   const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
-  const handleDialogViewToggle = () => setViewDialogOpen(!viewDialogOpen)
+  const handleAssetViewToggle = () => setViewAssetOpen(!viewAssetOpen)
+  const handleAssetEditToggle = () => setEditAssetOpen(!editAssetOpen)
 
   const columns = [
     ...defaultColumns,
@@ -429,14 +419,14 @@ const AssetList = () => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-role-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewRole(row)}>
+              <IconButton onClick={() => handleViewAsset(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
           {ability?.can('update', 'ac-role-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditRole(row)}>
+              <IconButton onClick={() => handleEditAsset(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
@@ -481,7 +471,8 @@ const AssetList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <ViewAssetDrawer open={viewDialogOpen} toggle={handleDialogViewToggle} row={row}/>
+        <ViewAssetDrawer open={viewAssetOpen} toggle={handleAssetViewToggle} row={row}/>
+        <EditAssetDrawer open={editAssetOpen} toggle={handleAssetEditToggle} row={row}/>
       </Grid>
     </Grid>
   )

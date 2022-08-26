@@ -1,3 +1,6 @@
+// ** React Imports
+import { useState } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -9,7 +12,6 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -34,12 +36,6 @@ import { addAsset } from 'src/store/apps/asset'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 
-// ** Api Services
-import apiGroup from 'src/@api-center/group/groupApiService'
-
-// ** Axios Imports
-import axios from 'axios'
-
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -52,6 +48,7 @@ const MenuProps = {
 }
 
 interface SidebarAddAssetType {
+  row: AssetsTypes
   open: boolean
   toggle: () => void
 }
@@ -61,8 +58,8 @@ interface AssetData {
   referencia: string
   codigoUnico: string
   tipo: string
-  valorCusto: string
-  valorVenda: string
+  valorCusto: number
+  valorVenda: number
   unidadeMedida: string
   clienteAtivoTipoServicoTipo: string
   caracteristica: string
@@ -100,10 +97,6 @@ const schema = yup.object().shape({
   tipo: yup
     .string()
     .min(1, obj => showErrors('Tipo', obj.value.length, obj.min))
-    .required(),
-  unidadeMedida: yup
-    .string()
-    .min(1, obj => showErrors('Unidade medida', obj.value.length, obj.min))
     .required()
 })
 
@@ -111,45 +104,46 @@ const defaultValues = {
   nome: '',
   referencia: null,
   codigoUnico: null,
-  tipo: '',
-  valorCusto: '',
-  valorVenda: '',
-  unidadeMedida: '',
-  clienteAtivoTipoServicoTipo: '',
+  tipo: null,
+  valorCusto: 0,
+  valorVenda: 0,
+  unidadeMedida: 'NENHUM',
+  clienteAtivoTipoServicoTipo: 'NENHUM',
   caracteristica: '',
   observacao: '',
   status: ''
 }
 
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  let config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
+  debugger;
   // ** Hook
   const { t } = useTranslation()
 
   // ** Props
   const { open, toggle } = props
 
+  // ** Set values
+  const [nome, setName] = useState(props.row.nome);
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setName(value);
+  };
+
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
-    setValue,
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
   const onSubmit = (data: AssetData) => {
+    debugger;
     dispatch(addAsset({ ...data,  }))
     toggle()
     reset()
@@ -160,17 +154,16 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
     reset()
   }
 
-  const resolveComma = (event: { currentTarget: { value: string; name: any } }) => {
-    if (event.currentTarget.value.includes(','))
+  const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
+    if (event.currentTarget.value === '')
     {
-      var replace = event.currentTarget.value.replace(",", ".");
-      setValue(event.currentTarget.name, replace);
+      setValue(event.currentTarget.name, 0);
     }
     else
     {
       setValue(event.currentTarget.name, event.currentTarget.value);
     }
-  } 
+  }
 
   return (
     <Drawer
@@ -182,7 +175,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Asset New")}</Typography>
+        <Typography variant='h6'>{t("Asset Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -196,7 +189,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                 <TextField
                   value={value}
                   label='Nome'
-                  onChange={onChange}
+                  onChange={onChange, handleChange}
                   placeholder='Hospedagem de sites 10GB'
                   error={Boolean(errors.nome)}
                 />
@@ -253,9 +246,6 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       id='single-select-tipo'
                       labelId='single-select-chip-label'
                     >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
                       {
                         tipos.map(tipo => (
                           <MenuItem key={tipo} value={tipo}>
@@ -277,10 +267,11 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type='number'
                   value={value}
                   label='Valor custo'
                   name='valorCusto'
-                  onChange={onChange, resolveComma }
+                  onChange={onChange, resolveValor }
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -293,10 +284,11 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type='number'
                   value={value}
                   label='Valor venda'
                   name='valorVenda'
-                  onChange={onChange, resolveComma }
+                  onChange={onChange, resolveValor }
                   placeholder='(e.g.: R$ 300,00)'
                 />
               )}
@@ -332,7 +324,6 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                         ))
                       }
                     </Select>
-                    {errors.unidadeMedida && <FormHelperText sx={{ color: 'error.main' }}>{errors.unidadeMedida.message}</FormHelperText>}
                   </FormControl>
                 )
               }}
