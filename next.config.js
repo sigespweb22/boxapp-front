@@ -10,6 +10,7 @@ const withTM = require('next-transpile-modules')([
   '@fullcalendar/list',
   '@fullcalendar/timegrid'
 ])
+const createEnvFile = require('./environment-builder');
 
 module.exports = withTM({
   trailingSlash: true,
@@ -19,6 +20,7 @@ module.exports = withTM({
     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
   },
   webpack: config => {
+    createEnvFile();
     config.resolve.alias = {
       ...config.resolve.alias,
       apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
