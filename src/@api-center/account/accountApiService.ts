@@ -3,6 +3,6 @@ import env from 'environment';
 const apiAccount = `${env.API_URL}/account`
 
 export default {
-  me: apiAccount + '/me',
+  me: `${apiAccount}/me`,
   storageTokenKeyName: 'accessToken'
 }
