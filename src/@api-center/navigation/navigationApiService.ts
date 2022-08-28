@@ -1,5 +1,6 @@
-const apiNavigationSSL = 'https://localhost:5001/api/v1/navigation'
-const apiNavigation = 'http://localhost:5000/api/v1/navigation'
+import env from 'environment';
+
+const apiNavigation = `${env.API_URL}/navigation`
 
 export default {
   myMenu: apiNavigation + '/my-menu',

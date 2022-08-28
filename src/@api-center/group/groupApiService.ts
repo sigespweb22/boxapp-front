@@ -1,5 +1,6 @@
-const apiGroupsSSL = 'https://localhost:5001/api/v1/groups'
-const apiGroups = 'http://localhost:5000/api/v1/groups'
+import env from 'environment';
+
+const apiGroups = `${env.API_URL}/groups`
 
 export default {
   listToSelectAsync: apiGroups + '/list-to-select',

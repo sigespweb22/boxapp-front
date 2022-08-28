@@ -1,5 +1,6 @@
-const apiAccountSSL = 'https://localhost:5001/api/v1/account'
-const apiAccount = 'http://localhost:5000/api/v1/account'
+import env from 'environment';
+
+const apiAccount = `${env.API_URL}/account`
 
 export default {
   me: apiAccount + '/me',

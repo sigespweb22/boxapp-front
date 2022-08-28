@@ -1,5 +1,6 @@
-const apiRolesSSL = 'https://localhost:5001/api/v1/roles'
-const apiRoles = 'http://localhost:5000/api/v1/roles'
+import env from 'environment';
+
+const apiRoles = `${env.API_URL}/roles`
 
 export default {
   listToSelectAsync: apiRoles + '/list-to-select',
