@@ -8,6 +8,7 @@
     "env:hmg": "cross-env ACTIVE_ENV=development",
     "env:prod": "cross-env ACTIVE_ENV=production",
     "start": "npm run env:hmg next dev",
+    "dev": "npm run env:hmg next dev",
     "start:prod": "npm run env:prod next start",
     "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
