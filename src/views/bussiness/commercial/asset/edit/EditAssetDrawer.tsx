@@ -1,6 +1,3 @@
-// ** React Imports
-import { useState } from 'react'
-
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -31,10 +28,11 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addAsset } from 'src/store/apps/asset'
+import { editAsset } from 'src/store/apps/asset'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { AssetsType } from 'src/types/apps/assetTypes'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -48,12 +46,13 @@ const MenuProps = {
 }
 
 interface SidebarAddAssetType {
-  row: AssetsTypes
+  row: AssetsType
   open: boolean
   toggle: () => void
 }
 
 interface AssetData {
+  id: string
   nome: string
   referencia: string
   codigoUnico: string
@@ -101,50 +100,56 @@ const schema = yup.object().shape({
 })
 
 const defaultValues = {
+  id: '',
   nome: '',
-  referencia: null,
-  codigoUnico: null,
-  tipo: null,
+  referencia: '',
+  codigoUnico: '',
+  tipo: '',
   valorCusto: 0,
   valorVenda: 0,
-  unidadeMedida: 'NENHUM',
-  clienteAtivoTipoServicoTipo: 'NENHUM',
+  unidadeMedida: '',
+  clienteAtivoTipoServicoTipo: '',
   caracteristica: '',
   observacao: '',
   status: ''
 }
 
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
-  debugger;
   // ** Hook
   const { t } = useTranslation()
 
   // ** Props
   const { open, toggle } = props
 
-  // ** Set values
-  const [nome, setName] = useState(props.row.nome);
-
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setName(value);
-  };
-
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
+    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
+  // ** Set values
+  setValue('id', props.row.id)
+  setValue('nome', props.row.nome)
+  setValue('referencia', props.row.referencia)
+  setValue('codigoUnico', props.row.codigoUnico)
+  setValue('tipo', props.row.tipo)
+  setValue('valorCusto', props.row.valorCusto)
+  setValue('valorVenda', props.row.valorVenda)
+  setValue('unidadeMedida', props.row.unidadeMedida)
+  setValue('clienteAtivoTipoServicoTipo', props.row.clienteAtivoTipoServicoTipo)
+  setValue('caracteristica', props.row.caracteristica)
+  setValue('observacao', props.row.observacao)
+
   const onSubmit = (data: AssetData) => {
-    debugger;
-    dispatch(addAsset({ ...data,  }))
+    dispatch(editAsset({ ...data,  }))
     toggle()
     reset()
   }
@@ -182,6 +187,19 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
+              name='id'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Id'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
               name='nome'
               control={control}
               rules={{ required: true }}
@@ -189,8 +207,8 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                 <TextField
                   value={value}
                   label='Nome'
-                  onChange={onChange, handleChange}
-                  placeholder='Hospedagem de sites 10GB'
+                  onChange={onChange}
+                  placeholder='(e.g.: Ex.: Hospedagem de sites 10GB)'
                   error={Boolean(errors.nome)}
                 />
               )}
@@ -240,6 +258,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       name="tipo"
                       autoWidth
                       label="Tipo"
+                      value={value}
                       MenuProps={MenuProps}
                       onChange={onChange}
                       defaultValue=''
@@ -307,6 +326,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       name="tipo"
                       autoWidth
                       label="Tipo"
+                      value={value}
                       MenuProps={MenuProps}
                       onChange={onChange}
                       defaultValue=''
@@ -343,6 +363,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                       autoWidth
                       label="Serviço tipo"
                       MenuProps={MenuProps}
+                      value={value}
                       onChange={onChange}
                       defaultValue=''
                       id='single-select-st'

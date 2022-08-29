@@ -181,7 +181,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                   value={value}
                   label='Nome'
                   onChange={onChange}
-                  placeholder='Hospedagem de sites 10GB'
+                  placeholder='(e.g.: Ex.: Hospedagem de sites 10GB)'
                   error={Boolean(errors.nome)}
                 />
               )}

@@ -10,6 +10,7 @@ import assetApiService from 'src/@api-center/asset/assetApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
+import { AssetsType } from 'src/types/apps/assetTypes'
 
 interface DataParams {
   q: string
@@ -82,6 +83,54 @@ export const addAsset = createAsyncThunk(
       {
         resp.response.data.errors.forEach(err => {
           toast.error(err)
+        });
+      }
+    })
+  }
+)
+
+// ** Update Assets
+export const editAsset = createAsyncThunk(
+  'appAsset/updateAsset',
+  async (data : AssetsType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(assetApiService.storageTokenKeyName)!
+    let config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    const data2 = {
+      id: data.id,
+      nome: data.nome,
+      referencia: data.referencia,
+      codigoUnico: data.codigoUnico,
+      tipo: data.tipo,
+      valorCusto: data.valorCusto,
+      valorVenda: data.valorVenda,
+      unidadeMedida: data.unidadeMedida,
+      clienteAtivoTipoServicoTipo: data.clienteAtivoTipoServicoTipo,
+      caracteristica: data.caracteristica,
+      observacao: data.observacao
+    }
+
+    axios.put(assetApiService.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().role.params))
+      if (resp.status === 204) return toast.success("Ativo atualizado com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        resp.response.data.errors.forEach(err => {
+          toast.error(err)
+        });
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach(function(err) {
+          err[1].forEach(function (ie) {
+            toast.error(ie)        
+          })
         });
       }
     })

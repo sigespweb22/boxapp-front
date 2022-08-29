@@ -7,5 +7,6 @@ export default {
   addAsync: `${apiAssets}/create`,
   deleteAsync: `${apiAssets}/delete/`,
   alterStatusAsync: `${apiAssets}/alter-status/`,
+  updateAsync: `${apiAssets}/update`,
   storageTokenKeyName: 'accessToken'
 }

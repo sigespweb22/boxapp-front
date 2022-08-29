@@ -14,7 +14,7 @@ export type AssetsType = {
   valorCusto: number
   valorVenda: number
   unidadeMedida: string
-  clienteAtivoTipoServico: string
+  clienteAtivoTipoServicoTipo: string
   caracteristica: string
   observacao: string
   status: string
