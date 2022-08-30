@@ -4,6 +4,7 @@
     "Add User": "Novo",
     "Add Asset": "Novo",
     "Add Group": "Novo",
+    "Add Client": "Novo",
     "Add Permission": "Novo",
     "Assets" : "Ativos",
     "Asset New": "Novo Ativo",
@@ -13,6 +14,7 @@
     "By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding": "Ao editar o nome da permissão, você pode quebrar a funcionalidade de permissões do sistema. Certifique-se de ter certeza absoluta antes de continuar",
     "BUSSINESS": "Negócios",
     "COMMERCIAL": "COMERCIAL",
+    "Client New": "Novo Cliente",
     "Clients": "Clientes",
     "Clients listing": "Listagem de clientes",
     "Commercial": "Comercial",
@@ -53,7 +55,7 @@
     "View Permission": "Visualizar Permissão",
     
     
-    
+    "Search Client": "Busca cliente",
     "Search Group": "Busca grupo",
     "Search User": "Busca usuário",
     "Search Asset": "Busca ativo",

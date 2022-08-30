@@ -17,17 +17,8 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import Cancel from 'mdi-material-ui/Cancel'
-import AccountWrenchOutline from 'mdi-material-ui/AccountWrenchOutline'
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
-import Numeric1BoxOutline from 'mdi-material-ui/Numeric1BoxOutline'
-import RouterNetwork from 'mdi-material-ui/RouterNetwork'
-import Autorenew from 'mdi-material-ui/Autorenew'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
@@ -46,64 +37,33 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusAsset } from 'src/store/apps/asset'
+import { fetchData, alterStatusClient } from 'src/store/bussiness/commercial/client'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { AssetsType } from 'src/types/apps/assetTypes'
+import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/bussiness/commercial/asset/new/TableHeader'
-import AddAssetDrawer from 'src/views/bussiness/commercial/asset/new/AddAssetDrawer'
-import ViewAssetDrawer from 'src/views/bussiness/commercial/asset/view/ViewAssetDrawer'
-import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/EditAssetDrawer'
+import TableHeader from 'src/views/bussiness/commercial/client/new/TableHeader'
+import AddClientDrawer from 'src/views/bussiness/commercial/client/new/AddClientDrawer'
+import ViewClientDrawer from 'src/views/bussiness/commercial/client/view/ViewClientDrawer'
+import EditClientDrawer from 'src/views/bussiness/commercial/client/edit/EditClientDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface AssetStatusType {
+interface ClientStatusType {
   [key: string]: ThemeColor
 }
 
-interface AssetTipoType {
-  [key: string]: ReactElement
-}
-
-interface ServicoTipoType {
-  [key: string]: ReactElement
-}
-
-interface UnidadeMedidaType {
-  [key: string]: ReactElement
-}
-
 interface CellType {
-  row: AssetsType
+  row: ClientsType
 }
 
-const assetStatusObj: AssetStatusType = {
+const clientStatusObj: ClientStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
-}
-
-// ** Vars
-const assetTipoObj: AssetTipoType = {
-  SERVICO:  <AccountWrenchOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  PRODUTO: <RouterNetwork fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,  
-}
-
-const servicoTipoObj: ServicoTipoType = {
-  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
-  UNICO:  <Numeric1BoxOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Autorenew fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,  
-}
-
-const unidadeMedidaObj: UnidadeMedidaType = {
-  CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
-  vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
 }
 
 // ** Styled component for the link for the avatar without image
@@ -113,15 +73,15 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders client column
-const renderClient = (row: AssetsType) => {
+const renderClient = (row: ClientsType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/asset/view/${row.id}`}>
+    <AvatarWithoutImageLink href={`/apps/client/view/${row.id}`}>
       <CustomAvatar
           skin='light'
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.nome ? row.nome : 'NA')}
+          {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -137,50 +97,10 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={assetStatusObj[status]}
+        color={clientStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
-}
-
-const umResolveColor = (um: string) => {
-  switch (um) 
-  {
-    case 'CPU':
-      return 'info'
-    case 'HR':
-      return 'primary'
-    case 'GB':
-      return 'secondary'
-    case 'vCPU':
-      return 'error'
-    default: 
-      return 'primary'
-  }
-}
-
-const stResolveColor = (st: string) => {
-  switch (st) 
-  {
-    case 'RECORRENTE':
-      return 'success'
-    case 'UNICO':
-      return 'primary'
-    case 'NENHUM':
-      return 'secondary'
-    default:
-    return 'primary'
-  }
-}
-
-const tipoResolveColor = (tipo: string) => {
-  switch (tipo) 
-  {
-    case 'SERVICO':
-      return 'success'
-    case 'PRODUTO':
-      return 'info'
-  }
 }
 
 const defaultColumns = [
@@ -192,25 +112,25 @@ const defaultColumns = [
     headerAlign: 'left',
     align: 'left',
     renderCell: ({ row }: CellType) => {
-      const { id, nome, unidadeMedida } = row
+      const { id, nomeFantasia, emailPrincipal } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/asset/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {nome}
+                {nomeFantasia}
               </Typography>
             </Link>
-            <Link href={`/apps/asset/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🩺{unidadeMedida}
+                @{emailPrincipal}
               </Typography>
             </Link>
           </Box>
@@ -219,98 +139,62 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.06,
-    field: 'tipo',
-    minWidth: 50,
-    headerName: 'Tipo',
-    headerAlign: 'center',
-    align: 'center',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {assetTipoObj[row.tipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.tipo}
-            color={tipoResolveColor(row.tipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
-      )
-    }
-  },
-  {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorCusto',
-    headerName: 'Valor custo',
+    field: 'cnpj',
+    headerName: 'CNPJ',
     headerAlign: 'center',
     align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorCusto}
+          {row.cnpj}
         </Typography>
       )
     }
   },
   {
     flex: 0.1,
-    minWidth: 110,
-    field: 'valorVenda',
-    headerName: 'Valor venda',
+    minWidth: 100,
+    field: 'telefonePrincipal',
+    headerName: 'Telefone principal',
     headerAlign: 'center',
     align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorVenda}
+          {row.telefonePrincipal}
         </Typography>
-      )
-    }
-  },  
-  {
-    flex: 0.1,
-    field: 'unidadeMedida',
-    minWidth: 130,
-    headerName: 'Unidade medida',
-    headerAlign: 'center',
-    align: 'center',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {unidadeMedidaObj[row.unidadeMedida]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.unidadeMedida}
-            color={umResolveColor(row.unidadeMedida)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
       )
     }
   },
   {
     flex: 0.1,
-    field: 'clienteAtivoTipoServicoTipo',
     minWidth: 100,
-    headerName: 'Serviço tipo',
+    field: 'cidade',
+    headerName: 'Cidade',
     headerAlign: 'center',
     align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {servicoTipoObj[row.clienteAtivoTipoServicoTipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.clienteAtivoTipoServicoTipo}
-            color={stResolveColor(row.clienteAtivoTipoServicoTipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
+        <Typography noWrap variant='body2'>
+          {row.cidade}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'Estado',
+    headerName: 'estado',
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.estado}
+        </Typography>
       )
     }
   },
@@ -325,7 +209,7 @@ const defaultColumns = [
   }
 ]
 
-const AssetList = () => {
+const ClientList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -334,10 +218,10 @@ const AssetList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
-  const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
-  const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<AssetsType>('')
+  const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
+  const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
+  const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ClientsType>('')
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)
@@ -345,7 +229,7 @@ const AssetList = () => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.asset)
+  const store = useSelector((state: RootState) => state.client)
 
   useEffect(() => {
     dispatch(
@@ -359,18 +243,18 @@ const AssetList = () => {
     setValue(val)
   }, [])
 
-  const handleViewAsset = (row : AssetsType) => {
+  const handleViewClient = (row : ClientsType) => {
     setRow(row)
-    setViewAssetOpen(true)
+    setViewClientOpen(true)
   }
 
-  const handleEditAsset = (row : AssetsType) => {
+  const handleEditClient = (row : ClientsType) => {
     setRow(row)
-    setEditAssetOpen(true)
+    setEditClientOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusAsset(id))
+    dispatch(alterStatusClient(id))
     handleRowOptionsClose()
   }
 
@@ -401,9 +285,9 @@ const AssetList = () => {
     }
   }
 
-  const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
-  const handleAssetViewToggle = () => setViewAssetOpen(!viewAssetOpen)
-  const handleAssetEditToggle = () => setEditAssetOpen(!editAssetOpen)
+  const toggleAddClientDrawer = () => setAddClientOpen(!addClientOpen)
+  const handleClientViewToggle = () => setViewClientOpen(!viewClientOpen)
+  const handleClientEditToggle = () => setEditClientOpen(!editClientOpen)
 
   const columns = [
     ...defaultColumns,
@@ -419,14 +303,14 @@ const AssetList = () => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-client-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewAsset(row)}>
+              <IconButton onClick={() => handleViewClient(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
           {ability?.can('update', 'ac-client-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditAsset(row)}>
+              <IconButton onClick={() => handleEditClient(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
@@ -455,7 +339,7 @@ const AssetList = () => {
         {ability?.can('list', 'ac-client-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddAssetDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddClientDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -470,9 +354,9 @@ const AssetList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <ViewAssetDrawer open={viewAssetOpen} toggle={handleAssetViewToggle} row={row}/>
-        <EditAssetDrawer open={editAssetOpen} toggle={handleAssetEditToggle} row={row}/>
+        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
+        <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
+        <EditClientDrawer open={editClientOpen} toggle={handleClientEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
@@ -481,9 +365,9 @@ const AssetList = () => {
 // **Controle de acesso da página
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
-AssetList.acl = {
+ClientList.acl = {
   action: 'list',
   subject: 'ac-client-page'
 }
 
-export default AssetList
+export default ClientList
