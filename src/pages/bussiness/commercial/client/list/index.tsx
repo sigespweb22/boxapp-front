@@ -130,7 +130,7 @@ const defaultColumns = [
             </Link>
             <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                @{emailPrincipal}
+                ✉️{emailPrincipal}
               </Typography>
             </Link>
           </Box>
@@ -354,7 +354,7 @@ const ClientList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
+        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} row={row}/>
         <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
         <EditClientDrawer open={editClientOpen} toggle={handleClientEditToggle} row={row}/>
       </Grid>

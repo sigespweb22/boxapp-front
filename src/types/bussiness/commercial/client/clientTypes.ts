@@ -15,7 +15,7 @@ export type ClientsType = {
   emailPrincipal: string
   observacao: string
   dataFundacao: string
-  codigoMunicipio: string
+  codigoMunicipio: number
   rua: string
   numero: string
   complemento: string

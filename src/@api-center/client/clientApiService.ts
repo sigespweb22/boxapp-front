@@ -7,5 +7,6 @@ export default {
   addAsync: `${apiClients}/create`,
   deleteAsync: `${apiClients}/delete/`,
   alterStatusAsync: `${apiClients}/alter-status/`,
+  updateAsync: `${apiClients}/update`,
   storageTokenKeyName: 'accessToken'
 }

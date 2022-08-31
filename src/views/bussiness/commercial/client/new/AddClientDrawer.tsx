@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
+import IconButton from '@mui/material/IconButton'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -18,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
+import CameraIris from 'mdi-material-ui/CameraIris'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -45,7 +47,7 @@ interface ClientData {
   emailPrincipal: string
   observacao: string
   dataFundacao: string
-  codigoMunicipio: string
+  codigoMunicipio: number
   rua: string
   numero: string
   complemento: string
@@ -96,13 +98,14 @@ const defaultValues = {
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
-  dataFundacao: '',
-  codigoMunicipio: '',
+  dataFundacao: '0001-01-01 00:00:00',
+  codigoMunicipio: 0,
   rua: '',
   numero: '',
   complemento: '',
   cidade: '',
   estado: '',
+  cep: '',
   status: ''
 }
 
@@ -217,6 +220,23 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               )}
             />
             {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
+            <IconButton aria-label='capture screenshot' color='primary'>
+              <CameraIris />
+            </IconButton>
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='telefonePrincipal'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Telefone principal'
+                  onChange={onChange}
+                  placeholder='(e.g.: (48) 3051.8896))'
+                />
+              )}
+            />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
@@ -266,6 +286,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type="number"
                   value={value}
                   label='Código município'
                   onChange={onChange}

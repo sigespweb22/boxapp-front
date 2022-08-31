@@ -39,10 +39,10 @@ interface ClientData {
   id: string
   nomeFantasia: string
   razaoSocial: string
-  inscricaoSocial: string
+  inscricaoEstadual: string
   cnpj: string
-  telefonePrincipal: number
-  emailPrincipal: number
+  telefonePrincipal: string
+  emailPrincipal: string
   observacao: string
   dataFundacao: string
   codigoMunicipio: string
@@ -74,21 +74,22 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
+  nomeFantasia: yup
+    .string()
+    .required("Nome fantasia é requerido."),
   razaoSocial: yup
     .string()
-    .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
-    .required(),
-  tipo: yup
+    .required("Razão social é requerida."),
+  cnpj: yup
     .string()
-    .min(1, obj => showErrors('Tipo', obj.value.length, obj.min))
-    .required()
+    .required("CNPJ é requerido.")
 })
 
 const defaultValues = {
   id: '',
   nomeFantasia: '',
   razaoSocial: '',
-  inscricaoSocial: '',
+  inscricaoEstadual: '',
   cnpj: '',
   telefonePrincipal: '',
   emailPrincipal: '',
@@ -100,10 +101,11 @@ const defaultValues = {
   complemento: '',
   cidade: '',
   estado: '',
+  cep: '',
   status: ''
 }
 
-const SidebarAddClient = (props: SidebarEditClientType) => {
+const SidebarEditClient = (props: SidebarEditClientType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -128,7 +130,7 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
   setValue('id', props.row.id)
   setValue('nomeFantasia', props.row.nomeFantasia)
   setValue('razaoSocial', props.row.razaoSocial)
-  setValue('inscricaoSocial', props.row.inscricaoSocial)
+  setValue('inscricaoEstadual', props.row.inscricaoEstadual)
   setValue('cnpj', props.row.cnpj)
   setValue('telefonePrincipal', props.row.telefonePrincipal)
   setValue('emailPrincipal', props.row.emailPrincipal)
@@ -140,6 +142,7 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
   setValue('complemento', props.row.complemento)
   setValue('cidade', props.row.cidade)
   setValue('estado', props.row.estado)
+  setValue('cep', props.row.cep)
   setValue('status', props.row.status)
 
   const onSubmit = (data: ClientData) => {
@@ -196,7 +199,7 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
                 />
               )}
             />
-            {errors.nomeFantasia && <FormHelperText sx={{ color: 'error.main' }}>{errors.nome.message}</FormHelperText>}
+            {errors.nomeFantasia && <FormHelperText sx={{ color: 'error.main' }}>{errors.nomeFantasia.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
@@ -224,7 +227,8 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
                   value={value}
                   label='Inscrição estadual'
                   onChange={onChange}
-                  placeholder='(e.g.: 123456789)'
+                  placeholder='(e.g.: Ex.: 12345678912345)'
+                  error={Boolean(errors.razaoSocial)}
                 />
               )}
             />
@@ -254,7 +258,7 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='CNPJ'
+                  label='Telefone principal'
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: (48) 3451-6526)'
                 />
@@ -425,4 +429,4 @@ const SidebarAddClient = (props: SidebarEditClientType) => {
   )
 }
 
-export default SidebarAddClient
+export default SidebarEditClient

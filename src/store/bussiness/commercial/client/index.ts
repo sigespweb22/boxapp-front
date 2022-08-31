@@ -47,6 +47,8 @@ export const addClient = createAsyncThunk(
       }
     }
 
+    debugger
+
     const data2 = {
       nomeFantasia: data.nomeFantasia,
       razaoSocial: data.razaoSocial,
@@ -71,7 +73,7 @@ export const addClient = createAsyncThunk(
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
     }).catch((resp) => {
-      debugger;
+      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
@@ -112,7 +114,8 @@ export const editClient = createAsyncThunk(
     }
 
     const data2 = {
-      nomaFantasia: data.nomeFantasia,
+      id: data.id,
+      nomeFantasia: data.nomeFantasia,
       razaoSocial: data.razaoSocial,
       inscricaoEstadual: data.inscricaoEstadual,
       cnpj: data.cnpj,
@@ -138,9 +141,18 @@ export const editClient = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
-          toast.error(err)
-        });
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach(err => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach(err => {
+            toast.error(err)
+          });
+        }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err) {
