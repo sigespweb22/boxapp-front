@@ -1,3 +1,6 @@
+// ** React Imports
+import { useState, ChangeEvent, SetStateAction } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -8,6 +11,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
+import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -19,7 +23,6 @@ import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
-import CameraIris from 'mdi-material-ui/CameraIris'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -86,11 +89,12 @@ const schema = yup.object().shape({
     .required(),
   cnpj: yup
     .string()
-    .min(14, obj => showErrors('CNPJ', obj.value.length, obj.min))
+    .min(14, obj => showErrors('Cnpj', obj.value.length, obj.min))
     .required()
 })
 
 const defaultValues = {
+  id: '',
   nomeFantasia: '',
   razaoSocial: '',
   inscricaoEstadual: '',
@@ -110,13 +114,13 @@ const defaultValues = {
 }
 
 const SidebarAddClient = (props: SidebarAddClientType) => {
-  // ** Hook
-  const { t } = useTranslation()
-
   // ** Props
   const { open, toggle } = props
-
+  
   // ** Hooks
+  const { t } = useTranslation()
+  const [values, setValues] = useState<ClientData>(defaultValues)
+
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -124,9 +128,9 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
-    mode: 'onChange',
-    resolver: yupResolver(schema)
+      defaultValues,
+      mode: 'onChange',
+      resolver: yupResolver(schema)
   })
 
   const onSubmit = (data: ClientData) => {
@@ -140,6 +144,15 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
     toggle()
     reset()
   }
+
+  const handleChange = (prop: keyof ClientData) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleClick = () => {
+    // 👇️ value of input field
+    console.log('handleClick 👉️', values.cnpj);
+  };
 
   return (
     <Drawer
@@ -157,21 +170,13 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
+            <TextField
               name='nomeFantasia'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Nome fantasia'
-                  onChange={onChange}
-                  placeholder='(e.g.: Empresa de software)'
-                  error={Boolean(errors.nomeFantasia)}
-                />
-              )}
+              value={values.nomeFantasia}
+              label='Nome fantasia'
+              onChange={handleChange('nomeFantasia')}
+              placeholder='(e.g.: Empresa de software)'
             />
-            {errors.nomeFantasia && <FormHelperText sx={{ color: 'error.main' }}>{errors.nomeFantasia.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
@@ -204,26 +209,18 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='cnpj'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='CNPJ'
-                  onChange={onChange}
-                  placeholder='(e.g.: 60.133.365/0001-16)'
-                  error={Boolean(errors.cnpj)}
-                />
-              )}
+          <FormControl fullWidth={false} sx={{ width: '290px', mb: 6 }}>
+            <TextField
+                name='cnpj'
+                value={values.cnpj}
+                label='CNPJ'
+                onChange={handleChange('cnpj')}
+                placeholder='(e.g.: 60.133.365/0001-16)'
             />
-            {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
-            <IconButton aria-label='capture screenshot' color='primary'>
-              <CameraIris />
-            </IconButton>
           </FormControl>
+          <IconButton onClick={handleClick} sx={{ ml: 2, height: '58px', width: '38px' }} aria-label='capture screenshot' color='primary'>
+            <StoreSearchOutline fontSize='medium' />
+          </IconButton>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='telefonePrincipal'
@@ -380,7 +377,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
+            <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
               Salvar
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
