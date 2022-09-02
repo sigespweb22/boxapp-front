@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, SetStateAction } from 'react'
+import { useState, ChangeEvent, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -17,6 +17,7 @@ import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
+import toast, { Toaster } from 'react-hot-toast'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -33,6 +34,12 @@ import { addClient } from 'src/store/bussiness/commercial/client'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
+
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import clientApiService from 'src/@api-center/client/clientApiService'
 
 interface SidebarAddClientType {
   row: ClientsType
@@ -114,17 +121,20 @@ const defaultValues = {
 }
 
 const SidebarAddClient = (props: SidebarAddClientType) => {
+  
+
   // ** Props
   const { open, toggle } = props
   
   // ** Hooks
   const { t } = useTranslation()
-  const [values, setValues] = useState<ClientData>(defaultValues)
+  const [cnpjToSearch, setCnpjToSearch] = useState('')
 
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
     control,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -134,7 +144,6 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
   })
 
   const onSubmit = (data: ClientData) => {
-    debugger
     dispatch(addClient({ ...data,  }))
     toggle()
     reset()
@@ -145,14 +154,92 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
     reset()
   }
 
-  const handleChange = (prop: keyof ClientData) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
+  const changeHandler = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setCnpjToSearch(event.target.value)
   }
 
+  // useEffect(() => {
+  //   const fetchCnpj = () => { 
+  //     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
+  //     const config = {
+  //       headers: {
+  //         Authorization: "Bearer " + storedToken
+  //       }
+  //     }
+
+  //     axios
+  //       .get(`${clientApiService.listOneTPAsync}/cnpjToSearch`, config)
+  //       .then(response => {
+  //         debugger
+  //         const a = response.data
+  //       })
+  //   }
+  //   fetchCnpj()
+  // }, []);
+
   const handleClick = () => {
-    // 👇️ value of input field
-    console.log('handleClick 👉️', values.cnpj);
-  };
+    if (typeof cnpjToSearch == 'undefined' ||
+        cnpjToSearch == '')
+    
+    { 
+      return toast.error("CNPJ é requerido para efetuar a busca.")
+    }
+
+    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
+      const config = {
+        headers: {
+          Authorization: "Bearer " + storedToken
+        }
+      }
+
+      axios
+        .get(clientApiService.listOneTPAsync.concat(cnpjToSearch), config)
+        .then(response => {
+          setValue('nomeFantasia', response.data.alias)
+          setValue('razaoSocial', response.data.company.name)
+          setValue('telefonePrincipal', response.data.phones[0].number)
+          setValue('emailPrincipal', response.data.emails[0].address)
+          setValue('emailPrincipal', response.data.emails[0].address)
+          setValue('dataFundacao', response.data.founded)
+          setValue('codigoMunicipio', response.data.address.municipality)
+          setValue('rua', response.data.address.street + " - " +response.data.address.district)
+          setValue('numero', response.data.address.number)
+          setValue('complemento', response.data.address.details)
+          setValue('cidade', response.data.address.city)
+          setValue('estado', response.data.address.state)
+          setValue('cep', response.data.address.zip)
+        }).catch((resp) => {
+          debugger
+          if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+          if (typeof resp.response.data != 'undefined' && 
+              typeof resp.response.data.errors != 'undefined')
+          {
+            if (typeof resp.response.data.title != 'undefined' &&
+                resp.response.data.title === "One or more validation errors occurred.")
+            {
+              const returnObj = Object.entries(resp.response.data.errors);
+              returnObj.forEach(err => {
+                toast.error(err)
+              });
+            } else {
+              resp.response.data.errors.forEach(err => {
+                toast.error(err)
+              });
+            }
+          } else {
+            const returnObj = Object.entries(resp.response.data.errors);
+            returnObj.forEach(function(err) {
+              err[1].forEach(function (ie) {
+                toast.error(ie)        
+              })
+            });
+          }
+        })
+  }
+
+  useEffect(() => {
+      
+  });
 
   return (
     <Drawer
@@ -170,12 +257,19 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
+          <Controller
               name='nomeFantasia'
-              value={values.nomeFantasia}
-              label='Nome fantasia'
-              onChange={handleChange('nomeFantasia')}
-              placeholder='(e.g.: Empresa de software)'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Nome fantasia'
+                  onChange={onChange}
+                  placeholder='(e.g.: Empresa de software)'
+                  error={Boolean(errors.nomeFantasia)}
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -210,13 +304,23 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
             />
           </FormControl>
           <FormControl fullWidth={false} sx={{ width: '290px', mb: 6 }}>
-            <TextField
-                name='cnpj'
-                value={values.cnpj}
-                label='CNPJ'
-                onChange={handleChange('cnpj')}
-                placeholder='(e.g.: 60.133.365/0001-16)'
+            <Controller
+              name='cnpj'
+              control={control}
+              render={(props) => (
+                <TextField
+                  value={props.field.value}  
+                  label='Cnpj'
+                  onChange={(value): void => {
+                    props.field.onChange(value)
+                    changeHandler(value)
+                  }}
+                  placeholder='(e.g.: 60.133.365/0001-16)'
+                  error={Boolean(errors.cnpj)}
+                />
+              )}
             />
+            {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
           </FormControl>
           <IconButton onClick={handleClick} sx={{ ml: 2, height: '58px', width: '38px' }} aria-label='capture screenshot' color='primary'>
             <StoreSearchOutline fontSize='medium' />

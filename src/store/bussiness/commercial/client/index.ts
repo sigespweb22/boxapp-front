@@ -47,8 +47,6 @@ export const addClient = createAsyncThunk(
       }
     }
 
-    debugger
-
     const data2 = {
       nomeFantasia: data.nomeFantasia,
       razaoSocial: data.razaoSocial,
@@ -73,7 +71,6 @@ export const addClient = createAsyncThunk(
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
     }).catch((resp) => {
-      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
