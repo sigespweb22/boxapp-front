@@ -180,20 +180,20 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       .then(response => {
         toast.success("CNPJ encontrado! Os dados da empresa serão automaticamente populados nos campos.")
 
-        setValue('nomeFantasia', response.data.alias)
-        setValue('razaoSocial', response.data.company.name)
-        setValue('telefonePrincipal', response.data.phones[0].number)
-        setValue('emailPrincipal', response.data.emails[0].address)
-        setValue('emailPrincipal', response.data.emails[0].address)
-        setValue('dataFundacao', response.data.founded)
-        setValue('codigoMunicipio', response.data.address.municipality)
+        setValue('nomeFantasia', response.data.alias != '' ? response.data.alias : defaultValues.nomeFantasia)
+        setValue('razaoSocial', response.data.company.name != '' ? response.data.company.name : defaultValues.razaoSocial)
+        setValue('telefonePrincipal', response.data.phones.length >= 1 ? response.data.phones[0].number : defaultValues.telefonePrincipal)
+        setValue('emailPrincipal', response.data.emails.length >= 1 ? response.data.emails[0].address : defaultValues.emailPrincipal)
+        setValue('dataFundacao', response.data.founded != '' ? response.data.founded : defaultValues.dataFundacao)
+        setValue('codigoMunicipio', response.data.address.municipality != '' ? response.data.address.municipality : defaultValues.dataFundacao)
         setValue('rua', response.data.address.street + " - " +response.data.address.district)
-        setValue('numero', response.data.address.number)
-        setValue('complemento', response.data.address.details)
-        setValue('cidade', response.data.address.city)
-        setValue('estado', response.data.address.state)
-        setValue('cep', response.data.address.zip)
+        setValue('numero', response.data.address.number != '' ? response.data.address.number : defaultValues.numero)
+        setValue('complemento', response.data.address.details != '' ? response.data.address.details : defaultValues.complemento)
+        setValue('cidade', response.data.address.city != '' ? response.data.address.city : defaultValues.cidade)
+        setValue('estado', response.data.address.state != '' ? response.data.address.state : defaultValues.estado)
+        setValue('cep', response.data.address.zip != '' ? response.data.address.zip : defaultValues.cep)
       }).catch((resp) => {
+        debugger
         if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
         
         if (typeof resp.response.data != 'undefined')

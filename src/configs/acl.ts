@@ -70,6 +70,13 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-group-page')
     /// end - group
 
+    /// begin - cnpj
+    } else if (item === 'CanCnpjTPAll') {
+      can(['list', 'read'], 'ac-search-cnpj')
+    } else if (item === 'CanCnpjTPListOne') {
+      can('read', 'ac-search-cnpj')
+    /// end - cnpj
+
     /// begin - client
     } else if (item === 'CanClientAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-client-page')
@@ -83,10 +90,6 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('create', 'ac-client-page')
     } else if (item === 'CanClientDelete') {
       can('delete', 'ac-client-page')
-    } else if (item === 'CanClientTPListOne') {
-      can('list', 'ac-client-tp-page')
-    } else if (item === 'CanClientDelete') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'CanClientTPAll')
     /// end - client
 
     /// begin - asset
