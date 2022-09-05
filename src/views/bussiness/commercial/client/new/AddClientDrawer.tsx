@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
+import Tooltip from '@mui/material/Tooltip';
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -37,6 +38,9 @@ import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
 
 // ** Axios Imports
 import axios from 'axios'
+
+// ** InputMask Imports
+import InputMask from 'react-input-mask'
 
 // ** Api Services
 import clientApiService from 'src/@api-center/client/clientApiService'
@@ -121,8 +125,6 @@ const defaultValues = {
 }
 
 const SidebarAddClient = (props: SidebarAddClientType) => {
-  
-
   // ** Props
   const { open, toggle } = props
   
@@ -158,88 +160,58 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
     setCnpjToSearch(event.target.value)
   }
 
-  // useEffect(() => {
-  //   const fetchCnpj = () => { 
-  //     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
-  //     const config = {
-  //       headers: {
-  //         Authorization: "Bearer " + storedToken
-  //       }
-  //     }
-
-  //     axios
-  //       .get(`${clientApiService.listOneTPAsync}/cnpjToSearch`, config)
-  //       .then(response => {
-  //         debugger
-  //         const a = response.data
-  //       })
-  //   }
-  //   fetchCnpj()
-  // }, []);
-
   const handleClick = () => {
     if (typeof cnpjToSearch == 'undefined' ||
         cnpjToSearch == '')
-    
     { 
       return toast.error("CNPJ é requerido para efetuar a busca.")
     }
 
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
-      const config = {
-        headers: {
-          Authorization: "Bearer " + storedToken
-        }
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
       }
+    }
 
-      axios
-        .get(clientApiService.listOneTPAsync.concat(cnpjToSearch), config)
-        .then(response => {
-          setValue('nomeFantasia', response.data.alias)
-          setValue('razaoSocial', response.data.company.name)
-          setValue('telefonePrincipal', response.data.phones[0].number)
-          setValue('emailPrincipal', response.data.emails[0].address)
-          setValue('emailPrincipal', response.data.emails[0].address)
-          setValue('dataFundacao', response.data.founded)
-          setValue('codigoMunicipio', response.data.address.municipality)
-          setValue('rua', response.data.address.street + " - " +response.data.address.district)
-          setValue('numero', response.data.address.number)
-          setValue('complemento', response.data.address.details)
-          setValue('cidade', response.data.address.city)
-          setValue('estado', response.data.address.state)
-          setValue('cep', response.data.address.zip)
-        }).catch((resp) => {
-          debugger
-          if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
-          if (typeof resp.response.data != 'undefined' && 
-              typeof resp.response.data.errors != 'undefined')
-          {
-            if (typeof resp.response.data.title != 'undefined' &&
-                resp.response.data.title === "One or more validation errors occurred.")
-            {
-              const returnObj = Object.entries(resp.response.data.errors);
-              returnObj.forEach(err => {
-                toast.error(err)
-              });
-            } else {
-              resp.response.data.errors.forEach(err => {
-                toast.error(err)
-              });
+    const cnpjScape = cnpjToSearch.replace(".", "").replace(".", "").replace("/", "").replace("-", "")
+    axios
+      .get(clientApiService.listOneTPAsync.concat(cnpjScape), config)
+      .then(response => {
+        toast.success("CNPJ encontrado! Os dados da empresa serão automaticamente populados nos campos.")
+
+        setValue('nomeFantasia', response.data.alias)
+        setValue('razaoSocial', response.data.company.name)
+        setValue('telefonePrincipal', response.data.phones[0].number)
+        setValue('emailPrincipal', response.data.emails[0].address)
+        setValue('emailPrincipal', response.data.emails[0].address)
+        setValue('dataFundacao', response.data.founded)
+        setValue('codigoMunicipio', response.data.address.municipality)
+        setValue('rua', response.data.address.street + " - " +response.data.address.district)
+        setValue('numero', response.data.address.number)
+        setValue('complemento', response.data.address.details)
+        setValue('cidade', response.data.address.city)
+        setValue('estado', response.data.address.state)
+        setValue('cep', response.data.address.zip)
+      }).catch((resp) => {
+        if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+        
+        if (typeof resp.response.data != 'undefined')
+        {
+          resp.response.data.errors.forEach(err => {
+            try {
+              const statusCode =  err.match(/\d+/)[0]
+              if (statusCode === "0") return toast.error("Ops! Algo deu errado.")
+              if (statusCode === "404") return toast.error("CNPJ não encontrado na receita federal.")
+              if (statusCode === "400") return toast.error("Ops! Algo deu errado. Verifique o CNPJ informado e tente novamente.")
             }
-          } else {
-            const returnObj = Object.entries(resp.response.data.errors);
-            returnObj.forEach(function(err) {
-              err[1].forEach(function (ie) {
-                toast.error(ie)        
-              })
-            });
-          }
-        })
+            catch (e) {
+              return toast.error(`${e}<br>Ops! Algo deu errado.`)
+            }
+          });
+        }
+      })
   }
-
-  useEffect(() => {
-      
-  });
 
   return (
     <Drawer
@@ -308,7 +280,10 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               name='cnpj'
               control={control}
               render={(props) => (
-                <TextField
+                <InputMask
+                  mask="99.999.999/9999-99"
+                  name="cnpj"
+                  type="text"
                   value={props.field.value}  
                   label='Cnpj'
                   onChange={(value): void => {
@@ -317,14 +292,18 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
                   }}
                   placeholder='(e.g.: 60.133.365/0001-16)'
                   error={Boolean(errors.cnpj)}
-                />
+                >
+                  {() => <TextField />}
+                </InputMask>
               )}
             />
             {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
           </FormControl>
-          <IconButton onClick={handleClick} sx={{ ml: 2, height: '58px', width: '38px' }} aria-label='capture screenshot' color='primary'>
-            <StoreSearchOutline fontSize='medium' />
-          </IconButton>
+          <Tooltip title={t("Search CNPJ")}>
+            <IconButton onClick={handleClick} sx={{ ml: 2, height: '58px', width: '38px' }} aria-label='capture screenshot' color='primary'>
+              <StoreSearchOutline fontSize='medium' />
+            </IconButton>
+          </Tooltip>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='telefonePrincipal'
