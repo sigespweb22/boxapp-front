@@ -1,0 +1,1 @@
+export default {"API_URL":"http://localhost:5000/api/v1","DEFAULT_SCROWBLES":"VALOR_HMG"}

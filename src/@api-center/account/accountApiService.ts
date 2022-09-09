@@ -1,4 +1,4 @@
-import env from 'environment';
+import env from '../../environment';
 
 const apiAccount = `${env.API_URL}/account`
 

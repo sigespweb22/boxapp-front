@@ -123,7 +123,7 @@ const App = (props: ExtendedAppProps) => {
             name='description'
             content={`${themeConfig.templateName} – BoxApp – Aplicativo Box Tecnologia.`}
           />
-          <meta name='keywords' content='Box tecnologia, Backup, Backup em nuvem, Cyber Security' />
+          <meta name='keywords' content='Box tecnologia, Backup, Backup em nuvem, Cyber Security, ' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
 

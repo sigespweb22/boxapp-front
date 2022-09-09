@@ -17,7 +17,7 @@ import apiAccount from 'src/@api-center/account/accountApiService'
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType, UserDataType } from './types'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast, { Renderable, Toast, Toaster, ValueFunction } from 'react-hot-toast'
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -115,7 +115,7 @@ const AuthProvider = ({ children }: Props) => {
             err.response.data.errors != 'undefined' && 
             err.response.data.errors.length > 0)
         {
-          err.response.data.errors.forEach(er => {
+          err.response.data.errors.forEach((er: Renderable | ValueFunction<Renderable, Toast>) => {
             toast.error(er)
           });
         } else {

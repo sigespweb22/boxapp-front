@@ -1,4 +1,4 @@
-import env from 'environment';
+import env from '../../environment';
 
 const apiClients = `${env.API_URL}/clientes`
 

@@ -1,4 +1,4 @@
-import env from 'environment';
+import env from '../../environment';
 
 const apiNavigation = `${env.API_URL}/navigation`
 

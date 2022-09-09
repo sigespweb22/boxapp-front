@@ -6,7 +6,7 @@ export type UserLayoutType = {
 }
 
 export type UsersType = {
-  id: string
+  id: number
   role: string[]
   applicationUserGroups: string[]
   applicationUserGroupsNames: string[]

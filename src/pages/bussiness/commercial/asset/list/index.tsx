@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -61,6 +61,8 @@ import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/EditAsset
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
+
+import { AlignType } from 'rd-react-overlay';
 
 interface AssetStatusType {
   [key: string]: ThemeColor
@@ -189,8 +191,8 @@ const defaultColumns = [
     minWidth: 30,
     field: 'nome',
     headerName: 'Nome',
-    headerAlign: 'left',
-    align: 'left',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => {
       const { id, nome, unidadeMedida } = row
 
@@ -223,8 +225,8 @@ const defaultColumns = [
     field: 'tipo',
     minWidth: 50,
     headerName: 'Tipo',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -245,8 +247,6 @@ const defaultColumns = [
     minWidth: 100,
     field: 'valorCusto',
     headerName: 'Valor custo',
-    headerAlign: 'center',
-    align: 'center',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -260,8 +260,8 @@ const defaultColumns = [
     minWidth: 110,
     field: 'valorVenda',
     headerName: 'Valor venda',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -275,8 +275,8 @@ const defaultColumns = [
     field: 'unidadeMedida',
     minWidth: 130,
     headerName: 'Unidade medida',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -297,8 +297,8 @@ const defaultColumns = [
     field: 'clienteAtivoTipoServicoTipo',
     minWidth: 100,
     headerName: 'Serviço tipo',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -319,11 +319,24 @@ const defaultColumns = [
     minWidth: 50,
     field: 'status',
     headerName: 'Status',
-    headerAlign: 'center',
-    align: 'center',
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   }
 ]
+
+const defaultValue: { defaultValue: AssetsType } = {
+  nome: '',
+  referencia: '',
+  codigoUnico: '',
+  tipo: '',
+  valorCusto: 0,
+  valorVenda: 0,
+  unidadeMedida: '',
+  clienteAtivoTipoServicoTipo: '',
+  caracteristica: '',
+  observacao: '',
+  status: '',
+  avatarColor: ''
+}
 
 const AssetList = () => {
   // ** Hooks
@@ -337,7 +350,7 @@ const AssetList = () => {
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
   const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
   const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<AssetsType>('')
+  const [row, setRow] = useState<AssetsType>(defaultValue)
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)
@@ -413,8 +426,8 @@ const AssetList = () => {
       sortable: false,
       field: 'actions',
       headerName: 'Ações',
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right' as const,
+      align: 'right' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-role-page') &&
