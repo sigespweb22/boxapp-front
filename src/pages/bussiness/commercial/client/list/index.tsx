@@ -221,7 +221,7 @@ const ClientList = () => {
   const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
   const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
   const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClientsType>()
+  const [row, setRow] = useState<ClientsType | undefined>()
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)

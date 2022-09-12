@@ -199,7 +199,7 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={t(props?.row?.status)}
+                  value={props?.row?.status}
                   placeholder='Status'
                 />
               )}

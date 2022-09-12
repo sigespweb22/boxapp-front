@@ -33,6 +33,7 @@ import { editAsset } from 'src/store/apps/asset'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { AssetsType } from 'src/types/apps/assetTypes'
+import { ThemeColor } from 'src/@core/layouts/types'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -64,6 +65,7 @@ interface AssetData {
   caracteristica: string
   observacao: string
   status: string
+  avatarColor: ThemeColor
 }
 
 const tipos : string[] = ["SERVICO", "PRODUTO"];
@@ -274,7 +276,10 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                   value={value}
                   label='Valor custo'
                   name='valorCusto'
-                  onChange={onChange, resolveValor }
+                  onChange={(): void=> {
+                    onChange
+                    resolveValor
+                  }}
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -291,7 +296,10 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
                   value={value}
                   label='Valor venda'
                   name='valorVenda'
-                  onChange={onChange, resolveValor }
+                  onChange={(): void=>  {
+                    onChange
+                    resolveValor
+                  }}
                   placeholder='(e.g.: R$ 300,00)'
                 />
               )}

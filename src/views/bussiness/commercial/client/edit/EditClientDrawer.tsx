@@ -121,31 +121,50 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  // ** Set values
-  setValue('id', props.row.id)
-  setValue('nomeFantasia', props.row.nomeFantasia)
-  setValue('razaoSocial', props.row.razaoSocial)
-  setValue('inscricaoEstadual', props.row.inscricaoEstadual)
-  setValue('cnpj', props.row.cnpj)
-  setValue('telefonePrincipal', props.row.telefonePrincipal)
-  setValue('emailPrincipal', props.row.emailPrincipal)
-  setValue('observacao', props.row.observacao)
-  setValue('dataFundacao', props.row.dataFundacao)
-  setValue('codigoMunicipio', props.row.codigoMunicipio)
-  setValue('rua', props.row.rua)
-  setValue('numero', props.row.numero)
-  setValue('complemento', props.row.complemento)
-  setValue('cidade', props.row.cidade)
-  setValue('estado', props.row.estado)
-  setValue('cep', props.row.cep)
-  setValue('status', props.row.status)
+  const defaultValues = {
+    id: props?.row?.id ?? '',
+    nomeFantasia: props?.row?.nomeFantasia ?? '',
+    razaoSocial: props?.row?.razaoSocial ?? '',
+    inscricaoEstadual: props?.row?.inscricaoEstadual ?? '',
+    cnpj: props?.row?.cnpj ?? '',
+    telefonePrincipal: props?.row?.telefonePrincipal ?? '',
+    emailPrincipal: props?.row?.emailPrincipal ?? '',
+    observacao: props?.row?.observacao ?? '',
+    dataFundacao: props?.row?.dataFundacao ?? '',
+    codigoMunicipio: props?.row?.codigoMunicipio ?? '',
+    rua: props?.row?.rua ?? '',
+    numero: props?.row?.numero ?? '',
+    complemento: props?.row?.complemento ?? '',
+    cidade: props?.row?.cidade ?? '',
+    estado: props?.row?.estado ?? '',
+    cep: props?.row?.cep ?? '',
+    status: props?.row?.status ?? '',
+  }
 
-  const onSubmit = (data: ClientData) => {
+  // ** Set values
+  setValue('id', defaultValues.id)
+  setValue('nomeFantasia', defaultValues.nomeFantasia)
+  setValue('razaoSocial', defaultValues.razaoSocial)
+  setValue('inscricaoEstadual', defaultValues.inscricaoEstadual)
+  setValue('cnpj', defaultValues.cnpj)
+  setValue('telefonePrincipal', defaultValues.telefonePrincipal)
+  setValue('emailPrincipal', defaultValues.emailPrincipal)
+  setValue('observacao', defaultValues.observacao)
+  setValue('dataFundacao', defaultValues.dataFundacao)
+  setValue('codigoMunicipio', defaultValues.codigoMunicipio)
+  setValue('rua', defaultValues.rua)
+  setValue('numero', defaultValues.numero)
+  setValue('complemento', defaultValues.complemento)
+  setValue('cidade', defaultValues.cidade)
+  setValue('estado', defaultValues.estado)
+  setValue('cep', defaultValues.cep)
+  setValue('status', defaultValues.status)
+
+  const onSubmit = (data: ClientsType) => {
     dispatch(editClient({ ...data,  }))
     toggle()
     reset()
