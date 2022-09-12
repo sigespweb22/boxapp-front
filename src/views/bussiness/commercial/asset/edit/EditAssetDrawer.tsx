@@ -46,7 +46,7 @@ const MenuProps = {
 }
 
 interface SidebarAddAssetType {
-  row: AssetsType
+  row: AssetsType | undefined
   open: boolean
   toggle: () => void
 }
@@ -99,21 +99,6 @@ const schema = yup.object().shape({
     .required()
 })
 
-const defaultValues = {
-  id: '',
-  nome: '',
-  referencia: '',
-  codigoUnico: '',
-  tipo: '',
-  valorCusto: 0,
-  valorVenda: 0,
-  unidadeMedida: '',
-  clienteAtivoTipoServicoTipo: '',
-  caracteristica: '',
-  observacao: '',
-  status: ''
-}
-
 const SidebarAddAsset = (props: SidebarAddAssetType) => {
   // ** Hook
   const { t } = useTranslation()
@@ -130,23 +115,22 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
   // ** Set values
-  setValue('id', props.row.id)
-  setValue('nome', props.row.nome)
-  setValue('referencia', props.row.referencia)
-  setValue('codigoUnico', props.row.codigoUnico)
-  setValue('tipo', props.row.tipo)
-  setValue('valorCusto', props.row.valorCusto)
-  setValue('valorVenda', props.row.valorVenda)
-  setValue('unidadeMedida', props.row.unidadeMedida)
-  setValue('clienteAtivoTipoServicoTipo', props.row.clienteAtivoTipoServicoTipo)
-  setValue('caracteristica', props.row.caracteristica)
-  setValue('observacao', props.row.observacao)
+  setValue('id', props?.row?.id)
+  setValue('nome', props?.row?.nome)
+  setValue('referencia', props?.row?.referencia)
+  setValue('codigoUnico', props?.row?.codigoUnico)
+  setValue('tipo', props?.row?.tipo)
+  setValue('valorCusto', props?.row?.valorCusto)
+  setValue('valorVenda', props?.row?.valorVenda)
+  setValue('unidadeMedida', props?.row?.unidadeMedida)
+  setValue('clienteAtivoTipoServicoTipo', props?.row?.clienteAtivoTipoServicoTipo)
+  setValue('caracteristica', props?.row?.caracteristica)
+  setValue('observacao', props?.row?.observacao)
 
   const onSubmit = (data: AssetData) => {
     dispatch(editAsset({ ...data,  }))

@@ -30,7 +30,7 @@ import { AppDispatch } from 'src/store'
 import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
 
 interface SidebarEditClientType {
-  row: ClientsType
+  row: ClientsType | undefined
   open: boolean
   toggle: () => void
 }

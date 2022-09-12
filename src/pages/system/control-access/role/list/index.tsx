@@ -221,8 +221,8 @@ const RoleList = () => {
       sortable: false,
       field: 'actions',
       headerName: 'Ações',
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-role-page') &&
@@ -301,7 +301,7 @@ const RoleList = () => {
                 render={({ field: { value, onChange } }) => (
                   <TextField
                     fullWidth
-                    size='large'
+                    size='medium'
                     value={value}
                     label={t('Permission Name')}
                     onChange={onChange}
@@ -323,7 +323,7 @@ const RoleList = () => {
                 render={({ field: { value, onChange } }) => (
                   <TextField
                     fullWidth
-                    size='large'
+                    size='medium'
                     value={value}
                     label={t('Permission Description')}
                     onChange={onChange}
@@ -367,8 +367,8 @@ const RoleList = () => {
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       fullWidth
-                      disabled='true'
-                      size='large'
+                      disabled={true}
+                      size='medium'
                       value={value}
                       label={t('Permission Name')}
                       onChange={onChange}
@@ -387,8 +387,8 @@ const RoleList = () => {
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       fullWidth
-                      disabled='true'
-                      size='large'
+                      disabled={true}
+                      size='medium'
                       value={value}
                       label={t('Permission Description')}
                       onChange={onChange}

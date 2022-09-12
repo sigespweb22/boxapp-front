@@ -109,8 +109,8 @@ const defaultColumns = [
     minWidth: 30,
     field: 'nome',
     headerName: 'Nome',
-    headerAlign: 'left',
-    align: 'left',
+    headerAlign: 'left' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       const { id, nomeFantasia, emailPrincipal } = row
 
@@ -143,8 +143,8 @@ const defaultColumns = [
     minWidth: 100,
     field: 'cnpj',
     headerName: 'CNPJ',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -158,8 +158,8 @@ const defaultColumns = [
     minWidth: 100,
     field: 'telefonePrincipal',
     headerName: 'Telefone principal',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -173,8 +173,8 @@ const defaultColumns = [
     minWidth: 100,
     field: 'cidade',
     headerName: 'Cidade',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -188,8 +188,8 @@ const defaultColumns = [
     minWidth: 100,
     field: 'Estado',
     headerName: 'estado',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -203,8 +203,8 @@ const defaultColumns = [
     minWidth: 50,
     field: 'status',
     headerName: 'Status',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   }
 ]
@@ -221,7 +221,7 @@ const ClientList = () => {
   const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
   const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
   const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClientsType>('')
+  const [row, setRow] = useState<ClientsType>()
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)
@@ -297,8 +297,8 @@ const ClientList = () => {
       sortable: false,
       field: 'actions',
       headerName: 'Ações',
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-client-page') &&

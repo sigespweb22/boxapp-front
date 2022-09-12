@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import Close from 'mdi-material-ui/Close'
 
 interface SidebarViewClientType {
-  row: ClientsType
+  row: ClientsType | undefined
   open: boolean
   toggle: () => void
 }

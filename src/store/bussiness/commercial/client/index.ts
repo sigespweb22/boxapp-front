@@ -79,18 +79,18 @@ export const addClient = createAsyncThunk(
             resp.response.data.title === "One or more validation errors occurred.")
         {
           const returnObj = Object.entries(resp.response.data.errors);
-          returnObj.forEach(err => {
+          returnObj.forEach((err: any) => {
             toast.error(err)
           });
         } else {
-          resp.response.data.errors.forEach(err => {
+          resp.response.data.errors.forEach((err: any) => {
             toast.error(err)
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -142,18 +142,18 @@ export const editClient = createAsyncThunk(
             resp.response.data.title === "One or more validation errors occurred.")
         {
           const returnObj = Object.entries(resp.response.data.errors);
-          returnObj.forEach(err => {
+          returnObj.forEach((err: any) => {
             toast.error(err)
           });
         } else {
-          resp.response.data.errors.forEach(err => {
+          resp.response.data.errors.forEach((err: any) => {
             toast.error(err)
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -180,13 +180,13 @@ export const deleteClient = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -216,13 +216,13 @@ export const alterStatusClient = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });

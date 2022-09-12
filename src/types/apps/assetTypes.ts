@@ -2,7 +2,7 @@
 import { ThemeColor } from 'src/@core/layouts/types'
 
 export type UserLayoutType = {
-  id: string | undefined
+  id: string
 }
 
 export type AssetsType = {
@@ -18,5 +18,5 @@ export type AssetsType = {
   caracteristica: string
   observacao: string
   status: string
-  avatarColor?: ThemeColor
+  avatarColor: ThemeColor
 }

@@ -37,7 +37,7 @@ export const fetchData = createAsyncThunk('appAssets/fetchData', async (params: 
 // ** Add Assets
 export const addAsset = createAsyncThunk(
   'appAssets/addAsset',
-  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: AssetsType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(assetApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -72,8 +72,9 @@ export const addAsset = createAsyncThunk(
           typeof resp.response.data.errors.length == 'undefined')
       {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+
+        returnObj.forEach((err: any) => {
+          err[1].forEach(function (ie: any) {
             toast.error(ie)        
           })
         });
@@ -81,7 +82,7 @@ export const addAsset = createAsyncThunk(
                  typeof resp.response.data.errors != 'undefined' &&
                  typeof resp.response.data.errors.length != 'undefined') 
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       }
@@ -122,13 +123,13 @@ export const editAsset = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach(function(err: any) {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -155,13 +156,13 @@ export const deleteAsset = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -191,13 +192,13 @@ export const alterStatusAsset = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie:any) => {
             toast.error(ie)        
           })
         });

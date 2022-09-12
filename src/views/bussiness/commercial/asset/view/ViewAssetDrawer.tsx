@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import Close from 'mdi-material-ui/Close'
 
 interface SidebarViewAssetType {
-  row: AssetsType
+  row: AssetsType | undefined
   open: boolean
   toggle: () => void
 }
@@ -68,8 +68,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.nome}
+                  disabled={true}
+                  value={props?.row?.nome}
                   placeholder='Nome'
                 />
               )}
@@ -81,8 +81,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.referencia}
+                  disabled={true}
+                  value={props?.row?.referencia}
                   placeholder='Referência'
                 />
               )}
@@ -94,8 +94,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.codigoUnico}
+                  disabled={true}
+                  value={props?.row?.codigoUnico}
                   placeholder='Código Único'
                 />
               )}
@@ -107,8 +107,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.tipo}
+                  disabled={true}
+                  value={props?.row?.tipo}
                   placeholder='Tipo'
                 />
               )}
@@ -120,8 +120,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.valorCusto}
+                  disabled={true}
+                  value={props?.row?.valorCusto}
                   placeholder='Valor custo'
                 />
               )}
@@ -133,8 +133,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.valorVenda}
+                  disabled={true}
+                  value={props?.row?.valorVenda}
                   placeholder='Valor venda'
                 />
               )}
@@ -146,8 +146,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.unidadeMedida}
+                  disabled={true}
+                  value={props?.row?.unidadeMedida}
                   placeholder='Unidade medida'
                 />
               )}
@@ -159,8 +159,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.clienteAtivoTipoServicoTipo}
+                  disabled={true}
+                  value={props?.row?.clienteAtivoTipoServicoTipo}
                   placeholder='Serviço tipo'
                 />
               )}
@@ -172,8 +172,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.caracteristica}
+                  disabled={true}
+                  value={props?.row?.caracteristica}
                   placeholder='Característica'
                 />
               )}
@@ -185,8 +185,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.observacao}
+                  disabled={true}
+                  value={props?.row?.observacao}
                   placeholder='Observação'
                 />
               )}
@@ -198,8 +198,8 @@ const SidebarViewAsset = (props: SidebarViewAssetType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={t(props.row.status)}
+                  disabled={true}
+                  value={t(props?.row?.status)}
                   placeholder='Status'
                 />
               )}

@@ -222,8 +222,9 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
-const groupTransform = (groups) => {
-  var elem = []
+const groupTransform = (groups: string[]) => {
+  var elem: string[] = []
+
   groups.forEach(element => {
     elem.push("| " + element + " | ")
   })
@@ -304,8 +305,8 @@ const columns = [
     minWidth: 110,
     field: 'status',
     headerName: 'Status',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   },
   {
@@ -314,8 +315,8 @@ const columns = [
     sortable: false,
     field: 'actions',
     headerName: 'Ações',
-    headerAlign: 'right',
-    align: 'right',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]
@@ -350,68 +351,11 @@ const UserList = () => {
     setValue(val)
   }, [])
 
-  const handleGroupChange = useCallback((e: SelectChangeEvent) => {
-    setGroup(e.target.value)
-  }, [])
-
-  const handleStatusChange = useCallback((e: SelectChangeEvent) => {
-    setStatus(e.target.value)
-  }, [])
-
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
 
   return (
     <Grid container spacing={6}>
       <Grid container spacing={6}>
-        {/* {ability?.can('read', 'ac-user-page-search') ? (
-          <Grid item xs={12}>
-            <Card>
-              <CardHeader title={t('Search Filters')} />
-              <CardContent>
-                <Grid container spacing={6}>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='group-select'>{t("Select Group")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={group}
-                        id='select-group'
-                        label='Select Group'
-                        labelId='group-select'
-                        onChange={handleGroupChange}
-                        inputProps={{ placeholder: 'Select Group' }}
-                      >
-                        <MenuItem value=''>{t("Select Group")}</MenuItem>
-                        <MenuItem value='Master'>Master</MenuItem>
-                        <MenuItem value='Suporte N1'>Suporte N1</MenuItem>
-                        <MenuItem value='Suporte N2'>Suporte N2</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id='status-select'>{t("Select Status")}</InputLabel>
-                      <Select
-                        fullWidth
-                        value={status}
-                        id='select-status'
-                        label='Select Status'
-                        labelId='status-select'
-                        onChange={handleStatusChange}
-                        inputProps={{ placeholder: 'Select Status' }}
-                      >
-                        <MenuItem value=''>{t("Select Status")}</MenuItem>
-                        <MenuItem value='PENDING'>PENDING</MenuItem>
-                        <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
-                        <MenuItem value='INACTIVE'>INACTIVE</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ) : null} */}
         <Grid item xs={12}>
           <PageHeader
             title={<Typography variant='h5'>{t("Users")}</Typography>}

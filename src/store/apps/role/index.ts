@@ -10,6 +10,7 @@ import roleApi from 'src/@api-center/role/roleApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
+import { RolesType } from 'src/types/apps/roleTypes'
 
 interface DataParams {
   q: string
@@ -37,7 +38,7 @@ export const fetchData = createAsyncThunk('appRoles/fetchData', async (params: D
 // ** Add Role
 export const addRole = createAsyncThunk(
   'appRoles/addRole',
-  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: RolesType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
     let config = {
       headers: {
@@ -54,18 +55,17 @@ export const addRole = createAsyncThunk(
       dispatch(fetchData(getState().role.params))
       if (resp.status === 201) return toast.success("Permissão criada com sucesso.")
     }).catch((resp) => {
-      debugger;
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -77,7 +77,7 @@ export const addRole = createAsyncThunk(
 // ** Update Role
 export const updateRole = createAsyncThunk(
   'appRoles/updateRole',
-  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: RolesType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
     let config = {
       headers: {
@@ -95,18 +95,17 @@ export const updateRole = createAsyncThunk(
       dispatch(fetchData(getState().role.params))
       if (resp.status === 204) return toast.success("Permissão atualizada com sucesso.")
     }).catch((resp) => {
-      debugger;
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -133,13 +132,13 @@ export const deleteRole = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });

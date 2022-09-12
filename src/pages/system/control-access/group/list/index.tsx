@@ -203,12 +203,14 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
-const permissionTransform = (groups) => {
+const permissionTransform = (groups: string[]) => {
   if (!groups.length) return "Nenhuma permissão vinculada."
-  var elem = []
+  var elem: string[] = []
+
   groups.forEach(element => {
     elem.push("| " + element + " | ")
   })
+
   return elem
 }
 
@@ -270,8 +272,8 @@ const columns = [
     minWidth: 110,
     field: 'status',
     headerName: 'Status',
-    headerAlign: 'center',
-    align: 'center',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   },
   {
@@ -280,8 +282,8 @@ const columns = [
     sortable: false,
     field: 'actions',
     headerName: 'Ações',
-    headerAlign: 'right',
-    align: 'right',
+    headerAlign: 'right' as const,
+    align: 'right' as const,
     renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]

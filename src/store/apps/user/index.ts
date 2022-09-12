@@ -10,10 +10,11 @@ import userApi from 'src/@api-center/user/userApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
+import { UsersType } from 'src/types/apps/userTypes'
 
 interface DataParams {
   q: string
-  role: string
+  group: string
   status: string
 }
 
@@ -38,7 +39,7 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
 // ** Add User
 export const addUser = createAsyncThunk(
   'appUsers/addUser',
-  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: UsersType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
     const config = {
       headers: {
@@ -62,13 +63,13 @@ export const addUser = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -95,13 +96,13 @@ export const deleteUser = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -131,13 +132,13 @@ export const alterStatusUser = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });

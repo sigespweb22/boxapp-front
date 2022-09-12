@@ -33,7 +33,6 @@ import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
 import Tooltip from '@mui/material/Tooltip';
 
-
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -61,8 +60,7 @@ import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/EditAsset
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
-
-import { AlignType } from 'rd-react-overlay';
+import SelectGrouping from 'src/views/forms/form-elements/select/SelectGrouping'
 
 interface AssetStatusType {
   [key: string]: ThemeColor
@@ -323,21 +321,6 @@ const defaultColumns = [
   }
 ]
 
-const defaultValue: { defaultValue: AssetsType } = {
-  nome: '',
-  referencia: '',
-  codigoUnico: '',
-  tipo: '',
-  valorCusto: 0,
-  valorVenda: 0,
-  unidadeMedida: '',
-  clienteAtivoTipoServicoTipo: '',
-  caracteristica: '',
-  observacao: '',
-  status: '',
-  avatarColor: ''
-}
-
 const AssetList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
@@ -350,7 +333,7 @@ const AssetList = () => {
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
   const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
   const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<AssetsType>(defaultValue)
+  const [row, setRow] = useState<AssetsType>()
 
   const handleRowOptionsClose = () => {
     setAnchorEl(null)

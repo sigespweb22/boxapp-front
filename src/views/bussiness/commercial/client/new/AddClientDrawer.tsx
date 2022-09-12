@@ -46,7 +46,7 @@ import InputMask from 'react-input-mask'
 import clientApiService from 'src/@api-center/client/clientApiService'
 
 interface SidebarAddClientType {
-  row: ClientsType
+  row: ClientsType | undefined
   open: boolean
   toggle: () => void
 }

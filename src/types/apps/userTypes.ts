@@ -11,6 +11,7 @@ export type UsersType = {
   applicationUserGroups: string[]
   applicationUserGroupsNames: string[]
   email: string
+  password: string
   status: string
   avatar: string
   company: string

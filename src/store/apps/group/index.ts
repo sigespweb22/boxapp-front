@@ -10,6 +10,7 @@ import groupApiService from 'src/@api-center/group/groupApiService'
 
 // ** Toast
 import toast, { Toaster } from 'react-hot-toast'
+import { GroupsType } from 'src/types/apps/groupTypes'
 
 interface DataParams {
   q: string
@@ -36,7 +37,7 @@ export const fetchData = createAsyncThunk('appGroups/fetchData', async (params: 
 // ** Add Groups
 export const addGroup = createAsyncThunk(
   'appGroups/addGroup',
-  async (data: { [key: string[]]: number | string }, { getState, dispatch }: Redux) => {
+  async (data: GroupsType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -58,13 +59,13 @@ export const addGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -91,13 +92,13 @@ export const deleteGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
@@ -127,13 +128,13 @@ export const alterStatusGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach(err => {
+        resp.response.data.errors.forEach((err: any) => {
           toast.error(err)
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach(function(err) {
-          err[1].forEach(function (ie) {
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
             toast.error(ie)        
           })
         });
