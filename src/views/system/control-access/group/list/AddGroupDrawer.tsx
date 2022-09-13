@@ -36,6 +36,7 @@ import { addGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { GroupsType } from 'src/types/apps/groupTypes'
 
 // ** Api Services
 import roleApiService from 'src/@api-center/role/roleApiService'
@@ -64,7 +65,7 @@ interface GroupData {
   applicationRoleGroups: string[]
 }
 
-const roles = [];
+let roles: string[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {

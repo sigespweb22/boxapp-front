@@ -198,7 +198,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
         
         if (typeof resp.response.data != 'undefined')
         {
-          resp.response.data.errors.forEach(err => {
+          resp.response.data.errors.forEach((err: any) => {
             try {
               const statusCode =  err.match(/\d+/)[0]
               if (statusCode === "0") return toast.error("Ops! Algo deu errado.")
@@ -282,18 +282,21 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               render={(props) => (
                 <InputMask
                   mask="99.999.999/9999-99"
-                  name="cnpj"
-                  type="text"
-                  value={props.field.value}  
-                  label='Cnpj'
+                  value={props.field.value}
+                  disabled={false}
                   onChange={(value): void => {
                     props.field.onChange(value)
                     changeHandler(value)
                   }}
-                  placeholder='(e.g.: 60.133.365/0001-16)'
-                  error={Boolean(errors.cnpj)}
+                  
                 >
-                  {() => <TextField />}
+                   <TextField
+                      name="cnpj"
+                      type="text"
+                      label='Cnpj' 
+                      placeholder='(e.g.: 60.133.365/0001-16)'
+                      error={Boolean(errors.cnpj)} 
+                    />
                 </InputMask>
               )}
             />

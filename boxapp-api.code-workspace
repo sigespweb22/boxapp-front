@@ -1,13 +1,7 @@
 {
     "folders": [
         {
-            "path": "."
-        },
-        {
             "path": "../boxapp-api"
-        },
-        {
-            "path": "../sigespweb-app"
         }
     ]
 }

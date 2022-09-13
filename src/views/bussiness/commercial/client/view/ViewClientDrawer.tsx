@@ -64,12 +64,12 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
         <form>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller              
-              name='nome'
+              name='nomeFantasia'
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.nomeFantasia}
+                  disabled={true}
+                  value={props?.row?.nomeFantasia}
                   placeholder='Nome fantasia'
                 />
               )}
@@ -81,8 +81,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.razaoSocial}
+                  disabled={true}
+                  value={props?.row?.razaoSocial}
                   placeholder='Razão sociaç'
                 />
               )}
@@ -94,8 +94,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.inscricaoSocial}
+                  disabled={true}
+                  value={props?.row?.inscricaoEstadual}
                   placeholder='Inscrição estadual'
                 />
               )}
@@ -107,8 +107,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.cnpj}
+                  disabled={true}
+                  value={props?.row?.cnpj}
                   placeholder='CNPJ'
                 />
               )}
@@ -120,8 +120,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.telefonePrincipal}
+                  disabled={true}
+                  value={props?.row?.telefonePrincipal}
                   placeholder='Telefone principal'
                 />
               )}
@@ -133,8 +133,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.emailPrincipal}
+                  disabled={true}
+                  value={props?.row?.emailPrincipal}
                   placeholder='E-mail principal'
                 />
               )}
@@ -146,8 +146,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.observacao}
+                  disabled={true}
+                  value={props?.row?.observacao}
                   placeholder='Observação'
                 />
               )}
@@ -159,8 +159,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.dataFundacao}
+                  disabled={true}
+                  value={props?.row?.dataFundacao}
                   placeholder='Data fundação'
                 />
               )}
@@ -172,8 +172,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.codigoMunicipio}
+                  disabled={true}
+                  value={props?.row?.codigoMunicipio}
                   placeholder='Código município'
                 />
               )}
@@ -185,8 +185,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.rua}
+                  disabled={true}
+                  value={props?.row?.rua}
                   placeholder='Rua'
                 />
               )}
@@ -198,8 +198,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.numero}
+                  disabled={true}
+                  value={props?.row?.numero}
                   placeholder='Número'
                 />
               )}
@@ -211,8 +211,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.complemento}
+                  disabled={true}
+                  value={props?.row?.complemento}
                   placeholder='Complemento'
                 />
               )}
@@ -224,8 +224,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.cidade}
+                  disabled={true}
+                  value={props?.row?.cidade}
                   placeholder='Cidade'
                 />
               )}
@@ -237,8 +237,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.estado}
+                  disabled={true}
+                  value={props?.row?.estado}
                   placeholder='Estado'
                 />
               )}
@@ -250,8 +250,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={props.row.cep}
+                  disabled={true}
+                  value={props?.row?.cep}
                   placeholder='Cep'
                 />
               )}
@@ -263,8 +263,8 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               control={control}
               render={() => (
                 <TextField
-                  disabled='true'
-                  value={t(props.row.status)}
+                  disabled={true}
+                  value={props?.row?.status}
                   placeholder='Status'
                 />
               )}
