@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -11,7 +11,6 @@ import { useForm, Controller } from 'react-hook-form'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
@@ -146,16 +145,11 @@ const defaultValues = {
 
 const RoleList = () => {
   // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false)
   const [viewDialogOpen, setViewDialogOpen] = useState<boolean>(false)
   const [addRoleOpen, setAddRoleOpen] = useState<boolean>(false)
-
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
 
   // ** Hooks
   const ability = useContext(AbilityContext)
@@ -201,7 +195,6 @@ const RoleList = () => {
 
   const handleDelete = (id: string) => {
     dispatch(deleteRole(id))
-    handleRowOptionsClose()
   }
 
   const toggleAddRoleDrawer = () => setAddRoleOpen(!addRoleOpen)

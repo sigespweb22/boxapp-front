@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -215,7 +215,6 @@ const ClientList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
@@ -223,11 +222,6 @@ const ClientList = () => {
   const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClientsType | undefined>()
 
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-
-  // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.client)
 
@@ -255,7 +249,6 @@ const ClientList = () => {
 
   const handleAlterStatus = (id: string) => {
     dispatch(alterStatusClient(id))
-    handleRowOptionsClose()
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {

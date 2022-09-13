@@ -60,7 +60,6 @@ import EditAssetDrawer from 'src/views/bussiness/commercial/asset/edit/EditAsset
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
-import SelectGrouping from 'src/views/forms/form-elements/select/SelectGrouping'
 
 interface AssetStatusType {
   [key: string]: ThemeColor
@@ -327,17 +326,12 @@ const AssetList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
   const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
   const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
   const [row, setRow] = useState<AssetsType>()
-
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -367,7 +361,6 @@ const AssetList = () => {
 
   const handleAlterStatus = (id: string) => {
     dispatch(alterStatusAsset(id))
-    handleRowOptionsClose()
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {

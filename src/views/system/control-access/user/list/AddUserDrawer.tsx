@@ -36,6 +36,7 @@ import { addUser } from 'src/store/apps/user'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { UsersType } from 'src/types/apps/userTypes'
 
 // ** Api Services
 import apiGroup from 'src/@api-center/group/groupApiService'
@@ -59,14 +60,7 @@ interface SidebarAddUserType {
   toggle: () => void
 }
 
-interface UserData {
-  fullName: string
-  email: string
-  password: string
-  applicationUserGroups: string[]
-}
-
-const groups = [];
+let groups: { id: string, name: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -99,10 +93,6 @@ const schema = yup.object().shape({
     .string()
     .min(3, obj => showErrors('Senha', obj.value.length, obj.min))
     .typeError('Senha é requerida')
-    .required(),
-  applicationUserGroups: yup
-    .array()
-    .min(1, obj => showErrors('Grupo usuário', obj.value.length, obj.min))
     .required()
 })
 
@@ -148,7 +138,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: UserData) => {
+  const onSubmit = (data: UsersType) => {
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()
@@ -245,24 +235,22 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                         id='multiple-group'
                         onChange={onChange}
                         labelId='multiple-group-label'
-                        error={Boolean(errors.applicationUserGroups)}
                         renderValue={selected => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {(selected as unknown as string[]).map(value => (
-                              <Chip key={value.id} label={value} sx={{ m: 0.75 }} />
+                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
                             ))}
                           </Box>
                         )}
                       >
                         {
                           groups.map(group => (
-                            <MenuItem key={group} value={group.name}>
+                            <MenuItem key={group.id} value={group.name}>
                               {group.name}
                             </MenuItem>
                           ))
                         }
                     </Select>
-                    {errors.applicationUserGroups && <FormHelperText sx={{ color: 'error.main' }}>{errors.applicationUserGroups.message}</FormHelperText>}
                   </FormControl>
                 )
               }}

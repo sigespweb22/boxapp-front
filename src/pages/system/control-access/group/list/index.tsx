@@ -203,12 +203,12 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
   )
 }
 
-const permissionTransform = (groups: string[]) => {
+const permissionTransform = (groups: string[] ) => {
   if (!groups.length) return "Nenhuma permissão vinculada."
-  var elem: string[] = []
+  const elem: string[] = []
 
   groups.forEach(element => {
-    elem.push("| " + element + " | ")
+    elem.push(`| ${element} | `)
   })
 
   return elem

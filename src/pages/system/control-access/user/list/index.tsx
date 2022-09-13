@@ -223,11 +223,12 @@ const RowOptions = ({ id, status } : { id: number | string, status: string }) =>
 }
 
 const groupTransform = (groups: string[]) => {
-  var elem: string[] = []
+  const elem: string[] = []
 
   groups.forEach(element => {
     elem.push("| " + element + " | ")
   })
+
   return elem
 }
 
@@ -327,9 +328,9 @@ const UserList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [group, setGroup] = useState<string>('')
+  const [group] = useState<string>('')
   const [value, setValue] = useState<string>('')
-  const [status, setStatus] = useState<string>('')
+  const [status] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addUserOpen, setAddUserOpen] = useState<boolean>(false)
 

@@ -1,9 +1,6 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 
-// ** Icons Imports
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
-
 // ** Type Import
 import { CardStatsCharacterProps } from 'src/@core/components/card-statistics/types'
 

@@ -66,7 +66,7 @@ export const addGroup = createAsyncThunk(
           toast.error(err)
         });
       } else {
-        
+        const returnObj = Object.entries(resp.response.data.errors);        
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
             toast.error(ie)        
