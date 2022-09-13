@@ -61,11 +61,12 @@ export const addGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {
-        const returnObj = Object.entries(resp.response.data.errors);
+        
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
             toast.error(ie)        
@@ -94,7 +95,8 @@ export const deleteGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {
@@ -130,7 +132,8 @@ export const alterStatusGroup = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {

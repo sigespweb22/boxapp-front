@@ -59,7 +59,8 @@ export const addRole = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {
@@ -99,7 +100,8 @@ export const updateRole = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {
@@ -132,7 +134,8 @@ export const deleteRole = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {

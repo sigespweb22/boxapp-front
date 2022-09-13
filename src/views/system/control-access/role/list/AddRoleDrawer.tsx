@@ -1,6 +1,3 @@
-// ** React Imports
-import { useEffect, useState } from 'react'
-
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -11,16 +8,11 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -36,32 +28,14 @@ import { addRole } from 'src/store/apps/role'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { RolesType } from 'src/types/apps/roleTypes'
 
 // ** Api Services
 import apiGroup from 'src/@api-center/group/groupApiService'
 
-// ** Axios Imports
-import axios from 'axios'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
-
 interface SidebarAddRoleType {
   open: boolean
   toggle: () => void
-}
-
-interface RoleData {
-  name: string
-  description: string
 }
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -125,7 +99,7 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: RoleData) => {
+  const onSubmit = (data: RolesType) => {
     dispatch(addRole({ ...data,  }))
     toggle()
     reset()

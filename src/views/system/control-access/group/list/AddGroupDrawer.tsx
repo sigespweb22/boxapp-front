@@ -60,12 +60,7 @@ interface SidebarAddGroupType {
   toggle: () => void
 }
 
-interface GroupData {
-  name: string
-  applicationRoleGroups: string[]
-}
-
-let roles: string[] = [];
+let roles: { id: string, name: string }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -89,10 +84,6 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
-    .required(),  
-  applicationRoleGroups: yup
-    .array()
-    .min(1, obj => showErrors('Grupo permissões', obj.value.length, obj.min))
     .required()
 })
 
@@ -136,7 +127,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: GroupData) => {
+  const onSubmit = (data: GroupsType) => {
     dispatch(addGroup({ ...data,  }))
     toggle()
     reset()
@@ -197,24 +188,22 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
                         id='multiple-permission'
                         onChange={onChange}
                         labelId='multiple-permission-label'
-                        error={Boolean(errors.applicationRoleGroups)}
                         renderValue={selected => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {(selected as unknown as string[]).map(value => (
-                              <Chip key={value.id} label={value} sx={{ m: 0.75 }} />
+                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
                             ))}
                           </Box>
                         )}
                       >
                         {
                           roles.map(role => (
-                            <MenuItem key={role} value={role.name}>
+                            <MenuItem key={role.id} value={role.name}>
                               {role.name}
                             </MenuItem>
                           ))
                         }
                     </Select>
-                    {errors.applicationRoleGroups && <FormHelperText sx={{ color: 'error.main' }}>{errors.applicationRoleGroups.message}</FormHelperText>}
                   </FormControl>
                 )
               }}

@@ -83,7 +83,8 @@ export const addClient = createAsyncThunk(
             toast.error(err)
           });
         } else {
-          resp.response.data.errors.forEach((err: any) => {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
             toast.error(err)
           });
         }
@@ -180,7 +181,8 @@ export const deleteClient = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {
@@ -216,7 +218,8 @@ export const alterStatusClient = createAsyncThunk(
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        resp.response.data.errors.forEach((err: any) => {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
           toast.error(err)
         });
       } else {

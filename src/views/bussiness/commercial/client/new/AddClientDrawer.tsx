@@ -21,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
+import MuiTextField, { TextFieldProps } from '@mui/material/TextField'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -288,15 +289,15 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
                     props.field.onChange(value)
                     changeHandler(value)
                   }}
-                  
                 >
-                   <TextField
-                      name="cnpj"
-                      type="text"
-                      label='Cnpj' 
-                      placeholder='(e.g.: 60.133.365/0001-16)'
-                      error={Boolean(errors.cnpj)} 
-                    />
+                  <TextField
+                    disabled={false}
+                    name="cnpj"
+                    type="text"
+                    label='Cnpj'
+                    placeholder='(e.g.: 60.133.365/0001-16)'
+                    error={Boolean(errors.cnpj)} 
+                  />
                 </InputMask>
               )}
             />
