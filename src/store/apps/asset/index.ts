@@ -9,7 +9,7 @@ import axios from 'axios'
 import assetApiService from 'src/@api-center/asset/assetApiService'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { AssetsType } from 'src/types/apps/assetTypes'
 
 interface DataParams {
@@ -31,6 +31,7 @@ export const fetchData = createAsyncThunk('appAssets/fetchData', async (params: 
                                   },
                                   params
                             })
+
   return response.data
 })
 
@@ -95,7 +96,7 @@ export const editAsset = createAsyncThunk(
   'appAsset/updateAsset',
   async (data : AssetsType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(assetApiService.storageTokenKeyName)!
-    let config = {
+    const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
@@ -144,7 +145,7 @@ export const deleteAsset = createAsyncThunk(
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(assetApiService.storageTokenKeyName)!
     
-    let headers = {
+    const headers = {
       Authorization: "Bearer " + storedToken
     }
 
@@ -187,6 +188,7 @@ export const alterStatusAsset = createAsyncThunk(
     axios.put(assetApiService.alterStatusAsync+id, null, config).then((resp) => {
       dispatch(fetchData(getState().user.params))
       toast.success(resp.data.message)
+      
       return resp.data.data
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

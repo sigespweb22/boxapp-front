@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, useEffect } from 'react'
+import { useState, ChangeEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -17,11 +17,10 @@ import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
-import MuiTextField, { TextFieldProps } from '@mui/material/TextField'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'

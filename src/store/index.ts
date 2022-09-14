@@ -9,7 +9,6 @@ import group from 'src/store/apps/group'
 import asset from 'src/store/apps/asset'
 import client from 'src/store/bussiness/commercial/client'
 import email from 'src/store/apps/email'
-import invoice from 'src/store/apps/invoice'
 import calendar from 'src/store/apps/calendar'
 
 export const store = configureStore({
@@ -21,7 +20,6 @@ export const store = configureStore({
     client,
     chat,
     email,
-    invoice,
     calendar
   },
   middleware: getDefaultMiddleware =>

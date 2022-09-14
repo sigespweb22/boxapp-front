@@ -9,7 +9,7 @@ import axios from 'axios'
 import roleApi from 'src/@api-center/role/roleApiService'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { RolesType } from 'src/types/apps/roleTypes'
 
 interface DataParams {
@@ -40,13 +40,13 @@ export const addRole = createAsyncThunk(
   'appRoles/addRole',
   async (data: RolesType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
-    let config = {
+    const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
     }
 
-    let data2 = {
+    const data2 = {
       name: data.name,
       description: data.description
     }
@@ -80,13 +80,13 @@ export const updateRole = createAsyncThunk(
   'appRoles/updateRole',
   async (data: RolesType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
-    let config = {
+    const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
     }
 
-    let data2 = {
+    const data2 = {
       id: data.id,
       name: data.name,
       description: data.description
@@ -122,7 +122,7 @@ export const deleteRole = createAsyncThunk(
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
     
-    let headers = {
+    const headers = {
       Authorization: "Bearer " + storedToken
     }
 

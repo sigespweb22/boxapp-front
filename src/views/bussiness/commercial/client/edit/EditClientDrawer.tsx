@@ -35,36 +35,6 @@ interface SidebarEditClientType {
   toggle: () => void
 }
 
-interface ClientData {
-  id: string
-  nomeFantasia: string
-  razaoSocial: string
-  inscricaoEstadual: string
-  cnpj: string
-  telefonePrincipal: string
-  emailPrincipal: string
-  observacao: string
-  dataFundacao: string
-  codigoMunicipio: string
-  rua: string
-  numero: string
-  complemento: string
-  cidade: string
-  estado: string
-  cep: string
-  status: string
-}
-
-const showErrors = (field: string, valueLen: number, min: number) => {
-  if (valueLen === 0) {
-    return `${field} é requerido (a)`
-  } else if (valueLen > 0 && valueLen < min) {
-    return `${field} deve ter pelo menos ${min} caracteres`
-  } else {
-    return ''
-  }
-}
-
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -84,26 +54,6 @@ const schema = yup.object().shape({
     .string()
     .required("CNPJ é requerido.")
 })
-
-const defaultValues = {
-  id: '',
-  nomeFantasia: '',
-  razaoSocial: '',
-  inscricaoEstadual: '',
-  cnpj: '',
-  telefonePrincipal: '',
-  emailPrincipal: '',
-  observacao: '',
-  dataFundacao: '',
-  codigoMunicipio: '',
-  rua: '',
-  numero: '',
-  complemento: '',
-  cidade: '',
-  estado: '',
-  cep: '',
-  status: ''
-}
 
 const SidebarEditClient = (props: SidebarEditClientType) => {
   // ** Hook

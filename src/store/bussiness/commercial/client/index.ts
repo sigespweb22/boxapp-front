@@ -12,7 +12,7 @@ import clientApiService from 'src/@api-center/client/clientApiService'
 import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 interface DataParams {
   q: string
@@ -33,6 +33,7 @@ export const fetchData = createAsyncThunk('appClients/fetchData', async (params:
                                   },
                                   params
                             })
+
   return response.data
 })
 
@@ -105,7 +106,7 @@ export const editClient = createAsyncThunk(
   'appClient/updateClient',
   async (data : ClientsType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
-    let config = {
+    const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
@@ -169,7 +170,7 @@ export const deleteClient = createAsyncThunk(
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     
-    let headers = {
+    const headers = {
       Authorization: "Bearer " + storedToken
     }
 
@@ -212,6 +213,7 @@ export const alterStatusClient = createAsyncThunk(
     axios.put(clientApiService.alterStatusAsync+id, null, config).then((resp) => {
       dispatch(fetchData(getState().client.params))
       toast.success(resp.data.message)
+      
       return resp.data.data
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

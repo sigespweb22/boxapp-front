@@ -7,7 +7,8 @@ import { useRouter } from 'next/router'
 // ** Axios
 import axios from 'axios'
 
-// ** Config
+// ** Api Services
+import accountApiServices from 'src/@api-center/account/accountApiService'
 import authConfig from 'src/configs/auth'
 
 // ** Api services
@@ -17,7 +18,7 @@ import apiAccount from 'src/@api-center/account/accountApiService'
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType, UserDataType } from './types'
 
 // ** Toast
-import toast, { Renderable, Toast, Toaster, ValueFunction } from 'react-hot-toast'
+import toast, { Renderable, Toast, ValueFunction } from 'react-hot-toast'
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -50,11 +51,11 @@ const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
       setIsInitialized(true)
-      const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
+      const storedToken = window.localStorage.getItem(accountApiServices.storageTokenKeyName)!
       if (storedToken) {
         setLoading(true)
         await axios
-          .get(apiAccount.me, {
+          .get(accountApiServices.me, {
             headers: {
               Authorization: "Bearer " + storedToken
             }
@@ -79,9 +80,9 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
     axios
-      .post(authConfig.loginEndpoint, params)
+      .post(accountApiServices.loginEndpoint, params)
       .then(async res => {
-        window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.userData.accessToken)
+        window.localStorage.setItem(accountApiServices.storageTokenKeyName, res.data.userData.accessToken)
         
         const returnUrl = router.query.returnUrl
         setUser({ ...res.data.userData })
@@ -128,7 +129,7 @@ const AuthProvider = ({ children }: Props) => {
     setUser(null)
     setIsInitialized(false)
     window.localStorage.removeItem('userData')
-    window.localStorage.removeItem(authConfig.storageTokenKeyName)
+    window.localStorage.removeItem(accountApiServices.storageTokenKeyName)
     router.push('/login')
   }
 

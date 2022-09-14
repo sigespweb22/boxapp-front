@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -20,7 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -89,12 +89,12 @@ const schema = yup.object().shape({
 
 const defaultValues = {
   name: '',  
-  applicationRoleGroups: [],
+  applicationRoleGroups: []
 }
 
 const SidebarAddGroup = (props: SidebarAddGroupType) => {
   const storedToken = window.localStorage.getItem(roleApiService.storageTokenKeyName)!
-  let config = {
+  const config = {
     headers: {
       Authorization: "Bearer " + storedToken
     }

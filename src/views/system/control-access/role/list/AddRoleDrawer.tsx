@@ -1,7 +1,6 @@
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -29,9 +28,6 @@ import { addRole } from 'src/store/apps/role'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { RolesType } from 'src/types/apps/roleTypes'
-
-// ** Api Services
-import apiGroup from 'src/@api-center/group/groupApiService'
 
 interface SidebarAddRoleType {
   open: boolean
@@ -73,13 +69,6 @@ const defaultValues = {
 }
 
 const SidebarAddRole = (props: SidebarAddRoleType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  let config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
   // ** Hook
   const { t } = useTranslation()
 

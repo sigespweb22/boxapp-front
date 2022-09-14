@@ -3,6 +3,7 @@
   "version": "1.4.0",
   "private": true,
   "scripts": {
+    "build": "next build && next export",
     "build:hmg": "npm run clear && npm run env:hmg next build && next export",
     "build:prod": "yarn cache clean && npm run env:prod next build && next export",
     "env:hmg": "cross-env ACTIVE_ENV=development",

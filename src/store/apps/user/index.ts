@@ -9,7 +9,7 @@ import axios from 'axios'
 import userApi from 'src/@api-center/user/userApiService'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { UsersType } from 'src/types/apps/userTypes'
 
 interface DataParams {
@@ -33,6 +33,7 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
                                   },
                                   params
                             })
+
   return response.data
 })
 
@@ -85,7 +86,7 @@ export const deleteUser = createAsyncThunk(
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
     
-    let headers = {
+    const headers = {
       Authorization: "Bearer " + storedToken
     }
 
@@ -128,6 +129,7 @@ export const alterStatusUser = createAsyncThunk(
     axios.put(userApi.alterStatusAsync+id, null, config).then((resp) => {
       dispatch(fetchData(getState().user.params))
       toast.success(resp.data.message)
+      
       return resp.data.data
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

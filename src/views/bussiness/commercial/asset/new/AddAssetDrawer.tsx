@@ -32,7 +32,6 @@ import { addAsset } from 'src/store/apps/asset'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ThemeColor } from 'src/@core/layouts/types'
 import { AssetsType } from 'src/types/apps/assetTypes'
 
 const ITEM_HEIGHT = 48
@@ -49,21 +48,6 @@ const MenuProps = {
 interface SidebarAddAssetType {
   open: boolean
   toggle: () => void
-}
-
-interface AssetData {
-  nome: string
-  referencia: string
-  codigoUnico: string
-  tipo: string
-  valorCusto: number
-  valorVenda: number
-  unidadeMedida: string
-  clienteAtivoTipoServicoTipo: string
-  caracteristica: string
-  observacao: string
-  status: string
-  avatarColor: ThemeColor
 }
 
 const tipos : string[] = ["SERVICO", "PRODUTO"];
@@ -223,7 +207,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               name="tipo"
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='single-select-tipo-chip-label'>{t("Type")}</InputLabel>
@@ -296,7 +280,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               name="unidadeMedida"
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
@@ -331,7 +315,7 @@ const SidebarAddAsset = (props: SidebarAddAssetType) => {
               name="clienteAtivoTipoServicoTipo"
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='single-select-st-chip-label'>{t("Type of Service")}</InputLabel>

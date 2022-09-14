@@ -20,7 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -105,7 +105,7 @@ const defaultValues = {
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
   const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  let config = {
+  const config = {
     headers: {
       Authorization: "Bearer " + storedToken
     }

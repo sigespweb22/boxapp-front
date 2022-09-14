@@ -1,5 +1,3 @@
-import { StatusObjType } from "src/types/apps/chatTypes"
-
 export type ErrCallbackType = (err: { [key: string]: string }) => void
 
 export type LoginParams = {

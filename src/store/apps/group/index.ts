@@ -9,7 +9,7 @@ import axios from 'axios'
 import groupApiService from 'src/@api-center/group/groupApiService'
 
 // ** Toast
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 // ** Types
 import { GroupsType } from 'src/types/apps/groupTypes'
@@ -33,6 +33,7 @@ export const fetchData = createAsyncThunk('appGroups/fetchData', async (params: 
                                   },
                                   params
                             })
+
   return response.data
 })
 
@@ -83,7 +84,7 @@ export const deleteGroup = createAsyncThunk(
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
     
-    let headers = {
+    const headers = {
       Authorization: "Bearer " + storedToken
     }
 
@@ -126,6 +127,7 @@ export const alterStatusGroup = createAsyncThunk(
     axios.put(groupApiService.alterStatusAsync+id, null, config).then((resp) => {
       dispatch(fetchData(getState().group.params))
       toast.success(resp.data.message)
+      
       return resp.data.data
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
