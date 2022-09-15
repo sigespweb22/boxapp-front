@@ -20,6 +20,7 @@ const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
   role.forEach((item) => {
+    debugger
     /// begin - master
     if (item === 'Master') {
       can('manage', 'all')

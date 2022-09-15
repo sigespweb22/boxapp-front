@@ -2,9 +2,6 @@
 //import { useState, ReactNode, MouseEvent } from 'react'
 import { useState, ReactNode } from 'react'
 
-// ** Next Imports
-import Link from 'next/link'
-
 // ** MUI Components
 // import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
@@ -91,12 +88,6 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: { mt: theme.spacing(8) }
 }))
 
-const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
-}))
-
 const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
   '& .MuiFormControlLabel-label': {
     fontSize: '0.875rem',
@@ -105,8 +96,12 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(5).required()
+  email: yup.string()
+            .email()
+            .required("E-mail é requerido"),
+  password: yup.string()
+               .min(6, "Senha requer no mínimko 6 caracteres")
+               .required("Senha é requerida")
 })
 
 const defaultValues = {
@@ -337,22 +332,22 @@ const LoginPage = () => {
                 sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
               >
                 <FormControlLabel control={<Checkbox />} label='Lembra-me?' />
-                <Link passHref href='/forgot-password'>
+                {/* <Link passHref href='/forgot-password'>
                   <LinkStyled>Esqueceu sua senha?</LinkStyled>
-                </Link>
+                </Link> */}
               </Box>
               <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                 Entrar
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Typography variant='body2' sx={{ mr: 2 }}>
+                {/* <Typography variant='body2' sx={{ mr: 2 }}>
                   Novo na Box Tecnologia?
                 </Typography>
                 <Typography variant='body2'>
                   <Link passHref href='/register'>
                     <LinkStyled>Crie sua conta</LinkStyled>
                   </Link>
-                </Typography>
+                </Typography> */}
               </Box>
               {/* <Divider sx={{ my: 5 }}>or</Divider>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
