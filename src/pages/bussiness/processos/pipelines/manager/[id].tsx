@@ -4,6 +4,9 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, InferGetStaticPr
 // ** Third Party Imports
 import axios from 'axios'
 
+// ** Api Services
+import pipelineApiService from 'src/@api-center/pipeline/pipelineApiService'
+
 // ** Types
 import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
@@ -15,9 +18,16 @@ const PipelineManager = ({ id, pipelineData }: InferGetStaticPropsType<typeof ge
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get('http://localhost:5000/pipelines/list')
-  const pipelineData: PipelineType[] = await res.data.allData
+  const storedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZTQ0NTg2NS1hMjRkLTQ1NDMtYTZjNi05NDQzZDA0OGNkYjkiLCJuYW1lIjoiYWxhbi5yZXplbmRlQGJveHRlY25vbG9naWEuY29tLmJyIiwicm9sZSI6Ik1hc3RlciIsIm5iZiI6MTY2MzMzNTM5MSwiZXhwIjoxNjYzOTQwMTkxLCJpYXQiOjE2NjMzMzUzOTF9.sJKbryVTqnjKovJZd8o3ihEjXxYg5-fFVx0MajglOEY"
+  const res = await axios
+                            .get(pipelineApiService.listAsync, {
+                                  headers: {
+                                    Authorization: "Bearer " + storedToken
+                                  }
+                            })
 
+  const pipelineData: PipelineType[] = await res.data.allData
+  
   const paths = pipelineData.map((item: PipelineType) => ({
     params: { id: `${item.id}` }
   }))
@@ -29,7 +39,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const res = await axios.get(`http://localhost:5000/pipelines/list/${params}`)
+  const storedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZTQ0NTg2NS1hMjRkLTQ1NDMtYTZjNi05NDQzZDA0OGNkYjkiLCJuYW1lIjoiYWxhbi5yZXplbmRlQGJveHRlY25vbG9naWEuY29tLmJyIiwicm9sZSI6Ik1hc3RlciIsIm5iZiI6MTY2MzMzNTM5MSwiZXhwIjoxNjYzOTQwMTkxLCJpYXQiOjE2NjMzMzUzOTF9.sJKbryVTqnjKovJZd8o3ihEjXxYg5-fFVx0MajglOEY"
+  const res = await axios
+                        .get(pipelineApiService.listAsync, {
+                              headers: {
+                                Authorization: "Bearer " + storedToken
+                              },
+                              params
+                        })
+
   const pipelineData: PipelineType[] = res.data.allData
 
   return {

@@ -41,10 +41,18 @@ import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Types
 import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
-import { PipelineLayoutType } from 'src/types/bussiness/processos/userTypes'
+import { PipelineLayoutType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+
+// ** Api Services
+import pipelineApiService from 'src/@api-center/pipeline/pipelineApiService'
 
 // ** Third Party Components
 import axios from 'axios'
+
+// ** Custom Components Imports
+import PageHeader from 'src/@core/components/page-header'
+
+import PipelineKanBan from 'src/@core/components/pipelines/index'
 
 interface CardDataType {
   title: string
@@ -88,10 +96,16 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
   const [dialogTitle, setDialogTitle] = useState<'Add' | 'Edit'>('Add')
   const [error, setError] = useState<boolean>(false)
   const [data, setData] = useState<null | PipelineType>(null)
-
+ 
+  const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
   useEffect(() => {
     axios
-      .get('http://localhost:5000/pipelines', { params: { id } })
+      .get(pipelineApiService.listAsync, {
+            headers: {
+              Authorization: "Bearer " + storedToken
+            },
+            params: { id }
+      })
       .then(response => {
         setData(response.data)
         setError(false)
@@ -166,138 +180,24 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
 
   const onSubmit = () => handleClose()
 
+  const onDragEnd = () => {
+    // TODO: reorder our collumn
+  }
+
   return (
-    <Grid container spacing={6} className='match-height'>
-      <Grid item xs={12} sm={6} lg={4}>
-        <Card
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            handleClickOpen()
-            setDialogTitle('Add')
-          }}
-        >
-          <Grid container sx={{ height: '100%' }}>
-            <Grid item xs={5}>
-              <Box sx={{ height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <img width={65} height={130} alt='add-role' src='/images/cards/pose_m1.png' />
-              </Box>
-            </Grid>
-            <Grid item xs={7}>
-              <CardContent>
-                <Box sx={{ textAlign: 'right' }}>
-                  <Button
-                    variant='contained'
-                    sx={{ mb: 3, whiteSpace: 'nowrap' }}
-                    onClick={() => {
-                      handleClickOpen()
-                      setDialogTitle('Add')
-                    }}
-                  >
-                    Novo pipe
-                  </Button>
-                  <Typography>Experimente construir um novo pipeline.</Typography>
-                </Box>
-              </CardContent>
-            </Grid>
-          </Grid>
-        </Card>
-      </Grid>
-      {renderCards()}
-      <Dialog fullWidth maxWidth='md' scroll='body' onClose={handleClose} open={open}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle sx={{ textAlign: 'center' }}>
-            <Typography variant='h4' component='span'>
-              {`${dialogTitle} Role`}
+      <Grid container spacing={6} className='match-height'>
+        <PageHeader
+          title={<Typography variant='h5'>Pré-venda</Typography>}
+          subtitle={
+            <Typography variant='body2'>
+              Nesta etapa ocorre a qualificação dos leads
             </Typography>
-            <Typography variant='body2'>Set Role Permissions</Typography>
-          </DialogTitle>
-          <DialogContent sx={{ p: { xs: 6, sm: 12 } }}>
-            <Box sx={{ my: 4 }}>
-              <FormControl fullWidth>
-                <Controller
-                  name='name'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='Role Name'
-                      onChange={onChange}
-                      error={Boolean(errors.name)}
-                      placeholder='Enter Role Name'
-                    />
-                  )}
-                />
-                {errors.name && (
-                  <FormHelperText sx={{ color: 'error.main' }}>Please enter a valid role name</FormHelperText>
-                )}
-              </FormControl>
-            </Box>
-            <Typography variant='h6'>Role Permissions</Typography>
-            <TableContainer>
-              <Table size='small'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ pl: '0 !important' }}>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          fontSize: '0.875rem',
-                          alignItems: 'center',
-                          textTransform: 'capitalize'
-                        }}
-                      >
-                        Administrator Access
-                        <Tooltip placement='top' title='Allows a full access to the system'>
-                          <InformationOutline sx={{ ml: 1, fontSize: '1rem' }} />
-                        </Tooltip>
-                      </Box>
-                    </TableCell>
-                    <TableCell colSpan={3}>
-                      <FormControlLabel
-                        label='Select All'
-                        control={<Checkbox size='small' />}
-                        sx={{ '& .MuiTypography-root': { textTransform: 'capitalize' } }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rolesArr.map((i, index: number) => {
-                    return (
-                      <TableRow key={index} sx={{ '& .MuiTableCell-root:first-of-type': { pl: 0 } }}>
-                        <TableCell sx={{ fontWeight: 600, color: theme => `${theme.palette.text.primary} !important` }}>
-                          {i}
-                        </TableCell>
-                        <TableCell>
-                          <FormControlLabel control={<Checkbox size='small' />} label='Read' />
-                        </TableCell>
-                        <TableCell>
-                          <FormControlLabel control={<Checkbox size='small' />} label='Write' />
-                        </TableCell>
-                        <TableCell>
-                          <FormControlLabel control={<Checkbox size='small' />} label='Create' />
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </DialogContent>
-          <DialogActions sx={{ pt: 0, display: 'flex', justifyContent: 'center' }}>
-            <Box className='demo-space-x'>
-              <Button size='large' type='submit' variant='contained'>
-                Submit
-              </Button>
-              <Button size='large' color='secondary' variant='outlined' onClick={handleClose}>
-                Discard
-              </Button>
-            </Box>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </Grid>
+          }
+        />
+        <Grid item xs={12} sm={6} lg={4}>
+          <PipelineKanBan />    
+        </Grid>
+      </Grid>    
   )
 }
 

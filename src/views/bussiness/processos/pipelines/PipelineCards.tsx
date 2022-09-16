@@ -40,6 +40,7 @@ import ContentCopy from 'mdi-material-ui/ContentCopy'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 interface CardDataType {
+  id: string,
   title: string
   avatars: string[]
   totalUsers: number
@@ -52,11 +53,11 @@ const MenuItemLink = styled('a')(() => ({
 }))
 
 const cardData: CardDataType[] = [
-  { totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
-  { totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
-  { totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
-  { totalUsers: 3, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
-  { totalUsers: 2, title: 'Implantação', avatars: ['4.png', '5.png'] }
+  { id: '1', totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
+  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
+  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
+  { id: '3', totalUsers: 3, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
+  { id: '8727ed5f-8f07-4ce6-9fa1-a9a920cb7caa', totalUsers: 2, title: 'Implantação', avatars: ['4.png', '5.png'] }
 ]
 
 const rolesArr = [
@@ -94,7 +95,7 @@ const RolesCards = () => {
   const renderCards = () =>
     cardData.map((item, index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
-        <Link href={`/bussiness/processos/pipelines/manager/`} passHref>
+        <Link href={`/bussiness/processos/pipelines/manager/${item.id}`} passHref>
           <MenuItemLink>
             <Card>
               <CardContent>

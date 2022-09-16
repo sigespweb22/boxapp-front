@@ -15,7 +15,7 @@ const PipelinesComponent = () => {
         title={<Typography variant='h5'>Pipelines</Typography>}
         subtitle={
           <Typography variant='body2'>
-            Um pipeline é um quadro de etapas que pode ou não representar um processo ou denotar o início e fim de uma atividade específica
+            Um pipeline é um quadro de etapas que pode ou não representar um processo ou denotar o início e fim de uma atividade específica.
           </Typography>
         }
       />
