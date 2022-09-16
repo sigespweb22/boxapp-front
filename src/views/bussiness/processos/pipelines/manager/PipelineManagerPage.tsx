@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -39,6 +39,13 @@ import { useForm, Controller } from 'react-hook-form'
 import ContentCopy from 'mdi-material-ui/ContentCopy'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
+// ** Types
+import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelineLayoutType } from 'src/types/bussiness/processos/userTypes'
+
+// ** Third Party Components
+import axios from 'axios'
+
 interface CardDataType {
   title: string
   avatars: string[]
@@ -71,10 +78,29 @@ const rolesArr = [
   'Payroll'
 ]
 
-const RolesCards = () => {
+type Props = PipelineLayoutType & {
+  pipelineData: PipelineType[]
+}
+
+const PipelineManager = ({ id, pipelineData }: Props) => {
   // ** States
   const [open, setOpen] = useState<boolean>(false)
   const [dialogTitle, setDialogTitle] = useState<'Add' | 'Edit'>('Add')
+  const [error, setError] = useState<boolean>(false)
+  const [data, setData] = useState<null | PipelineType>(null)
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/pipelines', { params: { id } })
+      .then(response => {
+        setData(response.data)
+        setError(false)
+      })
+      .catch(() => {
+        setData(null)
+        setError(true)
+      })
+  }, [id])
 
   // ** Hooks
   const {
@@ -275,4 +301,4 @@ const RolesCards = () => {
   )
 }
 
-export default RolesCards
+export default PipelineManager
