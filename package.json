@@ -15,6 +15,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@atlaskit/css-reset": "^6.3.14",
     "@auth0/auth0-react": "1.10.1",
     "@aws-amplify/auth": "4.5.3",
     "@aws-amplify/ui-react": "2.16.1",

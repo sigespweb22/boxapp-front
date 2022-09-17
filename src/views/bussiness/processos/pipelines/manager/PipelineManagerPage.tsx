@@ -174,9 +174,8 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
             </Card>
           </MenuItemLink>
         </Link>
-        
       </Grid>
-    ))
+  ))
 
   const onSubmit = () => handleClose()
 
