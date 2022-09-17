@@ -179,10 +179,6 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
 
   const onSubmit = () => handleClose()
 
-  const onDragEnd = () => {
-    // TODO: reorder our collumn
-  }
-
   return (
       <Grid container spacing={6} className='match-height'>
         <PageHeader
@@ -193,8 +189,8 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
             </Typography>
           }
         />
-        <Grid item xs={12} sm={6} lg={4}>
-          <PipelineKanBan />    
+        <Grid item xs={12} sm={12} lg={12}>
+          <PipelineKanBan />
         </Grid>
       </Grid>    
   )
