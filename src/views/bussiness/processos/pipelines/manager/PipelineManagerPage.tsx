@@ -61,9 +61,11 @@ interface CardDataType {
 }
 
 // ** Styled component for the link inside menu
-const MenuItemLink = styled('a')(() => ({
-  width: '100%',
+const MenuItemLink = styled('a')(({ theme }) => ({
+  width: '50%',
+  alignItems: 'center',
   textDecoration: 'none',
+  color: theme.palette.text.primary
 }))
 
 const cardData: CardDataType[] = [

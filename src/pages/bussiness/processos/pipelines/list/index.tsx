@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import PageHeader from 'src/@core/components/page-header'
 
 // ** Demo Components Imports
-import PipelineCards from 'src/views/bussiness/processos/pipelines/PipelineCards'
+import PipelineCards from 'src/views/bussiness/processos/pipelines/list/PipelineCards'
 
 const PipelinesComponent = () => {
   return (

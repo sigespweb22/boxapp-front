@@ -47,17 +47,21 @@ interface CardDataType {
 }
 
 // ** Styled component for the link inside menu
-const MenuItemLink = styled('a')(() => ({
-  width: '100%',
+const MenuItemLink = styled('Card')(({ theme }) => ({
+  width: '50%',
+  alignItems: 'center',
   textDecoration: 'none',
+  color: 'white',
+  cursor: 'pointer',
+  color: theme.palette.text.primary
 }))
 
 const cardData: CardDataType[] = [
-  { id: '1', totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
-  { id: '05b560cc-b8bb-428a-87da-497b3bd849fb', totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
-  { id: '11afa4fe-821b-4281-85d6-cbe4d48ef0ec', totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
-  { id: '3', totalUsers: 3, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
-  { id: '8fc9cb29-7e71-4d85-8b0e-328b97f554c6', totalUsers: 2, title: 'Implantação', avatars: ['4.png', '5.png'] }
+  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
+  { id: '2', totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
+  { id: '8727ed5f-8f07-4ce6-9fa1-a9a920cb7caa', totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
+  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalUsers: 3, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
+  { id: '5', totalUsers: 2, title: 'Implantação', avatars: ['4.png', '5.png'] }
 ]
 
 const rolesArr = [
