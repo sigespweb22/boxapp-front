@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '@atlaskit/css-reset'
 import styled from 'styled-components'
 import { DragDropContext } from 'react-beautiful-dnd'
-import initialData from './initial-data'
+import pipeline from './initial-data'
 import Column from './column'
 
 const Container = styled.div`
@@ -10,7 +10,7 @@ const Container = styled.div`
 `
 
 const PipelineKanBan = () => {
-    const [state, setState] = useState(initialData)
+    const [state, setState] = useState(pipeline)
 
     const onDragEnd = result => {
         const { destination, source, draggableId } = result
@@ -86,9 +86,9 @@ const PipelineKanBan = () => {
                 {
                     state.columnOrder.map((columnId) => {
                         const column = state.columns[columnId]
-                        const tasks = column.taskIds.map(taskId => state.tasks[taskId])
+                        const pipelineTarefas = column.taskIds.map(taskId => state.pipelineTarefas[taskId])
             
-                        return <Column key={column.id} column={column} tasks={tasks} />
+                        return <Column key={column.id} column={column} pipelineTarefas={pipelineTarefas} />
                     })
                 }
             </Container>

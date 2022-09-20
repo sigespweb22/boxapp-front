@@ -1,5 +1,5 @@
-const  initialData = {
-    tasks: {
+const pipeline = {
+    pipelineTarefas: {
       'task-1': { sequence: '', icon: '', id: 'task-1', content: 'Propecção Serviço TI' },
       'task-2': { sequence: '', icon: '', id: 'task-2', content: 'Propecção RushFile' },
       'task-3': { sequence: '', icon: '', id: 'task-3', content: 'Propecção CloudServer 1' },
@@ -29,4 +29,4 @@ const  initialData = {
     columnOrder: ['column-1', 'column-2', 'column-3']
 }
 
-export default initialData
+export default pipeline

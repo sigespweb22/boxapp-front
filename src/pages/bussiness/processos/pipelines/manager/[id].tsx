@@ -18,16 +18,14 @@ const PipelineManager = ({ id, pipelineData }: InferGetStaticPropsType<typeof ge
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  debugger
-  const storedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZTQ0NTg2NS1hMjRkLTQ1NDMtYTZjNi05NDQzZDA0OGNkYjkiLCJuYW1lIjoiYWxhbi5yZXplbmRlQGJveHRlY25vbG9naWEuY29tLmJyIiwicm9sZSI6Ik1hc3RlciIsIm5iZiI6MTY2MzU4NTI2OSwiZXhwIjoxNjY0MTkwMDY5LCJpYXQiOjE2NjM1ODUyNjl9.G1KiidYgtQfu0yg6lVss3rbIOhHB0bKTlxHgFtHkTqI"
+  const storedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZTQ0NTg2NS1hMjRkLTQ1NDMtYTZjNi05NDQzZDA0OGNkYjkiLCJuYW1lIjoiYWxhbi5yZXplbmRlQGJveHRlY25vbG9naWEuY29tLmJyIiwicm9sZSI6Ik1hc3RlciIsIm5iZiI6MTY2MzY5MTc4MCwiZXhwIjoxNjY0Mjk2NTgwLCJpYXQiOjE2NjM2OTE3ODB9.fXXNJvGMmzod46mVfvqulSbWb6wnjcqv9ff64mNEGd4"
   const res = await axios
                         .get(pipelineApiService.listAsync, {
                               headers: {
                                 Authorization: "Bearer " + storedToken
                               }
                         })
-
-  const pipelineData: PipelineType[] = await res.data.allData
+  const pipelineData: PipelineType[] = res.data.allData
   
   const paths = pipelineData.map((item: PipelineType) => ({
     params: { id: `${item.id}` }
@@ -40,20 +38,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const storedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4ZTQ0NTg2NS1hMjRkLTQ1NDMtYTZjNi05NDQzZDA0OGNkYjkiLCJuYW1lIjoiYWxhbi5yZXplbmRlQGJveHRlY25vbG9naWEuY29tLmJyIiwicm9sZSI6Ik1hc3RlciIsIm5iZiI6MTY2MzMzNTM5MSwiZXhwIjoxNjYzOTQwMTkxLCJpYXQiOjE2NjMzMzUzOTF9.sJKbryVTqnjKovJZd8o3ihEjXxYg5-fFVx0MajglOEY"
-  const res = await axios
-                        .get(pipelineApiService.listAsync, {
-                              headers: {
-                                Authorization: "Bearer " + storedToken
-                              },
-                              params
-                        })
-
-  const pipelineData: PipelineType[] = res.data.allData
-
   return {
     props: {
-      pipelineData,
       id: params?.id
     }
   }

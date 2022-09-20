@@ -8,6 +8,7 @@ import role from 'src/store/apps/role'
 import group from 'src/store/apps/group'
 import asset from 'src/store/apps/asset'
 import client from 'src/store/bussiness/commercial/client'
+import pipeline from 'src/store/bussiness/processos/pipeline'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     group,
     asset,
     client,
+    pipeline,
     chat,
     email,
     calendar

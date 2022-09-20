@@ -77,8 +77,8 @@ export default class Column extends React.Component {
                             isDraggingOver={snapshot.isDraggingOver}
                         >   
                             {
-                                this.props.tasks.map((task, index) =>
-                                    <Task key={task.id} task={task} index={index} />
+                                this.props.pipelineTarefas.map((tarefa, index) =>
+                                    <Task key={tarefa.id} task={tarefa} index={index} />
                                 )
                             }
                             {provided.placeholder}
