@@ -40,7 +40,7 @@ import ContentCopy from 'mdi-material-ui/ContentCopy'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Types
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelinesType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 import { PipelineLayoutType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 // ** Api Services
@@ -88,35 +88,35 @@ const rolesArr = [
   'Payroll'
 ]
 
-type Props = PipelineLayoutType & {
-  pipelineData: PipelineType[]
+interface Propstype {
+  id: string | string[] | undefined
 }
 
-const PipelineManager = ({ id, pipelineData }: Props) => {
+const PipelineManagerPage = ({id}: Propstype) => {
   // ** States
   const [open, setOpen] = useState<boolean>(false)
   const [dialogTitle, setDialogTitle] = useState<'Add' | 'Edit'>('Add')
   const [error, setError] = useState<boolean>(false)
-  const [data, setData] = useState<null | PipelineType>(null)
- 
-  const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
-  useEffect(() => {
-    axios
-      .get(pipelineApiService.listAsync, {
-            headers: {
-              Authorization: "Bearer " + storedToken
-            },
-            params: { id }
-      })
-      .then(response => {
-        setData(response.data)
-        setError(false)
-      })
-      .catch(() => {
-        setData(null)
-        setError(true)
-      })
-  }, [id])
+  const [data, setData] = useState<null | PipelinesType>(null)
+
+  // const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
+  // useEffect(() => {
+  //   axios
+  //     .get(pipelineApiService.listAsync, {
+  //           headers: {
+  //             Authorization: "Bearer " + storedToken
+  //           },
+  //           params: { props }
+  //     })
+  //     .then(response => {
+  //       setData(response.data)
+  //       setError(false)
+  //     })
+  //     .catch(() => {
+  //       setData(null)
+  //       setError(true)
+  //     })
+  // }, [props])
 
   // ** Hooks
   const {
@@ -187,7 +187,7 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
           title={<Typography variant='h5'>Pré-venda</Typography>}
           subtitle={
             <Typography variant='body2'>
-              Nesta etapa ocorre a qualificação dos leads
+              Nesta etapa ocorre a qualificação dos leads {id}
             </Typography>
           }
         />
@@ -198,4 +198,4 @@ const PipelineManager = ({ id, pipelineData }: Props) => {
   )
 }
 
-export default PipelineManager
+export default PipelineManagerPage

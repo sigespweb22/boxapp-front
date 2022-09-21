@@ -99,7 +99,11 @@ const RolesCards = () => {
   const renderCards = () =>
     cardData.map((item, index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
-        <Link href={`/bussiness/processos/pipelines/manager/${item.id}`} passHref>
+        <Link 
+            href={{
+              pathname: `/bussiness/processos/pipelines/manager/[id]`,
+              query: {id: item.id },
+            }}>
           <MenuItemLink>
             <Card>
               <CardContent>
