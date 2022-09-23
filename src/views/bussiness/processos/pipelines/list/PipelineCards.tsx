@@ -31,12 +31,15 @@ import DialogContent from '@mui/material/DialogContent'
 import FormHelperText from '@mui/material/FormHelperText'
 import TableContainer from '@mui/material/TableContainer'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import LinearProgress from '@mui/material/LinearProgress'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports
-import ContentCopy from 'mdi-material-ui/ContentCopy'
+import TableEdit from 'mdi-material-ui/TableEdit'
+import EyeArrowRightOutline from 'mdi-material-ui/EyeArrowRightOutline'
+import Login from 'mdi-material-ui/Login'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 interface CardDataType {
@@ -45,16 +48,6 @@ interface CardDataType {
   avatars: string[]
   totalUsers: number
 }
-
-// ** Styled component for the link inside menu
-const MenuItemLink = styled('Card')(({ theme }) => ({
-  alignItems: 'center',
-  textDecoration: 'none',
-  color: 'white',
-  cursor: 'pointer',
-  fontSize: "15px",
-  color: theme.palette.text.primary
-}))
 
 const cardData: CardDataType[] = [
   { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
@@ -99,51 +92,63 @@ const RolesCards = () => {
   const renderCards = () =>
     cardData.map((item, index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
-        <Link 
-            href={{
-              pathname: `/bussiness/processos/pipelines/manager/[id]`,
-              query: {id: item.id },
-            }}>
-          <MenuItemLink>
-            <Card>
-              <CardContent>
-                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant='body2'>Total {item.totalUsers} usuários vinculados ao pipeline</Typography>
-                  <AvatarGroup
-                    max={4}
-                    sx={{
-                      '& .MuiAvatarGroup-avatar': { fontSize: '.875rem' },
-                      '& .MuiAvatar-root, & .MuiAvatarGroup-avatar': { width: 32, height: 32 }
-                    }}
-                  >
-                    {item.avatars.map((img, index: number) => (
-                      <Avatar key={index} alt={item.title} src={`/images/avatars/${img}`} />
-                    ))}
-                  </AvatarGroup>
-                </Box>
-                <Box>
-                  <Typography variant='h6'>{item.title}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography
-                    variant='body2'
-                    sx={{ color: 'primary.main', cursor: 'pointer' }}
-                    onClick={() => {
-                      handleClickOpen()
-                      setDialogTitle('Edit')
-                    }}
-                  >
-                    Editar o pipe
-                  </Typography>
+        <Card>
+          <CardContent>
+            <Box>
+              <Typography variant='h6'>{item.title}</Typography>
+            </Box>
+            <Box sx={{ marginTop: '15px', mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <AvatarGroup
+                  max={4}
+                  sx={{
+                    '& .MuiAvatarGroup-avatar': { fontSize: '.875rem' },
+                    '& .MuiAvatar-root, & .MuiAvatarGroup-avatar': { width: 32, height: 32 }
+                  }}
+                >
+                  {item.avatars.map((img, index: number) => (
+                    <Avatar key={index} alt={item.title} src={`/images/avatars/${img}`} />
+                  ))}
+              </AvatarGroup>
+              <Typography variant='body2'>{item.totalUsers} usuários trabalhando neste pipe</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <IconButton size='small' sx={{ color: '#ff671f' }}>
+                <TableEdit fontSize='small' onClick={() => {
+                  handleClickOpen()
+                  setDialogTitle('Edit')
+                }}/>
+              </IconButton>
+              <IconButton size='small' sx={{ color: '#ff671f' }}>
+                <EyeArrowRightOutline fontSize='small' onClick={() => {
+                  handleClickOpen()
+                  setDialogTitle('Edit')
+                }}/>
+              </IconButton>
+              <Link 
+                href={{
+                  pathname: `/bussiness/processos/pipelines/manager/[id]`,
+                  query: {id: item.id },
+                }}>
                   <IconButton size='small' sx={{ color: 'text.primary' }}>
-                    <ContentCopy fontSize='small' />
+                    <Login fontSize='small' sx={{ 
+                                                          color: '#ff671f',
+                                                          }} />
                   </IconButton>
-                </Box>
-              </CardContent>
-            </Card>
-          </MenuItemLink>
-        </Link>
-        
+              </Link>
+              <Typography variant='body2' sx={{ fontWeight: 600, color: 'primary.main', marginLeft: '61%' }}>
+                {/* {`${row.completedTasks}/`} */}{"Tickets 65/"}
+              </Typography>
+              <Typography variant='body2' sx={{ fontWeight: 600, color: 'rgb(127, 51, 15)' }}>
+                {/* {row.tasks} */}{"150"}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginRight: "-20px" }}>
+              <Box sx={{ width: 130, mr: 5 }}>
+                <LinearProgress value={40} sx={{ height: 6 }} variant='determinate' />
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
       </Grid>
     ))
 
@@ -178,7 +183,7 @@ const RolesCards = () => {
                   >
                     Novo pipe
                   </Button>
-                  <Typography>Experimente construir um novo pipeline.</Typography>
+                  <Typography>Experimente construir um novo pipe.</Typography>
                 </Box>
               </CardContent>
             </Grid>
