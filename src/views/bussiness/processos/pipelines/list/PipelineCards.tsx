@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -42,19 +42,20 @@ import EyeArrowRightOutline from 'mdi-material-ui/EyeArrowRightOutline'
 import Login from 'mdi-material-ui/Login'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
-interface CardDataType {
+interface PipelineDataType {
   id: string,
   title: string
   avatars: string[]
   totalUsers: number
+  totalTarefas: number
 }
 
-const cardData: CardDataType[] = [
-  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
-  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
-  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
-  { id: '4', totalUsers: 3, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
-  { id: '5', totalUsers: 2, title: 'Implantação', avatars: ['4.png', '5.png'] }
+const pipelineData: PipelineDataType[] = [
+  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 10, totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
+  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 15, totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
+  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalTarefas: 20, totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
+  { id: '4', totalUsers: 3, totalTarefas: 25, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
+  { id: '5', totalUsers: 2, totalTarefas: 30, title: 'Implantação', avatars: ['4.png', '5.png'] }
 ]
 
 const rolesArr = [
@@ -82,6 +83,12 @@ const RolesCards = () => {
     formState: { errors }
   } = useForm({ defaultValues: { name: '' } })
 
+  useEffect(() => {
+    const a = () => {
+      
+    }
+  },[])
+
   const handleClickOpen = () => setOpen(true)
 
   const handleClose = () => {
@@ -90,7 +97,7 @@ const RolesCards = () => {
   }
 
   const renderCards = () =>
-    cardData.map((item, index: number) => (
+    pipelineData.map((item, index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
         <Card>
           <CardContent>
@@ -112,17 +119,17 @@ const RolesCards = () => {
               <Typography variant='body2'>{item.totalUsers} usuários trabalhando neste pipe</Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <IconButton size='small' sx={{ color: '#ff671f' }}>
-                <TableEdit fontSize='small' onClick={() => {
+              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => {
                   handleClickOpen()
                   setDialogTitle('Edit')
-                }}/>
+                }}>
+                <TableEdit fontSize='small' />
               </IconButton>
-              <IconButton size='small' sx={{ color: '#ff671f' }}>
-                <EyeArrowRightOutline fontSize='small' onClick={() => {
+              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => {
                   handleClickOpen()
                   setDialogTitle('Edit')
-                }}/>
+                }}>
+                <EyeArrowRightOutline fontSize='small'/>
               </IconButton>
               <Link 
                 href={{
