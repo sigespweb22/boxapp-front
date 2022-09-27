@@ -5,7 +5,7 @@ export type PipelineLayoutType = {
   id: string | undefined
 }
 
-export type PipelinesType = {
+export type PipelineType = {
   id: string
   nome: string
   avatarColor?: ThemeColor
