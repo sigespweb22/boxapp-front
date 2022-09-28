@@ -42,21 +42,30 @@ import EyeArrowRightOutline from 'mdi-material-ui/EyeArrowRightOutline'
 import Login from 'mdi-material-ui/Login'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
+// ** Api Services
+import pipelineApiService from 'src/@api-center/pipeline/pipelineApiService'
+
+// ** Axios Imports
+import axios from 'axios'
+
 interface PipelineDataType {
   id: string,
-  title: string
-  avatars: string[]
-  totalUsers: number
+  nome: string
   totalTarefas: number
+  totalTarefasConcluidas: number
+  totalAssinantes: number
+  avatars: string[]
 }
 
-const pipelineData: PipelineDataType[] = [
-  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 10, totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
-  { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 15, totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
-  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalTarefas: 20, totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
-  { id: '4', totalUsers: 3, totalTarefas: 25, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
-  { id: '5', totalUsers: 2, totalTarefas: 30, title: 'Implantação', avatars: ['4.png', '5.png'] }
-]
+const pipelineDataInitial: PipelineDataType[] = []
+
+// const pipelineDataInitial: PipelineDataType[] = [
+//   { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 10, totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
+//   { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 15, totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
+//   { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalTarefas: 20, totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
+//   { id: '4', totalUsers: 3, totalTarefas: 25, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
+//   { id: '5', totalUsers: 2, totalTarefas: 30, title: 'Implantação', avatars: ['4.png', '5.png'] }
+// ]
 
 const rolesArr = [
   'User Management',
@@ -70,10 +79,13 @@ const rolesArr = [
   'Payroll'
 ]
 
-const RolesCards = () => {
+let b: PipelineDataType[] = []
+
+const PipelinesCards = () => {
   // ** States
   const [open, setOpen] = useState<boolean>(false)
   const [dialogTitle, setDialogTitle] = useState<'Add' | 'Edit'>('Add')
+  const [pipelineData, setPipelineData] = useState<PipelineDataType[]>(pipelineDataInitial)
 
   // ** Hooks
   const {
@@ -83,11 +95,20 @@ const RolesCards = () => {
     formState: { errors }
   } = useForm({ defaultValues: { name: '' } })
 
-  useEffect(() => {
-    const a = () => {
-      
+  const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
     }
-  },[])
+  }
+
+  useEffect(() => {
+    axios
+      .get(pipelineApiService.listAsync, config)
+      .then(response => {
+        setPipelineData(response.data.allData)
+      })
+  }, [])
 
   const handleClickOpen = () => setOpen(true)
 
@@ -102,21 +123,21 @@ const RolesCards = () => {
         <Card>
           <CardContent>
             <Box>
-              <Typography variant='h6'>{item.title}</Typography>
+              <Typography variant='h6'>{item.nome}</Typography>
             </Box>
             <Box sx={{ marginTop: '15px', mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <AvatarGroup
-                  max={4}
+                  max={2}
                   sx={{
                     '& .MuiAvatarGroup-avatar': { fontSize: '.875rem' },
                     '& .MuiAvatar-root, & .MuiAvatarGroup-avatar': { width: 32, height: 32 }
                   }}
                 >
                   {item.avatars.map((img, index: number) => (
-                    <Avatar key={index} alt={item.title} src={`/images/avatars/${img}`} />
+                    <Avatar key={index} alt={item.nome} src={`/images/avatars/${img}`} />
                   ))}
               </AvatarGroup>
-              <Typography variant='body2'>{item.totalUsers} usuários trabalhando neste pipe</Typography>
+              <Typography variant='body2'>{item.totalAssinantes} usuários trabalhando neste pipe</Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
               <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => {
@@ -142,13 +163,15 @@ const RolesCards = () => {
                                                           }} />
                   </IconButton>
               </Link>
-              <Typography variant='body2' sx={{ fontWeight: 600, color: 'primary.main', marginLeft: '61%' }}>
-                {/* {`${row.completedTasks}/`} */}{"Tickets 65/"}
-              </Typography>
-              <Typography variant='body2' sx={{ fontWeight: 600, color: 'rgb(127, 51, 15)' }}>
-                {/* {row.tasks} */}{"150"}
-              </Typography>
             </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                <Typography variant='body2' sx={{ fontWeight: 600, color: 'primary.main' }}>
+                  {`Tickets ${item.totalTarefasConcluidas}/`}
+                </Typography>
+                <Typography variant='body2' sx={{ fontWeight: 600, color: 'rgb(127, 51, 15)' }}>
+                  {item.totalTarefas}
+                </Typography>
+              </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginRight: "-20px" }}>
               <Box sx={{ width: 130, mr: 5 }}>
                 <LinearProgress value={40} sx={{ height: 6 }} variant='determinate' />
@@ -296,4 +319,4 @@ const RolesCards = () => {
   )
 }
 
-export default RolesCards
+export default PipelinesCards
