@@ -8,7 +8,7 @@ import PageHeader from 'src/@core/components/page-header'
 // ** Demo Components Imports
 import PipelineCards from 'src/views/bussiness/processos/pipelines/list/PipelineCards'
 
-const PipelinesComponent = () => {
+const PipelinesList = () => {
   return (
     <Grid container spacing={6}>
       <PageHeader
@@ -26,4 +26,4 @@ const PipelinesComponent = () => {
   )
 }
 
-export default PipelinesComponent
+export default PipelinesList

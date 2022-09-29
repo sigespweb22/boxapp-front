@@ -4,7 +4,6 @@ import { Draggable } from 'react-beautiful-dnd'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
-import Box from '@mui/material/Box'
 
 const Container = styled.div`
     height: 70px;
