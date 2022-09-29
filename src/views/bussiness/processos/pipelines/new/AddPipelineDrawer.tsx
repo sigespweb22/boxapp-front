@@ -20,7 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
-import Select from '@mui/material/Select'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -32,20 +32,17 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addUser } from 'src/store/apps/user'
+import { addPipeline } from 'src/store/bussiness/processos/pipeline'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { UsersType } from 'src/types/apps/userTypes'
+import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 // ** Api Services
 import usersApiService from 'src/@api-center/user/userApiService'
 
 // ** Axios Imports
 import axios from 'axios'
-
-// ** Types
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -68,8 +65,6 @@ interface UserDataType {
   name: string
 }
 
-let users: { id: string, name: string  }[] = [];
-
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
     return `${field} é requerido (a)`
@@ -89,22 +84,17 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  fullName: yup
+  nome: yup
     .string()
-    .min(3, obj => showErrors('Nome completo', obj.value.length, obj.min))
-    .required(),
-  email: yup
-    .string()
-    .email("E-mail deve ser um e-mail válido")
-    .required("E-mail é Requerido"),
-  password: yup
-    .string()
-    .min(3, obj => showErrors('Senha', obj.value.length, obj.min))
-    .typeError('Senha é requerida')
-    .required()
+    .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
+    .required("Nome é requerido")
 })
 
-const defaultValues: UserDataType[] = []
+const userDefaultValues: UserDataType[] = []
+const defaultValues = {
+  nome: '',
+  assinantes: [],
+}
 
 const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
 
@@ -119,10 +109,11 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
+    defaultValues,
+    mode: 'onChange',
     resolver: yupResolver(schema)
   })
-  const { t } = useTranslation()
-  const [users, setUsers] = useState<UserDataType[]>(defaultValues)
+  const [users, setUsers] = useState<UserDataType[]>(userDefaultValues)
 
   const storedToken = window.localStorage.getItem(usersApiService.storageTokenKeyName)!
   const config = {
@@ -137,11 +128,11 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       .then(response => {
         setUsers(response.data)
       })
-  }, [users]);
+  }, []);
 
 
-  const onSubmit = (data: UsersType) => {
-    dispatch(addUser({ ...data,  }))
+  const onSubmit = (data: PipelineType) => {
+    dispatch(addPipeline({ ...data,  }))
     toggle()
     reset()
   }
@@ -149,6 +140,10 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   const handleClose = () => {
     toggle()
     reset()
+  }
+
+  const handleAssinantes = (e: SelectChangeEvent<never[]>) => {
+    console.log(e.target.value);
   }
 
   return (
@@ -168,75 +163,42 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='fullName'
+              name='nome'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome completo'
+                  label='Nome'
                   onChange={onChange}
-                  placeholder='Alan Rezende'
-                  error={Boolean(errors.fullName)}
+                  placeholder='(e.g.: Prospecção)'
+                  error={Boolean(errors.nome)}
                 />
               )}
             />
-            {errors.fullName && <FormHelperText sx={{ color: 'error.main' }}>{errors.fullName.message}</FormHelperText>}
+            {errors.nome && <FormHelperText sx={{ color: 'error.main' }}>{errors.nome.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='email'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type='email'
-                  value={value}
-                  label='Email'
-                  onChange={onChange}
-                  placeholder='alan.rezende@email.com'
-                  error={Boolean(errors.email)}
-                />
-              )}
-            />
-            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='password'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="password"
-                  value={value}
-                  label='Senha'
-                  onChange={onChange}
-                  placeholder='Password123*'
-                  error={Boolean(errors.password)}
-                />
-              )}
-            />
-            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="applicationUserGroups"
+              name="assinantes"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='demo-multiple-chip-label'>Responsável pelo pipeline</InputLabel>
+                    <InputLabel id='demo-multiple-chip-label'>Assinantes</InputLabel>
                     <Select
                         name="assinantes"
-                        multiple={false}
-                        label="Responsável pelo pipeline"
+                        multiple
+                        label="Assinantes"
                         value={value}
                         MenuProps={MenuProps}
-                        id='multiple-user'
-                        onChange={onChange}
-                        labelId='multiple-user-label'
+                        id='multiple-group'
+                        onChange={(value): void => {
+                          onChange(value)
+                          handleAssinantes(value)
+                        }}
+                        labelId='multiple-group-label'
                         renderValue={selected => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {(selected as unknown as string[]).map(value => (

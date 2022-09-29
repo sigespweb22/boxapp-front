@@ -25,6 +25,7 @@ interface Redux {
 
 // ** Fetch Pipelines
 export const fetchData = createAsyncThunk('appPipelines/fetchData', async (params: DataParams) => {
+  debugger
   const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
   const response = await axios
                             .get(pipelineApiService.listAsync, {
@@ -48,12 +49,15 @@ export const addPipeline = createAsyncThunk(
       }
     }
 
+    debugger
+
     const data2 = {
-      nome: data.nome
+      nome: data.nome,
+      assinantes: data.assinantes
     }
 
     axios.post(pipelineApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().client.params))
+      dispatch(fetchData(getState().pipeline.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Pipeline criado com sucesso.")
     }).catch((resp) => {
@@ -103,7 +107,7 @@ export const editPipeline = createAsyncThunk(
     }
 
     axios.put(pipelineApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().client.params))
+      dispatch(fetchData(getState().pipeline.params))
       if (resp.status === 204) return toast.success("Pipeline atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -145,7 +149,7 @@ export const deletePipeline = createAsyncThunk(
     }
 
     axios.delete(pipelineApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().client.params))
+      dispatch(fetchData(getState().pipeline.params))
       if (resp.status === 204) return toast.success("Pipeline deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

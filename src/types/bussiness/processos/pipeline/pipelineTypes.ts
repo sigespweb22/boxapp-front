@@ -9,4 +9,5 @@ export type PipelineType = {
   id: string
   nome: string
   avatarColor?: ThemeColor
+  assinantes: string[]
 }

@@ -21,60 +21,37 @@ import TableEdit from 'mdi-material-ui/TableEdit'
 import EyeArrowRightOutline from 'mdi-material-ui/EyeArrowRightOutline'
 import Login from 'mdi-material-ui/Login'
 
-// ** Api Services
-import pipelineApiService from 'src/@api-center/pipeline/pipelineApiService'
-
-// ** Axios Imports
-import axios from 'axios'
-
 // ** Custom Components Imports
 import AddPipelineDrawer from 'src/views/bussiness/processos/pipelines/new/AddPipelineDrawer'
 
-// ** Types
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+// ** Store Imports
+import { useDispatch, useSelector } from 'react-redux'
 
-interface PipelineDataType {
-  id: string,
-  nome: string
-  totalTarefas: number
-  totalTarefasConcluidas: number
-  totalAssinantes: number
-  avatars: string[]
-}
+// ** Actions Imports
+import { fetchData } from 'src/store/bussiness/processos/pipeline'
 
-const pipelineDataInitial: PipelineDataType[] = []
-
-// const pipelineDataInitial: PipelineDataType[] = [
-//   { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 10, totalUsers: 4, title: 'Prospecção', avatars: ['1.png', '2.png', '3.png', '4.png'] },
-//   { id: 'ec1bb0cf-b43a-4ab9-aff7-93b094cbffee', totalTarefas: 15, totalUsers: 7, title: 'Pré-vendas', avatars: ['5.png', '6.png', '7.png', '8.png', '1.png', '2.png', '3.png'] },
-//   { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', totalTarefas: 20, totalUsers: 5, title: 'Vendas', avatars: ['4.png', '5.png', '6.png', '7.png', '8.png'] },
-//   { id: '4', totalUsers: 3, totalTarefas: 25, title: 'Pós-vendas', avatars: ['1.png', '2.png', '3.png'] },
-//   { id: '5', totalUsers: 2, totalTarefas: 30, title: 'Implantação', avatars: ['4.png', '5.png'] }
-// ]
+// ** Types Imports
+import { RootState, AppDispatch } from 'src/store'
 
 const PipelinesCard = () => {
   // ** States
-  const [pipelineData, setPipelineData] = useState<PipelineDataType[]>(pipelineDataInitial)
   const [addPipelineOpen, setAddPipelineOpen] = useState<boolean>(false)
+  const [value, setValue] = useState<string>('')
 
   // ** Hooks
-  const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const dispatch = useDispatch<AppDispatch>()
+  const store = useSelector((state: RootState) => state.pipeline)
 
   useEffect(() => {
-    axios
-      .get(pipelineApiService.listAsync, config)
-      .then(response => {
-        setPipelineData(response.data.allData)
+    dispatch(
+      fetchData({
+        q: value
       })
-  }, [])
+    )
+  }, [dispatch, value])
 
   const renderCards = () =>
-    pipelineData.map((item, index: number) => (
+    store.data.map((item, index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
         <Card>
           <CardContent>
