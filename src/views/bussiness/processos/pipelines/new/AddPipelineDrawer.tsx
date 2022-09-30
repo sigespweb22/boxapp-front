@@ -44,6 +44,9 @@ import usersApiService from 'src/@api-center/user/userApiService'
 // ** Axios Imports
 import axios from 'axios'
 
+// ** MUI Imports
+import Autocomplete from '@mui/material/Autocomplete'
+
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -61,7 +64,7 @@ interface SidebarAddPipelineType {
 }
 
 interface UserDataType {
-  id: string
+  userId: string
   name: string
 }
 
@@ -142,8 +145,8 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
     reset()
   }
 
-  const handleAssinantes = (e: SelectChangeEvent<never[]>) => {
-    console.log(e.target.value);
+  const handleAssinantes = (data: string) => {
+    console.log(data)
   }
 
   return (
@@ -178,7 +181,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
             />
             {errors.nome && <FormHelperText sx={{ color: 'error.main' }}>{errors.nome.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="assinantes"
               control={control}
@@ -186,35 +189,20 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='demo-multiple-chip-label'>Assinantes</InputLabel>
-                    <Select
-                        name="assinantes"
-                        multiple
-                        label="Assinantes"
-                        value={value}
-                        MenuProps={MenuProps}
-                        id='multiple-group'
-                        onChange={(value): void => {
-                          onChange(value)
-                          handleAssinantes(value)
-                        }}
-                        labelId='multiple-group-label'
-                        renderValue={selected => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(selected as unknown as string[]).map(value => (
-                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                            ))}
-                          </Box>
-                        )}
-                      >
-                        {
-                          users.map(user => (
-                            <MenuItem key={user.id} value={user.name}>
-                              {user.name}
-                            </MenuItem>
-                          ))
-                        }
-                    </Select>
+                    <Autocomplete
+                      multiple
+                      options={users}
+                      filterSelectedOptions
+                      id='multiple-group'
+                      value={value}
+                      getOptionLabel={option => option.name}
+                      sx={{ width: 250, mt: 5, mr: 5 }}
+                      onChange={(event, newValue): void => {
+                        onChange(newValue)
+                        handleAssinantes(newValue)
+                      }}
+                      renderInput={params => <TextField {...params} label='Assinantes' placeholder='(e.g.: Jhon dare)' />}
+                    />
                   </FormControl>
                 )
               }}
