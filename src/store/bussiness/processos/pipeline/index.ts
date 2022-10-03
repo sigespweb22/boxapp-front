@@ -49,8 +49,6 @@ export const addPipeline = createAsyncThunk(
       }
     }
 
-    debugger
-
     const data2 = {
       nome: data.nome,
       posicao: data.posicao,
@@ -62,7 +60,6 @@ export const addPipeline = createAsyncThunk(
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Pipeline criado com sucesso.")
     }).catch((resp) => {
-      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
@@ -105,7 +102,9 @@ export const editPipeline = createAsyncThunk(
 
     const data2 = {
       id: data.id,
-      nome: data.nome
+      posicao: data.posicao,
+      nome: data.nome,
+      assinantes: data.assinantes
     }
 
     axios.put(pipelineApiService.updateAsync, data2, config).then((resp) => {
@@ -129,6 +128,7 @@ export const editPipeline = createAsyncThunk(
           });
         }
       } else {
+        debugger
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {

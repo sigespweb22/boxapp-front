@@ -4,23 +4,18 @@ import { useState, useEffect } from 'react'
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -32,7 +27,7 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addPipeline } from 'src/store/bussiness/processos/pipeline'
+import { editPipeline } from 'src/store/bussiness/processos/pipeline'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -44,10 +39,8 @@ import usersApiService from 'src/@api-center/user/userApiService'
 // ** Axios Imports
 import axios from 'axios'
 
-// ** MUI Imports
-import Autocomplete from '@mui/material/Autocomplete'
-
-interface SidebarAddPipelineType {
+interface SidebarEditPipelineType {
+  row: PipelineType | undefined
   open: boolean
   toggle: () => void
 }
@@ -86,14 +79,14 @@ const schema = yup.object().shape({
     .required("Posição é requerida")
 })
 
-const userDefaultValues: UserDataType[] = []
-const defaultValues = {
-  nome: '',
-  posicao: '',
-  assinantes: [],
-}
-
-const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
+const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
+  const userDefaultValues: UserDataType[] = []
+  const defaultValues = {
+    id: props?.row?.id ?? '',
+    nome: props?.row?.nome ?? '',
+    posicao: props?.row?.posicao ?? '',
+    assinantes: props?.row?.assinantes ?? []
+  }
 
   // ** Props
   const { open, toggle } = props
@@ -102,11 +95,11 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
@@ -118,7 +111,6 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       Authorization: "Bearer " + storedToken
     }
   }
-
   useEffect(() => {
     axios
       .get(usersApiService.listToSelectAsync, config)
@@ -127,9 +119,14 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       })
   }, []);
 
+  // ** Set values
+  setValue('id', defaultValues.id)
+  setValue('nome', defaultValues.nome)
+  setValue('posicao', defaultValues.posicao)
+  setValue('assinantes', defaultValues.assinantes)
 
   const onSubmit = (data: PipelineType) => {
-    dispatch(addPipeline({ ...data,  }))
+    dispatch(editPipeline({ ...data,  }))
     toggle()
     reset()
   }
@@ -149,7 +146,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Pipeline</Typography>
+        <Typography variant='h6'>Editar Pipeline</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -227,4 +224,4 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   )
 }
 
-export default SidebarAddPipeline
+export default SidebarEditPipeline

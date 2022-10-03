@@ -23,6 +23,8 @@ import Login from 'mdi-material-ui/Login'
 
 // ** Custom Components Imports
 import AddPipelineDrawer from 'src/views/bussiness/processos/pipelines/new/AddPipelineDrawer'
+import EditPipelineDrawer from 'src/views/bussiness/processos/pipelines/edit/EditPipelineDrawer'
+import ViewPipelineDrawer from 'src/views/bussiness/processos/pipelines/view/ViewPipelineDrawer'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,11 +34,15 @@ import { fetchData } from 'src/store/bussiness/processos/pipeline'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
+import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 const PipelinesCard = () => {
   // ** States
   const [addPipelineOpen, setAddPipelineOpen] = useState<boolean>(false)
+  const [editPipelineOpen, setEditPipelineOpen] = useState<boolean>(false)
+  const [viewPipelineOpen, setViewPipelineOpen] = useState<boolean>(false)
   const [value, setValue] = useState<string>('')
+  const [row, setRow] = useState<PipelineType | undefined>()
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -49,6 +55,16 @@ const PipelinesCard = () => {
       })
     )
   }, [dispatch, value])
+
+  const handleEditClient = (row : PipelineType) => {
+    setRow(row)
+    setEditPipelineOpen(true)
+  }
+
+  const handleViewClient = (row : PipelineType) => {
+    setRow(row)
+    setViewPipelineOpen(true)
+  }
 
   const renderCards = () =>
     store.data.map((item, index: number) => (
@@ -73,10 +89,10 @@ const PipelinesCard = () => {
               <Typography variant='body2'>{item.totalAssinantes} usuários trabalhando neste pipe</Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => {}}>
+              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleEditClient(item)}>
                 <TableEdit fontSize='small' />
               </IconButton>
-              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => {}}>
+              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleViewClient(item)}>
                 <EyeArrowRightOutline fontSize='small'/>
               </IconButton>
               <Link 
@@ -110,6 +126,8 @@ const PipelinesCard = () => {
     ))
 
   const toggleAddPipelineDrawer = () => setAddPipelineOpen(!addPipelineOpen)
+  const toggleEditPipelineDrawer = () => setEditPipelineOpen(!editPipelineOpen)
+  const toggleViewPipelineDrawer = () => setViewPipelineOpen(!viewPipelineOpen)
 
   return (
     <Grid container spacing={6} className='match-height'>
@@ -144,6 +162,8 @@ const PipelinesCard = () => {
       </Grid>
       {renderCards()}
       <AddPipelineDrawer open={addPipelineOpen} toggle={toggleAddPipelineDrawer} />
+      <EditPipelineDrawer open={editPipelineOpen} toggle={toggleEditPipelineDrawer} row={row}/>
+      <ViewPipelineDrawer open={viewPipelineOpen} toggle={toggleViewPipelineDrawer} row={row}/>
     </Grid>
   )
 }

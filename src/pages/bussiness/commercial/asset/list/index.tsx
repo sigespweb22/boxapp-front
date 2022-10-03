@@ -188,8 +188,8 @@ const defaultColumns = [
     minWidth: 30,
     field: 'nome',
     headerName: 'Nome',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
+    headerAlign: 'left' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       const { id, nome, unidadeMedida } = row
 
@@ -222,8 +222,8 @@ const defaultColumns = [
     field: 'tipo',
     minWidth: 50,
     headerName: 'Tipo',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -244,6 +244,8 @@ const defaultColumns = [
     minWidth: 100,
     field: 'valorCusto',
     headerName: 'Valor custo',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -257,8 +259,8 @@ const defaultColumns = [
     minWidth: 110,
     field: 'valorVenda',
     headerName: 'Valor venda',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -272,8 +274,8 @@ const defaultColumns = [
     field: 'unidadeMedida',
     minWidth: 130,
     headerName: 'Unidade medida',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -294,8 +296,8 @@ const defaultColumns = [
     field: 'clienteAtivoTipoServicoTipo',
     minWidth: 100,
     headerName: 'Serviço tipo',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -316,6 +318,8 @@ const defaultColumns = [
     minWidth: 50,
     field: 'status',
     headerName: 'Status',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
   }
 ]
