@@ -47,17 +47,6 @@ import axios from 'axios'
 // ** MUI Imports
 import Autocomplete from '@mui/material/Autocomplete'
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
-
 interface SidebarAddPipelineType {
   open: boolean
   toggle: () => void
@@ -90,12 +79,17 @@ const schema = yup.object().shape({
   nome: yup
     .string()
     .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
-    .required("Nome é requerido")
+    .required("Nome é requerido"),
+  posicao: yup
+    .string()
+    .min(1, obj => showErrors('Posição', obj.value.length, obj.min))
+    .required("Posição é requerida")
 })
 
 const userDefaultValues: UserDataType[] = []
 const defaultValues = {
   nome: '',
+  posicao: '',
   assinantes: [],
 }
 
@@ -181,6 +175,23 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
             />
             {errors.nome && <FormHelperText sx={{ color: 'error.main' }}>{errors.nome.message}</FormHelperText>}
           </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='posicao'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Posição'
+                  onChange={onChange}
+                  placeholder='(e.g.: 1)'
+                  error={Boolean(errors.posicao)}
+                />
+              )}
+            />
+            {errors.posicao && <FormHelperText sx={{ color: 'error.main' }}>{errors.posicao.message}</FormHelperText>}
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="assinantes"
@@ -196,7 +207,6 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
                       id='multiple-group'
                       value={value}
                       getOptionLabel={option => option.name}
-                      sx={{ width: 250, mt: 5, mr: 5 }}
                       onChange={(event, newValue): void => {
                         onChange(newValue)
                         handleAssinantes(newValue)

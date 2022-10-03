@@ -53,6 +53,7 @@ export const addPipeline = createAsyncThunk(
 
     const data2 = {
       nome: data.nome,
+      posicao: data.posicao,
       assinantes: data.assinantes
     }
 
@@ -61,6 +62,7 @@ export const addPipeline = createAsyncThunk(
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Pipeline criado com sucesso.")
     }).catch((resp) => {
+      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')

@@ -8,6 +8,7 @@ export type PipelineLayoutType = {
 export type PipelineType = {
   id: string
   nome: string
+  posicao: string
   avatarColor?: ThemeColor
   assinantes: string[]
 }
