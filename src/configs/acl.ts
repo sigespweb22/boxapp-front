@@ -107,6 +107,21 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-asset-page')
     /// end - asset
 
+    /// begin - pipeline
+  } else if (item === 'CanPipelineAll') {
+    can(['list', 'read', 'create', 'update', 'delete'], 'ac-pipeline-page')
+  } else if (item === 'CanPipelineList') {
+    can('list', 'ac-pipeline-page')
+  } else if (item === 'CanPipelineRead') {
+    can('read', 'ac-pipeline-page')
+  } else if (item === 'CanPipelineUpdate') {
+    can('update', 'ac-pipeline-page')
+  } else if (item === 'CanPipelineCreate') {
+    can('create', 'ac-pipeline-page')
+  } else if (item === 'CanPipelineDelete') {
+    can('delete', 'ac-pipeline-page')
+  /// end - pipeline
+
     /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {
       can('list', 'ac-dashboard-client-page')

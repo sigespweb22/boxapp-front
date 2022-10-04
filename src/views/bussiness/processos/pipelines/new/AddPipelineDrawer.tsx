@@ -11,19 +11,11 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-
-// Import Translate
-import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -127,7 +119,6 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       })
   }, []);
 
-
   const onSubmit = (data: PipelineType) => {
     dispatch(addPipeline({ ...data,  }))
     toggle()
@@ -225,6 +216,13 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       </Box>
     </Drawer>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+SidebarAddPipeline.acl = {
+  action: 'create',
+  subject: 'ac-pipeline-page'
 }
 
 export default SidebarAddPipeline

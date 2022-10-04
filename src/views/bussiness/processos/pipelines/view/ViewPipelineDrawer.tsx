@@ -9,8 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import Autocomplete from '@mui/material/Autocomplete'
-import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
 
 // ** Third Party Imports
 import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
@@ -18,30 +17,12 @@ import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
-
-// ** Api Services
-import usersApiService from 'src/@api-center/user/userApiService'
-
-// ** Axios Imports
-import axios from 'axios'
-
-// ** Data
-import { top100Films } from 'src/@fake-db/autocomplete'
+import AccountGroupOutline from 'mdi-material-ui/AccountGroupOutline'
 
 interface SidebarViewPipelineType {
   row: PipelineType | undefined
   open: boolean
   toggle: () => void
-}
-
-interface DataType {
-  year: number
-  title: string
-}
-
-interface UserDataType {
-  userId: string
-  name: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -52,8 +33,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const fixedOptions = [top100Films[6]]
-
 const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
   // ** Hook
   const {
@@ -63,9 +42,6 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
 
   // ** Props
   const { open, toggle } = props
-
-  // ** State
-  const [value, setValue] = useState<DataType[]>([...fixedOptions])
 
   const handleClose = () => {
     toggle()
@@ -117,32 +93,22 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
             <Controller
               name="assinantes"
               control={control}
-              rules={{ required: true }}
               render={() => {
                 return (
                   <FormControl fullWidth>
-                    <Autocomplete
-                      disabled={true}
-                      multiple
-                      value={value}
-                      options={top100Films}
-                      id='autocomplete-fixed-option'
-                      getOptionLabel={option => option.title}
-                      renderInput={params => <TextField {...params} label='Fixed tag' placeholder='' />}
-                      onChange={(event, newValue) => {
-                        setValue([...fixedOptions, ...newValue.filter(option => fixedOptions.indexOf(option) === -1)])
-                      }}
-                      renderTags={(tagValue, getTagProps) =>
-                        tagValue.map((option, index) => (
-                          <Chip
-                            label={option.title}
-                            {...(getTagProps({ index }) as {})}
-                            disabled={fixedOptions.indexOf(option) !== -1}
-                            key={index}
-                          />
-                        ))
-                      }
-                    />
+                    <Box sx={{ fontSize: 16, mb: "10px" }}>Assinantes</Box>
+                    {props?.row?.assinantes.map(assinante =>
+                       {
+                          return (
+                            <div>
+                              <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
+                                <AccountGroupOutline fontSize='small' />
+                              </IconButton>
+                              {assinante.name}
+                            </div>
+                          )
+                       }
+                    )}
                   </FormControl>
                 )
               }}
@@ -157,6 +123,13 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
       </Box>
     </Drawer>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+SidebarViewPipeline.acl = {
+  action: 'read',
+  subject: 'ac-pipeline-page'
 }
 
 export default SidebarViewPipeline

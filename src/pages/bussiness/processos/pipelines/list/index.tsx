@@ -26,4 +26,11 @@ const PipelinesList = () => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+PipelinesList.acl = {
+  action: 'list',
+  subject: 'ac-pipeline-page'
+}
+
 export default PipelinesList

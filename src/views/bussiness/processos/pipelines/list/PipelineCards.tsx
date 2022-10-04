@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -36,6 +36,9 @@ import { fetchData } from 'src/store/bussiness/processos/pipeline'
 import { RootState, AppDispatch } from 'src/store'
 import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
+// ** Context Imports
+import { AbilityContext } from 'src/layouts/components/acl/Can'
+
 const PipelinesCard = () => {
   // ** States
   const [addPipelineOpen, setAddPipelineOpen] = useState<boolean>(false)
@@ -45,6 +48,7 @@ const PipelinesCard = () => {
   const [row, setRow] = useState<PipelineType | undefined>()
 
   // ** Hooks
+  const ability = useContext(AbilityContext)
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.pipeline)
 
@@ -89,23 +93,29 @@ const PipelinesCard = () => {
               <Typography variant='body2'>{item.totalAssinantes} usuários trabalhando neste pipe</Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleEditClient(item)}>
-                <TableEdit fontSize='small' />
-              </IconButton>
-              <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleViewClient(item)}>
-                <EyeArrowRightOutline fontSize='small'/>
-              </IconButton>
-              <Link 
-                href={{
-                  pathname: `/bussiness/processos/pipelines/manager/[id]`,
-                  query: {id: item.id },
-                }}>
-                  <IconButton size='small' sx={{ color: 'text.primary' }}>
-                    <Login fontSize='small' sx={{ 
-                                                          color: '#ff671f',
-                                                          }} />
-                  </IconButton>
-              </Link>
+              {ability?.can('update', 'ac-pipeline-page') ? (
+                <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleEditClient(item)}>
+                  <TableEdit fontSize='small' />
+                </IconButton>
+              ) : "Você não tem permissão para ver este recurso."}
+              {ability?.can('read', 'ac-pipeline-page') ? (
+                <IconButton size='small' sx={{ color: '#ff671f' }} onClick={() => handleViewClient(item)}>
+                  <EyeArrowRightOutline fontSize='small'/>
+                </IconButton>
+              ) : "Você não tem permissão para ver este recurso."}
+              {ability?.can('update', 'ac-pipeline-page') ? (
+                <Link 
+                  href={{
+                    pathname: `/bussiness/processos/pipelines/manager/[id]`,
+                    query: {id: item.id },
+                  }}>
+                    <IconButton size='small' sx={{ color: 'text.primary' }}>
+                      <Login fontSize='small' sx={{ 
+                                                            color: '#ff671f',
+                                                            }} />
+                    </IconButton>
+                </Link>
+              ) : "Você não tem permissão para ver este recurso."}
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                 <Typography variant='body2' sx={{ fontWeight: 600, color: 'primary.main' }}>
@@ -131,41 +141,50 @@ const PipelinesCard = () => {
 
   return (
     <Grid container spacing={6} className='match-height'>
-      <Grid item xs={12} sm={6} lg={4}>
-        <Card
-          sx={{ cursor: 'pointer' }}
-        >
-          <Grid container sx={{ height: '100%' }}>
-            <Grid item xs={5}>
-              <Box sx={{ height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <img width={65} height={130} alt='add-role' src='/images/cards/pose_m1.png' />
-              </Box>
-            </Grid>
-            <Grid item xs={7}>
-              <CardContent>
-                <Box sx={{ textAlign: 'right' }}>
-                  <Button
-                    variant='contained'
-                    sx={{ mb: 3, whiteSpace: 'nowrap' }}
-                    onClick={() => {
-                      toggleAddPipelineDrawer()
-                    }}
-                  >
-                    Novo pipe
-                  </Button>
-                  <Typography>Experimente construir um novo pipe.</Typography>
+      {ability?.can('create', 'ac-pipeline-page') ? (
+        <Grid item xs={12} sm={6} lg={4}>
+          <Card
+            sx={{ cursor: 'pointer' }}
+          >
+            <Grid container sx={{ height: '100%' }}>
+              <Grid item xs={5}>
+                <Box sx={{ height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <img width={65} height={130} alt='add-role' src='/images/cards/pose_m1.png' />
                 </Box>
-              </CardContent>
+              </Grid>
+              <Grid item xs={7}>
+                <CardContent>
+                  <Box sx={{ textAlign: 'right' }}>
+                    <Button
+                      variant='contained'
+                      sx={{ mb: 3, whiteSpace: 'nowrap' }}
+                      onClick={() => {
+                        toggleAddPipelineDrawer()
+                      }}
+                    >
+                      Novo pipe
+                    </Button>
+                    <Typography>Experimente construir um novo pipe.</Typography>
+                  </Box>
+                </CardContent>
+              </Grid>
             </Grid>
-          </Grid>
-        </Card>
-      </Grid>
+          </Card>
+        </Grid>
+      ) : "Você não tem permissão para ver este recurso."}
       {renderCards()}
       <AddPipelineDrawer open={addPipelineOpen} toggle={toggleAddPipelineDrawer} />
       <EditPipelineDrawer open={editPipelineOpen} toggle={toggleEditPipelineDrawer} row={row}/>
       <ViewPipelineDrawer open={viewPipelineOpen} toggle={toggleViewPipelineDrawer} row={row}/>
     </Grid>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+PipelinesCard.acl = {
+  action: 'list',
+  subject: 'ac-pipeline-page'
 }
 
 export default PipelinesCard

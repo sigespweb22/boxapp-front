@@ -17,9 +17,6 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
-// Import Translate
-import { useTranslation } from 'react-i18next'
-
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
@@ -87,7 +84,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
     posicao: props?.row?.posicao ?? '',
     assinantes: props?.row?.assinantes ?? []
   }
-
+    
   // ** Props
   const { open, toggle } = props
 
@@ -111,6 +108,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
       Authorization: "Bearer " + storedToken
     }
   }
+
   useEffect(() => {
     axios
       .get(usersApiService.listToSelectAsync, config)
@@ -119,11 +117,11 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
       })
   }, []);
 
-  // ** Set values
+  //** Set values
   setValue('id', defaultValues.id)
   setValue('nome', defaultValues.nome)
   setValue('posicao', defaultValues.posicao)
-  setValue('assinantes', defaultValues.assinantes)
+  setValue('assinantes', props?.row?.assinantes)
 
   const onSubmit = (data: PipelineType) => {
     dispatch(editPipeline({ ...data,  }))
