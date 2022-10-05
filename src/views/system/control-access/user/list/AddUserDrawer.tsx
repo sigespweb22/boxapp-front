@@ -174,7 +174,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                   value={value}
                   label='Nome completo'
                   onChange={onChange}
-                  placeholder='Alan Rezende'
+                  placeholder='(e.g.: Alan Rezende)'
                   error={Boolean(errors.fullName)}
                 />
               )}
@@ -192,7 +192,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                   value={value}
                   label='Email'
                   onChange={onChange}
-                  placeholder='alan.rezende@email.com'
+                  placeholder='(e.g.: alan.rezende@email.com)'
                   error={Boolean(errors.email)}
                 />
               )}
@@ -210,7 +210,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                   value={value}
                   label='Senha'
                   onChange={onChange}
-                  placeholder='Password123*'
+                  placeholder='(e.g.: Password123*)'
                   error={Boolean(errors.password)}
                 />
               )}
@@ -229,7 +229,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                     <Select
                         name="applicationUserGroups"
                         multiple
-                        label="User Group"
+                        label="Grupo usuário"
                         value={value}
                         MenuProps={MenuProps}
                         id='multiple-group'
@@ -268,6 +268,13 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
       </Box>
     </Drawer>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarAddUser.acl = {
+  action: 'create',
+  subject: 'ac-user-page'
 }
 
 export default SidebarAddUser

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -10,21 +10,20 @@ import { useTranslation } from 'react-i18next'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
-import DeleteOutline from 'mdi-material-ui/DeleteOutline'
-import AccountReactivateOutline from 'mdi-material-ui/AccountReactivateOutline'
+import Help from 'mdi-material-ui/Help'
+import Tooltip from '@mui/material/Tooltip';
 
 
 // ** Store Imports
@@ -39,7 +38,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteUser, alterStatusUser } from 'src/store/apps/user'
+import { fetchData, alterStatusUser } from 'src/store/apps/user'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -49,6 +48,8 @@ import { UsersType } from 'src/types/apps/userTypes'
 // ** Custom Components Imports
 import TableHeader from 'src/views/system/control-access/user/list/TableHeader'
 import AddUserDrawer from 'src/views/system/control-access/user/list/AddUserDrawer'
+import ViewUserDrawer from 'src/views/system/control-access/user/view/ViewUserDrawer'
+import EditUserDrawer from 'src/views/system/control-access/user/edit/EditUserDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -61,30 +62,16 @@ interface UserStatusType {
   [key: string]: ThemeColor
 }
 
-// ** Vars
-const userGroupObj: UserGroupType = {
-  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
-  // USER_LIST: <Laptop fontSize='small' sx={{ mr: 3, color: 'error.main' }} />,
-  // MASTER: <CogOutline fontSize='small' sx={{ mr: 3, color: 'warning.main' }} />,
-  // editor: <PencilOutline fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  // maintainer: <ChartDonut fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  // subscriber: <AccountOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />
-}
-
 interface CellType {
   row: UsersType
 }
 
 const userStatusObj: UserStatusType = {
+  NENHUM: 'primary',
   ACTIVE: 'success',
   PENDING: 'warning',
   INACTIVE: 'secondary'
 }
-
-// ** Styled component for the link for the avatar with image
-const AvatarWithImageLink = styled(Link)(({ theme }) => ({
-  marginRight: theme.spacing(3)
-}))
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -92,27 +79,33 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-// ** renders client column
-const renderClient = (row: UsersType) => {
-  if (row.avatar.length) {
-    return (
-      <AvatarWithImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 30, height: 30 }} />
-      </AvatarWithImageLink>
-    )
-  } else {
-    return (
-      <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
-        <CustomAvatar
+const userGroupObj: UserGroupType = {
+  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
+}
+
+const groupTransform = (groups: string[]) => {
+  const elem: string[] = []
+
+  groups.forEach(element => {
+    elem.push("| " + element + " | ")
+  })
+
+  return elem
+}
+
+// ** renders user column
+const renderUser = (row: UsersType) => {
+  return (
+    <AvatarWithoutImageLink href={`/apps/client/view/${row.id}`}>
+      <CustomAvatar
           skin='light'
-          color={row.avatarColor || 'primary'}
+          color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.fullName ? row.fullName : 'John Doe')}
-        </CustomAvatar>
-      </AvatarWithoutImageLink>
-    )
-  }
+          {getInitials(row.fullName ? row.fullName : 'NF')}
+      </CustomAvatar>
+    </AvatarWithoutImageLink>
+  )
 }
 
 // ** renders status column
@@ -131,121 +124,22 @@ const RenderStatus = ({ status } : { status: string }) => {
   )
 }
 
-// ** Styled component for the link inside menu
-const MenuItemLink = styled('a')(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none',
-  padding: theme.spacing(1.5, 4),
-  color: theme.palette.text.primary
-}))
-
-const RowOptions = ({ id, status } : { id: number | string, status: string }) => {
-  // ** Hooks
-  const ability = useContext(AbilityContext)
-  const dispatch = useDispatch<AppDispatch>()
-  const { t } = useTranslation()
-
-  // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const rowOptionsOpen = Boolean(anchorEl)
-
-  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-  const handleDelete = () => {
-    dispatch(deleteUser(id))
-    handleRowOptionsClose()
-  }
-  const handleAlterStatus = () => {
-    dispatch(alterStatusUser(id))
-    handleRowOptionsClose()
-  }
-
-  return (
-    <> 
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <DotsVertical />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        {ability?.can('update', 'ac-user-page') &&
-          <MenuItem onClick={handleAlterStatus}>
-            <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
-            {
-              status == "PENDING" ? t("Activate") : status == "ACTIVE" ? t("Deactivate") : t("Activate")
-            }
-          </MenuItem>
-        }
-        {ability?.can('read', 'ac-user-page') &&
-          <MenuItem sx={{ p: 0 }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
-              <MenuItemLink>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                {t("View")}
-              </MenuItemLink>
-            </Link>
-          </MenuItem>
-        }
-        {ability?.can('update', 'ac-user-page') &&
-          <MenuItem onClick={handleRowOptionsClose}>
-            <PencilOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Edit")}
-          </MenuItem>
-        }
-        {ability?.can('delete', 'ac-user-page') &&
-          <MenuItem onClick={handleDelete}>
-            <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Delete")}
-          </MenuItem>
-        }
-      </Menu>
-    </>
-  )
-}
-
-const groupTransform = (groups: string[]) => {
-  const elem: string[] = []
-
-  groups.forEach(element => {
-    elem.push("| " + element + " | ")
-  })
-
-  return elem
-}
-
-const columns = [
+const defaultColumns = [
   {
-    flex: 0.2,
-    minWidth: 230,
+    flex: 0.08,
+    minWidth: 30,
     field: 'fullName',
-    headerName: 'Usuário',
+    headerName: 'Nome',
+    headerAlign: 'left' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       const { id, fullName, userName } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderUser(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -255,7 +149,7 @@ const columns = [
                 {fullName}
               </Typography>
             </Link>
-            <Link href={`/apps/user/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 🌟🌟🌟🌟🌟{userName}
               </Typography>
@@ -266,10 +160,12 @@ const columns = [
     }
   },
   {
-    flex: 0.2,
-    minWidth: 250,
+    flex: 0.07,
+    minWidth: 100,
     field: 'email',
     headerName: 'E-mail',
+    headerAlign: 'left' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
@@ -294,31 +190,18 @@ const columns = [
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
-          {/* <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {transformRole(row.roles)}
-          </Typography> */}
         </Box>
       )
     }
   },
   {
-    flex: 0.1,
-    minWidth: 110,
+    flex: 0.04,
+    minWidth: 50,
     field: 'status',
     headerName: 'Status',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Ações',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]
 
@@ -328,31 +211,107 @@ const UserList = () => {
   const { t } = useTranslation()
    
   // ** State
-  const [group] = useState<string>('')
   const [value, setValue] = useState<string>('')
-  const [status] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addUserOpen, setAddUserOpen] = useState<boolean>(false)
+  const [viewUserOpen, setViewUserOpen] = useState<boolean>(false)
+  const [editUserOpen, setEditUserOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<UsersType | undefined>()
 
-  // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     dispatch(
       fetchData({
-        group,
-        status,
         q: value
       })
     )
-  }, [dispatch, group, status, value])
+  }, [dispatch, value])
 
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
 
+  const handleViewClient = (row : UsersType) => {
+    setRow(row)
+    setViewUserOpen(true)
+  }
+
+  const handleEditClient = (row : UsersType) => {
+    setRow(row)
+    setEditUserOpen(true)
+  }
+
+  const handleAlterStatus = (id: string) => {
+    dispatch(alterStatusUser(id))
+  }
+
+  const RenderButton = ({ id, status } : { id: string, status: string }) => {
+    if (status === 'INACTIVE' || status === 'PENDING')
+    {
+      return (
+        <Tooltip title={t("Activate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorUp fontSize='small' />
+          </IconButton>
+        </Tooltip>        
+      )
+    } else if (status === 'ACTIVE') {
+      return (
+        <Tooltip title={t("Deactivate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorDown fontSize='small' />
+          </IconButton>
+        </Tooltip>
+      )
+    }
+    else {
+      return (
+        <IconButton onClick={() => handleAlterStatus(id)}>
+          <Help fontSize='small' />
+        </IconButton>
+      )
+    }
+  }
+
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
+  const handleUserViewToggle = () => setViewUserOpen(!viewUserOpen)
+  const handleUserEditToggle = () => setEditUserOpen(!editUserOpen)
+
+  const columns = [
+    ...defaultColumns,
+    {
+      flex: 0.05,
+      minWidth: 90,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Ações',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('read', 'ac-client-page') &&
+            <Tooltip title={t("View")}>
+              <IconButton onClick={() => handleViewClient(row)}>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('update', 'ac-client-page') &&
+            <Tooltip title={t("Edit")}>
+              <IconButton onClick={() => handleEditClient(row)}>
+                <PencilOutline fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('delete', 'ac-client-page') &&
+            <RenderButton id={row.id} status={row.status}/>
+          }
+        </Box>
+      )
+    }
+  ]
 
   return (
     <Grid container spacing={6}>
@@ -385,17 +344,18 @@ const UserList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
+        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} row={row}/>
+        <ViewUserDrawer open={viewUserOpen} toggle={handleUserViewToggle} row={row}/>
+        <EditUserDrawer open={editUserOpen} toggle={handleUserEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
 }
 
-// **Controle de acesso da página
-// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
-// **a esta página de subject abaixo
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
 UserList.acl = {
-  action: ['list', 'read', 'create', 'update', 'delete'],
+  action: 'list',
   subject: 'ac-user-page'
 }
 
