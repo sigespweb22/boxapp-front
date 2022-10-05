@@ -117,7 +117,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
       .then(response => {
         groups = response.data
       })
-  }, [groups]);
+  }, []);
 
   // ** Hook
   const { t } = useTranslation()

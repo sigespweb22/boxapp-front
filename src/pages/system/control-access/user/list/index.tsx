@@ -291,21 +291,21 @@ const UserList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-client-page') &&
+          {ability?.can('read', 'ac-user-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewClient(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-client-page') &&
+          {ability?.can('update', 'ac-user-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditClient(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-client-page') &&
+          {ability?.can('delete', 'ac-user-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -344,7 +344,7 @@ const UserList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} row={row}/>
+        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
         <ViewUserDrawer open={viewUserOpen} toggle={handleUserViewToggle} row={row}/>
         <EditUserDrawer open={editUserOpen} toggle={handleUserEditToggle} row={row}/>
       </Grid>

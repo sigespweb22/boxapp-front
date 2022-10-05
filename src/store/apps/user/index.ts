@@ -80,6 +80,56 @@ export const addUser = createAsyncThunk(
   }
 )
 
+// ** Update User
+export const editUser = createAsyncThunk(
+  'appUser/updateUser',
+  async (data : UsersType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    const data2 = {
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password,
+      applicationUserGroups: data.applicationUserGroups
+    }
+
+    axios.put(userApi.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().client.params))
+      if (resp.status === 204) return toast.success("Usuário atualizado com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
+
 // ** Delete User
 export const deleteUser = createAsyncThunk(
   'appUsers/deleteUser',
