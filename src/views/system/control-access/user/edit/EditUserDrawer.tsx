@@ -1,10 +1,10 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
-import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
+import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -19,20 +19,20 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
-// ** Icons Imports
-import Close from 'mdi-material-ui/Close'
+// ** Copmponents Imports
+import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
+
+// ** Icons Imports
+import Close from 'mdi-material-ui/Close'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { editUser } from 'src/store/apps/user/index'
-
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
+import { editUser } from 'src/store/apps/user'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -85,31 +85,42 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  nome: yup
+  fullName: yup
     .string()
     .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
-    .required("Nome é requerido"),
-  posicao: yup
+    .required(),
+  email: yup
     .string()
-    .min(1, obj => showErrors('Posição', obj.value.length, obj.min))
-    .required("Posição é requerida")
+    .min(3, obj => showErrors('E-mail', obj.value.length, obj.min))
+    .required()
 })
 
-const SidebarEditPipeline = (props: SidebarEditUserType) => {
-  const groupDefaultValues: GroupDataType[] = []
-  const defaultValues = {
-    id: props?.row?.id ?? '',
-    fullName: props?.row?.fullName ?? '',
-    email: props?.row?.email ?? '',
-    password: props?.row?.password ?? '',
-    applicationUserGroups: props?.row?.applicationUserGroups ?? []
+const groupsDefaultValues: { id: string, name: string  }[] = []
+
+const SidebarEditUser = (props: SidebarEditUserType) => {
+  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
   }
-  
+
+  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
+
+  useEffect(() => {
+    axios
+      .get(groupApiService.listToSelectAsync, config)
+      .then(response => {
+        setGroups(response.data)
+      })
+  }, []);
+
   // ** Props
   const { open, toggle } = props
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
+  const { t } = useTranslation()
   const {
     reset,
     setValue,
@@ -120,34 +131,16 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-  const [groups, setGroups] = useState<GroupDataType[]>(groupDefaultValues)
 
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(groupApiService.listToSelectAsync, config)
-      .then(response => {
-        setGroups(response.data)
-      })
-  }, []);
-
-  const { t } = useTranslation()
-
-  //** Set values
-  setValue('id', defaultValues.id)
-  setValue('fullName', defaultValues.fullName)
-  setValue('email', defaultValues.email)
-  setValue('password', defaultValues.password)
-  setValue('applicationUserGroups', defaultValues.applicationUserGroups)
+  // ** Set values
+  setValue('id', props?.row?.id)
+  setValue('fullName', props?.row?.fullName)
+  setValue('email', props?.row?.email)
+  setValue('password', props?.row?.password)
+  setValue('applicationUserGroups', props?.row?.applicationUserGroups)
 
   const onSubmit = (data: UsersType) => {
-    dispatch(editUser({ ...data, }))
+    dispatch(editUser({ ...data }))
     toggle()
     reset()
   }
@@ -167,11 +160,23 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Pipeline</Typography>
+        <Typography variant='h6'>Editar Usuário</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='id'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                />
+              )}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='fullName'
@@ -180,10 +185,9 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome completo'
                   onChange={onChange}
                   placeholder='(e.g.: Alan Rezende)'
-                  error={Boolean(errors.fullName)}
+                  error={Boolean(errors.nome)}
                 />
               )}
             />
@@ -196,12 +200,10 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type='email'
                   value={value}
-                  label='Email'
                   onChange={onChange}
-                  placeholder='(e.g.: alan.rezende@email.com)'
-                  error={Boolean(errors.email)}
+                  placeholder='(e.g.: alan.rezende@boxtecnologia.com.br)'
+                  error={Boolean(errors.nome)}
                 />
               )}
             />
@@ -229,16 +231,16 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
             <Controller
               name="applicationUserGroups"
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
+                debugger
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
                     <Select
                         name="applicationUserGroups"
-                        multiple
+                        multiple={true}
                         label="Grupo usuário"
-                        value={value}
+                        value={value || []}
                         MenuProps={MenuProps}
                         id='multiple-group'
                         onChange={onChange}
@@ -278,11 +280,4 @@ const SidebarEditPipeline = (props: SidebarEditUserType) => {
   )
 }
 
-// ** Controle de acesso da página
-// ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarEditPipeline.acl = {
-  action: 'update',
-  subject: 'ac-user-page'
-}
-
-export default SidebarEditPipeline
+export default SidebarEditUser

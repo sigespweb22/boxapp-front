@@ -82,8 +82,10 @@ export const addUser = createAsyncThunk(
 
 // ** Update User
 export const editUser = createAsyncThunk(
-  'appUser/updateUser',
+  'appUsers/updateUser',
   async (data : UsersType, { getState, dispatch }: Redux) => {
+    debugger
+
     const storedToken = window.localStorage.getItem(userApi.storageTokenKeyName)!
     const config = {
       headers: {
@@ -92,6 +94,7 @@ export const editUser = createAsyncThunk(
     }
 
     const data2 = {
+      id: data.id,
       fullName: data.fullName,
       email: data.email,
       password: data.password,
