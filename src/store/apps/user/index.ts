@@ -14,8 +14,6 @@ import { UsersType } from 'src/types/apps/userTypes'
 
 interface DataParams {
   q: string
-  group: string
-  status: string
 }
 
 interface Redux {

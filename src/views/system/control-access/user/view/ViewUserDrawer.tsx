@@ -120,7 +120,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                 return (
                   <FormControl fullWidth>
                     <Box sx={{ fontSize: 16, mb: "10px" }}>Grupos</Box>
-                    {props?.row?.applicationUserGroupsNames.map(group =>
+                    {props?.row?.applicationUserGroups.map(group =>
                        {
                           return (
                             <div>

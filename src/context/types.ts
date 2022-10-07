@@ -14,6 +14,7 @@ export type RegisterParams = {
 export type UserDataType = {
   id: string
   role: string[]
+  applicationUserGroups: string[]
   applicationUserGroupsNames: string[]
   funcao: string
   setor: string

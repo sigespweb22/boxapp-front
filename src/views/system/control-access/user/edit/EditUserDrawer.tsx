@@ -4,23 +4,17 @@ import { useEffect, useState } from 'react'
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -41,19 +35,11 @@ import { UsersType } from 'src/types/apps/userTypes'
 // ** Api Services
 import groupApiService from 'src/@api-center/group/groupApiService'
 
+// ** MUI Imports
+import Autocomplete from '@mui/material/Autocomplete'
+
 // ** Axios Imports
 import axios from 'axios'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
 
 interface SidebarEditUserType {
   row: UsersType | undefined
@@ -98,6 +84,7 @@ const schema = yup.object().shape({
 const groupsDefaultValues: { id: string, name: string  }[] = []
 
 const SidebarEditUser = (props: SidebarEditUserType) => {
+  debugger
   const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const config = {
     headers: {
@@ -113,14 +100,13 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       .then(response => {
         setGroups(response.data)
       })
-  }, []);
+  }, [])
 
   // ** Props
   const { open, toggle } = props
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const { t } = useTranslation()
   const {
     reset,
     setValue,
@@ -227,40 +213,26 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
             />
             {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="applicationUserGroups"
               control={control}
+              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
-                debugger
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
-                    <Select
-                        name="applicationUserGroups"
-                        multiple={true}
-                        label="Grupo usuário"
-                        value={value || []}
-                        MenuProps={MenuProps}
-                        id='multiple-group'
-                        onChange={onChange}
-                        labelId='multiple-group-label'
-                        renderValue={selected => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(selected as unknown as string[]).map(value => (
-                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                            ))}
-                          </Box>
-                        )}
-                      >
-                        {
-                          groups.map(group => (
-                            <MenuItem key={group.id} value={group.name}>
-                              {group.name}
-                            </MenuItem>
-                          ))
-                        }
-                    </Select>
+                    <Autocomplete
+                      multiple
+                      options={groups}
+                      filterSelectedOptions
+                      id='multiple-group'
+                      value={value}
+                      getOptionLabel={option => option.name}
+                      onChange={(event, newValue): void => {
+                        onChange(newValue)
+                      }}
+                      renderInput={params => <TextField {...params} label='Grupo' placeholder='(e.g.: Master)' />}
+                    />
                   </FormControl>
                 )
               }}

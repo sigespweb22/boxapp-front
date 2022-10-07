@@ -44,16 +44,8 @@ import apiGroup from 'src/@api-center/group/groupApiService'
 // ** Axios Imports
 import axios from 'axios'
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
+// ** MUI Imports
+import Autocomplete from '@mui/material/Autocomplete'
 
 interface SidebarAddUserType {
   open: boolean
@@ -217,7 +209,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             />
             {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="applicationUserGroups"
               control={control}
@@ -225,32 +217,18 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='demo-multiple-chip-label'>{t("User Group")}</InputLabel>
-                    <Select
-                        name="applicationUserGroups"
-                        multiple
-                        label="Grupo usuário"
-                        value={value}
-                        MenuProps={MenuProps}
-                        id='multiple-group'
-                        onChange={onChange}
-                        labelId='multiple-group-label'
-                        renderValue={selected => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(selected as unknown as string[]).map(value => (
-                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                            ))}
-                          </Box>
-                        )}
-                      >
-                        {
-                          groups.map(group => (
-                            <MenuItem key={group.id} value={group.name}>
-                              {group.name}
-                            </MenuItem>
-                          ))
-                        }
-                    </Select>
+                    <Autocomplete
+                      multiple
+                      options={groups}
+                      filterSelectedOptions
+                      id='multiple-group'
+                      value={value}
+                      getOptionLabel={option => option.name}
+                      onChange={(event, newValue): void => {
+                        onChange(newValue)
+                      }}
+                      renderInput={params => <TextField {...params} label='Grupo' placeholder='(e.g.: Master)' />}
+                    />
                   </FormControl>
                 )
               }}
@@ -269,6 +247,8 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     </Drawer>
   )
 }
+
+// https://stackoverflow.com/questions/62762468/get-the-id-of-the-selected-value-with-material-ui-autocomplete
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página

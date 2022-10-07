@@ -5,10 +5,21 @@ export type UserLayoutType = {
   id: string | undefined
 }
 
+export type ApplicationGroupType = {
+  id: string,
+  name: string
+}
+
+export type ApplicationUserGroupViewModelType = {
+  userId: string
+  groupId: string
+  name: string
+}
+
 export type UsersType = {
   id: number
   role: string[]
-  applicationUserGroups: string[]
+  applicationUserGroups: ApplicationUserGroupViewModelType[]
   applicationUserGroupsNames: string[]
   email: string
   password: string

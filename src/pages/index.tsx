@@ -24,7 +24,8 @@ const Home = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (auth.user && auth.user.applicationUserGroupsNames.length >= 1) {
+    debugger
+    if (auth.user && auth.user.applicationUserGroups.length >= 1) {
       const homeRoute = getHomeRoute('Master')
 
       // Redirect user to Home URL

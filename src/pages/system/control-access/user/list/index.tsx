@@ -62,6 +62,16 @@ interface UserStatusType {
   [key: string]: ThemeColor
 }
 
+interface applicationGroup {
+  id: string,
+  name: string
+}
+
+interface ApplicationUserGroupViewModel {
+  groupId: string
+  name: string
+}
+
 interface CellType {
   row: UsersType
 }
@@ -83,11 +93,11 @@ const userGroupObj: UserGroupType = {
   GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
 }
 
-const groupTransform = (groups: string[]) => {
+const groupTransform = (groups: ApplicationUserGroupViewModel[]) => {
   const elem: string[] = []
 
   groups.forEach(element => {
-    elem.push("| " + element + " | ")
+    elem.push("| " + element.name + " | ")
   })
 
   return elem
@@ -186,7 +196,7 @@ const defaultColumns = [
           <CustomChip
             skin='light'
             size='small'
-            label={groupTransform(row.applicationUserGroupsNames)}
+            label={groupTransform(row.applicationUserGroups)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
