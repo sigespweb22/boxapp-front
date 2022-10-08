@@ -33,3 +33,10 @@ export type UsersType = {
   currentPlan: string
   avatarColor?: ThemeColor
 }
+
+export type UserEditType = {
+  id: string
+  fullName: string
+  email: string
+  applicationUserGroups: ApplicationUserGroupViewModelType[]
+}

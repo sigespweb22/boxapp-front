@@ -32,9 +32,11 @@ import { editUser } from 'src/store/apps/user'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { UsersType } from 'src/types/apps/userTypes'
+import { UserEditType } from 'src/types/apps/userTypes'
 
 // ** Api Services
 import groupApiService from 'src/@api-center/group/groupApiService'
+import userApiService from 'src/@api-center/user/userApiService'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -75,14 +77,13 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
 
   // ** Props
   const { open, toggle } = props
-  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
-
+  
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
-    setValue,
     control,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -90,18 +91,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     resolver: yupResolver(schema)
   })
 
-  const defaultValues = {
-    id: props?.row?.id ?? '',
-    fullName: props?.row?.fullName ?? '',
-    email: props?.row?.email ?? '',
-    applicationUserGroups: props?.row?.applicationUserGroups ?? []
-  }
-
-  // ** Set values
-  setValue('id', defaultValues.id)
-  setValue('fullName', defaultValues.fullName)
-  setValue('email', defaultValues.email)
-  setValue('applicationUserGroups', defaultValues.applicationUserGroups)
+  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
 
   const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const config = {
@@ -109,8 +99,6 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       Authorization: "Bearer " + storedToken
     }
   }
-
-  
 
   useEffect(() => {
     axios
@@ -125,6 +113,15 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     toggle()
     reset()
   }
+
+  useEffect(() => {
+    if(props?.row){
+      setValue('id', props?.row?.id ?? '')
+      setValue('fullName', props?.row?.fullName ?? '')
+      setValue('email', props?.row?.email ?? '')
+      setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
+    }
+  }, [props?.row])
 
   const handleClose = () => {
     toggle()
@@ -154,11 +151,10 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='Id'
                 />
               )}
             />
-          </FormControl>
+        </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='fullName'
@@ -167,7 +163,6 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome completo'
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: Loren Ipsun)'
                   error={Boolean(errors.fullName)}
@@ -202,7 +197,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                 return (
                   <Autocomplete
                     multiple={true}
-                    defaultValue={value}
+                    value={value}
                     id="applicationUserGroups"
                     options={groups}
                     getOptionLabel={option => option.name}
