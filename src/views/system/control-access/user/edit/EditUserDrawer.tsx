@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -35,9 +36,6 @@ import { UsersType } from 'src/types/apps/userTypes'
 // ** Api Services
 import groupApiService from 'src/@api-center/group/groupApiService'
 
-// ** MUI Imports
-import Autocomplete from '@mui/material/Autocomplete'
-
 // ** Axios Imports
 import axios from 'axios'
 
@@ -48,18 +46,8 @@ interface SidebarEditUserType {
 }
 
 interface GroupDataType {
-  id: string
+  groupId: string
   name: string
-}
-
-const showErrors = (field: string, valueLen: number, min: number) => {
-  if (valueLen === 0) {
-    return `${field} é requerido (a)`
-  } else if (valueLen > 0 && valueLen < min) {
-    return `${field} deve ter pelo menos ${min} caracteres`
-  } else {
-    return ''
-  }
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -70,40 +58,24 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+const groupsDefaultValues: GroupDataType[] = []
+
 const schema = yup.object().shape({
   fullName: yup
     .string()
-    .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
-    .required(),
+    .required("Nome completo é requerido."),
   email: yup
     .string()
-    .min(3, obj => showErrors('E-mail', obj.value.length, obj.min))
-    .required()
+    .required("E-mail é requerido.")
 })
 
-const groupsDefaultValues: { id: string, name: string  }[] = []
-
 const SidebarEditUser = (props: SidebarEditUserType) => {
-  debugger
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
-
-  useEffect(() => {
-    axios
-      .get(groupApiService.listToSelectAsync, config)
-      .then(response => {
-        setGroups(response.data)
-      })
-  }, [])
+  // ** Hook
+  const { t } = useTranslation()
 
   // ** Props
   const { open, toggle } = props
+  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -118,15 +90,38 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     resolver: yupResolver(schema)
   })
 
+  const defaultValues = {
+    id: props?.row?.id ?? '',
+    fullName: props?.row?.fullName ?? '',
+    email: props?.row?.email ?? '',
+    applicationUserGroups: props?.row?.applicationUserGroups ?? []
+  }
+
   // ** Set values
-  setValue('id', props?.row?.id)
-  setValue('fullName', props?.row?.fullName)
-  setValue('email', props?.row?.email)
-  setValue('password', props?.row?.password)
-  setValue('applicationUserGroups', props?.row?.applicationUserGroups)
+  setValue('id', defaultValues.id)
+  setValue('fullName', defaultValues.fullName)
+  setValue('email', defaultValues.email)
+  setValue('applicationUserGroups', defaultValues.applicationUserGroups)
+
+  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  
+
+  useEffect(() => {
+    axios
+      .get(groupApiService.listToSelectAsync, config)
+      .then(response => {
+        setGroups(response.data)
+      })
+  }, [])
 
   const onSubmit = (data: UsersType) => {
-    dispatch(editUser({ ...data }))
+    dispatch(editUser({ ...data,  }))
     toggle()
     reset()
   }
@@ -146,7 +141,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Usuário</Typography>
+        <Typography variant='h6'>{t("Client Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -159,6 +154,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                 <TextField
                   disabled
                   value={value}
+                  label='Id'
                 />
               )}
             />
@@ -171,9 +167,10 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
+                  label='Nome completo'
                   onChange={onChange}
-                  placeholder='(e.g.: Alan Rezende)'
-                  error={Boolean(errors.nome)}
+                  placeholder='(e.g.: Ex.: Loren Ipsun)'
+                  error={Boolean(errors.fullName)}
                 />
               )}
             />
@@ -187,31 +184,14 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
+                  label='E-mail'
                   onChange={onChange}
-                  placeholder='(e.g.: alan.rezende@boxtecnologia.com.br)'
-                  error={Boolean(errors.nome)}
+                  placeholder='(e.g.: Ex.: loren@dominio.com'
+                  error={Boolean(errors.email)}
                 />
               )}
             />
             {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='password'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="password"
-                  value={value}
-                  label='Senha'
-                  onChange={onChange}
-                  placeholder='(e.g.: Password123*)'
-                  error={Boolean(errors.password)}
-                />
-              )}
-            />
-            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
@@ -220,20 +200,20 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      multiple
-                      options={groups}
-                      filterSelectedOptions
-                      id='multiple-group'
-                      value={value}
-                      getOptionLabel={option => option.name}
-                      onChange={(event, newValue): void => {
-                        onChange(newValue)
-                      }}
-                      renderInput={params => <TextField {...params} label='Grupo' placeholder='(e.g.: Master)' />}
-                    />
-                  </FormControl>
+                  <Autocomplete
+                    multiple={true}
+                    defaultValue={value}
+                    id="applicationUserGroups"
+                    options={groups}
+                    getOptionLabel={option => option.name}
+                    renderInput={params => (
+                      <TextField {...params} label="Grupos" placeholder='(e.g.: Master)' />
+                    )}
+                    onChange={(event, newValue) => {
+                      console.log(JSON.stringify(newValue, null, ' '));
+                      onChange(newValue)
+                    }}
+                  />
                 )
               }}
             />

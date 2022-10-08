@@ -48,6 +48,7 @@ import axios from 'axios'
 import Autocomplete from '@mui/material/Autocomplete'
 
 interface SidebarAddUserType {
+  row: UsersType | undefined
   open: boolean
   toggle: () => void
 }

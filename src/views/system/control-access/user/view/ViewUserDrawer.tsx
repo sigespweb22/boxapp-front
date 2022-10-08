@@ -127,7 +127,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                               <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
                                 <GoogleCirclesGroup fontSize='small' />
                               </IconButton>
-                              {group}
+                              {group.name}
                             </div>
                           )
                        }

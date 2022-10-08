@@ -55,7 +55,7 @@ const schema = yup.object().shape({
     .required("CNPJ é requerido.")
 })
 
-const SidebarEditUser = (props: SidebarEditClientType) => {
+const SidebarEditClient = (props: SidebarEditClientType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -398,4 +398,4 @@ const SidebarEditUser = (props: SidebarEditClientType) => {
   )
 }
 
-export default SidebarEditUser
+export default SidebarEditClient

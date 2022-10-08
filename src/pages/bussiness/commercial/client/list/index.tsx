@@ -347,7 +347,7 @@ const ClientList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} row={row}/>
+        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
         <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
         <EditClientDrawer open={editClientOpen} toggle={handleClientEditToggle} row={row}/>
       </Grid>

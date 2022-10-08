@@ -28,6 +28,7 @@ const AutocompleteFixedOptions = () => {
       options={top100Films}
       id='autocomplete-fixed-option'
       getOptionLabel={option => option.title}
+      defaultValue={[top100Films[13]]}
       renderInput={params => <TextField {...params} label='Fixed tag' placeholder='Favorites' />}
       onChange={(event, newValue) => {
         setValue([...fixedOptions, ...newValue.filter(option => fixedOptions.indexOf(option) === -1)])
