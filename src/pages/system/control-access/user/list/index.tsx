@@ -15,6 +15,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
@@ -23,8 +24,6 @@ import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
-import Tooltip from '@mui/material/Tooltip';
-
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -106,7 +105,7 @@ const groupTransform = (groups: ApplicationUserGroupViewModel[]) => {
 // ** renders user column
 const renderUser = (row: UsersType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/client/view/${row.id}`}>
+    <AvatarWithoutImageLink href="#">
       <CustomAvatar
           skin='light'
           color={'primary'}
@@ -286,8 +285,8 @@ const UserList = () => {
   }
 
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
-  const handleUserViewToggle = () => setViewUserOpen(!viewUserOpen)
-  const handleUserEditToggle = () => setEditUserOpen(!editUserOpen)
+  const toggleViewUserDrawer = () => setViewUserOpen(!viewUserOpen)
+  const toggleEditUserDrawer = () => setEditUserOpen(!editUserOpen)
 
   const columns = [
     ...defaultColumns,
@@ -354,9 +353,9 @@ const UserList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} row={row}/>
-        <ViewUserDrawer open={viewUserOpen} toggle={handleUserViewToggle} row={row}/>
-        <EditUserDrawer open={editUserOpen} toggle={handleUserEditToggle} row={row}/>
+        <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
+        <ViewUserDrawer open={viewUserOpen} toggle={toggleViewUserDrawer} row={row}/>
+        <EditUserDrawer open={editUserOpen} toggle={toggleEditUserDrawer} row={row}/>
       </Grid>
     </Grid>
   )

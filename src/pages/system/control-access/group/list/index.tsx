@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, MouseEvent, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -10,22 +10,20 @@ import { useTranslation } from 'react-i18next'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Menu from '@mui/material/Menu'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import DotsVertical from 'mdi-material-ui/DotsVertical'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
-import DeleteOutline from 'mdi-material-ui/DeleteOutline'
-import AccountReactivateOutline from 'mdi-material-ui/AccountReactivateOutline'
-
+import Help from 'mdi-material-ui/Help'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,7 +37,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, deleteGroup, alterStatusGroup } from 'src/store/apps/group'
+import { fetchData, alterStatusGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -49,29 +47,38 @@ import { GroupsType } from 'src/types/apps/groupTypes'
 // ** Custom Components Imports
 import TableHeader from 'src/views/system/control-access/group/list/TableHeader'
 import AddGroupDrawer from 'src/views/system/control-access/group/list/AddGroupDrawer'
+import ViewGroupDrawer from 'src/views/system/control-access/group/view/ViewGroupDrawer'
+import EditGroupDrawer from 'src/views/system/control-access/group/edit/EditGroupDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface RoleGroupType {
+interface UserGroupType {
   [key: string]: ReactElement
 }
 
-interface GroupStatusType {
+interface UserStatusType {
   [key: string]: ThemeColor
 }
 
-// ** Vars
-const rolesGroupObj: RoleGroupType = {
-  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
+interface applicationGroup {
+  id: string,
+  name: string
+}
+
+interface ApplicationUserRoleViewModel {
+  roleId: string
+  name: string
 }
 
 interface CellType {
   row: GroupsType
 }
 
-const groupStatusObj: GroupStatusType = {
+const userStatusObj: GroupStatusType = {
+  NENHUM: 'primary',
   ACTIVE: 'success',
+  PENDING: 'warning',
   INACTIVE: 'secondary'
 }
 
@@ -81,16 +88,30 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-// ** renders client column
-const renderClient = (row: GroupsType) => {
+const userGroupObj: UserGroupType = {
+  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
+}
+
+const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
+  const elem: string[] = []
+
+  groups.forEach(element => {
+    elem.push("| " + element.name + " | ")
+  })
+
+  return elem
+}
+
+// ** renders group column
+const renderGroup = (row: GroupsType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/user/view/${row.id}`}>
+    <AvatarWithoutImageLink href="#">
       <CustomAvatar
-        skin='light'
-        color={row.avatarColor || 'primary'}
-        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-      >
-        {getInitials(row.name ? row.name : 'GP')}
+          skin='light'
+          color={'primary'}
+          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+        >
+          {getInitials(row.name ? row.name : 'NP')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -106,138 +127,38 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={groupStatusObj[status]}
+        color={userStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
 }
 
-// ** Styled component for the link inside menu
-const MenuItemLink = styled('a')(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none',
-  padding: theme.spacing(1.5, 4),
-  color: theme.palette.text.primary
-}))
-
-const RowOptions = ({ id, status } : { id: number | string, status: string }) => {
-  // ** Hooks
-  const ability = useContext(AbilityContext)
-  const dispatch = useDispatch<AppDispatch>()
-  const { t } = useTranslation()
-
-  // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const rowOptionsOpen = Boolean(anchorEl)
-
-  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-  const handleDelete = () => {
-    dispatch(deleteGroup(id))
-    handleRowOptionsClose()
-  }
-  const handleAlterStatus = () => {
-    dispatch(alterStatusGroup(id))
-    handleRowOptionsClose()
-  }
-
-  return (
-    <> 
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <DotsVertical />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        {ability?.can('delete', 'ac-group-page') &&
-          <MenuItem onClick={handleAlterStatus}>
-            <AccountReactivateOutline fontSize='small' sx={{ mr: 2 }} />
-            {
-              status == "ACTIVE" ? t("Deactivate") : t("Activate")
-            }
-          </MenuItem>
-        }
-        {ability?.can('read', 'ac-group-page') &&
-          <MenuItem sx={{ p: 0 }}>
-            <Link href={`/apps/group/view/${id}`} passHref>
-              <MenuItemLink>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                {t("View")}
-              </MenuItemLink>
-            </Link>
-          </MenuItem>
-        }
-        {ability?.can('update', 'ac-group-page') &&
-          <MenuItem onClick={handleRowOptionsClose}>
-            <PencilOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Edit")}
-          </MenuItem>
-        }
-        {ability?.can('delete', 'ac-group-page') &&
-          <MenuItem onClick={handleDelete}>
-            <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
-            {t("Delete")}
-          </MenuItem>
-        }
-      </Menu>
-    </>
-  )
-}
-
-const permissionTransform = (groups: string[] ) => {
-  if (!groups.length) return "Nenhuma permissão vinculada."
-  const elem: string[] = []
-
-  groups.forEach(element => {
-    elem.push(`| ${element} | `)
-  })
-
-  return elem
-}
-
-const columns = [
+const defaultColumns = [
   {
-    flex: 0.2,
-    minWidth: 230,
+    flex: 0.08,
+    minWidth: 30,
     field: 'name',
     headerName: 'Nome',
+    headerAlign: 'left' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       const { id, name } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderGroup(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/group/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {name.toUpperCase()}
+                {name}
               </Typography>
             </Link>
-            <Link href={`/apps/group/view/${id}`} passHref>
+            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 🔑{name}
               </Typography>
@@ -255,11 +176,11 @@ const columns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {rolesGroupObj["GENERALS"]}
+          {userGroupObj["GENERALS"]}
           <CustomChip
             skin='light'
             size='small'
-            label={permissionTransform(row.applicationRoleGroupsNames)}
+            label={permissionTransform(row.applicationRoleGroups)}
             color={'success'}
             sx={{ textTransform: 'capitalize' }}
           />
@@ -268,23 +189,13 @@ const columns = [
     }
   },
   {
-    flex: 0.1,
-    minWidth: 110,
+    flex: 0.04,
+    minWidth: 50,
     field: 'status',
     headerName: 'Status',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Ações',
-    headerAlign: 'right' as const,
-    align: 'right' as const,
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} status={row.status}/>
   }
 ]
 
@@ -297,8 +208,10 @@ const GroupList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addGroupOpen, setAddGroupOpen] = useState<boolean>(false)
+  const [viewGroupOpen, setViewGroupOpen] = useState<boolean>(false)
+  const [editGroupOpen, setEditGroupOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<GroupsType | undefined>()
 
-  // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.group)
 
@@ -314,7 +227,85 @@ const GroupList = () => {
     setValue(val)
   }, [])
 
+  const handleViewGroup = (row : GroupsType) => {
+    setRow(row)
+    setViewGroupOpen(true)
+  }
+
+  const handleEditGroup = (row : GroupsType) => {
+    setRow(row)
+    setEditGroupOpen(true)
+  }
+
+  const handleAlterStatus = (id: string) => {
+    dispatch(alterStatusGroup(id))
+  }
+
+  const RenderButton = ({ id, status } : { id: string, status: string }) => {
+    if (status === 'INACTIVE' || status === 'PENDING')
+    {
+      return (
+        <Tooltip title={t("Activate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorUp fontSize='small' />
+          </IconButton>
+        </Tooltip>        
+      )
+    } else if (status === 'ACTIVE') {
+      return (
+        <Tooltip title={t("Deactivate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorDown fontSize='small' />
+          </IconButton>
+        </Tooltip>
+      )
+    }
+    else {
+      return (
+        <IconButton onClick={() => handleAlterStatus(id)}>
+          <Help fontSize='small' />
+        </IconButton>
+      )
+    }
+  }
+
   const toggleAddGroupDrawer = () => setAddGroupOpen(!addGroupOpen)
+  const toggleViewGroupDrawer = () => setViewGroupOpen(!viewGroupOpen)
+  const toggleEditGroupDrawer = () => setEditGroupOpen(!editGroupOpen)
+
+  const columns = [
+    ...defaultColumns,
+    {
+      flex: 0.05,
+      minWidth: 90,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Ações',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('read', 'ac-group-page') &&
+            <Tooltip title={t("View")}>
+              <IconButton onClick={() => handleViewGroup(row)}>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('update', 'ac-group-page') &&
+            <Tooltip title={t("Edit")}>
+              <IconButton onClick={() => handleEditGroup(row)}>
+                <PencilOutline fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('delete', 'ac-group-page') &&
+            <RenderButton id={row.id} status={row.status}/>
+          }
+        </Box>
+      )
+    }
+  ]
 
   return (
     <Grid container spacing={6}>
@@ -348,17 +339,18 @@ const GroupList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddGroupDrawer open={addGroupOpen} toggle={toggleAddGroupDrawer} />
+        <ViewGroupDrawer open={viewGroupOpen} toggle={toggleViewGroupDrawer} row={row}/>
+        <EditGroupDrawer open={editGroupOpen} toggle={toggleEditGroupDrawer} row={row}/>
       </Grid>
     </Grid>
   )
 }
 
-// **Controle de acesso da página
-// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
-// **a esta página de subject abaixo
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
 GroupList.acl = {
   action: 'list',
-  subject: 'ac-group-page'
+  subject: 'ac-user-page'
 }
 
 export default GroupList

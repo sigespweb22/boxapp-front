@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 
 // ** Types
 import { GroupsType } from 'src/types/apps/groupTypes'
+import { GroupEditType } from 'src/types/apps/groupTypes'
 
 interface DataParams {
   q: string
@@ -68,6 +69,55 @@ export const addGroup = createAsyncThunk(
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);        
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
+
+// ** Update User
+export const editGroup = createAsyncThunk(
+  'appGroups/editGroup',
+  async (data : GroupEditType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    const data2 = {
+      id: data.id,
+      name: data.name,
+      applicationRoleGroups: data.applicationRoleGroups
+    }
+
+    axios.put(groupApiService.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().group.params))
+      if (resp.status === 204) return toast.success("Grupo de permissões atualizado com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
             toast.error(ie)        

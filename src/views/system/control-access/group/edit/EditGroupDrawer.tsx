@@ -27,26 +27,28 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { editUser } from 'src/store/apps/user'
+import { editGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { UsersType } from 'src/types/apps/userTypes'
+import { GroupsType } from 'src/types/apps/groupTypes'
+import { GroupEditType } from 'src/types/apps/groupTypes'
 
 // ** Api Services
 import groupApiService from 'src/@api-center/group/groupApiService'
+import roleApiService from 'src/@api-center/role/roleApiService'
 
 // ** Axios Imports
 import axios from 'axios'
 
-interface SidebarEditUserType {
-  row: UsersType | undefined
+interface SidebarEditGroupType {
+  row: GroupEditType | undefined
   open: boolean
   toggle: () => void
 }
 
-interface GroupDataType {
-  groupId: string
+interface RoleDataType {
+  roleId: string
   name: string
 }
 
@@ -58,18 +60,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const groupsDefaultValues: GroupDataType[] = []
+const rolesDefaultValues: RoleDataType[] = []
 
 const schema = yup.object().shape({
-  fullName: yup
+  name: yup
     .string()
-    .required("Nome completo é requerido."),
-  email: yup
-    .string()
-    .required("E-mail é requerido.")
+    .required("Nome do grupo é requerido.")
 })
 
-const SidebarEditUser = (props: SidebarEditUserType) => {
+const SidebarEditGroup = (props: SidebarEditGroupType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -89,8 +88,8 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     resolver: yupResolver(schema)
   })
 
-  const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
-  const [group, setGroup] = useState<GroupDataType[]>(groupsDefaultValues)
+  const [roles, setRoles] = useState<RoleDataType[]>(rolesDefaultValues)
+  const [role, setRole] = useState<RoleDataType[]>(rolesDefaultValues)
 
   const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const config = {
@@ -101,14 +100,15 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
 
   useEffect(() => {
     axios
-      .get(groupApiService.listToSelectAsync, config)
+      .get(roleApiService.listToSelectAsync, config)
       .then(response => {
-        setGroups(response.data)
+        setRoles(response.data)
       })
   }, [])
 
-  const onSubmit = (data: UsersType) => {
-    dispatch(editUser({ ...data,  }))
+  const onSubmit = (data: GroupEditType) => {
+    debugger
+    dispatch(editGroup({ ...data,  }))
     toggle()
     reset()
   }
@@ -116,10 +116,9 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   useEffect(() => {
     if(props?.row){
       setValue('id', props?.row?.id ?? '')
-      setValue('fullName', props?.row?.fullName ?? '')
-      setValue('email', props?.row?.email ?? null)
-      setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
-      setGroup(props?.row?.applicationUserGroups ?? [])
+      setValue('name', props?.row?.name ?? '')
+      setValue('applicationRoleGroups', props?.row?.applicationRoleGroups ?? [])
+      setRole(props?.row?.applicationRoleGroups ?? [])
     }
   }, [props?.row])
 
@@ -127,10 +126,9 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     toggle()
     reset()
     setValue('id', props?.row?.id ?? '')
-    setValue('fullName', props?.row?.fullName ?? '')
-    setValue('email', props?.row?.email ?? null)
-    setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
-    setGroup(props?.row?.applicationUserGroups ?? [])
+    setValue('name', props?.row?.name ?? '')
+    setValue('applicationRoleGroups', props?.row?.applicationRoleGroups ?? [])
+    setRole(props?.row?.applicationRoleGroups ?? [])
   }
 
   return (
@@ -143,73 +141,57 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("User Edit")}</Typography>
+        <Typography variant='h6'>{t("Group Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='id'
-              control={control}
-              render={({ field: { value } }) => (
-                <TextField
-                  disabled
-                  value={value}
-                />
-              )}
-            />
-        </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='fullName'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  onChange={onChange}
-                  placeholder='(e.g.: Ex.: Loren Ipsun)'
-                  error={Boolean(errors.fullName)}
-                />
-              )}
-            />
-            {errors.fullName && <FormHelperText sx={{ color: 'error.main' }}>{errors.fullName.message}</FormHelperText>}
+              <Controller
+                name='id'
+                control={control}
+                render={({ field: { value } }) => (
+                  <TextField
+                    disabled
+                    value={value}
+                  />
+                )}
+              />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='email'
+              name='name'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: loren@dominio.com'
-                  error={Boolean(errors.email)}
+                  placeholder='(e.g.: Ex.: Master)'
+                  error={Boolean(errors.name)}
                 />
               )}
             />
-            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
-              name={"applicationUserGroups"}
+              name={"applicationRoleGroups"}
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     multiple
-                    options={groups || []}
+                    options={roles || []}
                     filterSelectedOptions
-                    value={group}
+                    value={role}
                     id="autocomplete-multiple-outlined"
                     getOptionLabel={option => option.name}
                     renderInput={params => (
-                      <TextField {...params} label="Grupos" placeholder='(e.g.: Master)' />
+                      <TextField {...params} label="Permissões" placeholder='(e.g.: Master)' />
                     )}
                     onChange={(event, newValue) => {
-                      setGroup(newValue)
+                      setRole(newValue)
                       onChange(newValue)
                     }}
                   />
@@ -233,9 +215,9 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarEditUser.acl = {
+SidebarEditGroup.acl = {
   action: 'update',
-  subject: 'ac-user-page'
+  subject: 'ac-group-page'
 }
 
-export default SidebarEditUser
+export default SidebarEditGroup

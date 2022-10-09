@@ -4,23 +4,18 @@ import { useEffect } from 'react'
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -44,11 +39,7 @@ import apiGroup from 'src/@api-center/group/groupApiService'
 // ** Axios Imports
 import axios from 'axios'
 
-// ** MUI Imports
-import Autocomplete from '@mui/material/Autocomplete'
-
 interface SidebarAddUserType {
-  row: UsersType | undefined
   open: boolean
   toggle: () => void
 }
@@ -106,11 +97,11 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
 
   useEffect(() => {
     axios
-      .get(apiGroup.listToSelectAsync, config)
+      .get(`${apiGroup.listToSelectAsync}`, config)
       .then(response => {
         groups = response.data
       })
-  }, []);
+  }, [groups]);
 
   // ** Hook
   const { t } = useTranslation()
@@ -248,8 +239,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     </Drawer>
   )
 }
-
-// https://stackoverflow.com/questions/62762468/get-the-id-of-the-selected-value-with-material-ui-autocomplete
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página

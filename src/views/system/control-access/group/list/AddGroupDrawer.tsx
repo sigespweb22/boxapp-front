@@ -4,23 +4,18 @@ import { useEffect } from 'react'
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import Chip from '@mui/material/Chip'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -43,17 +38,6 @@ import roleApiService from 'src/@api-center/role/roleApiService'
 
 // ** Axios Imports
 import axios from 'axios'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
 
 interface SidebarAddGroupType {
   open: boolean
@@ -163,14 +147,14 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
                   value={value}
                   label='Nome do grupo'
                   onChange={onChange}
-                  placeholder='Suporte'
+                  placeholder='(e.g.: Suporte N1)'
                   error={Boolean(errors.name)}
                 />
               )}
             />
             {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="applicationRoleGroups"
               control={control}
@@ -178,32 +162,18 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='multiple-permission-label'>{t("Permissions")}</InputLabel>
-                    <Select
-                        name="applicationRoleGroups"
-                        multiple
-                        label="Permissions"
-                        value={value}
-                        MenuProps={MenuProps}
-                        id='multiple-permission'
-                        onChange={onChange}
-                        labelId='multiple-permission-label'
-                        renderValue={selected => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(selected as unknown as string[]).map(value => (
-                              <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                            ))}
-                          </Box>
-                        )}
-                      >
-                        {
-                          roles.map(role => (
-                            <MenuItem key={role.id} value={role.name}>
-                              {role.name}
-                            </MenuItem>
-                          ))
-                        }
-                    </Select>
+                    <Autocomplete
+                      multiple
+                      options={roles}
+                      filterSelectedOptions
+                      id='multiple-group'
+                      value={value}
+                      getOptionLabel={option => option.name}
+                      onChange={(event, newValue): void => {
+                        onChange(newValue)
+                      }}
+                      renderInput={params => <TextField {...params} label='Roles' placeholder='(e.g.: CanUserList)' />}
+                    />
                   </FormControl>
                 )
               }}
@@ -221,6 +191,13 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
       </Box>
     </Drawer>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarAddGroup.acl = {
+  action: 'create',
+  subject: 'ac-group-page'
 }
 
 export default SidebarAddGroup
