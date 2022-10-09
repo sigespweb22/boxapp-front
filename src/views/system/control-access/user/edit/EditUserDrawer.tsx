@@ -92,6 +92,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   })
 
   const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
+  const [group, setGroup] = useState<GroupDataType[]>(groupsDefaultValues)
 
   const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const config = {
@@ -118,8 +119,9 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     if(props?.row){
       setValue('id', props?.row?.id ?? '')
       setValue('fullName', props?.row?.fullName ?? '')
-      setValue('email', props?.row?.email ?? '')
+      setValue('email', props?.row?.email ?? null)
       setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
+      setGroup(props?.row?.applicationUserGroups ?? [])
     }
   }, [props?.row])
 
@@ -138,7 +140,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Client Edit")}</Typography>
+        <Typography variant='h6'>{t("User Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -179,7 +181,6 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='E-mail'
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: loren@dominio.com'
                   error={Boolean(errors.email)}
@@ -190,22 +191,22 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
-              name="applicationUserGroups"
+              name={"applicationUserGroups"}
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
-                    multiple={true}
-                    value={value}
-                    id="applicationUserGroups"
-                    options={groups}
+                    multiple
+                    options={groups || []}
+                    filterSelectedOptions
+                    value={group}
+                    id="autocomplete-multiple-outlined"
                     getOptionLabel={option => option.name}
                     renderInput={params => (
                       <TextField {...params} label="Grupos" placeholder='(e.g.: Master)' />
                     )}
                     onChange={(event, newValue) => {
-                      console.log(JSON.stringify(newValue, null, ' '));
+                      setGroup(newValue)
                       onChange(newValue)
                     }}
                   />
