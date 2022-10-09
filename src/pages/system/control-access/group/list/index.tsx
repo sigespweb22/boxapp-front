@@ -279,7 +279,7 @@ const GroupList = () => {
       flex: 0.05,
       minWidth: 90,
       sortable: false,
-      field: 'actions',
+      field: 'actions', 
       headerName: 'Ações',
       headerAlign: 'center' as const,
       align: 'center' as const,
