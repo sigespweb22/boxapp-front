@@ -17,3 +17,14 @@ export type PipelineAssinantesViewModelType = {
   userId: string
   name: string
 }
+
+export type PipelineViewModelType = {
+  id: string
+  nome: string
+  posicao: string
+  totalTarefas: number
+  totalTarefasConcluidas: number
+  totalAssinantes: number
+  avatars: string[]
+  pipelineAssinantes: PipelineAssinantesViewModelType[]
+}

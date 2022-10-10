@@ -76,11 +76,11 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
               name='status'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { onChange } }) => (
                 <TextField
                   disabled={true}
                   type='status'
-                  value={t(props?.row?.status)}
+                  value={t(props?.row?.status || '')}
                   onChange={onChange}
                   placeholder='(e.g.: ATIVO)'
                 />
@@ -92,12 +92,12 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
             {props?.row?.applicationRoleGroups.map(group =>
                 {
                   return (
-                    <div>
+                    <>
                       <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
                         <Key fontSize='small' />
                       </IconButton>
                       {group.name}
-                    </div>
+                    </>
                   )
                 }
             )}

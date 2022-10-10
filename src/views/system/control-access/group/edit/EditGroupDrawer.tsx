@@ -177,7 +177,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
             <Controller
               name={"applicationRoleGroups"}
               control={control}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <Autocomplete
                     multiple

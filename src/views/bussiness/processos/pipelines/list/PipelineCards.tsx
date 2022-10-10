@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -26,15 +26,15 @@ import AddPipelineDrawer from 'src/views/bussiness/processos/pipelines/new/AddPi
 import EditPipelineDrawer from 'src/views/bussiness/processos/pipelines/edit/EditPipelineDrawer'
 import ViewPipelineDrawer from 'src/views/bussiness/processos/pipelines/view/ViewPipelineDrawer'
 
+// ** Types Imports
+import { RootState, AppDispatch } from 'src/store'
+import { PipelineType, PipelineViewModelType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Actions Imports
 import { fetchData } from 'src/store/bussiness/processos/pipeline'
-
-// ** Types Imports
-import { RootState, AppDispatch } from 'src/store'
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -44,7 +44,6 @@ const PipelinesCard = () => {
   const [addPipelineOpen, setAddPipelineOpen] = useState<boolean>(false)
   const [editPipelineOpen, setEditPipelineOpen] = useState<boolean>(false)
   const [viewPipelineOpen, setViewPipelineOpen] = useState<boolean>(false)
-  const [value, setValue] = useState<string>('')
   const [row, setRow] = useState<PipelineType | undefined>()
 
   // ** Hooks
@@ -55,10 +54,10 @@ const PipelinesCard = () => {
   useEffect(() => {
     dispatch(
       fetchData({
-        q: value
+        q: ""
       })
     )
-  }, [dispatch, value])
+  }, [dispatch])
 
   const handleEditClient = (row : PipelineType) => {
     setRow(row)
@@ -71,7 +70,7 @@ const PipelinesCard = () => {
   }
 
   const renderCards = () =>
-    store.data.map((item, index: number) => (
+    store.data.map((item: PipelineViewModelType , index: number) => (
       <Grid item xs={12} sm={6} lg={4} key={index}>
         <Card>
           <CardContent>

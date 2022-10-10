@@ -41,7 +41,6 @@ import { fetchData, alterStatusGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ThemeColor } from 'src/@core/layouts/types'
 import { GroupsType } from 'src/types/apps/groupTypes'
 
 // ** Custom Components Imports
@@ -66,15 +65,20 @@ interface CellType {
   row: GroupsType
 }
 
-interface GroupStatusType {
-  [key: string ]: string
-}
-
-const userStatusObj: GroupStatusType = {
-  NENHUM: 'primary',
-  ACTIVE: 'success',
-  PENDING: 'warning',
-  INACTIVE: 'secondary'
+const userStatusObj = (status: string) => {
+  switch (status)
+  {
+    case "NENHUM":
+      return 'primary'
+    case "ACTIVE":
+      return 'success'
+    case "PENDING":
+      return 'warning'
+    case "INACTIVE":
+      return 'secondary'
+    default:
+      return 'secondary'
+  }
 }
 
 // ** Styled component for the link for the avatar without image
@@ -122,7 +126,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={userStatusObj[status]}
+        color={userStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )

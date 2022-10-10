@@ -196,7 +196,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
             <Controller
               name={"applicationUserGroups"}
               control={control}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <Autocomplete
                     multiple

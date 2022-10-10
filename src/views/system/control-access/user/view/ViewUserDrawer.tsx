@@ -105,7 +105,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                 <TextField
                   disabled={true}
                   type='status'
-                  value={t(props?.row?.status)}
+                  value={t(props?.row?.status || '')}
                   onChange={onChange}
                   placeholder='(e.g.: ATIVO)'
                 />
@@ -122,14 +122,14 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                     <Box sx={{ fontSize: 16, mb: "10px" }}>Grupos</Box>
                     {props?.row?.applicationUserGroups.map(group =>
                        {
-                          return (
-                            <div>
-                              <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
-                                <GoogleCirclesGroup fontSize='small' />
-                              </IconButton>
-                              {group.name}
-                            </div>
-                          )
+                        return (
+                          <>
+                            <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
+                              <GoogleCirclesGroup fontSize='small' />
+                            </IconButton>
+                            {group.name}
+                          </>
+                        )
                        }
                     )}
                   </FormControl>

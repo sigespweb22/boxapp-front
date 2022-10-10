@@ -96,14 +96,14 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
                     <Box sx={{ fontSize: 16, mb: "10px" }}>Assinantes</Box>
                     {props?.row?.pipelineAssinantes.map(assinante =>
                        {
-                          return (
-                            <div>
-                              <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
-                                <AccountGroupOutline fontSize='small' />
-                              </IconButton>
-                              {assinante.name}
-                            </div>
-                          )
+                        return (
+                          <>
+                            <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
+                              <AccountGroupOutline fontSize='small' />
+                            </IconButton>
+                            {assinante.name}
+                          </>
+                        )
                        }
                     )}
                   </FormControl>
