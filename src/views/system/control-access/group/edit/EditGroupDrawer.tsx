@@ -31,7 +31,6 @@ import { editGroup } from 'src/store/apps/group'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { GroupsType } from 'src/types/apps/groupTypes'
 import { GroupEditType } from 'src/types/apps/groupTypes'
 
 // ** Api Services

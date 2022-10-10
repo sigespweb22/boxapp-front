@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'

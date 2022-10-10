@@ -70,7 +70,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
               name='fullName'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { onChange } }) => (
                 <TextField
                   disabled={true}
                   value={props?.row?.fullName}
@@ -85,7 +85,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
               name='email'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { onChange } }) => (
                 <TextField
                   disabled={true}
                   type='email'
@@ -101,7 +101,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
               name='status'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { onChange } }) => (
                 <TextField
                   disabled={true}
                   type='status'

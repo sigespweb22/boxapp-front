@@ -186,7 +186,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
             <Controller
               name={"pipelineAssinantes"}
               control={control}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <Autocomplete
                     multiple

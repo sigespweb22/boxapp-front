@@ -34,7 +34,6 @@ import { addClient } from 'src/store/bussiness/commercial/client'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
 
 // ** Axios Imports
 import axios from 'axios'

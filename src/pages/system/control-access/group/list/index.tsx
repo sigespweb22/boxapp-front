@@ -57,15 +57,6 @@ interface UserGroupType {
   [key: string]: ReactElement
 }
 
-interface UserStatusType {
-  [key: string]: ThemeColor
-}
-
-interface applicationGroup {
-  id: string,
-  name: string
-}
-
 interface ApplicationUserRoleViewModel {
   roleId: string
   name: string
@@ -73,6 +64,10 @@ interface ApplicationUserRoleViewModel {
 
 interface CellType {
   row: GroupsType
+}
+
+interface GroupStatusType {
+  [key: string ]: string
 }
 
 const userStatusObj: GroupStatusType = {

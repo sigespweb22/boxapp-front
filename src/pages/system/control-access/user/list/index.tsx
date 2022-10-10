@@ -61,11 +61,6 @@ interface UserStatusType {
   [key: string]: ThemeColor
 }
 
-interface applicationGroup {
-  id: string,
-  name: string
-}
-
 interface ApplicationUserGroupViewModel {
   groupId: string
   name: string
