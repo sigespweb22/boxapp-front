@@ -15,5 +15,5 @@ export type PipelineType = {
 
 export type PipelineAssinantesViewModelType = {
   userId: string
-  nome: string
+  name: string
 }

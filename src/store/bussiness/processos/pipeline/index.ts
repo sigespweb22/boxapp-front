@@ -104,7 +104,7 @@ export const editPipeline = createAsyncThunk(
       id: data.id,
       posicao: data.posicao,
       nome: data.nome,
-      assinantes: data.assinantes
+      pipelineAssinantes: data.pipelineAssinantes
     }
 
     axios.put(pipelineApiService.updateAsync, data2, config).then((resp) => {

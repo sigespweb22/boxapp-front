@@ -47,6 +47,8 @@ interface UserDataType {
   name: string
 }
 
+const usersDefaultValues: UserDataType[] = []
+
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
     return `${field} é requerido (a)`
@@ -77,14 +79,6 @@ const schema = yup.object().shape({
 })
 
 const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
-  const userDefaultValues: UserDataType[] = []
-  const defaultValues = {
-    id: props?.row?.id ?? '',
-    nome: props?.row?.nome ?? '',
-    posicao: props?.row?.posicao ?? '',
-    assinantes: props?.row?.assinantes ?? []
-  }
-    
   // ** Props
   const { open, toggle } = props
 
@@ -100,7 +94,8 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-  const [users, setUsers] = useState<UserDataType[]>(userDefaultValues)
+  const [users, setUsers] = useState<UserDataType[]>(usersDefaultValues)
+  const [user, setUser] = useState<UserDataType[]>(usersDefaultValues)
 
   const storedToken = window.localStorage.getItem(usersApiService.storageTokenKeyName)!
   const config = {
@@ -117,11 +112,15 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
       })
   }, []);
 
-  //** Set values
-  setValue('id', defaultValues.id)
-  setValue('nome', defaultValues.nome)
-  setValue('posicao', defaultValues.posicao)
-  setValue('assinantes', props?.row?.assinantes)
+  useEffect(() => {
+    if(props?.row){
+      setValue('id', props?.row?.id ?? '')
+      setValue('nome', props?.row?.nome ?? '')
+      setValue('posicao', props?.row?.posicao ?? null)
+      setValue('pipelineAssinantes', props?.row?.pipelineAssinantes ?? [])
+      setUser(props?.row?.pipelineAssinantes ?? [])
+    }
+  }, [props?.row])
 
   const onSubmit = (data: PipelineType) => {
     dispatch(editPipeline({ ...data,  }))
@@ -185,25 +184,25 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
-              name="assinantes"
+              name={"pipelineAssinantes"}
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      multiple
-                      options={users}
-                      filterSelectedOptions
-                      id='multiple-group'
-                      value={value}
-                      getOptionLabel={option => option.name}
-                      onChange={(event, newValue): void => {
-                        onChange(newValue)
-                      }}
-                      renderInput={params => <TextField {...params} label='Assinantes' placeholder='(e.g.: João da Silva)' />}
-                    />
-                  </FormControl>
+                  <Autocomplete
+                    multiple
+                    options={users || []}
+                    filterSelectedOptions
+                    value={user}
+                    id="autocomplete-multiple-outlined"
+                    getOptionLabel={option => option.name}
+                    renderInput={params => (
+                      <TextField {...params} label="Assinantes" placeholder='(e.g.: Loren Ipsun)' />
+                    )}
+                    onChange={(event, newValue) => {
+                      setUser(newValue)
+                      onChange(newValue)
+                    }}
+                  />
                 )
               }}
             />
