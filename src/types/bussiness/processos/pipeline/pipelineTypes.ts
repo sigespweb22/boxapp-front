@@ -10,5 +10,10 @@ export type PipelineType = {
   nome: string
   posicao: string
   avatarColor?: ThemeColor
-  assinantes: string[]
+  pipelineAssinantes: PipelineAssinantesViewModelType[]
+}
+
+export type PipelineAssinantesViewModelType = {
+  userId: string
+  nome: string
 }

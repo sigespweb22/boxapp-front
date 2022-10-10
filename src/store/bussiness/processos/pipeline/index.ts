@@ -52,7 +52,7 @@ export const addPipeline = createAsyncThunk(
     const data2 = {
       nome: data.nome,
       posicao: data.posicao,
-      assinantes: data.assinantes
+      pipelineAssinantes: data.pipelineAssinantes
     }
 
     axios.post(pipelineApiService.addAsync, data2, config).then((resp) => {

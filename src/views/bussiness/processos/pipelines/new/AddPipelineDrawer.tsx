@@ -82,7 +82,7 @@ const userDefaultValues: UserDataType[] = []
 const defaultValues = {
   nome: '',
   posicao: '',
-  assinantes: [],
+  pipelineAssinantes: [],
 }
 
 const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
@@ -181,7 +181,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
-              name="assinantes"
+              name="pipelineAssinantes"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
