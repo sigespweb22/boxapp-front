@@ -97,7 +97,7 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
                 return (
                   <FormControl fullWidth>
                     <Box sx={{ fontSize: 16, mb: "10px" }}>Assinantes</Box>
-                    {props?.row?.assinantes.map(assinante =>
+                    {props?.row?.pipelineAssinantes.map(assinante =>
                        {
                           return (
                             <div>
