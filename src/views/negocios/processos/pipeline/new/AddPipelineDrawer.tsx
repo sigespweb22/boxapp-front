@@ -30,7 +30,7 @@ import { AppDispatch } from 'src/store'
 import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
 
 // ** Api Services
-import usersApiService from 'src/@api-center/usuario/userApiService'
+import usersApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
 
 // ** Axios Imports
 import axios from 'axios'

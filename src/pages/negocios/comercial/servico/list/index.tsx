@@ -54,19 +54,15 @@ import { ServicoType } from 'src/types/apps/servicoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/servico/new/TableHeader'
-import AddAssetDrawer from 'src/views/negocios/comercial/servico/new/AddAssetDrawer'
-import ViewAssetDrawer from 'src/views/negocios/comercial/servico/view/ViewAssetDrawer'
-import EditAssetDrawer from 'src/views/negocios/comercial/servico/edit/EditAssetDrawer'
+import AddServicoDrawer from 'src/views/negocios/comercial/servico/new/AddServicoDrawer'
+import ViewServicoDrawer from 'src/views/negocios/comercial/servico/view/ViewServicoDrawer'
+import EditServicoDrawer from 'src/views/negocios/comercial/servico/edit/EditServicoDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface AssetStatusType {
+interface ServicoStatusType {
   [key: string]: ThemeColor
-}
-
-interface AssetTipoType {
-  [key: string]: ReactElement
 }
 
 interface ServicoTipoType {
@@ -78,24 +74,12 @@ interface UnidadeMedidaType {
 }
 
 interface CellType {
-  row: AssetsType
+  row: ServicoType
 }
 
-const assetStatusObj: AssetStatusType = {
+const servicoStatusObj: ServicoStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
-}
-
-// ** Vars
-const assetTipoObj: AssetTipoType = {
-  SERVICO:  <AccountWrenchOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,
-  PRODUTO: <RouterNetwork fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,  
-}
-
-const servicoTipoObj: ServicoTipoType = {
-  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
-  UNICO:  <Numeric1BoxOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Autorenew fontSize='small' sx={{ mr: 3, color: 'success.main' }} />,  
 }
 
 const unidadeMedidaObj: UnidadeMedidaType = {
@@ -112,9 +96,9 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders client column
-const renderClient = (row: AssetsType) => {
+const renderClient = (row: ServicoType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/asset/view/${row.id}`}>
+    <AvatarWithoutImageLink href={`/apps/servico/view/${row.id}`}>
       <CustomAvatar
           skin='light'
           color={'primary'}
@@ -136,7 +120,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={assetStatusObj[status]}
+        color={servicoStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -158,30 +142,6 @@ const umResolveColor = (um: string) => {
   }
 }
 
-const stResolveColor = (st: string) => {
-  switch (st) 
-  {
-    case 'RECORRENTE':
-      return 'success'
-    case 'UNICO':
-      return 'primary'
-    case 'NENHUM':
-      return 'secondary'
-    default:
-    return 'primary'
-  }
-}
-
-const tipoResolveColor = (tipo: string) => {
-  switch (tipo) 
-  {
-    case 'SERVICO':
-      return 'success'
-    case 'PRODUTO':
-      return 'info'
-  }
-}
-
 const defaultColumns = [
   {
     flex: 0.2,
@@ -197,7 +157,7 @@ const defaultColumns = [
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/asset/view/${id}`} passHref>
+            <Link href={`/apps/servico/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -207,34 +167,12 @@ const defaultColumns = [
                 {nome}
               </Typography>
             </Link>
-            <Link href={`/apps/asset/view/${id}`} passHref>
+            <Link href={`/apps/servico/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 🩺{unidadeMedida}
               </Typography>
             </Link>
           </Box>
-        </Box>
-      )
-    }
-  },
-  {
-    flex: 0.06,
-    field: 'tipo',
-    minWidth: 50,
-    headerName: 'Tipo',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {assetTipoObj[row.tipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.tipo}
-            color={tipoResolveColor(row.tipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
         </Box>
       )
     }
@@ -254,21 +192,6 @@ const defaultColumns = [
       )
     }
   },
-  {
-    flex: 0.1,
-    minWidth: 110,
-    field: 'valorVenda',
-    headerName: 'Valor venda',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.valorVenda}
-        </Typography>
-      )
-    }
-  },  
   {
     flex: 0.1,
     field: 'unidadeMedida',
@@ -292,28 +215,6 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
-    field: 'clienteAtivoTipoServicoTipo',
-    minWidth: 100,
-    headerName: 'Serviço tipo',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {servicoTipoObj[row.clienteAtivoTipoServicoTipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.clienteAtivoTipoServicoTipo}
-            color={stResolveColor(row.clienteAtivoTipoServicoTipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
-      )
-    }
-  },
-  {
     flex: 0.09,
     minWidth: 50,
     field: 'status',
@@ -324,7 +225,7 @@ const defaultColumns = [
   }
 ]
 
-const AssetList = () => {
+const ServicoList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -332,14 +233,14 @@ const AssetList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addAssetOpen, setAddAssetOpen] = useState<boolean>(false)
-  const [viewAssetOpen, setViewAssetOpen] = useState<boolean>(false)
-  const [editAssetOpen, setEditAssetOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<AssetsType>()
+  const [addServicoOpen, setAddServicoOpen] = useState<boolean>(false)
+  const [viewServicoOpen, setViewServicoOpen] = useState<boolean>(false)
+  const [editServicoOpen, setEditServicoOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ServicoType>()
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.asset)
+  const store = useSelector((state: RootState) => state.servico)
 
   useEffect(() => {
     dispatch(
@@ -353,18 +254,18 @@ const AssetList = () => {
     setValue(val)
   }, [])
 
-  const handleViewAsset = (row : AssetsType) => {
+  const handleViewServico = (row : ServicoType) => {
     setRow(row)
-    setViewAssetOpen(true)
+    setViewServicoOpen(true)
   }
 
-  const handleEditAsset = (row : AssetsType) => {
+  const handleEditServico = (row : ServicoType) => {
     setRow(row)
-    setEditAssetOpen(true)
+    setEditServicoOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusAsset(id))
+    dispatch(alterStatusServico(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -394,9 +295,9 @@ const AssetList = () => {
     }
   }
 
-  const toggleAddAssetDrawer = () => setAddAssetOpen(!addAssetOpen)
-  const handleAssetViewToggle = () => setViewAssetOpen(!viewAssetOpen)
-  const handleAssetEditToggle = () => setEditAssetOpen(!editAssetOpen)
+  const toggleAddServicoDrawer = () => setAddServicoOpen(!addServicoOpen)
+  const handleServicoViewToggle = () => setViewServicoOpen(!viewServicoOpen)
+  const handleServicoEditToggle = () => setEditServicoOpen(!editServicoOpen)
 
   const columns = [
     ...defaultColumns,
@@ -412,14 +313,14 @@ const AssetList = () => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-role-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewAsset(row)}>
+              <IconButton onClick={() => handleViewServico(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
           {ability?.can('update', 'ac-role-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditAsset(row)}>
+              <IconButton onClick={() => handleEditServico(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
@@ -437,18 +338,18 @@ const AssetList = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Assets")}</Typography>}
+            title={<Typography variant='h5'>{t("Servicos")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Assets listing")}.
+                {t("Servicos listing")}.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-asset-page') ? (
+        {ability?.can('list', 'ac-servico-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddAssetDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddServicoDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -463,9 +364,9 @@ const AssetList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddAssetDrawer open={addAssetOpen} toggle={toggleAddAssetDrawer} />
-        <ViewAssetDrawer open={viewAssetOpen} toggle={handleAssetViewToggle} row={row}/>
-        <EditAssetDrawer open={editAssetOpen} toggle={handleAssetEditToggle} row={row}/>
+        <AddServicoDrawer open={addServicoOpen} toggle={toggleAddServicoDrawer} />
+        <ViewServicoDrawer open={viewServicoOpen} toggle={handleServicoViewToggle} row={row}/>
+        <EditServicoDrawer open={editServicoOpen} toggle={handleServicoEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
@@ -474,9 +375,9 @@ const AssetList = () => {
 // **Controle de acesso da página
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
-AssetList.acl = {
+ServicoList.acl = {
   action: 'list',
-  subject: 'ac-asset-page'
+  subject: 'ac-servico-page'
 }
 
-export default AssetList
+export default ServicoList
