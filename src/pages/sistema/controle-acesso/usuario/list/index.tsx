@@ -42,7 +42,7 @@ import { fetchData, alterStatusUser } from 'src/store/sistema/controle-acesso/us
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { UsersType } from 'src/types/apps/userTypes'
+import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/controle-acesso/usuario/list/TableHeader'

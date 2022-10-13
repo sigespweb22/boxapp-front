@@ -5,7 +5,7 @@ export type RoleLayoutType = {
   id: string | undefined
 }
 
-export type RolesType = {
+export type RoleType = {
   id: string
   name: string
   description: string

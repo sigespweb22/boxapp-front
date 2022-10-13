@@ -11,7 +11,7 @@ export type ApplicationRoleGroupViewModelType = {
   name: string
 }
 
-export type GroupsType = {
+export type GrupoType = {
   id: string
   name: string
   applicationRoleGroups: ApplicationRoleGroupViewModelType[]
@@ -20,7 +20,7 @@ export type GroupsType = {
   avatarColor?: ThemeColor
 }
 
-export type GroupEditType = {
+export type GrupoEditType = {
   id: string
   name: string
   applicationRoleGroups: ApplicationRoleGroupViewModelType[]

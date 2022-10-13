@@ -8,11 +8,8 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ServicoType } from 'src/types/apps/servicoTypes'
+import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -33,7 +30,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const SidebarViewServico = (props: SidebarViewServicoType) => {
   // ** Hook
-  const { t } = useTranslation()
   const {
     reset,
     control

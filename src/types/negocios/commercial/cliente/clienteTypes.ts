@@ -1,11 +1,11 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
-export type ClientLayoutType = {
+export type ClienteLayoutType = {
   id: string | undefined
 }
 
-export type ClientsType = {
+export type ClienteType = {
   id: string
   nomeFantasia: string
   razaoSocial: string

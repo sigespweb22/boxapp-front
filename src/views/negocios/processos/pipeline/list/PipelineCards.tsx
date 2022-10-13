@@ -28,7 +28,7 @@ import ViewPipelineDrawer from 'src/views/negocios/processos/pipeline/view/ViewP
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { PipelineType, PipelineViewModelType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelineType, PipelineViewModelType } from 'src/types/negocios/processos/pipeline/pipelineTypes'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'

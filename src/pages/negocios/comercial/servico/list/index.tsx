@@ -17,17 +17,12 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import Cancel from 'mdi-material-ui/Cancel'
-import AccountWrenchOutline from 'mdi-material-ui/AccountWrenchOutline'
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
 import DesktopClassic from 'mdi-material-ui/DesktopClassic'
 import Matrix from 'mdi-material-ui/Matrix'
 import Alarm from 'mdi-material-ui/Alarm'
-import Numeric1BoxOutline from 'mdi-material-ui/Numeric1BoxOutline'
-import RouterNetwork from 'mdi-material-ui/RouterNetwork'
-import Autorenew from 'mdi-material-ui/Autorenew'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
@@ -50,7 +45,7 @@ import { fetchData, alterStatusServico } from 'src/store/negocios/comercial/serv
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ServicoType } from 'src/types/apps/servicoTypes'
+import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/servico/new/TableHeader'
@@ -63,10 +58,6 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface ServicoStatusType {
   [key: string]: ThemeColor
-}
-
-interface ServicoTipoType {
-  [key: string]: ReactElement
 }
 
 interface UnidadeMedidaType {

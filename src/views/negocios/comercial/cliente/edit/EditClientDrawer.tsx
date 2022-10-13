@@ -27,7 +27,7 @@ import { editClient } from 'src/store/negocios/comercial/cliente'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClientsType } from 'src/types/bussiness/commercial/client/clientTypes'
+import { ClientsType } from 'src/types/negocios/commercial/cliente/clienteTypes'
 
 interface SidebarEditClientType {
   row: ClientsType | undefined

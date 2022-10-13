@@ -31,7 +31,7 @@ import { editGroup } from 'src/store/sistema/controle-acesso/grupo'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { GroupEditType } from 'src/types/apps/groupTypes'
+import { GrupoEditType } from 'src/types/sistema/controle-acesso/grupoTypes'
 
 // ** Api Services
 import groupApiService from 'src/@api-center/sistema/grupo/grupoApiService'

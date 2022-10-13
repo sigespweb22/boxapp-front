@@ -27,7 +27,7 @@ import { addPipeline } from 'src/store/negocios/processos/pipeline'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelineType } from 'src/types/negocios/processos/pipeline/pipelineTypes'
 
 // ** Api Services
 import usersApiService from 'src/@api-center/sistema/usuario/usuarioApiService'

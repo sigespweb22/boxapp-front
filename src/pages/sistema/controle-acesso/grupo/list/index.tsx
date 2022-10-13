@@ -41,13 +41,13 @@ import { fetchData, alterStatusGroup } from 'src/store/sistema/controle-acesso/g
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { GroupsType } from 'src/types/apps/groupTypes'
+import { GrupoType } from 'src/types/sistema/controle-acesso/grupoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/controle-acesso/grupo/list/TableHeader'
-import AddGroupDrawer from 'src/views/sistema/controle-acesso/grupo/list/AddGroupDrawer'
-import ViewGroupDrawer from 'src/views/sistema/controle-acesso/grupo/view/ViewGroupDrawer'
-import EditGroupDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGroupDrawer'
+import AddGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/list/AddGrupoDrawer'
+import ViewGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/view/ViewGrupoDrawer'
+import EditGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGrupoDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -62,7 +62,7 @@ interface ApplicationUserRoleViewModel {
 }
 
 interface CellType {
-  row: GroupsType
+  row: GrupoType
 }
 
 const userStatusObj = (status: string) => {
@@ -102,7 +102,7 @@ const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
 }
 
 // ** renders group column
-const renderGroup = (row: GroupsType) => {
+const renderGroup = (row: GrupoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -209,7 +209,7 @@ const GroupList = () => {
   const [addGroupOpen, setAddGroupOpen] = useState<boolean>(false)
   const [viewGroupOpen, setViewGroupOpen] = useState<boolean>(false)
   const [editGroupOpen, setEditGroupOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<GroupsType | undefined>()
+  const [row, setRow] = useState<GrupoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.grupo)
@@ -226,12 +226,12 @@ const GroupList = () => {
     setValue(val)
   }, [])
 
-  const handleViewGroup = (row : GroupsType) => {
+  const handleViewGroup = (row : GrupoType) => {
     setRow(row)
     setViewGroupOpen(true)
   }
 
-  const handleEditGroup = (row : GroupsType) => {
+  const handleEditGroup = (row : GrupoType) => {
     setRow(row)
     setEditGroupOpen(true)
   }
@@ -268,9 +268,9 @@ const GroupList = () => {
     }
   }
 
-  const toggleAddGroupDrawer = () => setAddGroupOpen(!addGroupOpen)
-  const toggleViewGroupDrawer = () => setViewGroupOpen(!viewGroupOpen)
-  const toggleEditGroupDrawer = () => setEditGroupOpen(!editGroupOpen)
+  const toggleAddGrupoDrawer = () => setAddGrupoOpen(!addGroupOpen)
+  const toggleViewGrupoDrawer = () => setViewGrupoOpen(!viewGroupOpen)
+  const toggleEditGrupoDrawer = () => setEditGrupoOpen(!editGroupOpen)
 
   const columns = [
     ...defaultColumns,
@@ -322,7 +322,7 @@ const GroupList = () => {
         {ability?.can('list', 'ac-group-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGroupDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -337,9 +337,9 @@ const GroupList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddGroupDrawer open={addGroupOpen} toggle={toggleAddGroupDrawer} />
-        <ViewGroupDrawer open={viewGroupOpen} toggle={toggleViewGroupDrawer} row={row}/>
-        <EditGroupDrawer open={editGroupOpen} toggle={toggleEditGroupDrawer} row={row}/>
+        <AddGrupoDrawer open={addGroupOpen} toggle={toggleAddGrupoDrawer} />
+        <ViewGrupoDrawer open={viewGroupOpen} toggle={toggleViewGrupoDrawer} row={row}/>
+        <EditGrupoDrawer open={editGroupOpen} toggle={toggleEditGrupoDrawer} row={row}/>
       </Grid>
     </Grid>
   )

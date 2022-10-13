@@ -9,7 +9,7 @@ import axios from 'axios'
 import pipelineApiService from 'src/@api-center/negocios/processos/pipeline/pipelineApiService'
 
 // ** Types
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelineType } from 'src/types/negocios/processos/pipeline/pipelineTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'

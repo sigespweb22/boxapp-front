@@ -3,9 +3,6 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 
-// ** Third Party Imports
-import { useTranslation } from 'react-i18next'
-
 interface TableHeaderProps {
   value: string
   toggle: () => void
@@ -13,9 +10,6 @@ interface TableHeaderProps {
 }
 
 const TableHeader = (props: TableHeaderProps) => {
-  // ** Hook
-  const { t } = useTranslation()
-
   // ** Props
   const { handleFilter, toggle, value } = props
 

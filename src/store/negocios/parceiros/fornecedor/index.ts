@@ -6,11 +6,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
+import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+
+// ** Types
+import { ClienteType } from 'src/types/negocios/commercial/cliente/clienteTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
-import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
 interface DataParams {
   q: string
@@ -21,11 +23,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Users
-export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: DataParams) => {
-  const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+// ** Fetch Clients
+export const fetchData = createAsyncThunk('appClients/fetchData', async (params: DataParams) => {
+  const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
   const response = await axios
-                            .get(usuarioApiService.listAsync, {
+                            .get(clientApiService.listAsync, {
                                   headers: {
                                     Authorization: "Bearer " + storedToken
                                   },
@@ -35,11 +37,11 @@ export const fetchData = createAsyncThunk('appUsers/fetchData', async (params: D
   return response.data
 })
 
-// ** Add User
-export const addUser = createAsyncThunk(
-  'appUsers/addUser',
-  async (data: UsersType, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+// ** Add Client
+export const addClient = createAsyncThunk(
+  'appClients/addClient',
+  async (data: ClienteType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -47,25 +49,46 @@ export const addUser = createAsyncThunk(
     }
 
     const data2 = {
-      fullName: data.fullName,
-      email: data.email,
-      password: data.password,
-      applicationUserGroups: data.applicationUserGroups
+      nomeFantasia: data.nomeFantasia,
+      razaoSocial: data.razaoSocial,
+      inscricaoEstadual: data.inscricaoEstadual,
+      cnpj: data.cnpj,
+      telefonePrincipal: data.telefonePrincipal,
+      emailPrincipal: data.emailPrincipal,
+      observacao: data.observacao,
+      dataFundacao: data.dataFundacao,
+      codigoMunicipio: data.codigoMunicipio,
+      rua: data.rua,
+      numero: data.numero,
+      complemento: data.complemento,
+      cidade: data.cidade,
+      estado: data.estado,
+      cep: data.cep,
+      status: data.status
     }
 
-    axios.post(usuarioApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().usuario.params))
+    axios.post(clientApiService.addAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().client.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
-      if (resp.status === 201) return toast.success("Usuário criado com sucesso.")
+      if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
       {
-        const returnObj = Object.entries(resp.response.data.errors);
-        returnObj.forEach((err: any) => {
-          toast.error(err)
-        });
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
@@ -78,11 +101,11 @@ export const addUser = createAsyncThunk(
   }
 )
 
-// ** Update User
-export const editUser = createAsyncThunk(
-  'appUsers/updateUser',
-  async (data : UsersType, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+// ** Update Client
+export const editClient = createAsyncThunk(
+  'appClient/updateClient',
+  async (data : ClienteType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -91,15 +114,27 @@ export const editUser = createAsyncThunk(
 
     const data2 = {
       id: data.id,
-      fullName: data.fullName,
-      email: data.email,
-      password: data.password,
-      applicationUserGroups: data.applicationUserGroups
+      nomeFantasia: data.nomeFantasia,
+      razaoSocial: data.razaoSocial,
+      inscricaoEstadual: data.inscricaoEstadual,
+      cnpj: data.cnpj,
+      telefonePrincipal: data.telefonePrincipal,
+      emailPrincipal: data.emailPrincipal,
+      observacao: data.observacao,
+      dataFundacao: data.dataFundacao,
+      codigoMunicipio: data.codigoMunicipio,
+      rua: data.rua,
+      numero: data.numero,
+      complemento: data.complemento,
+      cidade: data.cidade,
+      estado: data.estado,
+      cep: data.cep,
+      status: data.status
     }
 
-    axios.put(usuarioApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().usuario.params))
-      if (resp.status === 204) return toast.success("Usuário atualizado com sucesso.")
+    axios.put(clientApiService.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().client.params))
+      if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -129,19 +164,19 @@ export const editUser = createAsyncThunk(
   }
 )
 
-// ** Delete User
-export const deleteUser = createAsyncThunk(
-  'appUsers/deleteUser',
+// ** Delete Client
+export const deleteClient = createAsyncThunk(
+  'appClients/deleteClient',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     
     const headers = {
       Authorization: "Bearer " + storedToken
     }
 
-    axios.delete(usuarioApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().usuario.params))
-      if (resp.status === 204) return toast.success("Usuário deletado com sucesso.")
+    axios.delete(clientApiService.deleteAsync+id, { headers }).then((resp) => {
+      dispatch(fetchData(getState().client.params))
+      if (resp.status === 204) return toast.success("Cliente deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -163,11 +198,11 @@ export const deleteUser = createAsyncThunk(
   }
 )
 
-// ** Alter Status User
-export const alterStatusUser = createAsyncThunk(
-  'appUsers/alterStatusUser',
+// ** Alter Status Client
+export const alterStatusClient = createAsyncThunk(
+  'appClients/alterStatusClient',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     
     const config = {
       headers: {
@@ -175,8 +210,8 @@ export const alterStatusUser = createAsyncThunk(
       }
     }
 
-    axios.put(usuarioApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().usuario.params))
+    axios.put(clientApiService.alterStatusAsync+id, null, config).then((resp) => {
+      dispatch(fetchData(getState().client.params))
       toast.success(resp.data.message)
       
       return resp.data.data
@@ -201,8 +236,8 @@ export const alterStatusUser = createAsyncThunk(
   }
 )
 
-export const appUsersSlice = createSlice({
-  name: 'appUsers',
+export const appClientsSlice = createSlice({
+  name: 'appClients',
   initialState: {
     data: [],
     total: 0,
@@ -212,7 +247,7 @@ export const appUsersSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload.usuarios
+      state.data = action.payload.clients
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData
@@ -220,4 +255,4 @@ export const appUsersSlice = createSlice({
   }
 })
 
-export default appUsersSlice.reducer
+export default appClientsSlice.reducer

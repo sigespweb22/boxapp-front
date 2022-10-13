@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 import Key from 'mdi-material-ui/Key'
 
 // ** Third Party Imports
-import { GroupsType } from 'src/types/apps/groupTypes'
+import { GrupoType } from 'src/types/sistema/controle-acesso/grupoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 import Close from 'mdi-material-ui/Close'
 
 interface SidebarViewGroupType {
-  row: GroupsType | undefined
+  row: GrupoType | undefined
   open: boolean
   toggle: () => void
 }
@@ -92,12 +92,12 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
             {props?.row?.applicationRoleGroups.map(group =>
                 {
                   return (
-                    <>
+                    <Box key={group.groupId}  sx={{ fontSize: 16, mb: "10px" }}>
                       <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
                         <Key fontSize='small' />
                       </IconButton>
                       {group.name}
-                    </>
+                    </Box>
                   )
                 }
             )}

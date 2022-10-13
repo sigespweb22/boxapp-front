@@ -31,7 +31,7 @@ import { addUser } from 'src/store/sistema/controle-acesso/usuario'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { UsersType } from 'src/types/apps/userTypes'
+import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
 // ** Api Services
 import apiGroup from 'src/@api-center/sistema/grupo/grupoApiService'

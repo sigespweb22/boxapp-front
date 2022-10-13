@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl'
 import IconButton from '@mui/material/IconButton'
 
 // ** Third Party Imports
-import { PipelineType } from 'src/types/bussiness/processos/pipeline/pipelineTypes'
+import { PipelineType } from 'src/types/negocios/processos/pipeline/pipelineTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports

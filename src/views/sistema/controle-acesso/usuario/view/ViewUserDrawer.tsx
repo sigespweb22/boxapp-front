@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 import GoogleCirclesGroup from 'mdi-material-ui/GoogleCirclesGroup'
 
 // ** Third Party Imports
-import { UsersType } from 'src/types/apps/userTypes'
+import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -123,12 +123,12 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                     {props?.row?.applicationUserGroups.map(group =>
                        {
                         return (
-                          <>
-                            <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
-                              <GoogleCirclesGroup fontSize='small' />
-                            </IconButton>
-                            {group.name}
-                          </>
+                            <Box key={group.groupId}  sx={{ fontSize: 16, mb: "10px" }}>
+                              <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
+                                <GoogleCirclesGroup fontSize='small' />
+                              </IconButton>
+                              {group.name}
+                            </Box>
                         )
                        }
                     )}
