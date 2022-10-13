@@ -92,20 +92,20 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-client-page')
     /// end - client
 
-    /// begin - asset
-    } else if (item === 'CanAssetAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-asset-page')
-    } else if (item === 'CanAssetList') {
-      can('list', 'ac-asset-page')
-    } else if (item === 'CanAssetRead') {
-      can('read', 'ac-asset-page')
-    } else if (item === 'CanAssetUpdate') {
-      can('update', 'ac-asset-page')
-    } else if (item === 'CanAssetCreate') {
-      can('create', 'ac-asset-page')
-    } else if (item === 'CanAssetDelete') {
-      can('delete', 'ac-asset-page')
-    /// end - asset
+    /// begin - serviço
+    } else if (item === 'CanServicoAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-servico-page')
+    } else if (item === 'CanServicoList') {
+      can('list', 'ac-servico-page')
+    } else if (item === 'CanServicoRead') {
+      can('read', 'ac-servico-page')
+    } else if (item === 'CanServicoUpdate') {
+      can('update', 'ac-servico-page')
+    } else if (item === 'CanServicoCreate') {
+      can('create', 'ac-servico-page')
+    } else if (item === 'CanServicoDelete') {
+      can('delete', 'ac-servico-page')
+    /// end - Servico
 
     /// begin - pipeline
   } else if (item === 'CanPipelineAll') {

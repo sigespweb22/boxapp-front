@@ -3,22 +3,22 @@ import { configureStore } from '@reduxjs/toolkit'
 
 // ** Reducers
 import chat from 'src/store/apps/chat'
-import user from 'src/store/apps/user'
-import role from 'src/store/apps/role'
-import group from 'src/store/apps/group'
-import asset from 'src/store/apps/asset'
-import client from 'src/store/bussiness/commercial/client'
-import pipeline from 'src/store/bussiness/processos/pipeline'
+import usuario from 'src/store/sistema/controle-acesso/usuario'
+import role from 'src/store/sistema/controle-acesso/role'
+import grupo from 'src/store/sistema/controle-acesso/grupo'
+import servico from 'src/store/negocios/comercial/servico'
+import cliente from 'src/store/negocios/comercial/cliente'
+import pipeline from 'src/store/negocios/processos/pipeline'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
 export const store = configureStore({
   reducer: {
-    user,
+    usuario,
     role,
-    group,
-    asset,
-    client,
+    grupo,
+    servico,
+    cliente,
     pipeline,
     chat,
     email,
