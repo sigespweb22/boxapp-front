@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import Close from 'mdi-material-ui/Close'
 
 interface SidebarViewClientType {
-  row: ClientsType | undefined
+  row: FornecedorType | undefined
   open: boolean
   toggle: () => void
 }
@@ -57,7 +57,7 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Client View")}</Typography>
+        <Typography variant='h6'>Visualizar Fornecedor</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -149,19 +149,6 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
                   disabled={true}
                   value={props?.row?.observacao}
                   placeholder='Observação'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller              
-              name='dataFundacao'
-              control={control}
-              render={() => (
-                <TextField
-                  disabled={true}
-                  value={props?.row?.dataFundacao}
-                  placeholder='Data fundação'
                 />
               )}
             />
@@ -264,7 +251,7 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={props?.row?.status}
+                  value={t(props?.row?.status)}
                   placeholder='Status'
                 />
               )}

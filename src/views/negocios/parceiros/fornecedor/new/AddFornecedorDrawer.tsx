@@ -30,7 +30,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClient } from 'src/store/negocios/comercial/cliente'
+import { addFornecedor } from 'src/store/negocios/parceiros/fornecedor'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -42,14 +42,14 @@ import axios from 'axios'
 import InputMask from 'react-input-mask'
 
 // ** Api Services
-import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedorApiService'
 
-interface SidebarAddClientType {
+interface SidebarAddFornecedorType {
   open: boolean
   toggle: () => void
 }
 
-interface ClientData {
+interface FornecedorData {
   id: string
   nomeFantasia: string
   razaoSocial: string
@@ -58,7 +58,6 @@ interface ClientData {
   telefonePrincipal: string
   emailPrincipal: string
   observacao: string
-  dataFundacao: string
   codigoMunicipio: number
   rua: string
   numero: string
@@ -111,7 +110,6 @@ const defaultValues = {
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
-  dataFundacao: '0001-01-01 00:00:00',
   codigoMunicipio: 0,
   rua: '',
   numero: '',
@@ -122,7 +120,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarAddClient = (props: SidebarAddClientType) => {
+const SidebarAddFornecedor = (props: SidebarAddFornecedorType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -143,8 +141,8 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: ClientData) => {
-    dispatch(addClient({ ...data,  }))
+  const onSubmit = (data: FornecedorData) => {
+    dispatch(addFornecedor({ ...data,  }))
     toggle()
     reset()
   }
@@ -165,7 +163,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       return toast.error("CNPJ é requerido para efetuar a busca.")
     }
 
-    const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(fornecedorApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -174,7 +172,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
 
     const cnpjScape = cnpjToSearch.replace(".", "").replace(".", "").replace("/", "").replace("-", "")
     axios
-      .get(clientApiService.listOneTPAsync.concat(cnpjScape), config)
+      .get(fornecedorApiService.listOneTPAsync.concat(cnpjScape), config)
       .then(response => {
         toast.success("CNPJ encontrado! Os dados da empresa serão automaticamente populados nos campos.")
 
@@ -182,8 +180,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
         setValue('razaoSocial', response.data.company.name != '' ? response.data.company.name : defaultValues.razaoSocial)
         setValue('telefonePrincipal', response.data.phones.length >= 1 ? response.data.phones[0].number : defaultValues.telefonePrincipal)
         setValue('emailPrincipal', response.data.emails.length >= 1 ? response.data.emails[0].address : defaultValues.emailPrincipal)
-        setValue('dataFundacao', response.data.founded != '' ? response.data.founded : defaultValues.dataFundacao)
-        setValue('codigoMunicipio', response.data.address.municipality != '' ? response.data.address.municipality : defaultValues.dataFundacao)
+        setValue('codigoMunicipio', response.data.address.municipality != '' ? response.data.address.municipality : defaultValues.codigoMunicipio)
         setValue('rua', response.data.address.street + " - " +response.data.address.district)
         setValue('numero', response.data.address.number != '' ? response.data.address.number : defaultValues.numero)
         setValue('complemento', response.data.address.details != '' ? response.data.address.details : defaultValues.complemento)
@@ -221,7 +218,7 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Client New")}</Typography>
+        <Typography variant='h6'>Novo Fornecedor</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -349,20 +346,6 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='dataFundacao'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Data fundação'
-                  onChange={onChange}
-                  placeholder='(e.g.: 10/01/2000'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
               name='codigoMunicipio'
               control={control}
               render={({ field: { value, onChange } }) => (
@@ -474,4 +457,4 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
   )
 }
 
-export default SidebarAddClient
+export default SidebarAddFornecedor

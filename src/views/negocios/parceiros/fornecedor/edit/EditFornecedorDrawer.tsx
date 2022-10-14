@@ -23,11 +23,11 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { editClient } from 'src/store/negocios/comercial/cliente'
+import { editFornecedor } from 'src/store/negocios/parceiros/fornecedor'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { FornecedorType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 interface SidebarEditClientType {
   row: FornecedorType | undefined
@@ -84,7 +84,6 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
     telefonePrincipal: props?.row?.telefonePrincipal ?? '',
     emailPrincipal: props?.row?.emailPrincipal ?? '',
     observacao: props?.row?.observacao ?? '',
-    dataFundacao: props?.row?.dataFundacao ?? '',
     codigoMunicipio: props?.row?.codigoMunicipio ?? '',
     rua: props?.row?.rua ?? '',
     numero: props?.row?.numero ?? '',
@@ -104,7 +103,6 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
   setValue('telefonePrincipal', defaultValues.telefonePrincipal)
   setValue('emailPrincipal', defaultValues.emailPrincipal)
   setValue('observacao', defaultValues.observacao)
-  setValue('dataFundacao', defaultValues.dataFundacao)
   setValue('codigoMunicipio', defaultValues.codigoMunicipio)
   setValue('rua', defaultValues.rua)
   setValue('numero', defaultValues.numero)
@@ -115,7 +113,7 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
   setValue('status', defaultValues.status)
 
   const onSubmit = (data: FornecedorType) => {
-    dispatch(editClient({ ...data,  }))
+    dispatch(editFornecedor({ ...data,  }))
     toggle()
     reset()
   }
@@ -135,7 +133,7 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Client Edit")}</Typography>
+        <Typography variant='h6'>Editar Fornecedor</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -260,21 +258,6 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
                   label='Observacao'
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: Esta empresa está em processo de evolução'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='dataFundacao'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Data fundação'
-                  onChange={onChange}
-                  placeholder='(e.g.: Ex.: 10/01/2000'
                 />
               )}
             />

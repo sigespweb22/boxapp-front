@@ -23,7 +23,7 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Fornecedores
+// ** Fetch Fornecedor
 export const fetchData = createAsyncThunk('appFornecedores/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(fornecedorApiService.storageTokenKeyName)!
   const response = await axios
@@ -67,7 +67,7 @@ export const addFornecedor = createAsyncThunk(
     }
 
     axios.post(fornecedorApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().Fornecedor.params))
+      dispatch(fetchData(getState().fornecedor.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Fornecedore criado com sucesso.")
     }).catch((resp) => {
@@ -131,7 +131,7 @@ export const editFornecedor = createAsyncThunk(
     }
 
     axios.put(fornecedorApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().Fornecedor.params))
+      dispatch(fetchData(getState().fornecedor.params))
       if (resp.status === 204) return toast.success("Fornecedore atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -173,7 +173,7 @@ export const deleteFornecedor = createAsyncThunk(
     }
 
     axios.delete(fornecedorApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().Fornecedor.params))
+      dispatch(fetchData(getState().fornecedor.params))
       if (resp.status === 204) return toast.success("Fornecedore deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -209,7 +209,7 @@ export const alterStatusFornecedor = createAsyncThunk(
     }
 
     axios.put(fornecedorApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().Fornecedor.params))
+      dispatch(fetchData(getState().fornecedor.params))
       toast.success(resp.data.message)
       
       return resp.data.data
