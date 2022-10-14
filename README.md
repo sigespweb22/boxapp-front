@@ -40,3 +40,6 @@ oferecendo uma arquitetura madura e sustentável.
   * Clientes
   * Ativos (Produtos e Serviços)
 
+*Lançamento v1.2.0 em 11/10/2022
+* Pipelines
+
