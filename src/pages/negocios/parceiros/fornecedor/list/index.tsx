@@ -37,33 +37,33 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusFornecedor } from 'src/store/negocios/parceiros/fornecedor'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'
-import AddClientDrawer from 'src/views/negocios/comercial/cliente/new/AddClientDrawer'
-import ViewClientDrawer from 'src/views/negocios/comercial/cliente/view/ViewClientDrawer'
-import EditClientDrawer from 'src/views/negocios/comercial/cliente/edit/EditClientDrawer'
+import TableHeader from 'src/views/negocios/parceiros/fornecedor/new/TableHeader'
+import AddFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/new/AddFornecedorDrawer'
+import ViewFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/view/ViewFornecedorDrawer'
+import EditFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/edit/EditFornecedorDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ClientStatusType {
+interface FornecedorStatusType {
   [key: string]: ThemeColor
 }
 
 interface CellType {
-  row: ClienteType
+  row: FornecedorType
 }
 
-const clientStatusObj: ClientStatusType = {
+const fornecedorStatusObj: FornecedorStatusType = {
   ACTIVE: 'success',
-  RECORRENTE: 'secondary'
+  INACTIVE: 'secondary'
 }
 
 // ** Styled component for the link for the avatar without image
@@ -72,10 +72,10 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-// ** renders client column
-const renderClient = (row: ClienteType) => {
+// ** renders fornecedor column
+const renderFornecedor = (row: FornecedorType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/client/view/${row.id}`}>
+    <AvatarWithoutImageLink href={`/apps/Fornecedor/view/${row.id}`}>
       <CustomAvatar
           skin='light'
           color={'primary'}
@@ -97,7 +97,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clientStatusObj[status]}
+        color={fornecedorStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -116,9 +116,9 @@ const defaultColumns = [
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderFornecedor(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
+            <Link href={`/apps/fornecedor/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -128,7 +128,7 @@ const defaultColumns = [
                 {nomeFantasia}
               </Typography>
             </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
+            <Link href={`/apps/fornecedor/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 📬{emailPrincipal}
               </Typography>
@@ -209,7 +209,7 @@ const defaultColumns = [
   }
 ]
 
-const ClientList = () => {
+const FornecedorList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -217,13 +217,13 @@ const ClientList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
-  const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
-  const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteType | undefined>()
+  const [addFornecedorOpen, setAddFornecedorOpen] = useState<boolean>(false)
+  const [viewFornecedorOpen, setViewFornecedorOpen] = useState<boolean>(false)
+  const [editFornecedorOpen, setEditFornecedorOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<FornecedorType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.cliente)
+  const store = useSelector((state: RootState) => state.fornecedor)
 
   useEffect(() => {
     dispatch(
@@ -237,18 +237,18 @@ const ClientList = () => {
     setValue(val)
   }, [])
 
-  const handleViewClient = (row : ClienteType) => {
+  const handleViewFornecedor = (row : FornecedorType) => {
     setRow(row)
-    setViewClientOpen(true)
+    setViewFornecedorOpen(true)
   }
 
-  const handleEditClient = (row : ClienteType) => {
+  const handleEditFornecedor = (row : FornecedorType) => {
     setRow(row)
-    setEditClientOpen(true)
+    setEditFornecedorOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusClient(id))
+    dispatch(alterStatusFornecedor(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -278,9 +278,9 @@ const ClientList = () => {
     }
   }
 
-  const toggleAddClientDrawer = () => setAddClientOpen(!addClientOpen)
-  const handleClientViewToggle = () => setViewClientOpen(!viewClientOpen)
-  const handleClientEditToggle = () => setEditClientOpen(!editClientOpen)
+  const toggleAddFornecedorDrawer = () => setAddFornecedorOpen(!addFornecedorOpen)
+  const handleFornecedorViewToggle = () => setViewFornecedorOpen(!viewFornecedorOpen)
+  const handlefornecedorditToggle = () => setEditFornecedorOpen(!editFornecedorOpen)
 
   const columns = [
     ...defaultColumns,
@@ -294,21 +294,21 @@ const ClientList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-client-page') &&
+          {ability?.can('read', 'ac-fornecedor-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewClient(row)}>
+              <IconButton onClick={() => handleViewFornecedor(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-client-page') &&
+          {ability?.can('update', 'ac-fornecedor-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditClient(row)}>
+              <IconButton onClick={() => handleEditFornecedor(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-client-page') &&
+          {ability?.can('delete', 'ac-fornecedor-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -321,18 +321,18 @@ const ClientList = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Clients")}</Typography>}
+            title={<Typography variant='h5'>{t("Fornecedors")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Clients listing")}.
+                {t("Fornecedors listing")}.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-client-page') ? (
+        {ability?.can('list', 'ac-fornecedor-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddClientDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddFornecedorDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -347,9 +347,9 @@ const ClientList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
-        <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
-        <EditClientDrawer open={editClientOpen} toggle={handleClientEditToggle} row={row}/>
+        <AddFornecedorDrawer open={addFornecedorOpen} toggle={toggleAddFornecedorDrawer} />
+        <ViewFornecedorDrawer open={viewFornecedorOpen} toggle={handleFornecedorViewToggle} row={row}/>
+        <EditFornecedorDrawer open={editFornecedorOpen} toggle={handlefornecedorditToggle} row={row}/>
       </Grid>
     </Grid>
   )
@@ -358,9 +358,9 @@ const ClientList = () => {
 // **Controle de acesso da página
 // **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
 // **a esta página de subject abaixo
-ClientList.acl = {
+FornecedorList.acl = {
   action: 'list',
-  subject: 'ac-client-page'
+  subject: 'ac-fornecedor-page'
 }
 
-export default ClientList
+export default FornecedorList

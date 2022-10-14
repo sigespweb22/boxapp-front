@@ -108,19 +108,34 @@ const defineRulesFor = (role: string[], subject: string) => {
     /// end - Servico
 
     /// begin - pipeline
-  } else if (item === 'CanPipelineAll') {
-    can(['list', 'read', 'create', 'update', 'delete'], 'ac-pipeline-page')
-  } else if (item === 'CanPipelineList') {
-    can('list', 'ac-pipeline-page')
-  } else if (item === 'CanPipelineRead') {
-    can('read', 'ac-pipeline-page')
-  } else if (item === 'CanPipelineUpdate') {
-    can('update', 'ac-pipeline-page')
-  } else if (item === 'CanPipelineCreate') {
-    can('create', 'ac-pipeline-page')
-  } else if (item === 'CanPipelineDelete') {
-    can('delete', 'ac-pipeline-page')
-  /// end - pipeline
+    } else if (item === 'CanPipelineAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-pipeline-page')
+    } else if (item === 'CanPipelineList') {
+      can('list', 'ac-pipeline-page')
+    } else if (item === 'CanPipelineRead') {
+      can('read', 'ac-pipeline-page')
+    } else if (item === 'CanPipelineUpdate') {
+      can('update', 'ac-pipeline-page')
+    } else if (item === 'CanPipelineCreate') {
+      can('create', 'ac-pipeline-page')
+    } else if (item === 'CanPipelineDelete') {
+      can('delete', 'ac-pipeline-page')
+    /// end - pipeline
+
+    /// begin - fornecedor
+    } else if (item === 'CanFornecedorAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorList') {
+      can('list', 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorRead') {
+      can('read', 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorUpdate') {
+      can('update', 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorCreate') {
+      can('create', 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorDelete') {
+      can('delete', 'ac-fornecedor-page')
+    /// end - fornecedor
 
     /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {

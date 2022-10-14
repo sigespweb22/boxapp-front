@@ -9,7 +9,7 @@ import axios from 'axios'
 import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedorApiService'
 
 // ** Types
-import { FornecedorType } from 'src/types/negocios/parceiros/fornecedorTypes'
+import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -56,7 +56,6 @@ export const addFornecedor = createAsyncThunk(
       telefonePrincipal: data.telefonePrincipal,
       emailPrincipal: data.emailPrincipal,
       observacao: data.observacao,
-      dataFundacao: data.dataFundacao,
       codigoMunicipio: data.codigoMunicipio,
       rua: data.rua,
       numero: data.numero,
@@ -121,7 +120,6 @@ export const editFornecedor = createAsyncThunk(
       telefonePrincipal: data.telefonePrincipal,
       emailPrincipal: data.emailPrincipal,
       observacao: data.observacao,
-      dataFundacao: data.dataFundacao,
       codigoMunicipio: data.codigoMunicipio,
       rua: data.rua,
       numero: data.numero,

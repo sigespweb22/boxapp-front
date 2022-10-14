@@ -9,6 +9,7 @@ import grupo from 'src/store/sistema/controle-acesso/grupo'
 import servico from 'src/store/negocios/comercial/servico'
 import cliente from 'src/store/negocios/comercial/cliente'
 import pipeline from 'src/store/negocios/processos/pipeline'
+import fornecedor from 'src/store/negocios/parceiros/fornecedor'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -20,6 +21,7 @@ export const store = configureStore({
     servico,
     cliente,
     pipeline,
+    fornecedor,
     chat,
     email,
     calendar
