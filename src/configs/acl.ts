@@ -55,20 +55,20 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-role-page')
     /// end - role/permissions
 
-    /// begin - group
+    /// begin - grupo
     } else if (item === 'CanGroupAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-group-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-grupo-page')
     } else if (item === 'CanGroupList') {
-      can('list', 'ac-group-page')
+      can('list', 'ac-grupo-page')
     } else if (item === 'CanGroupRead') {
-      can('read', 'ac-group-page')
+      can('read', 'ac-grupo-page')
     } else if (item === 'CanGroupUpdate') {
-      can('update', 'ac-group-page')
+      can('update', 'ac-grupo-page')
     } else if (item === 'CanGroupCreate') {
-      can('create', 'ac-group-page')
+      can('create', 'ac-grupo-page')
     } else if (item === 'CanGroupDelete') {
-      can('delete', 'ac-group-page')
-    /// end - group
+      can('delete', 'ac-grupo-page')
+    /// end - grupo
 
     /// begin - cnpj
     } else if (item === 'CanCnpjTPAll') {
@@ -77,20 +77,20 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('read', 'ac-search-cnpj')
     /// end - cnpj
 
-    /// begin - client
+    /// begin - cliente
     } else if (item === 'CanClientAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-client-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
     } else if (item === 'CanClientList') {
-      can('list', 'ac-client-page')
+      can('list', 'ac-cliente-page')
     } else if (item === 'CanClientRead') {
-      can('read', 'ac-client-page')
+      can('read', 'ac-cliente-page')
     } else if (item === 'CanClientUpdate') {
-      can('update', 'ac-client-page')
+      can('update', 'ac-cliente-page')
     } else if (item === 'CanClientCreate') {
-      can('create', 'ac-client-page')
+      can('create', 'ac-cliente-page')
     } else if (item === 'CanClientDelete') {
-      can('delete', 'ac-client-page')
-    /// end - client
+      can('delete', 'ac-cliente-page')
+    /// end - cliente
 
     /// begin - serviço
     } else if (item === 'CanServicoAll') {
@@ -124,8 +124,8 @@ const defineRulesFor = (role: string[], subject: string) => {
 
     /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {
-      can('list', 'ac-dashboard-client-page')
-      can('list', 'ac-dashboard-access-control-page')
+      can('list', 'ac-dashboard-cliente-page')
+      can('list', 'ac-dashboard-controle_acesso-page')
     /// end - dashboard client
 
     /// begin - dashboard client

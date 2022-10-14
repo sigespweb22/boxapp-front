@@ -32,7 +32,7 @@ import { editServico } from 'src/store/negocios/comercial/servico'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
+import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 import { ThemeColor } from 'src/@core/layouts/types'
 
 const ITEM_HEIGHT = 48

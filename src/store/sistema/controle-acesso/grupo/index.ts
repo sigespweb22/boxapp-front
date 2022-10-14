@@ -6,14 +6,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import groupApiService from 'src/@api-center/sistema/grupo/grupoApiService'
+import grupoApiService from 'src/@api-center/sistema/grupo/grupoApiService'
 
 // ** Toast
 import toast from 'react-hot-toast'
 
 // ** Types
-import { GroupsType } from 'src/types/apps/groupTypes'
-import { GroupEditType } from 'src/types/apps/groupTypes'
+import { GrupoType, GrupoEditType } from 'src/types/sistema/controle-acesso/grupoTypes'
 
 interface DataParams {
   q: string
@@ -24,11 +23,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Groups
-export const fetchData = createAsyncThunk('appGroups/fetchData', async (params: DataParams) => {
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+// ** Fetch Grupo
+export const fetchData = createAsyncThunk('appGrupos/fetchData', async (params: DataParams) => {
+  const storedToken = window.localStorage.getItem(grupoApiService.storageTokenKeyName)!
   const response = await axios
-                            .get(groupApiService.listAsync, {
+                            .get(grupoApiService.listAsync, {
                                   headers: {
                                     Authorization: "Bearer " + storedToken
                                   },
@@ -38,11 +37,11 @@ export const fetchData = createAsyncThunk('appGroups/fetchData', async (params: 
   return response.data
 })
 
-// ** Add Groups
+// ** Add Grupo
 export const addGroup = createAsyncThunk(
-  'appGroups/addGroup',
-  async (data: GroupsType, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+  'appGrupos/addGroup',
+  async (data: GrupoType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(grupoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -54,8 +53,8 @@ export const addGroup = createAsyncThunk(
       applicationRoleGroups: data.applicationRoleGroups
     }
 
-    axios.post(groupApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().group.params))
+    axios.post(grupoApiService.addAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().grupo.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Grupo permissões criado com sucesso.")
     }).catch((resp) => {
@@ -79,11 +78,11 @@ export const addGroup = createAsyncThunk(
   }
 )
 
-// ** Update User
+// ** Update Grupo
 export const editGroup = createAsyncThunk(
-  'appGroups/editGroup',
-  async (data : GroupEditType, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+  'appGrupos/editGroup',
+  async (data : GrupoEditType, { getState, dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(grupoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
@@ -96,8 +95,8 @@ export const editGroup = createAsyncThunk(
       applicationRoleGroups: data.applicationRoleGroups
     }
 
-    axios.put(groupApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().group.params))
+    axios.put(grupoApiService.updateAsync, data2, config).then((resp) => {
+      dispatch(fetchData(getState().grupo.params))
       if (resp.status === 204) return toast.success("Grupo de permissões atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -128,18 +127,18 @@ export const editGroup = createAsyncThunk(
   }
 )
 
-// ** Delete User
+// ** Delete Grupo
 export const deleteGroup = createAsyncThunk(
-  'appGroups/deleteGroup',
+  'appGrupos/deleteGroup',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(grupoApiService.storageTokenKeyName)!
     
     const headers = {
       Authorization: "Bearer " + storedToken
     }
 
-    axios.delete(groupApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().group.params))
+    axios.delete(grupoApiService.deleteAsync+id, { headers }).then((resp) => {
+      dispatch(fetchData(getState().grupo.params))
       if (resp.status === 204) return toast.success("Grupo permissão deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -162,11 +161,11 @@ export const deleteGroup = createAsyncThunk(
   }
 )
 
-// ** Alter Status Group
-export const alterStatusGroup = createAsyncThunk(
-  'appGroups/alterStatusGroup',
+// ** Alter Status Grupo
+export const alterStatusGrupo = createAsyncThunk(
+  'appGrupos/alterStatusGrupo',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(grupoApiService.storageTokenKeyName)!
     
     const config = {
       headers: {
@@ -174,8 +173,8 @@ export const alterStatusGroup = createAsyncThunk(
       }
     }
 
-    axios.put(groupApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().group.params))
+    axios.put(grupoApiService.alterStatusAsync+id, null, config).then((resp) => {
+      dispatch(fetchData(getState().grupo.params))
       toast.success(resp.data.message)
       
       return resp.data.data
@@ -200,8 +199,8 @@ export const alterStatusGroup = createAsyncThunk(
   }
 )
 
-export const appGroupsSlice = createSlice({
-  name: 'appGroups',
+export const appGruposSlice = createSlice({
+  name: 'appGrupos',
   initialState: {
     data: [],
     total: 0,
@@ -219,4 +218,4 @@ export const appGroupsSlice = createSlice({
   }
 })
 
-export default appGroupsSlice.reducer
+export default appGruposSlice.reducer

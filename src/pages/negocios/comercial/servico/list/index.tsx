@@ -45,7 +45,7 @@ import { fetchData, alterStatusServico } from 'src/store/negocios/comercial/serv
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
+import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/servico/new/TableHeader'

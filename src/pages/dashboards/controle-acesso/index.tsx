@@ -56,7 +56,7 @@ const CRMDashboard = () => {
 // **a esta página de subject abaixo
 CRMDashboard.acl = {
   action: 'list',
-  subject: 'ac-dashboard-access-control-page'
+  subject: 'ac-dashboard-controle_acesso-page'
 }
 
 export default CRMDashboard

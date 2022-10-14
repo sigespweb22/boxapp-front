@@ -1,7 +1,7 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
-export type GroupLayoutType = {
+export type GrupoLayoutType = {
   id: string | undefined
 }
 

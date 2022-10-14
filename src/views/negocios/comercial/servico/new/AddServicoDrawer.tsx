@@ -32,7 +32,7 @@ import { addServico } from 'src/store/negocios/comercial/servico'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
+import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8

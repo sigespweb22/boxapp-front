@@ -127,7 +127,7 @@ const EcommerceDashboard = () => {
 
 EcommerceDashboard.acl = {
   action: 'list',
-  subject: 'ac-dashboard-client-page'
+  subject: 'ac-dashboard-cliente-page'
 }
 
 export default EcommerceDashboard

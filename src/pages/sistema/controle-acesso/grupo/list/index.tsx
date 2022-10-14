@@ -37,7 +37,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusGroup } from 'src/store/sistema/controle-acesso/grupo'
+import { fetchData, alterStatusGrupo } from 'src/store/sistema/controle-acesso/grupo'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -102,7 +102,7 @@ const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
 }
 
 // ** renders group column
-const renderGroup = (row: GrupoType) => {
+const renderGrupo = (row: GrupoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -145,7 +145,7 @@ const defaultColumns = [
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderGroup(row)}
+          {renderGrupo(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
@@ -198,7 +198,7 @@ const defaultColumns = [
   }
 ]
 
-const GroupList = () => {
+const GrupoList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -206,9 +206,9 @@ const GroupList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addGroupOpen, setAddGroupOpen] = useState<boolean>(false)
-  const [viewGroupOpen, setViewGroupOpen] = useState<boolean>(false)
-  const [editGroupOpen, setEditGroupOpen] = useState<boolean>(false)
+  const [addGrupoOpen, setAddGrupoOpen] = useState<boolean>(false)
+  const [viewGrupoOpen, setViewGrupoOpen] = useState<boolean>(false)
+  const [editGrupoOpen, setEditGrupoOpen] = useState<boolean>(false)
   const [row, setRow] = useState<GrupoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -226,18 +226,18 @@ const GroupList = () => {
     setValue(val)
   }, [])
 
-  const handleViewGroup = (row : GrupoType) => {
+  const handleViewGrupo = (row : GrupoType) => {
     setRow(row)
-    setViewGroupOpen(true)
+    setViewGrupoOpen(true)
   }
 
-  const handleEditGroup = (row : GrupoType) => {
+  const handleEditGrupo = (row : GrupoType) => {
     setRow(row)
-    setEditGroupOpen(true)
+    setEditGrupoOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusGroup(id))
+    dispatch(alterStatusGrupo(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -268,9 +268,9 @@ const GroupList = () => {
     }
   }
 
-  const toggleAddGrupoDrawer = () => setAddGrupoOpen(!addGroupOpen)
-  const toggleViewGrupoDrawer = () => setViewGrupoOpen(!viewGroupOpen)
-  const toggleEditGrupoDrawer = () => setEditGrupoOpen(!editGroupOpen)
+  const toggleAddGrupoDrawer = () => setAddGrupoOpen(!addGrupoOpen)
+  const toggleViewGrupoDrawer = () => setViewGrupoOpen(!viewGrupoOpen)
+  const toggleEditGrupoDrawer = () => setEditGrupoOpen(!editGrupoOpen)
 
   const columns = [
     ...defaultColumns,
@@ -284,21 +284,21 @@ const GroupList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-group-page') &&
+          {ability?.can('read', 'ac-grupo-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewGroup(row)}>
+              <IconButton onClick={() => handleViewGrupo(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-group-page') &&
+          {ability?.can('update', 'ac-grupo-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditGroup(row)}>
+              <IconButton onClick={() => handleEditGrupo(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-group-page') &&
+          {ability?.can('delete', 'ac-grupo-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -337,9 +337,9 @@ const GroupList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddGrupoDrawer open={addGroupOpen} toggle={toggleAddGrupoDrawer} />
-        <ViewGrupoDrawer open={viewGroupOpen} toggle={toggleViewGrupoDrawer} row={row}/>
-        <EditGrupoDrawer open={editGroupOpen} toggle={toggleEditGrupoDrawer} row={row}/>
+        <AddGrupoDrawer open={addGrupoOpen} toggle={toggleAddGrupoDrawer} />
+        <ViewGrupoDrawer open={viewGrupoOpen} toggle={toggleViewGrupoDrawer} row={row}/>
+        <EditGrupoDrawer open={editGrupoOpen} toggle={toggleEditGrupoDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -347,9 +347,9 @@ const GroupList = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-GroupList.acl = {
+GrupoList.acl = {
   action: 'list',
-  subject: 'ac-user-page'
+  subject: 'ac-grupo-page'
 }
 
-export default GroupList
+export default GrupoList

@@ -42,7 +42,7 @@ import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/clien
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClientsType } from 'src/types/negocios/commercial/cliente/clienteTypes'
+import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'

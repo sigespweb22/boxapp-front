@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
+import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports

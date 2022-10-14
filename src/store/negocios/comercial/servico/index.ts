@@ -10,7 +10,7 @@ import servicoApiService from 'src/@api-center/negocios/comercial/servico/servic
 
 // ** Toast
 import toast from 'react-hot-toast'
-import { ServicoType } from 'src/types/negocios/commercial/servico/servicoTypes'
+import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 
 interface DataParams {
   q: string

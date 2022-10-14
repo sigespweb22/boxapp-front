@@ -9,7 +9,7 @@ import axios from 'axios'
 import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
 // ** Types
-import { ClientsType } from 'src/types/negocios/commercial/cliente/clienteTypes'
+import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
