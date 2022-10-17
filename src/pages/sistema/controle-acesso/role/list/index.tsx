@@ -42,7 +42,7 @@ import { fetchData, deleteRole } from 'src/store/sistema/controle-acesso/role'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { RolesType } from 'src/types/apps/roleTypes'
+import { RoleType } from 'src/types/sistema/controle-acesso/roleTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/controle-acesso/role/list/TableHeader'
@@ -59,7 +59,7 @@ import { getInitials } from 'src/@core/utils/get-initials'
 import { updateRole } from 'src/store/sistema/controle-acesso/role'
 
 interface CellType {
-  row: RolesType
+  row: RoleType
 }
 
 interface RoleData {
@@ -75,7 +75,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders client column
-const renderClient = (row: RolesType) => {
+const renderClient = (row: RoleType) => {
   return (
     <AvatarWithoutImageLink href={`/apps/role/view/${row.id}`}>
       <CustomAvatar

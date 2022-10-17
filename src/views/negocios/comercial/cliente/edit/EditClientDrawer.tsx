@@ -27,10 +27,10 @@ import { editClient } from 'src/store/negocios/comercial/cliente'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 interface SidebarEditClientType {
-  row: ClientsType | undefined
+  row: ClienteType | undefined
   open: boolean
   toggle: () => void
 }
@@ -114,7 +114,7 @@ const SidebarEditClient = (props: SidebarEditClientType) => {
   setValue('cep', defaultValues.cep)
   setValue('status', defaultValues.status)
 
-  const onSubmit = (data: ClientsType) => {
+  const onSubmit = (data: ClienteType) => {
     dispatch(editClient({ ...data,  }))
     toggle()
     reset()

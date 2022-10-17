@@ -31,7 +31,7 @@ import { addGroup } from 'src/store/sistema/controle-acesso/grupo'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { GroupsType } from 'src/types/apps/groupTypes'
+import { GrupoType } from 'src/types/sistema/controle-acesso/grupoTypes'
 
 // ** Api Services
 import roleApiService from 'src/@api-center/sistema/role/roleApiService'
@@ -111,7 +111,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: GroupsType) => {
+  const onSubmit = (data: GrupoType) => {
     dispatch(addGroup({ ...data,  }))
     toggle()
     reset()

@@ -251,7 +251,7 @@ const SidebarViewClient = (props: SidebarViewClientType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={t(props?.row?.status)}
+                  value={t(`${props?.row?.status}`)}
                   placeholder='Status'
                 />
               )}

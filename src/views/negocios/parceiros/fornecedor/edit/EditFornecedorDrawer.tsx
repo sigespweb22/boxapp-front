@@ -13,9 +13,6 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
-// Import Translate
-import { useTranslation } from 'react-i18next'
-
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
@@ -56,9 +53,6 @@ const schema = yup.object().shape({
 })
 
 const SidebarEditClient = (props: SidebarEditClientType) => {
-  // ** Hook
-  const { t } = useTranslation()
-
   // ** Props
   const { open, toggle } = props
 

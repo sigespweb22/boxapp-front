@@ -41,7 +41,7 @@ import roleApiService from 'src/@api-center/sistema/role/roleApiService'
 import axios from 'axios'
 
 interface SidebarEditGroupType {
-  row: GroupEditType | undefined
+  row: GrupoEditType | undefined
   open: boolean
   toggle: () => void
 }
@@ -105,7 +105,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
       })
   }, [])
 
-  const onSubmit = (data: GroupEditType) => {
+  const onSubmit = (data: GrupoEditType) => {
     debugger
     dispatch(editGroup({ ...data,  }))
     toggle()

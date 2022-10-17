@@ -10,7 +10,7 @@ import roleApi from 'src/@api-center/sistema/role/roleApiService'
 
 // ** Toast
 import toast from 'react-hot-toast'
-import { RolesType } from 'src/types/apps/roleTypes'
+import { RoleType } from 'src/types/sistema/controle-acesso/roleTypes'
 
 interface DataParams {
   q: string
@@ -38,7 +38,7 @@ export const fetchData = createAsyncThunk('appRoles/fetchData', async (params: D
 // ** Add Role
 export const addRole = createAsyncThunk(
   'appRoles/addRole',
-  async (data: RolesType, { getState, dispatch }: Redux) => {
+  async (data: RoleType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
     const config = {
       headers: {
@@ -78,7 +78,7 @@ export const addRole = createAsyncThunk(
 // ** Update Role
 export const updateRole = createAsyncThunk(
   'appRoles/updateRole',
-  async (data: RolesType, { getState, dispatch }: Redux) => {
+  async (data: RoleType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(roleApi.storageTokenKeyName)!
     const config = {
       headers: {

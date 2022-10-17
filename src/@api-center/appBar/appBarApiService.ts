@@ -1,5 +1,7 @@
-const endpointAppBarPrefix = 'http://localhost:5000/api/v1/app-bar'
+import env from '../../environment';
+
+const apiAppbar = `${env.API_URL}/app-bar`
 
 export default {
-  search: endpointAppBarPrefix+'/search'
+  search: `${apiAppbar}/search`
 }

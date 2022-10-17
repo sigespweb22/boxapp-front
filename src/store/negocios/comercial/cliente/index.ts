@@ -9,7 +9,7 @@ import axios from 'axios'
 import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
 // ** Types
-import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -40,7 +40,7 @@ export const fetchData = createAsyncThunk('appClients/fetchData', async (params:
 // ** Add Client
 export const addClient = createAsyncThunk(
   'appClients/addClient',
-  async (data: ClientsType, { getState, dispatch }: Redux) => {
+  async (data: ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -104,7 +104,7 @@ export const addClient = createAsyncThunk(
 // ** Update Client
 export const editClient = createAsyncThunk(
   'appClient/updateClient',
-  async (data : ClientsType, { getState, dispatch }: Redux) => {
+  async (data : ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     const config = {
       headers: {

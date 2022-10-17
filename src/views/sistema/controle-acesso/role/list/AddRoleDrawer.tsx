@@ -27,7 +27,7 @@ import { addRole } from 'src/store/sistema/controle-acesso/role'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { RolesType } from 'src/types/apps/roleTypes'
+import { RoleType } from 'src/types/sistema/controle-acesso/roleTypes'
 
 interface SidebarAddRoleType {
   open: boolean
@@ -88,7 +88,7 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: RolesType) => {
+  const onSubmit = (data: RoleType) => {
     dispatch(addRole({ ...data,  }))
     toggle()
     reset()

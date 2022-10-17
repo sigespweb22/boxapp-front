@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ClientsType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import Close from 'mdi-material-ui/Close'
 
 interface SidebarViewClientType {
-  row: ClientsType | undefined
+  row: ClienteType | undefined
   open: boolean
   toggle: () => void
 }
