@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../sigespweb-app"
+		},
+		{
+			"path": "../materio-mui"
 		}
 	],
 	"settings": {}

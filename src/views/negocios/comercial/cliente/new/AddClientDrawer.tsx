@@ -1,10 +1,9 @@
 // ** React Imports
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
@@ -12,6 +11,13 @@ import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
 import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
+import Divider from '@mui/material/Divider'
+import CardContent, { CardContentProps } from '@mui/material/CardContent'
+import Grid, { GridProps } from '@mui/material/Grid'
+import Collapse from '@mui/material/Collapse'
+import { styled, alpha, useTheme } from '@mui/material/styles'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -25,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 import Tooltip from '@mui/material/Tooltip';
+import Plus from 'mdi-material-ui/Plus'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -43,6 +50,9 @@ import InputMask from 'react-input-mask'
 
 // ** Api Services
 import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+
+// ** Custom Component Imports
+import Repeater from 'src/@core/components/repeater'
 
 interface SidebarAddClientType {
   open: boolean
@@ -122,13 +132,59 @@ const defaultValues = {
   status: ''
 }
 
+const RepeaterWrapper = styled(CardContent)<CardContentProps>(({ theme }) => ({
+  paddingTop: theme.spacing(12),
+  paddingBottom: theme.spacing(12),
+  '& .repeater-wrapper + .repeater-wrapper': {
+    marginTop: theme.spacing(12)
+  }
+}))
+
+const RepeatingContent = styled(Grid)<GridProps>(({ theme }) => ({
+  paddingRight: 0,
+  display: 'flex',
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+  '& .col-title': {
+    top: '-1.5rem',
+    position: 'absolute'
+  },
+  [theme.breakpoints.down('lg')]: {
+    '& .col-title': {
+      top: '0',
+      position: 'relative'
+    }
+  }
+}))
+
+const InvoiceAction = styled(Box)<BoxProps>(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  padding: theme.spacing(2, 1),
+  borderLeft: `1px solid ${theme.palette.divider}`
+}))
+
 const SidebarAddClient = (props: SidebarAddClientType) => {
   // ** Props
   const { open, toggle } = props
   
   // ** Hooks
   const { t } = useTranslation()
+  const [count, setCount] = useState<number>(1)
   const [cnpjToSearch, setCnpjToSearch] = useState('')
+
+  // ** Hook
+  const theme = useTheme()
+
+  // ** Deletes form
+  const deleteForm = (e: SyntheticEvent) => {
+    e.preventDefault()
+
+    // @ts-ignore
+    e.target.closest('.repeater-wrapper').remove()
+  }
 
   const dispatch = useDispatch<AppDispatch>()
   const {
@@ -460,6 +516,129 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               )}
             />
           </FormControl>
+
+          <Divider />
+            <RepeaterWrapper>
+              <Repeater count={count}>
+                {(i: number) => {
+                  const Tag = i === 0 ? Box : Collapse
+                  return (
+                    <Tag key={i} className='repeater-wrapper' {...(i !== 0 ? { in: true } : {})}>
+                      <Grid container>
+                        <RepeatingContent item lg={12} md={12} xs={12}>
+                          <Grid container sx={{ py: 4, width: '100%', pr: { lg: 0, xs: 4 } }}>
+                            <Grid item lg={6} md={5} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
+                              <Typography
+                                variant='body2'
+                                className='col-title'
+                                sx={{ fontWeight: '600', mb: { md: 2, xs: 0 } }}
+                              >
+                                Item
+                              </Typography>
+                              <Select fullWidth size='small' defaultValue='App Design'>
+                                <MenuItem value='App Design'>App Design</MenuItem>
+                                <MenuItem value='App Customization'>App Customization</MenuItem>
+                                <MenuItem value='ABC Template'>ABC Template</MenuItem>
+                                <MenuItem value='App Development'>App Development</MenuItem>
+                              </Select>
+                              <TextField
+                                rows={2}
+                                fullWidth
+                                multiline
+                                size='small'
+                                sx={{ mt: 3.5 }}
+                                defaultValue='Customization & Bug Fixes'
+                              />
+                            </Grid>
+                            <Grid item lg={2} md={3} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
+                              <Typography
+                                variant='body2'
+                                className='col-title'
+                                sx={{ fontWeight: '600', mb: { md: 2, xs: 0 } }}
+                              >
+                                Cost
+                              </Typography>
+                              <TextField
+                                size='small'
+                                type='number'
+                                placeholder='24'
+                                defaultValue='24'
+                                InputProps={{ inputProps: { min: 0 } }}
+                              />
+                              <Box sx={{ mt: 3.5 }}>
+                                <Typography component='span' variant='body2'>
+                                  Discount:
+                                </Typography>{' '}
+                                <Typography component='span' variant='body2'>
+                                  0%
+                                </Typography>
+                                <Tooltip title='Tax 1' placement='top'>
+                                  <Typography component='span' variant='body2' sx={{ mx: 2 }}>
+                                    0%
+                                  </Typography>
+                                </Tooltip>
+                                <Tooltip title='Tax 2' placement='top'>
+                                  <Typography component='span' variant='body2'>
+                                    0%
+                                  </Typography>
+                                </Tooltip>
+                              </Box>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
+                              <Typography
+                                variant='body2'
+                                className='col-title'
+                                sx={{ fontWeight: '600', mb: { md: 2, xs: 0 } }}
+                              >
+                                Hours
+                              </Typography>
+                              <TextField
+                                size='small'
+                                type='number'
+                                placeholder='1'
+                                defaultValue='1'
+                                InputProps={{ inputProps: { min: 0 } }}
+                              />
+                            </Grid>
+                            <Grid item lg={2} md={1} xs={12} sx={{ px: 4, my: { lg: 0 }, mt: 2 }}>
+                              <Typography
+                                variant='body2'
+                                className='col-title'
+                                sx={{ fontWeight: '600', mb: { md: 2, xs: 0 } }}
+                              >
+                                Price
+                              </Typography>
+                              <Typography>$24.00</Typography>
+                            </Grid>
+                          </Grid>
+                          <InvoiceAction>
+                            <IconButton size='small' onClick={deleteForm}>
+                              <Close fontSize='small' />
+                            </IconButton>
+                          </InvoiceAction>
+                        </RepeatingContent>
+                      </Grid>
+                    </Tag>
+                  )
+                }}
+              </Repeater>
+
+              <Grid container sx={{ mt: 4 }}>
+                <Grid item xs={12} sx={{ px: 0 }}>
+                  <Button
+                    size='small'
+                    variant='contained'
+                    startIcon={<Plus fontSize='small' />}
+                    onClick={() => setCount(count + 1)}
+                  >
+                    Add serviço
+                  </Button>
+                </Grid>
+              </Grid>
+            </RepeaterWrapper>
+
+          <Divider />
+
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
               Salvar
