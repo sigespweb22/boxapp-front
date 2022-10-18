@@ -48,7 +48,6 @@ import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'
 import AddClientDrawer from 'src/views/negocios/comercial/cliente/new/AddClientDrawer'
 import ViewClientDrawer from 'src/views/negocios/comercial/cliente/view/ViewClientDrawer'
-import EditClientDrawer from 'src/views/negocios/comercial/cliente/edit/EditClientDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -219,7 +218,6 @@ const ClientList = () => {
   const [pageSize, setPageSize] = useState<number>(10)
   const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
   const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
-  const [editClientOpen, setEditClientOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -244,7 +242,6 @@ const ClientList = () => {
 
   const handleEditClient = (row : ClienteType) => {
     setRow(row)
-    setEditClientOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
@@ -280,7 +277,6 @@ const ClientList = () => {
 
   const toggleAddClientDrawer = () => setAddClientOpen(!addClientOpen)
   const handleClientViewToggle = () => setViewClientOpen(!viewClientOpen)
-  const handleClientEditToggle = () => setEditClientOpen(!editClientOpen)
 
   const columns = [
     ...defaultColumns,
@@ -303,9 +299,11 @@ const ClientList = () => {
           }
           {ability?.can('update', 'ac-client-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditClient(row)}>
-                <PencilOutline fontSize='small' />
-              </IconButton>
+              <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
+                <IconButton onClick={() => handleEditClient(row)}>
+                  <PencilOutline fontSize='small' />
+                </IconButton>
+              </Link>
             </Tooltip>
           }
           {ability?.can('delete', 'ac-client-page') &&
@@ -349,7 +347,6 @@ const ClientList = () => {
         ) : "Você não tem permissão para ver este recurso."}
         <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
         <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
-        <EditClientDrawer open={editClientOpen} toggle={handleClientEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
