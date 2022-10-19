@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
-import EditClientePage from 'src/views/negocios/comercial/cliente/edit/EditClientePage'
+import ClienteEdit from 'src/pages/negocios/comercial/cliente/edit'
 
-const EditClientePageRoute = () => {
+const ClienteEditRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <EditClientePage id={id}/>
+  return <ClienteEdit id={id}/>
 }
 
-export default EditClientePageRoute
+export default ClienteEditRoute

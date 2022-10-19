@@ -291,11 +291,13 @@ const ClientList = () => {
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-client-page') &&
-            <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewClient(row)}>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-              </IconButton>
-            </Tooltip>
+            <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
+              <Tooltip title={t("View")}>
+                <IconButton onClick={() => handleViewClient(row)}>
+                  <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
           }
           {ability?.can('update', 'ac-client-page') &&
             <Tooltip title={t("Edit")}>
@@ -346,7 +348,6 @@ const ClientList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
-        <ViewClientDrawer open={viewClientOpen} toggle={handleClientViewToggle} row={row}/>
       </Grid>
     </Grid>
   )
