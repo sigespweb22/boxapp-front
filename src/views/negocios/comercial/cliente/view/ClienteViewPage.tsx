@@ -16,17 +16,15 @@ import axios from 'axios'
 import { ClienteLayoutType, ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Demo Components Imports
-import ClienteEditLeft from 'src/views/negocios/comercial/cliente/edit/ClienteEditLeft'
+import ClienteViewLeft from 'src/views/negocios/comercial/cliente/view/ClienteViewLeft'
 
 // ** Api services
 import clienteApiServices from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
 
-type Props = ClienteLayoutType & {
-    clienteData: ClienteType[]
-}
+type Props = ClienteLayoutType & {}
 
-const ClienteEdit = ({ id }: Props) => {
+const ClienteViewPage = ({ id }: Props) => {
     // ** State
     const [error, setError] = useState<boolean>(false)
     const [data, setData] = useState<null | ClienteType>(null)
@@ -51,16 +49,31 @@ const ClienteEdit = ({ id }: Props) => {
           })
     }, [id])
 
-    return (
+    if (data) {
+      return (
+          <Grid container spacing={6}>
+              <Grid item xs={12} md={5} lg={4}>
+                  <ClienteViewLeft data={data} />
+              </Grid>
+              <Grid item xs={12} md={7} lg={8}>
+                  <Typography variant='h6'>Editar cliente {id}</Typography>
+              </Grid>
+          </Grid>
+      )
+    } else if (error) {
+      return (
         <Grid container spacing={6}>
-            <Grid item xs={12} md={5} lg={4}>
-                <ClienteEditLeft data={data} />
-            </Grid>
-            <Grid item xs={12} md={7} lg={8}>
-                <Typography variant='h6'>Editar cliente {id}</Typography>
-            </Grid>
+          <Grid item xs={12}>
+            <Alert severity='error'>
+              Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
+              <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+            </Alert>
+          </Grid>
         </Grid>
-    )
+      )
+    } else {
+      return null
+    }
 }
 
-export default ClienteEdit
+export default ClienteViewPage

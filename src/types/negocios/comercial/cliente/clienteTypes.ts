@@ -2,7 +2,7 @@
 import { ThemeColor } from 'src/@core/layouts/types'
 
 export type ClienteLayoutType = {
-  id: string | undefined
+  id: string | string[] | undefined
 }
 
 export type ClienteType = {
