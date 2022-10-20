@@ -14,6 +14,7 @@ import axios from 'axios'
 
 // ** Types
 import { ClienteLayoutType, ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { RootState, AppDispatch } from 'src/store'
 
 // ** Demo Components Imports
 import ClienteViewLeft from 'src/views/negocios/comercial/cliente/view/ClienteViewLeft'
@@ -21,6 +22,11 @@ import ClienteViewLeft from 'src/views/negocios/comercial/cliente/view/ClienteVi
 // ** Api services
 import clienteApiServices from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
+// ** Actions Imports
+import { fetchData } from 'src/store/negocios/comercial/cliente/view'
+
+// ** Store Imports
+import { useDispatch, useSelector } from 'react-redux'
 
 type Props = ClienteLayoutType & {}
 
@@ -29,25 +35,23 @@ const ClienteViewPage = ({ id }: Props) => {
     const [error, setError] = useState<boolean>(false)
     const [data, setData] = useState<null | ClienteType>(null)
 
+    const dispatch = useDispatch<AppDispatch>()
+    const store = useSelector((state: RootState) => state.clienteView)
+
     useEffect(() => {
-        const storedToken = window.localStorage.getItem(clienteApiServices.storageTokenKeyName)!
-        
-        axios
-          .get(`${clienteApiServices.listOneAsync}${id}`, {
-            headers: {
-                Authorization: "Bearer " + storedToken
-            }
-          })
-          .then(response => {
-            debugger
-            setData(response.data)
-            setError(false)
-          })
-          .catch(() => {
-            setData(null)
-            setError(true)
-          })
-    }, [id])
+      dispatch(
+        fetchData({
+          id: id
+        })
+      )
+    }, [dispatch, id])
+
+    useEffect(() => {
+        if(store?.data)
+        {
+          setData(store.data)
+        }
+    }, [])
 
     if (data) {
       return (
