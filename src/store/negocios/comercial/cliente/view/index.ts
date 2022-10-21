@@ -10,6 +10,7 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 
 // ** Types
 import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ThemeColor } from 'src/@core/layouts/types'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -67,7 +68,7 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().cliente.params))
+      dispatch(fetchData(getState().clienteView.params))
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -98,10 +99,31 @@ export const editCliente = createAsyncThunk(
   }
 )
 
+const defaultValues: ClienteType = {
+  id: '',
+  nomeFantasia: '',
+  razaoSocial: '',
+  inscricaoEstadual: '',
+  cnpj: '',
+  telefonePrincipal: '',
+  emailPrincipal: '',
+  observacao: '',
+  dataFundacao: '',
+  codigoMunicipio: 0,
+  rua: '',
+  numero: '',
+  complemento: '',
+  cidade: '',
+  estado: '',
+  cep: '',
+  status: '',
+  avatarColor: 'primary'
+}
+
 export const appClienteSlice = createSlice({
   name: 'appCliente',
   initialState: {
-    data: '',
+    data: defaultValues,
     params: {}
   },
   reducers: {},

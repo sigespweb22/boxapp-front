@@ -175,7 +175,7 @@ export const deleteClient = createAsyncThunk(
     }
 
     axios.delete(clienteApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().client.params))
+      dispatch(fetchData(getState().cliente.params))
       if (resp.status === 204) return toast.success("Cliente deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

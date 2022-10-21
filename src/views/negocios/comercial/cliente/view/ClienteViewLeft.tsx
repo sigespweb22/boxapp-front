@@ -31,8 +31,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
-import { AppDispatch } from 'src/store'
+import { ClienteType, ClienteLayoutType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -43,15 +42,20 @@ import { useTranslation } from 'react-i18next'
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-// ** Store Imports
-import { useDispatch } from 'react-redux'
+// ** Actions Imports
+import { editCliente } from 'src/store/negocios/comercial/cliente/view'
+
+// ** Api services
+import clienteApiServices from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
 // ** Actions Imports
 import { fetchData } from 'src/store/negocios/comercial/cliente/view'
 
-interface Props {
-  data: ClienteType | null
-}
+// ** Store Imports
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState, AppDispatch } from 'src/store'
+
+type Props = ClienteLayoutType & {}
 
 interface ColorsType {
   [key: string]: ThemeColor
@@ -90,7 +94,28 @@ const schema = yup.object().shape({
     .required("CNPJ é requerido.")
 })
 
-const ClienteViewLeft = ({ data }: Props) => {
+const defaultValues: ClienteType = {
+  id: '',
+  nomeFantasia: '',
+  razaoSocial: '',
+  inscricaoEstadual: '',
+  cnpj: '',
+  telefonePrincipal: '',
+  emailPrincipal: '',
+  observacao: '',
+  dataFundacao: '',
+  codigoMunicipio: 0,
+  rua: '',
+  numero: '',
+  complemento: '',
+  cidade: '',
+  estado: '',
+  cep: '',
+  status: '',
+  avatarColor: 'primary'
+}
+
+const ClienteViewLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   
@@ -98,6 +123,22 @@ const ClienteViewLeft = ({ data }: Props) => {
 
   // ** States
   const [openEdit, setOpenEdit] = useState<boolean>(false)
+  const dispatch = useDispatch<AppDispatch>()
+  const store = useSelector((state: RootState) => state.clienteView)
+  const [data, setData] = useState<ClienteType>(defaultValues)
+
+  useEffect(() => {
+    dispatch(
+      fetchData({
+        id: id
+      })
+    )
+  }, [dispatch, id])
+
+  useEffect(() => {
+    // ** Set values
+    setData(store?.data)
+  }, [store.data])
 
   const renderClienteAvatar = () => {
     if (data) {
@@ -116,7 +157,6 @@ const ClienteViewLeft = ({ data }: Props) => {
     }
   }
 
-  const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
     setValue,
@@ -127,26 +167,6 @@ const ClienteViewLeft = ({ data }: Props) => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
-  const defaultValues = {
-    id: data?.id ?? '',
-    nomeFantasia: data?.nomeFantasia ?? '',
-    razaoSocial: data?.razaoSocial ?? '',
-    inscricaoEstadual: data?.inscricaoEstadual ?? '',
-    cnpj: data?.cnpj ?? '',
-    telefonePrincipal: data?.telefonePrincipal ?? '',
-    emailPrincipal: data?.emailPrincipal ?? '',
-    observacao: data?.observacao ?? '',
-    dataFundacao: data?.dataFundacao ?? '',
-    codigoMunicipio: data?.codigoMunicipio ?? '',
-    rua: data?.rua ?? '',
-    numero: data?.numero ?? '',
-    complemento: data?.complemento ?? '',
-    cidade: data?.cidade ?? '',
-    estado: data?.estado ?? '',
-    cep: data?.cep ?? '',
-    status: data?.status ?? '',
-  }
 
   useEffect(() => {
     // ** Set values
@@ -170,7 +190,6 @@ const ClienteViewLeft = ({ data }: Props) => {
   }, [defaultValues])
 
   const onSubmit = (data: ClienteType) => {
-    debugger
     dispatch(editCliente({ ...data,  }))
     handleEditClose()
     reset()
@@ -183,7 +202,7 @@ const ClienteViewLeft = ({ data }: Props) => {
     setOpenEdit(false)
   }
 
-  if (data) {
+  if (store) {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -196,8 +215,8 @@ const ClienteViewLeft = ({ data }: Props) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={data.razaoSocial}
-                color={roleColors[data.razaoSocial]}
+                label={data.nomeFantasia}
+                color={roleColors[data.nomeFantasia]}
                 sx={{
                   height: 20,
                   fontSize: '0.875rem',
