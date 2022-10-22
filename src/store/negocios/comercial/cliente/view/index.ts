@@ -68,7 +68,8 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().clienteView.params))
+      debugger
+      dispatch(fetchData(getState().cliente.params))
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

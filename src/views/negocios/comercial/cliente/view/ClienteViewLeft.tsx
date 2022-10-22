@@ -128,7 +128,6 @@ const ClienteViewLeft = ({id}: Props) => {
   const [data, setData] = useState<ClienteType>(defaultValues)
 
   const {
-    value,
     reset,
     setValue,
     control,
@@ -148,9 +147,33 @@ const ClienteViewLeft = ({id}: Props) => {
   }, [dispatch, id])
 
   useEffect(() => {
+    
     // ** Set values
     setData(store?.data)
+
   }, [store.data])
+
+  useEffect(() => {
+    if(data)
+    {
+      setValue('id', data.id)
+      setValue('nomeFantasia', data.nomeFantasia)
+      setValue('razaoSocial', data.razaoSocial)
+      setValue('inscricaoEstadual', data.inscricaoEstadual)
+      setValue('cnpj', data.cnpj)
+      setValue('telefonePrincipal', data.telefonePrincipal)
+      setValue('emailPrincipal', data.emailPrincipal)
+      setValue('dataFundacao', data.dataFundacao)
+      setValue('cep', data.cep)
+      setValue('rua', data.rua)
+      setValue('numero', data.numero)
+      setValue('complemento', data.complemento)
+      setValue('estado', data.estado)
+      setValue('cidade', data.cidade)
+      setValue('codigoMunicipio', data.codigoMunicipio)
+      setValue('observacao', data.observacao)
+    }
+  }, [data])
 
   const renderClienteAvatar = () => {
     if (data) {
@@ -214,7 +237,7 @@ const ClienteViewLeft = ({id}: Props) => {
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
-                  <Typography variant='body2'>{value.nomeFantasia}</Typography>
+                  <Typography variant='body2'>{data.nomeFantasia}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
@@ -312,7 +335,7 @@ const ClienteViewLeft = ({id}: Props) => {
                   A atualização das informações de cliente são passíveis de auditoria.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <Grid container spacing={6}>
+                  <Grid container spacing={4}>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
@@ -469,6 +492,22 @@ const ClienteViewLeft = ({id}: Props) => {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
+                          name='estado'
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <TextField
+                              value={value}
+                              label='Estado'
+                              onChange={onChange}
+                              placeholder='(e.g.: Santa Catarina'
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth sx={{ mb: 6 }}>
+                        <Controller
                           name='rua'
                           control={control}
                           render={({ field: { value, onChange } }) => (
@@ -498,7 +537,7 @@ const ClienteViewLeft = ({id}: Props) => {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
                           name='complemento'
@@ -513,23 +552,7 @@ const ClienteViewLeft = ({id}: Props) => {
                           )}
                         />
                       </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='estado'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Estado'
-                              onChange={onChange}
-                              placeholder='(e.g.: Santa Catarina'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
+                    </Grid>                    
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
@@ -546,7 +569,7 @@ const ClienteViewLeft = ({id}: Props) => {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={6} sm={6}>
+                    <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                           <Controller
                             name='codigoMunicipio'
@@ -560,7 +583,7 @@ const ClienteViewLeft = ({id}: Props) => {
                               />
                             )}
                           />
-                        </FormControl>
+                      </FormControl>
                     </Grid>                    
                     <Grid item xs={12} sm={12}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
