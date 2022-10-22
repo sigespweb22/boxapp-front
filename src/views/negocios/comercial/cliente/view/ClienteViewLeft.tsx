@@ -127,6 +127,18 @@ const ClienteViewLeft = ({id}: Props) => {
   const store = useSelector((state: RootState) => state.clienteView)
   const [data, setData] = useState<ClienteType>(defaultValues)
 
+  const {
+    value,
+    reset,
+    setValue,
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  })
+
   useEffect(() => {
     dispatch(
       fetchData({
@@ -157,38 +169,6 @@ const ClienteViewLeft = ({id}: Props) => {
     }
   }
 
-  const {
-    reset,
-    setValue,
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    mode: 'onChange',
-    resolver: yupResolver(schema)
-  })
-
-  useEffect(() => {
-    // ** Set values
-    setValue('id', defaultValues.id)
-    setValue('nomeFantasia', defaultValues.nomeFantasia)
-    setValue('razaoSocial', defaultValues.razaoSocial)
-    setValue('inscricaoEstadual', defaultValues.inscricaoEstadual)
-    setValue('cnpj', defaultValues.cnpj)
-    setValue('telefonePrincipal', defaultValues.telefonePrincipal)
-    setValue('emailPrincipal', defaultValues.emailPrincipal)
-    setValue('observacao', defaultValues.observacao)
-    setValue('dataFundacao', defaultValues.dataFundacao)
-    setValue('codigoMunicipio', defaultValues.codigoMunicipio)
-    setValue('rua', defaultValues.rua)
-    setValue('numero', defaultValues.numero)
-    setValue('complemento', defaultValues.complemento)
-    setValue('cidade', defaultValues.cidade)
-    setValue('estado', defaultValues.estado)
-    setValue('cep', defaultValues.cep)
-    setValue('status', defaultValues.status)
-  }, [defaultValues])
-
   const onSubmit = (data: ClienteType) => {
     dispatch(editCliente({ ...data,  }))
     handleEditClose()
@@ -202,7 +182,7 @@ const ClienteViewLeft = ({id}: Props) => {
     setOpenEdit(false)
   }
 
-  if (store) {
+  if (data) {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -234,7 +214,7 @@ const ClienteViewLeft = ({id}: Props) => {
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
-                  <Typography variant='body2'>{data.nomeFantasia}</Typography>
+                  <Typography variant='body2'>{value.nomeFantasia}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
@@ -412,9 +392,9 @@ const ClienteViewLeft = ({id}: Props) => {
                               render={({ field: { value, onChange } }) => (
                                 <TextField
                                   value={value}
-                                  label='Razão social'
+                                  label='Cnpj'
                                   onChange={onChange}
-                                  placeholder='(e.g.: Ex.: 23.8315620001812)'
+                                  placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
                                   error={Boolean(errors.cnpj)}
                                 />
                               )}
