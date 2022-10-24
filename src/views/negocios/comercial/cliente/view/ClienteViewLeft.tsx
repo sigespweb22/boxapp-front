@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useInsertionEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -44,9 +44,6 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
 import { editCliente } from 'src/store/negocios/comercial/cliente/view'
-
-// ** Api services
-import clienteApiServices from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 
 // ** Actions Imports
 import { fetchData } from 'src/store/negocios/comercial/cliente/view'
@@ -116,6 +113,8 @@ const defaultValues: ClienteType = {
 }
 
 const ClienteViewLeft = ({id}: Props) => {
+  debugger
+
   // ** Hooks
   const ability = useContext(AbilityContext)
   
@@ -126,6 +125,17 @@ const ClienteViewLeft = ({id}: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteView)
   const [data, setData] = useState<ClienteType>(defaultValues)
+  const [clienteId, setClienteId] = useState('')
+
+  useEffect(() => {
+    setClienteId(id)
+
+    dispatch(
+      fetchData({
+        id: clienteId
+      })
+    )
+  }, [dispatch, clienteId])
 
   const {
     reset,
@@ -139,14 +149,6 @@ const ClienteViewLeft = ({id}: Props) => {
   })
 
   useEffect(() => {
-    dispatch(
-      fetchData({
-        id: id
-      })
-    )
-  }, [dispatch, id])
-
-  useEffect(() => {
     
     // ** Set values
     setData(store?.data)
@@ -156,22 +158,22 @@ const ClienteViewLeft = ({id}: Props) => {
   useEffect(() => {
     if(data)
     {
-      setValue('id', data.id)
-      setValue('nomeFantasia', data.nomeFantasia)
-      setValue('razaoSocial', data.razaoSocial)
-      setValue('inscricaoEstadual', data.inscricaoEstadual)
-      setValue('cnpj', data.cnpj)
-      setValue('telefonePrincipal', data.telefonePrincipal)
-      setValue('emailPrincipal', data.emailPrincipal)
-      setValue('dataFundacao', data.dataFundacao)
-      setValue('cep', data.cep)
-      setValue('rua', data.rua)
-      setValue('numero', data.numero)
-      setValue('complemento', data.complemento)
-      setValue('estado', data.estado)
-      setValue('cidade', data.cidade)
-      setValue('codigoMunicipio', data.codigoMunicipio)
-      setValue('observacao', data.observacao)
+      setValue('id', store?.data.id)
+      setValue('nomeFantasia', store?.data.nomeFantasia)
+      setValue('razaoSocial', store?.data.razaoSocial)
+      setValue('inscricaoEstadual', store?.data.inscricaoEstadual)
+      setValue('cnpj', store?.data.cnpj)
+      setValue('telefonePrincipal', store?.data.telefonePrincipal)
+      setValue('emailPrincipal', store?.data.emailPrincipal)
+      setValue('dataFundacao', store?.data.dataFundacao)
+      setValue('cep', store?.data.cep)
+      setValue('rua', store?.data.rua)
+      setValue('numero', store?.data.numero)
+      setValue('complemento', store?.data.complemento)
+      setValue('estado', store?.data.estado)
+      setValue('cidade', store?.data.cidade)
+      setValue('codigoMunicipio', store?.data.codigoMunicipio)
+      setValue('observacao', store?.data.observacao)
     }
   }, [data])
 
@@ -199,7 +201,11 @@ const ClienteViewLeft = ({id}: Props) => {
   }  
 
   // Handle Edit dialog
-  const handleEditClickOpen = () => setOpenEdit(true)
+  const handleEditClickOpen = () => {
+    dispatch(fetchData({ id: clienteId }))
+    setOpenEdit(true)
+  }
+  
   const handleEditClose = () => {
     reset()
     setOpenEdit(false)
