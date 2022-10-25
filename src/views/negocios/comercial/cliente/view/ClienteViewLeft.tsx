@@ -47,7 +47,7 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { fetchData, editCliente } from 'src/store/negocios/comercial/cliente/view'
+import { editCliente, fetchData } from 'src/store/negocios/comercial/cliente/view'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
@@ -146,14 +146,13 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
   }, [dispatch, id])
 
   useEffect(() => {
-      if(store?.data)
-      {
-        setData(store.data)
-      }
+    if(store?.data)
+    {
+      setData(store.data)
+    }
   }, [store])
 
   useEffect(() => {
-    debugger
     if(store)
     {
       setValue('id', store?.data.id)
@@ -194,12 +193,14 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
 
   const onSubmit = (data: ClienteType) => {
     dispatch(editCliente({ ...data,  }))
+    dispatch(fetchData({ id: data.id }))
     handleEditClose()
     reset()
   }  
 
   // Handle Edit dialog
   const handleEditClickOpen = () => {
+    dispatch(fetchData({id: data?.id}))
     setOpenEdit(true)
   }
   

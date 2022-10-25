@@ -1,10 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "../sigespweb-app"
-		},
-		{
-			"path": "../materio-mui"
+			"path": "."
 		}
 	],
 	"settings": {}
