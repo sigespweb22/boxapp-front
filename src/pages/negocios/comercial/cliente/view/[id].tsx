@@ -5,7 +5,7 @@ const ClienteViewRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <ClienteViewPage id={id}/>
+  return <ClienteViewPage clienteId={id}/>
 }
 
 export default ClienteViewRoute

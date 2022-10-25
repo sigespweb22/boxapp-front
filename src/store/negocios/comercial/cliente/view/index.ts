@@ -16,7 +16,7 @@ import { ThemeColor } from 'src/@core/layouts/types'
 import toast from 'react-hot-toast'
 
 interface DataParams {
-  id: string
+  id: string | string [] | undefined
 }
 
 interface Redux {
@@ -38,7 +38,7 @@ export const fetchData = createAsyncThunk('appCliente/fetchData', async (params:
 
 // ** Update Cliente
 export const editCliente = createAsyncThunk(
-  'appClient/updateClient',
+  'appCliente/updateCliente',
   async (data : ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
@@ -68,8 +68,8 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      debugger
-      dispatch(fetchData(getState().cliente.params))
+      dispatch(fetchData(getState().clienteView.params))
+      
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

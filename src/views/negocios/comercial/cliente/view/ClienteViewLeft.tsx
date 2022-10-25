@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext, useEffect, useInsertionEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -19,6 +19,10 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
 import FormHelperText from '@mui/material/FormHelperText'
+import Alert from '@mui/material/Alert'
+
+// ** Next Import
+import Link from 'next/link'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -31,7 +35,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType, ClienteLayoutType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -43,16 +47,11 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { editCliente } from 'src/store/negocios/comercial/cliente/view'
-
-// ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/view'
+import { fetchData, editCliente } from 'src/store/negocios/comercial/cliente/view'
 
 // ** Store Imports
+import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState, AppDispatch } from 'src/store'
-
-type Props = ClienteLayoutType & {}
 
 interface ColorsType {
   [key: string]: ThemeColor
@@ -91,6 +90,10 @@ const schema = yup.object().shape({
     .required("CNPJ é requerido.")
 })
 
+interface ClienteInterface {
+  id: string | string[] | undefined
+}
+
 const defaultValues: ClienteType = {
   id: '',
   nomeFantasia: '',
@@ -109,33 +112,19 @@ const defaultValues: ClienteType = {
   estado: '',
   cep: '',
   status: '',
-  avatarColor: 'primary'
 }
 
-const ClienteViewLeft = ({id}: Props) => {
-  debugger
-
+const ClienteViewLeft = ({id}: ClienteInterface) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
-  
+  const [error, setError] = useState<boolean>(false)
+  const [data, setData] = useState<null | ClienteType>(defaultValues)
   const { t } = useTranslation()
 
   // ** States
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteView)
-  const [data, setData] = useState<ClienteType>(defaultValues)
-  const [clienteId, setClienteId] = useState('')
-
-  useEffect(() => {
-    setClienteId(id)
-
-    dispatch(
-      fetchData({
-        id: clienteId
-      })
-    )
-  }, [dispatch, clienteId])
 
   const {
     reset,
@@ -149,14 +138,23 @@ const ClienteViewLeft = ({id}: Props) => {
   })
 
   useEffect(() => {
-    
-    // ** Set values
-    setData(store?.data)
-
-  }, [store.data])
+    dispatch(
+      fetchData({
+        id: id
+      })
+    )
+  }, [dispatch, id])
 
   useEffect(() => {
-    if(data)
+      if(store?.data)
+      {
+        setData(store.data)
+      }
+  }, [store])
+
+  useEffect(() => {
+    debugger
+    if(store)
     {
       setValue('id', store?.data.id)
       setValue('nomeFantasia', store?.data.nomeFantasia)
@@ -165,7 +163,7 @@ const ClienteViewLeft = ({id}: Props) => {
       setValue('cnpj', store?.data.cnpj)
       setValue('telefonePrincipal', store?.data.telefonePrincipal)
       setValue('emailPrincipal', store?.data.emailPrincipal)
-      setValue('dataFundacao', store?.data.dataFundacao)
+      setValue('store?.dataFundacao', store?.data.dataFundacao)
       setValue('cep', store?.data.cep)
       setValue('rua', store?.data.rua)
       setValue('numero', store?.data.numero)
@@ -175,10 +173,10 @@ const ClienteViewLeft = ({id}: Props) => {
       setValue('codigoMunicipio', store?.data.codigoMunicipio)
       setValue('observacao', store?.data.observacao)
     }
-  }, [data])
+  }, [store])
 
   const renderClienteAvatar = () => {
-    if (data) {
+    if (store) {
       return (
         <CustomAvatar
           skin='light'
@@ -186,7 +184,7 @@ const ClienteViewLeft = ({id}: Props) => {
           color={'primary' as ThemeColor}
           sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
         >
-          {getInitials(data.nomeFantasia)}
+          {getInitials(store?.data.nomeFantasia || "CP")}
         </CustomAvatar>
       )
     } else {
@@ -202,16 +200,15 @@ const ClienteViewLeft = ({id}: Props) => {
 
   // Handle Edit dialog
   const handleEditClickOpen = () => {
-    dispatch(fetchData({ id: clienteId }))
     setOpenEdit(true)
   }
   
   const handleEditClose = () => {
-    reset()
     setOpenEdit(false)
+    reset()
   }
 
-  if (data) {
+  if (store) {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -219,13 +216,13 @@ const ClienteViewLeft = ({id}: Props) => {
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderClienteAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
-                {data.nomeFantasia}
+                {store?.data.nomeFantasia}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={data.nomeFantasia}
-                color={roleColors[data.nomeFantasia]}
+                label={store?.data.nomeFantasia}
+                color={roleColors[store?.data.nomeFantasia || 'primary']}
                 sx={{
                   height: 20,
                   fontSize: '0.875rem',
@@ -243,19 +240,19 @@ const ClienteViewLeft = ({id}: Props) => {
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
-                  <Typography variant='body2'>{data.nomeFantasia}</Typography>
+                  <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
-                  <Typography variant='body2'>{data.razaoSocial}</Typography>
+                  <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
                     skin='light'
                     size='small'
-                    label={`${t(data.status)}`}
-                    color={statusColors[data.status]}
+                    label={`${t(store?.data.status)}`}
+                    color={statusColors[store?.data.status]}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',
@@ -268,52 +265,52 @@ const ClienteViewLeft = ({id}: Props) => {
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
                   <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                    {data.inscricaoEstadual}
+                    {store?.data.inscricaoEstadual}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                  <Typography variant='body2'>{data.cnpj}</Typography>
+                  <Typography variant='body2'>{store?.data.cnpj}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
-                  <Typography variant='body2'>{data.telefonePrincipal}</Typography>
+                  <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>E-mail Principal:</Typography>
-                  <Typography variant='body2'>{data.emailPrincipal}</Typography>
+                  <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
-                  <Typography variant='body2'>{data.observacao}</Typography>
+                  <Typography variant='body2'>{store?.data.observacao}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data Fundação:</Typography>
-                  <Typography variant='body2'>{data.dataFundacao}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
+                  <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
-                  <Typography variant='body2'>{data.codigoMunicipio}</Typography>
+                  <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Rua:</Typography>
-                  <Typography variant='body2'>{data.rua}</Typography>
+                  <Typography variant='body2'>{store?.data.rua}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Número:</Typography>
-                  <Typography variant='body2'>{data.numero}</Typography>
+                  <Typography variant='body2'>{store?.data.numero}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Complemento:</Typography>
-                  <Typography variant='body2'>{data.complemento}</Typography>
+                  <Typography variant='body2'>{store?.data.complemento}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Estado:</Typography>
-                  <Typography variant='body2'>{data.estado}</Typography>
+                  <Typography variant='body2'>{store?.data.estado}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
-                  <Typography variant='body2'>{data.cidade}</Typography>
+                  <Typography variant='body2'>{store?.data.cidade}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -466,12 +463,12 @@ const ClienteViewLeft = ({id}: Props) => {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
-                          name='dataFundacao'
+                          name='store?.dataFundacao'
                           control={control}
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Data fundação'
+                              label='store?.data fundação'
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: 10/01/2000'
                             />
@@ -620,6 +617,17 @@ const ClienteViewLeft = ({id}: Props) => {
               </DialogContent>
             </Dialog>
           </Card>
+        </Grid>
+      </Grid>
+    )
+  } else if (error) {
+    return (
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Alert severity='error'>
+            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
+            <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+          </Alert>
         </Grid>
       </Grid>
     )

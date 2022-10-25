@@ -68,7 +68,7 @@ export const addClient = createAsyncThunk(
     }
 
     axios.post(clienteApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().client.params))
+      dispatch(fetchData(getState().cliente.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
     }).catch((resp) => {
@@ -103,7 +103,7 @@ export const addClient = createAsyncThunk(
 
 // ** Update Client
 export const editCliente = createAsyncThunk(
-  'appClient/updateClient',
+  'appClients/updateClient',
   async (data : ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
