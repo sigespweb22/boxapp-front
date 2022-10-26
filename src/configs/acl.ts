@@ -78,17 +78,17 @@ const defineRulesFor = (role: string[], subject: string) => {
     /// end - cnpj
 
     /// begin - cliente
-    } else if (item === 'CanClientAll') {
+    } else if (item === 'CanClienteAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
-    } else if (item === 'CanClientList') {
+    } else if (item === 'CanClienteList') {
       can('list', 'ac-cliente-page')
-    } else if (item === 'CanClientRead') {
+    } else if (item === 'CanClienteRead') {
       can('read', 'ac-cliente-page')
-    } else if (item === 'CanClientUpdate') {
+    } else if (item === 'CanClienteUpdate') {
       can('update', 'ac-cliente-page')
-    } else if (item === 'CanClientCreate') {
+    } else if (item === 'CanClienteCreate') {
       can('create', 'ac-cliente-page')
-    } else if (item === 'CanClientDelete') {
+    } else if (item === 'CanClienteDelete') {
       can('delete', 'ac-cliente-page')
     /// end - cliente
 
