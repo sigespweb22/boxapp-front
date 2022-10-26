@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
 import ClienteViewLeft from 'src/views/negocios/comercial/cliente/view/ClienteViewLeft'
+import ClienteViewRight from 'src/views/negocios/comercial/cliente/view/ClienteViewRight'
 
 interface Props {
     clienteId: string | string [] | undefined
@@ -17,7 +18,7 @@ const ClienteViewPage = ({ clienteId }: Props) => {
                   <ClienteViewLeft id={clienteId} />
               </Grid>
               <Grid item xs={12} md={7} lg={8}>
-                  <Typography variant='h6'>Editar cliente {clienteId}</Typography>
+                <ClienteViewRight id={clienteId} />
               </Grid>
           </Grid>
       )

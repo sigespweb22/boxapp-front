@@ -16,7 +16,7 @@ import { ThemeColor } from 'src/@core/layouts/types'
 import toast from 'react-hot-toast'
 
 interface DataParams {
-  id: string | string [] | undefined
+  id: string | string[] | undefined
 }
 
 interface Redux {
@@ -33,6 +33,7 @@ export const fetchData = createAsyncThunk('appCliente/fetchData', async (params:
                                     Authorization: "Bearer " + storedToken
                                   }
                             })
+
   return response.data
 })
 
@@ -68,7 +69,8 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().clienteView.params))
+      debugger
+      dispatch(fetchData(getState().clienteView.data))
       
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {

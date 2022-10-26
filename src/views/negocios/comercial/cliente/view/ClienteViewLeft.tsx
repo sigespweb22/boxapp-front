@@ -90,7 +90,7 @@ const schema = yup.object().shape({
     .required("CNPJ é requerido.")
 })
 
-interface ClienteInterface {
+interface Props {
   id: string | string[] | undefined
 }
 
@@ -114,7 +114,7 @@ const defaultValues: ClienteType = {
   status: '',
 }
 
-const ClienteViewLeft = ({id}: ClienteInterface) => {
+const ClienteViewLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const [error, setError] = useState<boolean>(false)
@@ -162,7 +162,7 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
       setValue('cnpj', store?.data.cnpj)
       setValue('telefonePrincipal', store?.data.telefonePrincipal)
       setValue('emailPrincipal', store?.data.emailPrincipal)
-      setValue('store?.dataFundacao', store?.data.dataFundacao)
+      setValue('dataFundacao', store?.data.dataFundacao)
       setValue('cep', store?.data.cep)
       setValue('rua', store?.data.rua)
       setValue('numero', store?.data.numero)
@@ -193,7 +193,6 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
 
   const onSubmit = (data: ClienteType) => {
     dispatch(editCliente({ ...data,  }))
-    dispatch(fetchData({ id: data.id }))
     handleEditClose()
     reset()
   }  
@@ -222,7 +221,7 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.nomeFantasia}
+                label={store?.data.razaoSocial}
                 color={roleColors[store?.data.nomeFantasia || 'primary']}
                 sx={{
                   height: 20,
@@ -469,7 +468,7 @@ const ClienteViewLeft = ({id}: ClienteInterface) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='store?.data fundação'
+                              label='Data fundação'
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: 10/01/2000'
                             />
