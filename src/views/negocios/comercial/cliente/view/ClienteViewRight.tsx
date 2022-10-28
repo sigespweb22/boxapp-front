@@ -64,6 +64,9 @@ import { editCliente, fetchData } from 'src/store/negocios/comercial/cliente/vie
 import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
+// ** Custom Components Imports
+import ClienteServicoListTable from 'src/pages/negocios/comercial/cliente/servico/index'
+
 interface ColorsType {
   [key: string]: ThemeColor
 }
@@ -156,7 +159,7 @@ const ClienteViewRight = ({ id }: Props) => {
       </TabList>
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='servicos'>
-          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>Tab 1 </Typography>
+          <ClienteServicoListTable />
         </TabPanel>
       </Box>
     </TabContext>

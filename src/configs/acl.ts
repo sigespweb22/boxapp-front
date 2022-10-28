@@ -92,6 +92,21 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-cliente-page')
     /// end - cliente
 
+    /// begin - cliente servico
+  } else if (item === 'CanClienteServicoAll') {
+    can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-servico-page')
+  } else if (item === 'CanClienteServicoList') {
+    can('list', 'ac-cliente-servico-page')
+  } else if (item === 'CanClienteServicoRead') {
+    can('read', 'ac-cliente-servico-page')
+  } else if (item === 'CanClienteServicoUpdate') {
+    can('update', 'ac-cliente-servico-page')
+  } else if (item === 'CanClienteServicoCreate') {
+    can('create', 'ac-cliente-servico-page')
+  } else if (item === 'CanClienteServicoDelete') {
+    can('delete', 'ac-cliente-servico-page')
+  /// end - cliente servico
+
     /// begin - serviço
     } else if (item === 'CanServicoAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-servico-page')
