@@ -37,14 +37,14 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusGrupo } from 'src/store/sistema/controle-acesso/grupo'
+import { fetchData, alterStatusClienteServico } from 'src/store/negocios/comercial/cliente/servico/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/sistema/controle-acesso/grupo/list/TableHeader'
+import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
 import AddGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/list/AddGrupoDrawer'
 import ViewGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/view/ViewGrupoDrawer'
 import EditGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGrupoDrawer'
@@ -91,7 +91,7 @@ const clienteServicoStatusObj = (status: string) => {
       return 'secondary'
   }
 }
-
+''
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
@@ -234,38 +234,34 @@ const ClienteServicoListTable = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addGrupoOpen, setAddGrupoOpen] = useState<boolean>(false)
-  const [viewGrupoOpen, setViewGrupoOpen] = useState<boolean>(false)
-  const [editGrupoOpen, setEditGrupoOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<GrupoType | undefined>()
+  const [addClienteServicoOpen, setAddClienteServicoOpen] = useState<boolean>(false)
+  const [viewClienteServicoOpen, setViewClienteServicoOpen] = useState<boolean>(false)
+  const [editClienteServicoOpen, setEditClienteServicoOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ClienteServicoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.grupo)
+  const store = useSelector((state: RootState) => state.clienteServico)
 
   useEffect(() => {
     dispatch(
       fetchData({
-        q: value
+        clienteId: id
       })
     )
-  }, [dispatch, value])
+  }, [dispatch, id])
 
-  const handleFilter = useCallback((val: string) => {
-    setValue(val)
-  }, [])
-
-  const handleViewGrupo = (row : GrupoType) => {
+  const handleViewClienteServico = (row : ClienteServicoType) => {
     setRow(row)
-    setViewGrupoOpen(true)
+    setViewClienteServicoOpen(true)
   }
 
-  const handleEditGrupo = (row : GrupoType) => {
+  const handleEditClienteServico = (row : ClienteServicoType) => {
     setRow(row)
-    setEditGrupoOpen(true)
+    setEditClienteServicoOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusGrupo(id))
+    dispatch(alterStatusClienteServico(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -296,9 +292,9 @@ const ClienteServicoListTable = ({ id }: Props) => {
     }
   }
 
-  const toggleAddGrupoDrawer = () => setAddGrupoOpen(!addGrupoOpen)
-  const toggleViewGrupoDrawer = () => setViewGrupoOpen(!viewGrupoOpen)
-  const toggleEditGrupoDrawer = () => setEditGrupoOpen(!editGrupoOpen)
+  const toggleAddClienteServicoDrawer = () => setAddClienteServicoOpen(!addClienteServicoOpen)
+  const toggleViewClienteServicoDrawer = () => setViewClienteServicoOpen(!viewClienteServicoOpen)
+  const toggleEditClienteServicoDrawer = () => setEditClienteServicoOpen(!editClienteServicoOpen)
 
   const columns = [
     ...defaultColumns,
@@ -312,21 +308,21 @@ const ClienteServicoListTable = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-grupo-page') &&
+          {ability?.can('read', 'ac-cliente-servico-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewGrupo(row)}>
+              <IconButton onClick={() => handleViewClienteServico(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-cliente-servico-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditGrupo(row)}>
+              <IconButton onClick={() => handleEditClienteServico(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-grupo-page') &&
+          {ability?.can('delete', 'ac-cliente-servico-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -350,7 +346,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
         {ability?.can('list', 'ac-cliente-servico-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
+              <TableHeader value={value} toggle={toggleAddClienteServicoDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -365,9 +361,9 @@ const ClienteServicoListTable = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddGrupoDrawer open={addGrupoOpen} toggle={toggleAddGrupoDrawer} />
-        <ViewGrupoDrawer open={viewGrupoOpen} toggle={toggleViewGrupoDrawer} row={row}/>
-        <EditGrupoDrawer open={editGrupoOpen} toggle={toggleEditGrupoDrawer} row={row}/>
+        <AddGrupoDrawer open={addClienteServicoOpen} toggle={toggleAddClienteServicoDrawer} />
+        <ViewGrupoDrawer open={viewClienteServicoOpen} toggle={toggleViewClienteServicoDrawer} row={row}/>
+        <EditGrupoDrawer open={editClienteServicoOpen} toggle={toggleEditClienteServicoDrawer} row={row}/>
       </Grid>
     </Grid>
   )

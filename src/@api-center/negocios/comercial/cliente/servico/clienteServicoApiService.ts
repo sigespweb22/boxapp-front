@@ -3,7 +3,7 @@ import env from '../../../../../environment';
 const apiClientesServicos = `${env.API_URL}/clientes-servicos`
 
 export default {
-  listAsync: `${apiClientesServicos}/list`,
+  listAsync: `${apiClientesServicos}/list/`,
   listOneAsync: `${apiClientesServicos}/list-one/`,
   addAsync: `${apiClientesServicos}/create`,
   deleteAsync: `${apiClientesServicos}/delete/`,
