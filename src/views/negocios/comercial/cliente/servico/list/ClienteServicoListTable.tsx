@@ -41,7 +41,7 @@ import { fetchData, alterStatusGrupo } from 'src/store/sistema/controle-acesso/g
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { GrupoType } from 'src/types/sistema/controle-acesso/grupoTypes'
+import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/controle-acesso/grupo/list/TableHeader'
@@ -52,28 +52,39 @@ import EditGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGr
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface UserGroupType {
+import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
+import Cached from 'mdi-material-ui/Cached'
+import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
+
+interface Props {
+  id: string | string[] | undefined
+}
+
+interface CobrancaTipoType {
   [key: string]: ReactElement
 }
 
-interface ApplicationUserRoleViewModel {
-  roleId: string
-  name: string
+interface Cliente {
+  clienteId: string
+  nomeFantasia: string
+}
+
+interface Servico {
+  servicoId: string
+  nome: string
 }
 
 interface CellType {
-  row: GrupoType
+  row: ClienteServicoType
 }
 
-const userStatusObj = (status: string) => {
+const clienteServicoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
       return 'primary'
     case "ACTIVE":
       return 'success'
-    case "PENDING":
-      return 'warning'
     case "INACTIVE":
       return 'secondary'
     default:
@@ -87,22 +98,8 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-const userGroupObj: UserGroupType = {
-  GENERALS: <LockCheckOutline fontSize='small' sx={{ mr: 3, color: 'success.main' }} />
-}
-
-const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
-  const elem: string[] = []
-
-  groups.forEach(element => {
-    elem.push("| " + element.name + " | ")
-  })
-
-  return elem
-}
-
 // ** renders group column
-const renderGrupo = (row: GrupoType) => {
+const renderServicoNome = (row: ClienteServicoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -110,7 +107,7 @@ const renderGrupo = (row: GrupoType) => {
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.name ? row.name : 'NP')}
+          {getInitials(row.servicoNome ? row.servicoNome : 'SN')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -126,10 +123,28 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={userStatusObj(status)}
+        color={clienteServicoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
+}
+
+const cobrancaTipoIcon: CobrancaTipoType = {
+  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />
+}
+
+const cobrancaTipoColor = (ct: string) => {
+  switch (ct) 
+  {
+    case 'NENHUM':
+      return 'info'
+    case 'UNICO':
+      return 'primary'
+    case 'RECORRENTE':
+      return 'secondary'
+  }
 }
 
 const defaultColumns = [
@@ -141,46 +156,59 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, name } = row
+      const { servicoNome } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderGrupo(row)}
+          {renderServicoNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
-              <Typography
-                noWrap
-                component='a'
-                variant='body2'
-                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {name}
-              </Typography>
-            </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🔑{name}
-              </Typography>
-            </Link>
+            <Typography
+              noWrap
+              component='a'
+              variant='body2'
+              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+            >
+              {servicoNome}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              ⚙️{servicoNome}
+            </Typography>
           </Box>
         </Box>
       )
     }
   },
   {
-    flex: 0.15,
-    field: 'applicationRoleGroups',
-    minWidth: 150,
-    headerName: 'Permissões',
+    flex: 0.1,
+    minWidth: 100,
+    field: 'valorVenda',
+    headerName: 'Valor venda',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.valorVenda}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    field: 'cobrancaTipo',
+    minWidth: 130,
+    headerName: 'Cobrança tipo',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userGroupObj["GENERALS"]}
+          {cobrancaTipoIcon[row.cobrancaTipo]}
           <CustomChip
             skin='light'
             size='small'
-            label={permissionTransform(row.applicationRoleGroups)}
-            color={'success'}
+            label={row.cobrancaTipo}
+            color={cobrancaTipoColor(row.cobrancaTipo)}
             sx={{ textTransform: 'capitalize' }}
           />
         </Box>
@@ -198,7 +226,7 @@ const defaultColumns = [
   }
 ]
 
-const GrupoList = () => {
+const ClienteServicoListTable = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -347,9 +375,9 @@ const GrupoList = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-GrupoList.acl = {
+ClienteServicoListTable.acl = {
   action: 'list',
   subject: 'ac-cliente-servico-page'
 }
 
-export default GrupoList
+export default ClienteServicoListTable

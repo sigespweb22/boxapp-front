@@ -13,6 +13,8 @@ export type ClienteServicoType = {
   inscricaoEstadual: string
   caracteristicas: string
   cobrancaTipo: string
+  servicoNome: string
+  status: string
   Cliente: ClienteType
   Servico: ServicoType
 }
