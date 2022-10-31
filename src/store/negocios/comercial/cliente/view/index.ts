@@ -26,7 +26,6 @@ interface Redux {
 
 // ** Fetch Cliente
 export const fetchData = createAsyncThunk('appCliente/fetchData', async (params: DataParams) => {
-  debugger
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const response = await axios
                             .get(`${clienteApiService.listOneAsync}${params.id}`, {
@@ -70,7 +69,6 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      debugger
       dispatch(fetchData(getState().clienteView.data))
       
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")

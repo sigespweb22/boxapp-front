@@ -107,7 +107,7 @@ const renderServicoNome = (row: ClienteServicoType) => {
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.servicoNome ? row.servicoNome : 'SN')}
+          {getInitials(row.nome ? row.nome : 'SN')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -130,20 +130,20 @@ const RenderStatus = ({ status } : { status: string }) => {
 }
 
 const cobrancaTipoIcon: CobrancaTipoType = {
-  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'second.main' }} />,
   UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />
+  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'info.main' }} />
 }
 
 const cobrancaTipoColor = (ct: string) => {
   switch (ct) 
   {
     case 'NENHUM':
-      return 'info'
+      return 'second'
     case 'UNICO':
       return 'primary'
     case 'RECORRENTE':
-      return 'secondary'
+      return 'info'
   }
 }
 
@@ -156,7 +156,7 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { servicoNome } = row
+      const { nome, servicoNome } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -168,7 +168,7 @@ const defaultColumns = [
               variant='body2'
               sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
             >
-              {servicoNome}
+              {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
               ⚙️{servicoNome}
