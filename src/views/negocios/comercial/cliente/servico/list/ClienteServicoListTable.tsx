@@ -45,7 +45,7 @@ import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
-import AddGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/list/AddGrupoDrawer'
+import SidebarClienteServicoAdd from 'src/views/negocios/comercial/cliente/servico/new/ClienteServicoAddDrawer'
 import ViewGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/view/ViewGrupoDrawer'
 import EditGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGrupoDrawer'
 
@@ -361,7 +361,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddGrupoDrawer open={addClienteServicoOpen} toggle={toggleAddClienteServicoDrawer} />
+        <SidebarClienteServicoAdd open={addClienteServicoOpen} toggle={toggleAddClienteServicoDrawer} clienteId={id} />
         <ViewGrupoDrawer open={viewClienteServicoOpen} toggle={toggleViewClienteServicoDrawer} row={row}/>
         <EditGrupoDrawer open={editClienteServicoOpen} toggle={toggleEditClienteServicoDrawer} row={row}/>
       </Grid>

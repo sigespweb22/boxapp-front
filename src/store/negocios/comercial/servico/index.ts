@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import servicoApiService from 'src/@api-center/negocios/comercial/servico/servico/servicoApiService'
+import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
 
 // ** Toast
 import toast from 'react-hot-toast'

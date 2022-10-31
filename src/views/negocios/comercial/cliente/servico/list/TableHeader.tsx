@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 interface TableHeaderProps {
   value: string
   toggle: () => void
-  handleFilter: (val: string) => void
 }
 
 const TableHeader = (props: TableHeaderProps) => {

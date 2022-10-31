@@ -23,9 +23,8 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Clients
+// ** Fetch Clientes
 export const fetchData = createAsyncThunk('appClients/fetchData', async (params: DataParams) => {
-  debugger
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const response = await axios
                             .get(clienteApiService.listAsync, {
