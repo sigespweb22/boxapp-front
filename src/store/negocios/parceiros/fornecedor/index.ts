@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedorApiService'
+import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedor/fornecedorApiService'
 
 // ** Types
 import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'

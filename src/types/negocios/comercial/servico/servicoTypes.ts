@@ -10,9 +10,10 @@ export type ServicoType = {
   nome: string
   codigoUnico: string
   tipo: string
-  valorCusto: number
+  valorCusto: string
   caracteristicas: string
   unidadeMedida: string
+  fornecedorServico: {id: string, nome: string}
   status: string
   avatarColor: ThemeColor
 }

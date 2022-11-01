@@ -1,3 +1,6 @@
+// ** React Imports
+import { useState, useEffect, SyntheticEvent } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -9,6 +12,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -34,6 +38,12 @@ import { addServico } from 'src/store/negocios/comercial/servico'
 import { AppDispatch } from 'src/store'
 import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import fornecedorServicoApiService from 'src/@api-center/negocios/parceiros/fornecedor/servico/fornecedorServicoApiService'
+
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -51,6 +61,7 @@ interface SidebarAddServicoType {
 }
 
 const unidadesMedida : string[] = ["CPU", "HR", "GB", "vCPU"];
+let fornecedoresServicos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -83,7 +94,13 @@ const defaultValues = {
   valorCusto: null,
   unidadeMedida: 'NENHUM',
   caracteristicas: '',
+  fornecedorServico: {id: '', nome: ''},
   status: ''
+}
+
+interface FornecedorServicoType {
+  id: string
+  nome: string
 }
 
 const SidebarAddServico = (props: SidebarAddServicoType) => {
@@ -107,6 +124,22 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
     resolver: yupResolver(schema)
   })
 
+  const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${fornecedorServicoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        debugger
+        fornecedoresServicos = response.data
+      })
+  }, [fornecedoresServicos]);
+
   const onSubmit = (data: ServicoType) => {
     dispatch(addServico({ ...data,  }))
     toggle()
@@ -118,16 +151,9 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
     reset()
   }
 
-  const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
-    if (event.currentTarget.value === null)
-    {
-      setValue(event.currentTarget.name, 0);
-    }
-    else
-    {
-      setValue(event.currentTarget.name, event.currentTarget.value);
-    }
-  } 
+  const handleChange = (event: SyntheticEvent, newValue: FornecedorServicoType) => {
+    setValue('fornecedorServico', newValue)
+  }
 
   return (
     <Drawer
@@ -180,17 +206,11 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
             <Controller
               name='valorCusto'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type='number'
                   value={value}
                   label='Valor custo'
-                  name='valorCusto'
-                  onChange={(): void =>  {
-                    onChange
-                    resolveValor
-                  }}
+                  onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -201,13 +221,14 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
               name="unidadeMedida"
               control={control}
               rules={{ required: true }}
-              render={({ field: { onChange } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
                     <Select
                       name="unidadeMedida"
                       autoWidth
+                      value={value}
                       label="Unidade medida"
                       MenuProps={MenuProps}
                       onChange={onChange}
@@ -227,6 +248,25 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
                       }
                     </Select>
                   </FormControl>
+                )
+              }}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="fornecedorServico"
+              control={control}
+              render={({ field: { value } }) => {
+                return (
+                  <Autocomplete
+                    value={value}
+                    sx={{ width: 360 }}
+                    options={fornecedoresServicos}
+                    onChange={handleChange}
+                    id='autocomplete-controlled'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
+                  />
                 )
               }}
             />

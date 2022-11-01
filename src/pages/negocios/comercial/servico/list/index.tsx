@@ -21,6 +21,7 @@ import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
 import DesktopClassic from 'mdi-material-ui/DesktopClassic'
+import Cancel from 'mdi-material-ui/Cancel'
 import Matrix from 'mdi-material-ui/Matrix'
 import Alarm from 'mdi-material-ui/Alarm'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -74,6 +75,7 @@ const servicoStatusObj: ServicoStatusType = {
 }
 
 const unidadeMedidaObj: UnidadeMedidaType = {
+  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
   CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
   HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
   GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,

@@ -42,7 +42,7 @@ import axios from 'axios'
 import InputMask from 'react-input-mask'
 
 // ** Api Services
-import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedorApiService'
+import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedor/fornecedorApiService'
 
 interface SidebarAddFornecedorType {
   open: boolean

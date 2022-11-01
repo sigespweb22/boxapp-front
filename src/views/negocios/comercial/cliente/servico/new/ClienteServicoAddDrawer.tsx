@@ -96,7 +96,7 @@ interface ServicoType {
 }
 
 const defaultValues = {
-  valorVenda: '',
+  valorVenda: null,
   caracteristicas: '',
   cobrancaTipo: 'NENHUM',
   clienteId: '',
@@ -149,7 +149,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
   const onSubmit = (data: ClienteServicoData) => {
     data.clienteId = props?.clienteId || ""
-    debugger
     dispatch(addClienteServico({ ...data,  }))
     toggle()
     reset()
@@ -159,17 +158,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     toggle()
     reset()
   }
-
-  const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
-    if (event.currentTarget.value === null)
-    {
-      setValue(event.currentTarget.name, 0);
-    }
-    else
-    {
-      setValue(event.currentTarget.name, event.currentTarget.value);
-    }
-  } 
 
   const handleChange = (event: SyntheticEvent, newValue: ServicoType) => {
     setValue('servico', newValue)

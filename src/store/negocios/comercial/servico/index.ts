@@ -46,17 +46,20 @@ export const addServico = createAsyncThunk(
       }
     }
 
+    debugger
+
     const data2 = {
       nome: data.nome,
       codigoUnico: data.codigoUnico,
       tipo: data.tipo,
       valorCusto: data.valorCusto,
       unidadeMedida: data.unidadeMedida,
+      fornecedorServico: data.fornecedorServico,
       caracteristicas: data.caracteristicas,
     }
 
     axios.post(servicoApiService.addAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().user.params))
+      dispatch(fetchData(getState().servico.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Serviço criado com sucesso.")
     }).catch((resp) => {
@@ -99,12 +102,12 @@ export const editServico = createAsyncThunk(
     }
 
     const data2 = {
-      id: data.id,
       nome: data.nome,
       codigoUnico: data.codigoUnico,
       tipo: data.tipo,
       valorCusto: data.valorCusto,
       unidadeMedida: data.unidadeMedida,
+      fornecedorServico: data.fornecedorServico,
       caracteristicas: data.caracteristicas,
     }
 
