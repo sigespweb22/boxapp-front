@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, useEffect, SyntheticEvent } from 'react'
+import { useEffect, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,30 +9,17 @@ import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import FormHelperText from '@mui/material/FormHelperText'
-import IconButton from '@mui/material/IconButton'
-import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
-import Divider from '@mui/material/Divider'
-import Grid, { GridProps } from '@mui/material/Grid'
-import Collapse from '@mui/material/Collapse'
-import { styled, alpha, useTheme } from '@mui/material/styles'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
+import { styled } from '@mui/material/styles'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 import Autocomplete from '@mui/material/Autocomplete'
 import InputLabel from '@mui/material/InputLabel'
-import InputAdornment from '@mui/material/InputAdornment'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
-import toast from 'react-hot-toast'
-
-// Import Translate
-import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
-import Tooltip from '@mui/material/Tooltip';
-import Plus from 'mdi-material-ui/Plus'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -50,10 +37,6 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
 
-// ** CleaveJS Imports
-import Cleave from 'cleave.js/react'
-import { waitForDebugger } from 'inspector'
-
 interface SidebarClienteServicoAddType {
   clienteId: string | undefined
   open: boolean
@@ -61,7 +44,7 @@ interface SidebarClienteServicoAddType {
 }
 
 let servicos: { id: string, nome: string  }[] = [];
-const cobrancaTipos : string[] = ["UNICO", "RECORRENTE"];
+const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 
 interface ClienteServicoData {
   valorVenda: string,
@@ -70,16 +53,6 @@ interface ClienteServicoData {
   clienteId: string,
   servico: { id: '', nome: ''},
   status: string
-}
-
-const showErrors = (field: string, valueLen: number, min: number) => {
-  if (valueLen === 0) {
-    return `${field} é requerido (a)`
-  } else if (valueLen > 0 && valueLen < min) {
-    return `${field} deve ter pelo menos ${min} caracteres`
-  } else {
-    return ''
-  }
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -96,7 +69,7 @@ interface ServicoType {
 }
 
 const defaultValues = {
-  valorVenda: null,
+  valorVenda: '',
   caracteristicas: '',
   cobrancaTipo: 'NENHUM',
   clienteId: '',
@@ -129,8 +102,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     reset,
     control,
     setValue,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
   } = useForm({
       defaultValues,
       mode: 'onChange'
@@ -229,9 +201,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
                       id='single-select-um'
                       labelId='single-select-um-chip-label'
                     >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
                       {
                         cobrancaTipos.map(ct => (
                           <MenuItem key={ct} value={ct}>
