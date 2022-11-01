@@ -23,6 +23,15 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
+interface ClienteServicoType {
+  valorVenda: string,
+  caracteristicas: string,
+  cobrancaTipo: string,
+  clienteId: string,
+  servico: { id: '', nome: ''},
+  status: string
+}
+
 // ** Fetch Cliente Serviços
 export const fetchData = createAsyncThunk('appClienteServicos/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!

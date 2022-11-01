@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, useEffect } from 'react'
+import { useState, ChangeEvent, useEffect, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -50,6 +50,10 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
 
+// ** CleaveJS Imports
+import Cleave from 'cleave.js/react'
+import { waitForDebugger } from 'inspector'
+
 interface SidebarClienteServicoAddType {
   clienteId: string | undefined
   open: boolean
@@ -60,11 +64,11 @@ let servicos: { id: string, nome: string  }[] = [];
 const cobrancaTipos : string[] = ["UNICO", "RECORRENTE"];
 
 interface ClienteServicoData {
-  valorVenda: number,
+  valorVenda: string,
   caracteristicas: string,
   cobrancaTipo: string,
   clienteId: string,
-  servicoId: string,
+  servico: { id: '', nome: ''},
   status: string
 }
 
@@ -86,12 +90,17 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+interface ServicoType {
+  id: string
+  nome: string
+}
+
 const defaultValues = {
-  valorVenda: null,
+  valorVenda: '',
   caracteristicas: '',
   cobrancaTipo: 'NENHUM',
   clienteId: '',
-  servicoId: '',
+  servico: {id: '', nome: ''},
   status: ''
 }
 
@@ -139,8 +148,8 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   }
 
   const onSubmit = (data: ClienteServicoData) => {
-    debugger
     data.clienteId = props?.clienteId || ""
+    debugger
     dispatch(addClienteServico({ ...data,  }))
     toggle()
     reset()
@@ -162,6 +171,10 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     }
   } 
 
+  const handleChange = (event: SyntheticEvent, newValue: ServicoType) => {
+    setValue('servico', newValue)
+  }
+
   return (
     <Drawer
       open={open}
@@ -179,35 +192,19 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="servicoId"
+              name="servico"
               control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange } }) => {
+              render={({ field: { value } }) => {
                 return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>Serviço</InputLabel>
-                    <Select
-                      name="servicoId"
-                      autoWidth
-                      label="Serviço"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      defaultValue=''
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
-                      {
-                        servicos.map(srvc => (
-                          <MenuItem key={srvc.id} value={srvc.nome}>
-                            {srvc.nome}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    value={value}
+                    sx={{ width: 360 }}
+                    options={servicos}
+                    onChange={handleChange}
+                    id='autocomplete-controlled'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Serviço' />}
+                  />
                 )
               }}
             />
@@ -218,22 +215,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type='number'
-                  variant="outlined"
                   value={value}
                   label='Valor venda'
-                  name='valorVenda'
-                  inputProps={{
-                    step: 0.5,
-                  }}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">£</InputAdornment>,
-                    endAdornment: <InputAdornment position="end">per person</InputAdornment>,
-                  }}
-                  onChange={(): void =>  {
-                    onChange
-                    resolveValor
-                  }}
+                  onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -243,17 +227,17 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
             <Controller
               name="cobrancaTipo"
               control={control}
-              render={({ field: { onChange } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
                     <InputLabel id='single-select-um-chip-label'>Cobrança tipo</InputLabel>
                     <Select
+                      value={value}
                       name="cobrancaTipo"
                       autoWidth
                       label="Cobrança tipo"
                       MenuProps={MenuProps}
                       onChange={onChange}
-                      defaultValue=''
                       id='single-select-um'
                       labelId='single-select-um-chip-label'
                     >

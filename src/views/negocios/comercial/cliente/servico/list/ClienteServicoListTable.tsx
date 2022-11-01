@@ -70,7 +70,7 @@ interface Cliente {
 }
 
 interface Servico {
-  servicoId: string
+  id: string
   nome: string
 }
 
