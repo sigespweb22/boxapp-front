@@ -470,9 +470,6 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
               )}
             />
           </FormControl>
-
-          
-
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
               Salvar

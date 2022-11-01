@@ -50,7 +50,6 @@ export const fetchData = createAsyncThunk('appClienteServicos/fetchData', async 
 export const addClienteServico = createAsyncThunk(
   'appClienteServicos/addClienteServico',
   async (data: ClienteServicoType, { getState, dispatch }: Redux) => {
-    debugger
     const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -59,7 +58,7 @@ export const addClienteServico = createAsyncThunk(
     }
 
     axios.post(clienteServicoApiService.addAsync, data, config).then((resp) => {
-      dispatch(fetchData(getState().clienteServico.params))
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Serviço adicionado com sucesso.")
     }).catch((resp) => {
@@ -104,7 +103,7 @@ export const editClienteServico = createAsyncThunk(
     }
 
     axios.put(clienteServicoApiService.updateAsync, data, config).then((resp) => {
-      dispatch(fetchData(getState().clienteServico.params))
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
       if (resp.status === 204) return toast.success("Serviço atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")

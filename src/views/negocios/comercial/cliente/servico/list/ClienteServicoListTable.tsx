@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, useCallback, ReactElement, useInsertionEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -232,7 +232,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string>('')
+  const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addClienteServicoOpen, setAddClienteServicoOpen] = useState<boolean>(false)
   const [viewClienteServicoOpen, setViewClienteServicoOpen] = useState<boolean>(false)
@@ -243,12 +243,18 @@ const ClienteServicoListTable = ({ id }: Props) => {
   const store = useSelector((state: RootState) => state.clienteServico)
 
   useEffect(() => {
+    setValue(id)
+  }, [id])
+
+  useEffect(() => {
     dispatch(
       fetchData({
-        clienteId: id
+        clienteId: value
       })
     )
-  }, [dispatch, id])
+  }, [dispatch, value])
+
+  
 
   const handleViewClienteServico = (row : ClienteServicoType) => {
     setRow(row)
