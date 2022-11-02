@@ -22,5 +22,6 @@ export type FornecedorType = {
   estado: string
   cep: string
   status: string
+  fornecedorServicos: {id: string, nome: string}
   avatarColor?: ThemeColor
 }

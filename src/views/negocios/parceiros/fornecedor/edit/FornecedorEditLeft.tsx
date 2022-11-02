@@ -35,7 +35,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -47,7 +47,7 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { editCliente, fetchData } from 'src/store/negocios/comercial/cliente/view'
+import { editFornecedor, fetchData } from 'src/store/negocios/parceiros/fornecedor'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
@@ -64,14 +64,6 @@ const Sup = styled('sup')(({ theme }) => ({
   position: 'absolute',
   color: theme.palette.primary.main
 }))
-
-const roleColors: ColorsType = {
-  admin: 'error',
-  editor: 'info',
-  author: 'warning',
-  maintainer: 'success',
-  subscriber: 'primary'
-}
 
 const statusColors: ColorsType = {
   ACTIVE: 'success',
@@ -94,7 +86,7 @@ interface Props {
   id: string | string[] | undefined
 }
 
-const defaultValues: ClienteType = {
+const defaultValues: FornecedorType = {
   id: '',
   nomeFantasia: '',
   razaoSocial: '',
@@ -103,7 +95,6 @@ const defaultValues: ClienteType = {
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
-  dataFundacao: '',
   codigoMunicipio: 0,
   rua: '',
   numero: '',
@@ -111,20 +102,21 @@ const defaultValues: ClienteType = {
   cidade: '',
   estado: '',
   cep: '',
+  fornecedorServicos: {id: '', nome: ''},
   status: '',
 }
 
-const ClienteViewLeft = ({id}: Props) => {
+const FornecedorEditLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const [error, setError] = useState<boolean>(false)
-  const [data, setData] = useState<null | ClienteType>(defaultValues)
+  const [data, setData] = useState<null | FornecedorType>(defaultValues)
   const { t } = useTranslation()
 
   // ** States
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteView)
+  const store = useSelector((state: RootState) => state.fornecedor)
 
   const {
     reset,
@@ -148,7 +140,7 @@ const ClienteViewLeft = ({id}: Props) => {
   useEffect(() => {
     if(store?.data)
     {
-      setData(store.data)
+      setData(store?.data)
     }
   }, [store])
 
@@ -162,7 +154,6 @@ const ClienteViewLeft = ({id}: Props) => {
       setValue('cnpj', store?.data.cnpj)
       setValue('telefonePrincipal', store?.data.telefonePrincipal)
       setValue('emailPrincipal', store?.data.emailPrincipal)
-      setValue('dataFundacao', store?.data.dataFundacao)
       setValue('cep', store?.data.cep)
       setValue('rua', store?.data.rua)
       setValue('numero', store?.data.numero)
@@ -174,7 +165,7 @@ const ClienteViewLeft = ({id}: Props) => {
     }
   }, [store])
 
-  const renderClienteAvatar = () => {
+  const renderFornecedorAvatar = () => {
     if (store) {
       return (
         <CustomAvatar
@@ -191,8 +182,8 @@ const ClienteViewLeft = ({id}: Props) => {
     }
   }
 
-  const onSubmit = (data: ClienteType) => {
-    dispatch(editCliente({ ...data,  }))
+  const onSubmit = (data: FornecedorType) => {
+    dispatch(editFornecedor({ ...data,  }))
     handleEditClose()
     reset()
   }  
@@ -214,7 +205,7 @@ const ClienteViewLeft = ({id}: Props) => {
         <Grid item xs={12}>
           <Card>
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-              {renderClienteAvatar()}
+              {renderFornecedorAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
                 {store?.data.nomeFantasia}
               </Typography>
@@ -222,7 +213,7 @@ const ClienteViewLeft = ({id}: Props) => {
                 skin='light'
                 size='small'
                 label={store?.data.razaoSocial}
-                color={roleColors[store?.data.nomeFantasia || 'primary']}
+                color={'primary'}
                 sx={{
                   height: 20,
                   fontSize: '0.875rem',
@@ -283,10 +274,6 @@ const ClienteViewLeft = ({id}: Props) => {
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
                   <Typography variant='body2'>{store?.data.observacao}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                  <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
@@ -625,8 +612,8 @@ const ClienteViewLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+            Fornecedor com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
+            <Link href='/pages/negocios/comercial/cliente/list'>Listagem de fornecedores</Link>
           </Alert>
         </Grid>
       </Grid>
@@ -636,4 +623,4 @@ const ClienteViewLeft = ({id}: Props) => {
   }
 }
 
-export default ClienteViewLeft
+export default FornecedorEditLeft

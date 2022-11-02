@@ -44,7 +44,7 @@ import InputMask from 'react-input-mask'
 // ** Api Services
 import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedor/fornecedorApiService'
 
-interface SidebarAddFornecedorType {
+interface SidebarFornecedorAddType {
   open: boolean
   toggle: () => void
 }
@@ -120,7 +120,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarAddFornecedor = (props: SidebarAddFornecedorType) => {
+const SidebarFornecedorAdd = (props: SidebarFornecedorAddType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -457,4 +457,11 @@ const SidebarAddFornecedor = (props: SidebarAddFornecedorType) => {
   )
 }
 
-export default SidebarAddFornecedor
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarFornecedorAdd.acl = {
+  action: 'create',
+  subject: 'ac-fornecedor-page'
+}
+
+export default SidebarFornecedorAdd

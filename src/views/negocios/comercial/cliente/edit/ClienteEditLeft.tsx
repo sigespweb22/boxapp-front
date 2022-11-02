@@ -65,14 +65,6 @@ const Sup = styled('sup')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const roleColors: ColorsType = {
-  admin: 'error',
-  editor: 'info',
-  author: 'warning',
-  maintainer: 'success',
-  subscriber: 'primary'
-}
-
 const statusColors: ColorsType = {
   ACTIVE: 'success',
   INACTIVE: 'error'
@@ -222,7 +214,7 @@ const ClienteViewLeft = ({id}: Props) => {
                 skin='light'
                 size='small'
                 label={store?.data.razaoSocial}
-                color={roleColors[store?.data.nomeFantasia || 'primary']}
+                color='primary'
                 sx={{
                   height: 20,
                   fontSize: '0.875rem',
@@ -626,7 +618,7 @@ const ClienteViewLeft = ({id}: Props) => {
         <Grid item xs={12}>
           <Alert severity='error'>
             Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+            <Link href='/pages/negocios/comercial/cliente/list'>Listagem de clientes</Link>
           </Alert>
         </Grid>
       </Grid>

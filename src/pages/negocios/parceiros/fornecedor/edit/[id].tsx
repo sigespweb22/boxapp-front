@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
-import ClienteEditPage from 'src/views/negocios/comercial/cliente/edit/ClienteEditPage'
+import FornecedorEditPage from 'src/views/negocios/parceiros/fornecedor/edit/FornecedorEditPage'
 
-const ClienteEditRoute = () => {
+const FornecedorEditRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <ClienteEditPage clienteId={id}/>
+  return <FornecedorEditPage fornecedorId={id}/>
 }
 
-export default ClienteEditRoute
+export default FornecedorEditRoute

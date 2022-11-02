@@ -15,7 +15,7 @@ import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/forneced
 import toast from 'react-hot-toast'
 
 interface DataParams {
-  q: string
+  id: string | string[] | undefined
 }
 
 interface Redux {

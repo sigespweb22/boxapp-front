@@ -46,7 +46,7 @@ import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/forneced
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/parceiros/fornecedor/new/TableHeader'
-import AddFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/new/AddFornecedorDrawer'
+import FornecedorAddDrawer from 'src/views/negocios/parceiros/fornecedor/new/FornecedorAddDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -211,8 +211,7 @@ const FornecedorList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addFornecedorOpen, setAddFornecedorOpen] = useState<boolean>(false)
-  const [fornecedorEditOpen, setFornecedorEditOpen] = useState<boolean>(false)
+  const [fornecedorAddOpen, setFornecedorAddOpen] = useState<boolean>(false)
   const [row, setRow] = useState<FornecedorType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -232,12 +231,10 @@ const FornecedorList = () => {
 
   const handleViewFornecedor = (row : FornecedorType) => {
     setRow(row)
-    setFornecedorEditOpen(true)
   }
 
   const handleEditFornecedor = (row : FornecedorType) => {
     setRow(row)
-    setEditFornecedorOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
@@ -271,8 +268,7 @@ const FornecedorList = () => {
     }
   }
 
-  const toggleAddFornecedorDrawer = () => setAddFornecedorOpen(!addFornecedorOpen)
-  const toggleFornecedorEditDrawer = () => setFornecedorEditOpen(!fornecedorEditOpen)
+  const toggleFornecedorAddDrawer = () => setFornecedorAddOpen(!fornecedorAddOpen)
 
   const columns = [
     ...defaultColumns,
@@ -328,7 +324,7 @@ const FornecedorList = () => {
         {ability?.can('list', 'ac-fornecedor-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddFornecedorDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleFornecedorAddDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -343,7 +339,7 @@ const FornecedorList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddFornecedorDrawer open={addFornecedorOpen} toggle={toggleAddFornecedorDrawer} />
+        <FornecedorAddDrawer open={fornecedorAddOpen} toggle={toggleFornecedorAddDrawer} />
       </Grid>
     </Grid>
   )
