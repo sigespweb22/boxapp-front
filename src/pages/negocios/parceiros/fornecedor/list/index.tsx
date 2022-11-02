@@ -220,7 +220,7 @@ const FornecedorList = () => {
   useEffect(() => {
     dispatch(
       fetchData({
-        q: value
+        id: value
       })
     )
   }, [dispatch, value])
@@ -283,7 +283,7 @@ const FornecedorList = () => {
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-fornecedor-page') &&
-            <Link href={`/negocios/parceiro/fornecedor/view/${row.id}`} passHref>
+            <Link href={`/negocios/parceiros/fornecedor/view/${row.id}`} passHref>
               <Tooltip title={t("View")}>
                 <IconButton onClick={() => handleViewFornecedor(row)}>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -292,7 +292,7 @@ const FornecedorList = () => {
             </Link>
           }
           {ability?.can('update', 'ac-fornecedor-page') &&
-            <Link href={`/negocios/parceiro/fornecedor/edit/${row.id}`} passHref>
+            <Link href={`/negocios/parceiros/fornecedor/edit/${row.id}`} passHref>
               <Tooltip title={t("Edit")}>
                 <IconButton onClick={() => handleEditFornecedor(row)}>
                   <PencilOutline fontSize='small' />
@@ -316,7 +316,7 @@ const FornecedorList = () => {
             title={<Typography variant='h5'>{t("Fornecedors")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Fornecedors listing")}.
+                Listagem de fornecedores.
               </Typography>
             }
           />

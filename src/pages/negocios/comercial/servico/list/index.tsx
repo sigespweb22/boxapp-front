@@ -334,7 +334,7 @@ const ServicoList = () => {
             title={<Typography variant='h5'>{t("Servicos")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Servicos listing")}.
+                Listagem dos serviços.
               </Typography>
             }
           />

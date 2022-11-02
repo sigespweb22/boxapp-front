@@ -1,7 +1,7 @@
 import { AbilityBuilder, Ability } from '@casl/ability'
 
 export type Subjects = string
-export type Actions = 'manage' | 'list' | 'read' | 'create' | 'update' | 'delete' 
+export type Actions = 'manage' | 'list' | 'list-one' | 'read' | 'create' | 'update' | 'delete' 
 
 export type AppAbility = Ability<[Actions, Subjects]> | undefined
 
@@ -82,6 +82,8 @@ const defineRulesFor = (role: string[], subject: string) => {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
     } else if (item === 'CanClienteList') {
       can('list', 'ac-cliente-page')
+    } else if (item === 'CanClienteListOne') {
+      can('list-one', 'ac-cliente-page')
     } else if (item === 'CanClienteRead') {
       can('read', 'ac-cliente-page')
     } else if (item === 'CanClienteUpdate') {
@@ -142,6 +144,8 @@ const defineRulesFor = (role: string[], subject: string) => {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorList') {
       can('list', 'ac-fornecedor-page')
+    } else if (item === 'CanFornecedorListOne') {
+      can('list-one', 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorRead') {
       can('read', 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorUpdate') {

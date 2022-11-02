@@ -47,7 +47,7 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { editFornecedor, fetchData } from 'src/store/negocios/parceiros/fornecedor'
+import { editFornecedor, fetchData } from 'src/store/negocios/parceiros/fornecedor/view'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
@@ -116,7 +116,7 @@ const FornecedorEditLeft = ({id}: Props) => {
   // ** States
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.fornecedor)
+  const store = useSelector((state: RootState) => state.fornecedorView)
 
   const {
     reset,
@@ -302,7 +302,7 @@ const FornecedorEditLeft = ({id}: Props) => {
               </Box>
             </CardContent>
 
-            {ability?.can('update', 'ac-cliente-page') &&
+            {ability?.can('update', 'ac-fornecedor-page') &&
               <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant='contained' sx={{ mr: 3 }} onClick={handleEditClickOpen}>
                   Editar
@@ -313,16 +313,16 @@ const FornecedorEditLeft = ({id}: Props) => {
             <Dialog
               open={openEdit}
               onClose={handleEditClose}
-              aria-labelledby='cliente-view-left'
+              aria-labelledby='fornecedor-view-left'
               sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 650, p: [2, 10] } }}
-              aria-describedby='cliente-view-left-description'
+              aria-describedby='fornecedor-view-left-description'
             >
-              <DialogTitle id='user-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
-                Editar informações do cliente
+              <DialogTitle id='fornecedor-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
+                Editar informações do fornecedor
               </DialogTitle>
               <DialogContent>
-                <DialogContentText variant='body2' id='cliente-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
-                  A atualização das informações de cliente são passíveis de auditoria.
+                <DialogContentText variant='body2' id='fornecedor-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
+                  A atualização das informações do fornecedor são passíveis de auditoria.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Grid container spacing={4}>
@@ -612,8 +612,8 @@ const FornecedorEditLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Fornecedor com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Listagem de fornecedores</Link>
+            Fornecedor com o id: {id} não existe. Por favor verifique a listagem de fornecedores:{' '}
+            <Link href='/pages/negocios/parceiros/fornecedor/list'>Listagem de fornecedores</Link>
           </Alert>
         </Grid>
       </Grid>
