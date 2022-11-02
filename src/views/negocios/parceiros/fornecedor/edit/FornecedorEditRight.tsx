@@ -16,7 +16,7 @@ import CogOutline from 'mdi-material-ui/CogOutline'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Custom Components Imports
-import ClienteServicoListTable from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableList'
+import FornecedorServicoTableList from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableList'
 
 interface Props {
   id: string | string[] | undefined
@@ -32,7 +32,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   }
 }))
 
-const ClienteViewRight = ({ id }: Props) => {
+const FornecedorEditRight = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
 
@@ -55,9 +55,9 @@ const ClienteViewRight = ({ id }: Props) => {
         <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
+        {ability?.can('list', 'ac-fornecedor-servico-page') ? (
           <TabPanel sx={{ p: 0 }} value='servicos'>
-            <ClienteServicoListTable id={id} />
+            <FornecedorServicoTableList id={id} />
           </TabPanel>
         ) : "Você não tem permissão para ver este recurso."}  
       </Box>
@@ -65,4 +65,4 @@ const ClienteViewRight = ({ id }: Props) => {
   )
 }
 
-export default ClienteViewRight
+export default FornecedorEditRight

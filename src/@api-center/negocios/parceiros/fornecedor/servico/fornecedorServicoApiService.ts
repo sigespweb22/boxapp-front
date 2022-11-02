@@ -1,13 +1,13 @@
 import env from '../../../../../environment';
 
-const fornecedorServicoApiService = `${env.API_URL}/fornecedores-servicos`
+const apiFornecedoresServicos = `${env.API_URL}/fornecedores-servicos`
 
 export default {
-  listToSelectAsync: `${fornecedorServicoApiService}/list-to-select`,
-  listAsync: `${fornecedorServicoApiService}/list`,
-  addAsync: `${fornecedorServicoApiService}/create`,
-  deleteAsync: `${fornecedorServicoApiService}/delete/`,
-  alterStatusAsync: `${fornecedorServicoApiService}/alter-status/`,
-  updateAsync: `${fornecedorServicoApiService}/update`,
+  listAsync: `${apiFornecedoresServicos}/list/`,
+  listOneAsync: `${apiFornecedoresServicos}/list-one/`,
+  addAsync: `${apiFornecedoresServicos}/create`,
+  deleteAsync: `${apiFornecedoresServicos}/delete/`,
+  alterStatusAsync: `${apiFornecedoresServicos}/alter-status/`,
+  updateAsync: `${apiFornecedoresServicos}/update`,
   storageTokenKeyName: 'accessToken'
 }

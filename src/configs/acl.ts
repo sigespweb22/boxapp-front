@@ -95,19 +95,19 @@ const defineRulesFor = (role: string[], subject: string) => {
     /// end - cliente
 
     /// begin - cliente servico
-  } else if (item === 'CanClienteServicoAll') {
-    can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-servico-page')
-  } else if (item === 'CanClienteServicoList') {
-    can('list', 'ac-cliente-servico-page')
-  } else if (item === 'CanClienteServicoRead') {
-    can('read', 'ac-cliente-servico-page')
-  } else if (item === 'CanClienteServicoUpdate') {
-    can('update', 'ac-cliente-servico-page')
-  } else if (item === 'CanClienteServicoCreate') {
-    can('create', 'ac-cliente-servico-page')
-  } else if (item === 'CanClienteServicoDelete') {
-    can('delete', 'ac-cliente-servico-page')
-  /// end - cliente servico
+    } else if (item === 'CanClienteServicoAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoList') {
+      can('list', 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoRead') {
+      can('read', 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoUpdate') {
+      can('update', 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoCreate') {
+      can('create', 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoDelete') {
+      can('delete', 'ac-cliente-servico-page')
+    /// end - cliente servico
 
     /// begin - serviço
     } else if (item === 'CanServicoAll') {
@@ -155,6 +155,21 @@ const defineRulesFor = (role: string[], subject: string) => {
     } else if (item === 'CanFornecedorDelete') {
       can('delete', 'ac-fornecedor-page')
     /// end - fornecedor
+
+    /// begin - fornecedor servico
+    } else if (item === 'CanFornecedorServicoAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-fornecedor-servico-page')
+    } else if (item === 'CanFornecedorServicoList') {
+      can('list', 'ac-fornecedor-servico-page')
+    } else if (item === 'CanFornecedorServicoRead') {
+      can('read', 'ac-fornecedor-servico-page')
+    } else if (item === 'CanFornecedorServicoUpdate') {
+      can('update', 'ac-fornecedor-servico-page')
+    } else if (item === 'CanFornecedorServicoCreate') {
+      can('create', 'ac-fornecedor-servico-page')
+    } else if (item === 'CanFornecedorServicoDelete') {
+      can('delete', 'ac-fornecedor-servico-page')
+    /// end - fornecedor servico
 
     /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {
