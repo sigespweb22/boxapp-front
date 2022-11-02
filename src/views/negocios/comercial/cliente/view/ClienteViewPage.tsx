@@ -22,13 +22,13 @@ const ClienteViewPage = ({ clienteId }: Props) => {
   if (clienteId) {
     return (    
       <Grid container spacing={6}>
-        {ability?.can('list', 'ac-cliente-page') ? (
+        {ability?.can('read', 'ac-cliente-page') ? (
           <Grid item xs={12} md={5} lg={4}>
             <ClienteViewLeft id={clienteId} />
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
 
-        {ability?.can('list', 'ac-cliente-page') ? (
+        {ability?.can('read', 'ac-cliente-page') ? (
           <Grid item xs={12} md={7} lg={8}>
             <ClienteViewRight id={clienteId} />
           </Grid>

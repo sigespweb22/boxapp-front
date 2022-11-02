@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect, SyntheticEvent, useInsertionEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -25,10 +25,11 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClienteServico } from 'src/store/negocios/comercial/cliente/servico'
+import { editClienteServico } from 'src/store/negocios/comercial/cliente/servico'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -37,8 +38,8 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
 
-interface SidebarClienteServicoAddType {
-  clienteId: string | string[] | undefined
+interface SidebarClienteServicoEditType {
+  row: ClienteServicoType
   open: boolean
   toggle: () => void
 }
@@ -47,6 +48,7 @@ let servicos: { id: string, nome: string  }[] = [];
 const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 
 interface ClienteServicoData {
+  id: string,
   valorVenda: string,
   caracteristicas: string,
   cobrancaTipo: string,
@@ -69,6 +71,7 @@ interface ServicoType {
 }
 
 const defaultValues = {
+  id: '',
   valorVenda: '',
   caracteristicas: '',
   cobrancaTipo: 'NENHUM',
@@ -77,7 +80,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
+const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
@@ -108,6 +111,15 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       mode: 'onChange'
   })
 
+  useEffect(() => {
+    setValue('id', props?.row?.id || '')
+    setValue('clienteId', props?.row?.clienteId || '')
+    setValue('servico', props?.row?.servico || '')
+    setValue('valorVenda', props?.row?.valorVenda || '')
+    setValue('cobrancaTipo', props?.row?.cobrancaTipo || '')
+    setValue('caracteristicas', props?.row?.caracteristicas || '')
+  }, [props])
+
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
   const MenuProps = {
@@ -120,8 +132,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   }
 
   const onSubmit = (data: ClienteServicoData) => {
-    data.clienteId = props?.clienteId || ""
-    dispatch(addClienteServico({ ...data,  }))
+    dispatch(editClienteServico({ ...data,  }))
     toggle()
     reset()
   }
@@ -145,7 +156,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Cliente Serviço</Typography>
+        <Typography variant='h6'>Editar Cliente Serviço</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -244,9 +255,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteServicoAdd.acl = {
-  action: 'create',
+SidebarClienteServicoEdit.acl = {
+  action: 'update',
   subject: 'ac-cliente-servico-page'
 }
 
-export default SidebarClienteServicoAdd
+export default SidebarClienteServicoEdit

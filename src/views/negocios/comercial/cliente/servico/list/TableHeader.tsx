@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField'
 import { useTranslation } from 'react-i18next'
 
 interface TableHeaderProps {
-  value: string
   toggle: () => void
 }
 

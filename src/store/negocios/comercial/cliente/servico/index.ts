@@ -104,7 +104,7 @@ export const editClienteServico = createAsyncThunk(
 
     axios.put(clienteServicoApiService.updateAsync, data, config).then((resp) => {
       dispatch(fetchData({clienteId: resp.data.clienteId }))
-      if (resp.status === 204) return toast.success("Serviço atualizado com sucesso.")
+      if (resp.status === 200) return toast.success("Serviço atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -181,9 +181,9 @@ export const alterStatusClienteServico = createAsyncThunk(
     }
 
     axios.put(clienteServicoApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().clienteServico.params))
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
       toast.success(resp.data.message)
-      
+
       return resp.data.data
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
