@@ -47,8 +47,6 @@ import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/forneced
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/parceiros/fornecedor/new/TableHeader'
 import AddFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/new/AddFornecedorDrawer'
-import ViewFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/view/ViewFornecedorDrawer'
-import EditFornecedorDrawer from 'src/views/negocios/parceiros/fornecedor/edit/EditFornecedorDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -112,27 +110,23 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, nomeFantasia, emailPrincipal } = row
+      const { nomeFantasia, emailPrincipal } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderFornecedor(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/fornecedor/view/${id}`} passHref>
-              <Typography
+            <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {nomeFantasia}
-              </Typography>
-            </Link>
-            <Link href={`/apps/fornecedor/view/${id}`} passHref>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                📬{emailPrincipal}
-              </Typography>
-            </Link>
+            >
+              {nomeFantasia}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              📬{emailPrincipal}
+            </Typography>
           </Box>
         </Box>
       )
@@ -218,8 +212,7 @@ const FornecedorList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addFornecedorOpen, setAddFornecedorOpen] = useState<boolean>(false)
-  const [viewFornecedorOpen, setViewFornecedorOpen] = useState<boolean>(false)
-  const [editFornecedorOpen, setEditFornecedorOpen] = useState<boolean>(false)
+  const [fornecedorEditOpen, setFornecedorEditOpen] = useState<boolean>(false)
   const [row, setRow] = useState<FornecedorType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -239,7 +232,7 @@ const FornecedorList = () => {
 
   const handleViewFornecedor = (row : FornecedorType) => {
     setRow(row)
-    setViewFornecedorOpen(true)
+    setFornecedorEditOpen(true)
   }
 
   const handleEditFornecedor = (row : FornecedorType) => {
@@ -279,8 +272,7 @@ const FornecedorList = () => {
   }
 
   const toggleAddFornecedorDrawer = () => setAddFornecedorOpen(!addFornecedorOpen)
-  const handleFornecedorViewToggle = () => setViewFornecedorOpen(!viewFornecedorOpen)
-  const handlefornecedorditToggle = () => setEditFornecedorOpen(!editFornecedorOpen)
+  const toggleFornecedorEditDrawer = () => setFornecedorEditOpen(!fornecedorEditOpen)
 
   const columns = [
     ...defaultColumns,
@@ -295,18 +287,22 @@ const FornecedorList = () => {
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-fornecedor-page') &&
-            <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewFornecedor(row)}>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-              </IconButton>
-            </Tooltip>
+            <Link href={`/negocios/parceiro/fornecedor/view/${row.id}`} passHref>
+              <Tooltip title={t("View")}>
+                <IconButton onClick={() => handleViewFornecedor(row)}>
+                  <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
           }
           {ability?.can('update', 'ac-fornecedor-page') &&
-            <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditFornecedor(row)}>
-                <PencilOutline fontSize='small' />
-              </IconButton>
-            </Tooltip>
+            <Link href={`/negocios/parceiro/fornecedor/edit/${row.id}`} passHref>
+              <Tooltip title={t("Edit")}>
+                <IconButton onClick={() => handleEditFornecedor(row)}>
+                  <PencilOutline fontSize='small' />
+                </IconButton>
+              </Tooltip>
+            </Link>
           }
           {ability?.can('delete', 'ac-fornecedor-page') &&
             <RenderButton id={row.id} status={row.status}/>
@@ -348,8 +344,6 @@ const FornecedorList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <AddFornecedorDrawer open={addFornecedorOpen} toggle={toggleAddFornecedorDrawer} />
-        <ViewFornecedorDrawer open={viewFornecedorOpen} toggle={handleFornecedorViewToggle} row={row}/>
-        <EditFornecedorDrawer open={editFornecedorOpen} toggle={handlefornecedorditToggle} row={row}/>
       </Grid>
     </Grid>
   )

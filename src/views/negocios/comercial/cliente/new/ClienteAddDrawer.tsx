@@ -54,7 +54,7 @@ import clientApiService from 'src/@api-center/negocios/comercial/cliente/cliente
 // ** Custom Component Imports
 import Repeater from 'src/@core/components/repeater'
 
-interface SidebarAddClientType {
+interface SidebarClienteAddType {
   open: boolean
   toggle: () => void
 }
@@ -132,7 +132,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarAddClient = (props: SidebarAddClientType) => {
+const SidebarClienteAdd = (props: SidebarClienteAddType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -484,4 +484,11 @@ const SidebarAddClient = (props: SidebarAddClientType) => {
   )
 }
 
-export default SidebarAddClient
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarClienteAdd.acl = {
+  action: 'create',
+  subject: 'ac-cliente-page'
+}
+
+export default SidebarClienteAdd

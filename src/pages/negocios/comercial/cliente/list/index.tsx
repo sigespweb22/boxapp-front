@@ -46,8 +46,7 @@ import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'
-import AddClientDrawer from 'src/views/negocios/comercial/cliente/new/AddClientDrawer'
-import ViewClientDrawer from 'src/views/negocios/comercial/cliente/view/ViewClientDrawer'
+import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAddDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -71,10 +70,10 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-// ** renders client column
+// ** renders cliente column
 const renderClient = (row: ClienteType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/client/view/${row.id}`}>
+    <AvatarWithoutImageLink href={`/apps/cliente/view/${row.id}`}>
       <CustomAvatar
           skin='light'
           color={'primary'}
@@ -117,7 +116,7 @@ const defaultColumns = [
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
+            <Link href={`/apps/cliente/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -127,7 +126,7 @@ const defaultColumns = [
                 {nomeFantasia}
               </Typography>
             </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
+            <Link href={`/apps/cliente/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 📬{emailPrincipal}
               </Typography>
@@ -216,8 +215,7 @@ const ClientList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addClientOpen, setAddClientOpen] = useState<boolean>(false)
-  const [viewClientOpen, setViewClientOpen] = useState<boolean>(false)
+  const [clienteAddOpen, setClienteAddOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -237,7 +235,6 @@ const ClientList = () => {
 
   const handleViewClient = (row : ClienteType) => {
     setRow(row)
-    setViewClientOpen(true)
   }
 
   const handleEditClient = (row : ClienteType) => {
@@ -275,8 +272,7 @@ const ClientList = () => {
     }
   }
 
-  const toggleAddClientDrawer = () => setAddClientOpen(!addClientOpen)
-  const handleClientViewToggle = () => setViewClientOpen(!viewClientOpen)
+  const toggleClienteAddDrawer = () => setClienteAddOpen(!clienteAddOpen)
 
   const columns = [
     ...defaultColumns,
@@ -290,7 +286,7 @@ const ClientList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-client-page') &&
+          {ability?.can('read', 'ac-cliente-page') &&
             <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
               <Tooltip title={t("View")}>
                 <IconButton onClick={() => handleViewClient(row)}>
@@ -299,7 +295,7 @@ const ClientList = () => {
               </Tooltip>
             </Link>
           }
-          {ability?.can('update', 'ac-client-page') &&
+          {ability?.can('update', 'ac-cliente-page') &&
             <Tooltip title={t("Edit")}>
               <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
                 <IconButton onClick={() => handleEditClient(row)}>
@@ -308,7 +304,7 @@ const ClientList = () => {
               </Link>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-client-page') &&
+          {ability?.can('delete', 'ac-cliente-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -329,10 +325,10 @@ const ClientList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-client-page') ? (
+        {ability?.can('list', 'ac-cliente-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddClientDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleClienteAddDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -347,7 +343,7 @@ const ClientList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddClientDrawer open={addClientOpen} toggle={toggleAddClientDrawer} />
+        <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
       </Grid>
     </Grid>
   )
@@ -357,7 +353,7 @@ const ClientList = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClientList.acl = {
   action: 'list',
-  subject: 'ac-client-page'
+  subject: 'ac-cliente-page'
 }
 
 export default ClientList
