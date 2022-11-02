@@ -11,7 +11,15 @@ export type FornecedorServicoType = {
   codigoServico: string
   unidadeMedida: string
   caracteristicas: string
-  fornecedorId: string
-  fornecedor: FornecedorType
+  fornecedorId: string | string[] | undefined
+  status: string
+}
+
+export type FornecedorServicoAddType = {
+  nome: string
+  codigoServico: string
+  unidadeMedida: string
+  caracteristicas: string
+  fornecedorId: string | string[] | undefined
   status: string
 }

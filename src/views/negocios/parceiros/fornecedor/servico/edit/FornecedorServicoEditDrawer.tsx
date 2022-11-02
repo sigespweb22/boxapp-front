@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect, SyntheticEvent, useInsertionEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -25,33 +25,27 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClienteServico } from 'src/store/negocios/comercial/cliente/servico'
+import { editFornecedorServico } from 'src/store/negocios/parceiros/fornecedor/servico'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
 
-// ** Axios Imports
-import axios from 'axios'
-
-// ** Api Services
-import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
-
-interface SidebarClienteServicoAddType {
-  clienteId: string | string[] | undefined
+interface SidebarFornecedorServicoEditType {
+  row: FornecedorServicoType
   open: boolean
   toggle: () => void
 }
 
-let servicos: { id: string, nome: string  }[] = [];
-const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
+const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
 
-interface ClienteServicoData {
-  valorVenda: string,
+interface FornecedorServicoData {
+  id: string,
+  nome: string,
+  codigoServico: string,
+  unidadeMedida: string,
   caracteristicas: string,
-  cobrancaTipo: string,
-  clienteId: string,
-  servico: { id: '', nome: ''},
+  fornecedorId: string,
   status: string
 }
 
@@ -63,36 +57,17 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-interface ServicoType {
-  id: string
-  nome: string
-}
-
 const defaultValues = {
-  valorVenda: '',
+  id: '',
+  nome: '',
+  codigoServico: '',
+  unidadeMedida: '',
   caracteristicas: '',
-  cobrancaTipo: 'NENHUM',
-  clienteId: '',
-  servico: {id: '', nome: ''},
+  fornecedorId: '',
   status: ''
 }
 
-const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${servicoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        servicos = response.data
-      })
-  }, [servicos]);
-
+const SidebarFornecedorServicoEdit = (props: SidebarFornecedorServicoEditType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -108,6 +83,15 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       mode: 'onChange'
   })
 
+  useEffect(() => {
+    setValue('id', props?.row?.id || '')
+    setValue('nome', props?.row?.nome || '')
+    setValue('codigoServico', props?.row?.codigoServico || '')
+    setValue('unidadeMedida', props?.row?.unidadeMedida || '')
+    setValue('caracteristicas', props?.row?.caracteristicas || '')
+    setValue('fornecedorId', props?.row?.fornecedorId)
+  }, [props])
+
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
   const MenuProps = {
@@ -119,9 +103,8 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     }
   }
 
-  const onSubmit = (data: ClienteServicoData) => {
-    data.clienteId = props?.clienteId || ""
-    dispatch(addClienteServico({ ...data,  }))
+  const onSubmit = (data: FornecedorServicoData) => {
+    dispatch(editFornecedorServico({ ...data,  }))
     toggle()
     reset()
   }
@@ -129,10 +112,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   const handleClose = () => {
     toggle()
     reset()
-  }
-
-  const handleChange = (event: SyntheticEvent, newValue: ServicoType) => {
-    setValue('servico', newValue)
   }
 
   return (
@@ -145,47 +124,42 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Cliente Serviço</Typography>
+        <Typography variant='h6'>Editar Fornecedor Serviço</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="servico"
-              control={control}
-              render={({ field: { value } }) => {
-                return (
-                  <Autocomplete
-                    value={value}
-                    sx={{ width: 360 }}
-                    options={servicos}
-                    onChange={handleChange}
-                    id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Serviço' />}
-                  />
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorVenda'
+              name='nome'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Valor venda'
+                  label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
+                  placeholder='(e.g.: E-mail 50GB)'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="cobrancaTipo"
+              name='codigoServico'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Código serviço'
+                  onChange={onChange}
+                  placeholder='(e.g.: #1510)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="unidadeMedida"
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
@@ -202,9 +176,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
                       labelId='single-select-um-chip-label'
                     >
                       {
-                        cobrancaTipos.map(ct => (
-                          <MenuItem key={ct} value={ct}>
-                            {ct}
+                        unidadesMedida.map(um => (
+                          <MenuItem key={um} value={um}>
+                            {um}
                           </MenuItem>
                         ))
                       }
@@ -244,9 +218,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteServicoAdd.acl = {
-  action: 'create',
-  subject: 'ac-cliente-servico-page'
+SidebarFornecedorServicoEdit.acl = {
+  action: 'update',
+  subject: 'ac-fornecedor-servico-page'
 }
 
-export default SidebarClienteServicoAdd
+export default SidebarFornecedorServicoEdit

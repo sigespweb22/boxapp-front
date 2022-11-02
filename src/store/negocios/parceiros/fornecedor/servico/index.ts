@@ -9,7 +9,7 @@ import axios from 'axios'
 import fornecedorServicoApiService from 'src/@api-center/negocios/parceiros/fornecedor/servico/fornecedorServicoApiService'
 
 // ** Types
-import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
+import { FornecedorServicoType, FornecedorServicoAddType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -40,7 +40,7 @@ export const fetchData = createAsyncThunk('appFornecedorServicos/fetchData', asy
 // ** Add Fornecedor Serviços
 export const addFornecedorServico = createAsyncThunk(
   'appFornecedorServicos/addFornecedorServico',
-  async (data: FornecedorServicoType, { getState, dispatch }: Redux) => {
+  async (data: FornecedorServicoAddType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {

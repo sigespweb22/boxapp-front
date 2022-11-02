@@ -50,9 +50,9 @@ import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/s
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
-import ClienteServicoAddDrawer from 'src/views/negocios/comercial/cliente/servico/new/ClienteServicoAddDrawer'
-import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
-import ClienteServicoEditDrawer from 'src/views/negocios/comercial/cliente/servico/edit/ClienteServicoEditDrawer'
+import FornecedorServicoAddDrawer from 'src/views/negocios/parceiros/fornecedor/servico/new/FornecedorServicoAddDrawer'
+import FornecedorServicoViewDrawer from 'src/views/negocios/parceiros/fornecedor/servico/view/FornecedorServicoViewDrawer'
+import FornecedorServicoEditDrawer from 'src/views/negocios/parceiros/fornecedor/servico/edit/FornecedorServicoEditDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -235,9 +235,9 @@ const FornecedorServicoTableList = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteServicoAddOpen, setClienteServicoAddOpen] = useState<boolean>(false)
-  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
-  const [clienteServicoEditOpen, setClienteServicoEditOpen] = useState<boolean>(false)
+  const [fornecedorServicoAddOpen, setFornecedorServicoAddOpen] = useState<boolean>(false)
+  const [fornecedorServicoViewOpen, setFornecedorServicoViewOpen] = useState<boolean>(false)
+  const [fornecedorServicoEditOpen, setFornecedorServicoEditOpen] = useState<boolean>(false)
   const [row, setRow] = useState<FornecedorServicoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -255,14 +255,14 @@ const FornecedorServicoTableList = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleViewClienteServico = (row : FornecedorServicoType) => {
+  const handleViewFornecedorServico = (row : FornecedorServicoType) => {
     setRow(row)
-    setClienteServicoViewOpen(true)
+    setFornecedorServicoViewOpen(true)
   }
 
-  const handleEditClienteServico = (row : FornecedorServicoType) => {
+  const handleEditFornecedorServico = (row : FornecedorServicoType) => {
     setRow(row)
-    setClienteServicoEditOpen(true)
+    setFornecedorServicoEditOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
@@ -297,9 +297,9 @@ const FornecedorServicoTableList = ({ id }: Props) => {
     }
   }
 
-  const toggleClienteServicoAddDrawer = () => setClienteServicoAddOpen(!clienteServicoAddOpen)
-  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
-  const toggleClienteServicoEditDrawer = () => setClienteServicoEditOpen(!clienteServicoEditOpen)
+  const toggleFornecedorServicoAddDrawer = () => setFornecedorServicoAddOpen(!fornecedorServicoAddOpen)
+  const toggleFornecedorServicoViewDrawer = () => setFornecedorServicoViewOpen(!fornecedorServicoViewOpen)
+  const toggleFornecedorServicoEditDrawer = () => setFornecedorServicoEditOpen(!fornecedorServicoEditOpen)
 
   const columns = [
     ...defaultColumns,
@@ -313,21 +313,21 @@ const FornecedorServicoTableList = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-servico-page') &&
+          {ability?.can('read', 'ac-fornecedor-servico-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewClienteServico(row)}>
+              <IconButton onClick={() => handleViewFornecedorServico(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-cliente-servico-page') &&
+          {ability?.can('update', 'ac-fornecedor-servico-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditClienteServico(row)}>
+              <IconButton onClick={() => handleEditFornecedorServico(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-cliente-servico-page') &&
+          {ability?.can('delete', 'ac-fornecedor-servico-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -348,11 +348,11 @@ const FornecedorServicoTableList = ({ id }: Props) => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
+        {ability?.can('list', 'ac-fornecedor-servico-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-cliente-servico-page') &&
-                <TableHeader toggle={toggleClienteServicoAddDrawer} />
+              {ability?.can('create', 'ac-fornecedor-servico-page') &&
+                <TableHeader toggle={toggleFornecedorServicoAddDrawer} />
               }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
@@ -368,9 +368,9 @@ const FornecedorServicoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteServicoAddDrawer open={clienteServicoAddOpen} toggle={toggleClienteServicoAddDrawer} clienteId={id} />
-        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
-        <ClienteServicoEditDrawer open={clienteServicoEditOpen} toggle={toggleClienteServicoEditDrawer} row={row}/>
+        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={id} />
+        <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
+        <FornecedorServicoEditDrawer open={fornecedorServicoEditOpen} toggle={toggleFornecedorServicoEditDrawer} row={row}/>
       </Grid>
     </Grid>
   )

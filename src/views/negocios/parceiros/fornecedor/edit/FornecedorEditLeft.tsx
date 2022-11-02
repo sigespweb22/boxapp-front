@@ -448,22 +448,6 @@ const FornecedorEditLeft = ({id}: Props) => {
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='store?.dataFundacao'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Data fundação'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: 10/01/2000'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
                     <FormControl fullWidth sx={{ mb: 6 }}>
                       <Controller
                         name='cep'
@@ -498,22 +482,6 @@ const FornecedorEditLeft = ({id}: Props) => {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
-                          name='rua'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Rua'
-                              onChange={onChange}
-                              placeholder='(e.g.: Rua Abílio Diniz'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
                           name='numero'
                           control={control}
                           render={({ field: { value, onChange } }) => (
@@ -522,6 +490,22 @@ const FornecedorEditLeft = ({id}: Props) => {
                               label='Número'
                               onChange={onChange}
                               placeholder='(e.g.: 52'
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <FormControl fullWidth sx={{ mb: 6 }}>
+                        <Controller
+                          name='rua'
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <TextField
+                              value={value}
+                              label='Rua'
+                              onChange={onChange}
+                              placeholder='(e.g.: Rua Abílio Diniz'
                             />
                           )}
                         />
