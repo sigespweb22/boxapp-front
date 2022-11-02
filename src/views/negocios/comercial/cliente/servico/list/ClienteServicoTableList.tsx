@@ -46,7 +46,7 @@ import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
 import SidebarClienteServicoAdd from 'src/views/negocios/comercial/cliente/servico/new/ClienteServicoAddDrawer'
-import ViewGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/view/ViewGrupoDrawer'
+import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
 import EditGrupoDrawer from 'src/views/sistema/controle-acesso/grupo/edit/EditGrupoDrawer'
 
 // ** Context Imports
@@ -226,7 +226,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteServicoListTable = ({ id }: Props) => {
+const ClienteServicoTableList = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -235,7 +235,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [addClienteServicoOpen, setAddClienteServicoOpen] = useState<boolean>(false)
-  const [viewClienteServicoOpen, setViewClienteServicoOpen] = useState<boolean>(false)
+  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
   const [editClienteServicoOpen, setEditClienteServicoOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteServicoType | undefined>()
 
@@ -258,7 +258,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
 
   const handleViewClienteServico = (row : ClienteServicoType) => {
     setRow(row)
-    setViewClienteServicoOpen(true)
+    setClienteServicoViewOpen(true)
   }
 
   const handleEditClienteServico = (row : ClienteServicoType) => {
@@ -299,7 +299,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
   }
 
   const toggleAddClienteServicoDrawer = () => setAddClienteServicoOpen(!addClienteServicoOpen)
-  const toggleViewClienteServicoDrawer = () => setViewClienteServicoOpen(!viewClienteServicoOpen)
+  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
   const toggleEditClienteServicoDrawer = () => setEditClienteServicoOpen(!editClienteServicoOpen)
 
   const columns = [
@@ -368,7 +368,7 @@ const ClienteServicoListTable = ({ id }: Props) => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <SidebarClienteServicoAdd open={addClienteServicoOpen} toggle={toggleAddClienteServicoDrawer} clienteId={id} />
-        <ViewGrupoDrawer open={viewClienteServicoOpen} toggle={toggleViewClienteServicoDrawer} row={row}/>
+        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
         <EditGrupoDrawer open={editClienteServicoOpen} toggle={toggleEditClienteServicoDrawer} row={row}/>
       </Grid>
     </Grid>
@@ -377,9 +377,9 @@ const ClienteServicoListTable = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteServicoListTable.acl = {
+ClienteServicoTableList.acl = {
   action: 'list',
   subject: 'ac-cliente-servico-page'
 }
 
-export default ClienteServicoListTable
+export default ClienteServicoTableList

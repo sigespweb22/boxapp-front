@@ -168,7 +168,7 @@ export const deleteClienteServico = createAsyncThunk(
   }
 )
 
-// ** Alter Status Cliente Serviços
+// ** Alter Status Cliente Serviço
 export const alterStatusClienteServico = createAsyncThunk(
   'appClienteServicos/alterStatusClienteServico',
   async (id: number | string, { getState, dispatch }: Redux) => {

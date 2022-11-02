@@ -53,6 +53,7 @@ const SidebarClienteServicoView = (props: SidebarClienteServicoViewType) => {
   return (
     <Drawer
       open={open}
+      z-index={1000}
       anchor='right'
       variant='temporary'
       onClose={handleClose}
