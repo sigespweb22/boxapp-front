@@ -1,30 +1,48 @@
+// ** React Imports
+import { useContext } from 'react'
+
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
 import ClienteViewLeft from 'src/views/negocios/comercial/cliente/view/ClienteViewLeft'
 import ClienteViewRight from 'src/views/negocios/comercial/cliente/view/ClienteViewRight'
+
+// ** Context Imports
+import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
     clienteId: string | string [] | undefined
 }
 
 const ClienteViewPage = ({ clienteId }: Props) => {
-    if (clienteId) {
-      return (
-          <Grid container spacing={6}>
-              <Grid item xs={12} md={5} lg={4}>
-                  <ClienteViewLeft id={clienteId} />
-              </Grid>
-              <Grid item xs={12} md={7} lg={8}>
-                <ClienteViewRight id={clienteId} />
-              </Grid>
+  // ** Hooks
+  const ability = useContext(AbilityContext)
+  
+  if (clienteId) {
+    return (    
+      <Grid container spacing={6}>
+        {ability?.can('list', 'ac-cliente-page') ? (
+          <Grid item xs={12} md={5} lg={4}>
+            <ClienteViewLeft id={clienteId} />
           </Grid>
-      )
-    } else {
-      return null
-    }
+        ) : "Você não tem permissão para ver este recurso."}
+
+        {ability?.can('list', 'ac-cliente-page') ? (
+          <Grid item xs={12} md={7} lg={8}>
+            <ClienteViewRight id={clienteId} />
+          </Grid>
+        ) : "Você não tem permissão para ver este recurso."}
+      </Grid>
+    )
+  } else {
+    return null
+  }
+}
+
+ClienteViewPage.acl = {
+  action: 'read',
+  subject: 'ac-cliente-page'
 }
 
 export default ClienteViewPage

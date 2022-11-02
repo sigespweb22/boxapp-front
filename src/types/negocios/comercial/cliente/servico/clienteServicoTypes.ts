@@ -7,6 +7,7 @@ export type ClienteServicoLayoutType = {
 
 export type ClienteServicoType = {
   id: string
+  nome: string
   valorVenda: number
   caracteristicas: string
   cobrancaTipo: string

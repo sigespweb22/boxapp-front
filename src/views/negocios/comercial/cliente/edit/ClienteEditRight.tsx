@@ -65,7 +65,7 @@ import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Custom Components Imports
-import ClienteServicoTableListToView from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableListToView'
+import ClienteServicoListTable from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableList'
 
 interface ColorsType {
   [key: string]: ThemeColor
@@ -159,7 +159,7 @@ const ClienteViewRight = ({ id }: Props) => {
       </TabList>
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='servicos'>
-          <ClienteServicoTableListToView id={id} />
+          <ClienteServicoListTable id={id} />
         </TabPanel>
       </Box>
     </TabContext>
