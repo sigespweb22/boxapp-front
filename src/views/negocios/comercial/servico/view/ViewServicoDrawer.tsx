@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl'
 // ** Third Party Imports
 import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 import { useForm, Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -28,12 +29,13 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarViewServico = (props: SidebarViewServicoType) => {
+const SidebarClienteView = (props: SidebarViewServicoType) => {
   // ** Hook
   const {
     reset,
     control
   } = useForm()
+  const { t } = useTranslation()
 
   // ** Props
   const { open, toggle } = props
@@ -58,6 +60,19 @@ const SidebarViewServico = (props: SidebarViewServicoType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller              
+              name='id'
+              control={control}
+              render={() => (
+                <TextField
+                  disabled={true}
+                  value={props?.row?.id}
+                  placeholder='Id'
+                />
+              )}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller              
               name='nome'
@@ -112,6 +127,19 @@ const SidebarViewServico = (props: SidebarViewServicoType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller              
+              name='fornecedorServico'
+              control={control}
+              render={() => (
+                <TextField
+                  disabled={true}
+                  value={props?.row?.fornecedorServico.nome}
+                  placeholder='Fornecedor serviço'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller              
               name='caracteristicas'
               control={control}
               render={() => (
@@ -130,7 +158,7 @@ const SidebarViewServico = (props: SidebarViewServicoType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={props?.row?.status}
+                  value={t(props?.row?.status || '')}
                   placeholder='Status'
                 />
               )}
@@ -150,4 +178,11 @@ const SidebarViewServico = (props: SidebarViewServicoType) => {
   )
 }
 
-export default SidebarViewServico
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarClienteView.acl = {
+  action: 'reade',
+  subject: 'ac-servico-page'
+}
+
+export default SidebarClienteView

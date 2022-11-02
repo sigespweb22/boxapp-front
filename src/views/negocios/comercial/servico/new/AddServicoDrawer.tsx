@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, SyntheticEvent } from 'react'
+import { useEffect, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -60,7 +60,7 @@ interface SidebarAddServicoType {
   toggle: () => void
 }
 
-const unidadesMedida : string[] = ["CPU", "HR", "GB", "vCPU"];
+const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
 let fornecedoresServicos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -88,15 +88,7 @@ const schema = yup.object().shape({
     .required()
 })
 
-const defaultValues = {
-  nome: '',
-  codigoUnico: '',
-  valorCusto: null,
-  unidadeMedida: 'NENHUM',
-  caracteristicas: '',
-  fornecedorServico: {id: '', nome: ''},
-  status: ''
-}
+
 
 interface FornecedorServicoType {
   id: string
@@ -109,6 +101,16 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
 
   // ** Props
   const { open, toggle } = props
+
+  const defaultValues = {
+    nome: '',
+    codigoUnico: '',
+    valorCusto: '',
+    unidadeMedida: '',
+    caracteristicas: '',
+    fornecedorServico: {id: '', nome: ''},
+    status: ''
+  }
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -135,7 +137,6 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
     axios
       .get(`${fornecedorServicoApiService.listToSelectAsync}`, config)
       .then(response => {
-        debugger
         fornecedoresServicos = response.data
       })
   }, [fornecedoresServicos]);
@@ -220,29 +221,24 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
             <Controller
               name="unidadeMedida"
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
+                    <InputLabel id='single-select-um-chip-label'>Unidade medida</InputLabel>
                     <Select
+                      value={value}
                       name="unidadeMedida"
                       autoWidth
-                      value={value}
                       label="Unidade medida"
                       MenuProps={MenuProps}
                       onChange={onChange}
-                      defaultValue=''
                       id='single-select-um'
                       labelId='single-select-um-chip-label'
                     >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
                       {
-                        unidadesMedida.map(tipo => (
-                          <MenuItem key={tipo} value={tipo}>
-                            {tipo}
+                        unidadesMedida.map(um => (
+                          <MenuItem key={um} value={um}>
+                            {um}
                           </MenuItem>
                         ))
                       }
@@ -251,7 +247,7 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
                 )
               }}
             />
-          </FormControl>
+          </FormControl> 
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name="fornecedorServico"
@@ -298,6 +294,13 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
       </Box>
     </Drawer>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarAddServico.acl = {
+  action: 'create',
+  subject: 'ac-servico-page'
 }
 
 export default SidebarAddServico

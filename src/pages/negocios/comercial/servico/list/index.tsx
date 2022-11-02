@@ -304,21 +304,21 @@ const ServicoList = () => {
       align: 'right' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-role-page') &&
+          {ability?.can('read', 'ac-servico-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewServico(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-role-page') &&
+          {ability?.can('update', 'ac-servico-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditServico(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-role-page') &&
+          {ability?.can('delete', 'ac-servico-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -365,9 +365,8 @@ const ServicoList = () => {
   )
 }
 
-// **Controle de acesso da página
-// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
-// **a esta página de subject abaixo
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
 ServicoList.acl = {
   action: 'list',
   subject: 'ac-servico-page'

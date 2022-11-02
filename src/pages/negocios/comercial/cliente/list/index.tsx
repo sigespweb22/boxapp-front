@@ -353,9 +353,8 @@ const ClientList = () => {
   )
 }
 
-// **Controle de acesso da página
-// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
-// **a esta página de subject abaixo
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClientList.acl = {
   action: 'list',
   subject: 'ac-client-page'

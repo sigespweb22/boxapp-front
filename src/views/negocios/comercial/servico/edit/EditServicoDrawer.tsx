@@ -1,3 +1,6 @@
+// ** React Imports
+import { useEffect, SyntheticEvent } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -9,6 +12,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -35,6 +39,12 @@ import { AppDispatch } from 'src/store'
 import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
 import { ThemeColor } from 'src/@core/layouts/types'
 
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import fornecedorServicoApiService from 'src/@api-center/negocios/parceiros/fornecedor/servico/fornecedorServicoApiService'
+
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -44,6 +54,11 @@ const MenuProps = {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
     }
   }
+}
+
+interface FornecedorServicoType {
+  id: string
+  nome: string
 }
 
 interface SidebarAddServicoType {
@@ -61,10 +76,13 @@ interface ServicoData {
   caracteristicas: string
   unidadeMedida: string
   status: string
+  fornecedorServico: {id: string, nome: string}
+  fornecedorServicoId: string
   avatarColor: ThemeColor
 }
 
-const unidadesMedida : string[] = ["CPU", "HR", "GB", "vCPU"];
+const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
+let fornecedoresServicos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -91,7 +109,19 @@ const schema = yup.object().shape({
     .required()
 })
 
-const SidebarAddServico = (props: SidebarAddServicoType) => {
+const defaultValues = {
+  id: '',
+  nome: '',
+  codigoUnico: '',
+  tipo: '',
+  valorCusto: '',
+  unidadeMedida: '',
+  fornecedorServico: {id: '', nome: ''},
+  caracteristicas: '',
+  status: ''
+}
+
+const SidebarServicoEdit = (props: SidebarAddServicoType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -107,19 +137,38 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
+    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  // ** Set values
-  setValue('id', props?.row?.id)
-  setValue('nome', props?.row?.nome)
-  setValue('codigoUnico', props?.row?.codigoUnico)
-  setValue('tipo', props?.row?.tipo)
-  setValue('valorCusto', props?.row?.valorCusto)
-  setValue('unidadeMedida', props?.row?.unidadeMedida)
-  setValue('caracteristica', props?.row?.caracteristicas)
+  useEffect(() => {
+    // ** Set values
+    setValue('id', props?.row?.id || '')
+    setValue('nome', props?.row?.nome || '')
+    setValue('codigoUnico', props?.row?.codigoUnico || '')
+    setValue('tipo', props?.row?.tipo || '')
+    setValue('valorCusto', props?.row?.valorCusto || '')
+    setValue('unidadeMedida', props?.row?.unidadeMedida || '')
+    setValue('fornecedorServico', props?.row?.fornecedorServico || {id: '', nome: ''})
+    setValue('caracteristicas', props?.row?.caracteristicas || '')
+  }, [props])
 
+  const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${fornecedorServicoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        fornecedoresServicos = response.data
+      })
+  }, [fornecedoresServicos]);
+  
   const onSubmit = (data: ServicoData) => {
     dispatch(editServico({ ...data,  }))
     toggle()
@@ -129,6 +178,10 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
   const handleClose = () => {
     toggle()
     reset()
+  }
+
+  const handleChange = (event: SyntheticEvent, newValue: FornecedorServicoType) => {
+    setValue('fornecedorServico', newValue)
   }
 
   const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
@@ -209,14 +262,11 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type='number'
+                  type='string'
                   value={value}
                   label='Valor custo'
                   name='valorCusto'
-                  onChange={(): void=> {
-                    onChange
-                    resolveValor
-                  }}
+                  onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
               )}
@@ -232,28 +282,43 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
                   <FormControl fullWidth>
                     <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
                     <Select
-                      name="tipo"
+                      name="unidadeMedida"
                       autoWidth
-                      label="Tipo"
+                      label="Unidade medida"
                       value={value}
                       MenuProps={MenuProps}
                       onChange={onChange}
-                      defaultValue=''
                       id='single-select-um'
                       labelId='single-select-um-chip-label'
                     >
-                      <MenuItem value='null'>
-                        <em>NENHUM</em>
-                      </MenuItem>
                       {
-                        unidadesMedida.map(tipo => (
-                          <MenuItem key={tipo} value={tipo}>
-                            {tipo}
+                        unidadesMedida.map(um => (
+                          <MenuItem key={um} value={um}>
+                            {um}
                           </MenuItem>
                         ))
                       }
                     </Select>
                   </FormControl>
+                )
+              }}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="fornecedorServico"
+              control={control}
+              render={({ field: { value } }) => {
+                return (
+                  <Autocomplete
+                    value={value}
+                    sx={{ width: 360 }}
+                    options={fornecedoresServicos}
+                    onChange={handleChange}
+                    id='autocomplete-controlled'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
+                  />
                 )
               }}
             />
@@ -287,4 +352,11 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
   )
 }
 
-export default SidebarAddServico
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarServicoEdit.acl = {
+  action: 'update',
+  subject: 'ac-servico-page'
+}
+
+export default SidebarServicoEdit

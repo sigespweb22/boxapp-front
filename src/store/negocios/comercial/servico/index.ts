@@ -46,8 +46,6 @@ export const addServico = createAsyncThunk(
       }
     }
 
-    debugger
-
     const data2 = {
       nome: data.nome,
       codigoUnico: data.codigoUnico,
@@ -102,6 +100,7 @@ export const editServico = createAsyncThunk(
     }
 
     const data2 = {
+      id: data.id,
       nome: data.nome,
       codigoUnico: data.codigoUnico,
       tipo: data.tipo,
@@ -112,7 +111,7 @@ export const editServico = createAsyncThunk(
     }
 
     axios.put(servicoApiService.updateAsync, data2, config).then((resp) => {
-      dispatch(fetchData(getState().role.params))
+      dispatch(fetchData(getState().servico.params))
       if (resp.status === 204) return toast.success("Serviço atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -145,7 +144,7 @@ export const deleteservico = createAsyncThunk(
     }
 
     axios.delete(servicoApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().user.params))
+      dispatch(fetchData(getState().servico.params))
       if (resp.status === 204) return toast.success("Serviço deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -181,11 +180,12 @@ export const alterStatusServico = createAsyncThunk(
     }
 
     axios.put(servicoApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData(getState().user.params))
+      dispatch(fetchData(getState().servico.params))
       toast.success(resp.data.message)
       
       return resp.data.data
     }).catch((resp) => {
+      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')
