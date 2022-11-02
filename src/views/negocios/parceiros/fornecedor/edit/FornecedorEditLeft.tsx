@@ -8,7 +8,6 @@ import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import Divider from '@mui/material/Divider'
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
@@ -57,14 +56,6 @@ interface ColorsType {
   [key: string]: ThemeColor
 }
 
-// ** Styled <sup> component
-const Sup = styled('sup')(({ theme }) => ({
-  top: '0.2rem',
-  left: '-0.6rem',
-  position: 'absolute',
-  color: theme.palette.primary.main
-}))
-
 const statusColors: ColorsType = {
   ACTIVE: 'success',
   INACTIVE: 'error'
@@ -109,7 +100,6 @@ const defaultValues: FornecedorType = {
 const FornecedorEditLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
-  const [error, setError] = useState<boolean>(false)
   const [data, setData] = useState<null | FornecedorType>(defaultValues)
   const { t } = useTranslation()
 
@@ -591,7 +581,7 @@ const FornecedorEditLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else if (error) {
+  } else {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -602,8 +592,6 @@ const FornecedorEditLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else {
-    return null
   }
 }
 

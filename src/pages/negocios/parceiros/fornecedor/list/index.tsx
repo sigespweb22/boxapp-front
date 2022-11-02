@@ -212,7 +212,6 @@ const FornecedorList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [fornecedorAddOpen, setFornecedorAddOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<FornecedorType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.fornecedor)
@@ -228,14 +227,6 @@ const FornecedorList = () => {
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
-
-  const handleViewFornecedor = (row : FornecedorType) => {
-    setRow(row)
-  }
-
-  const handleEditFornecedor = (row : FornecedorType) => {
-    setRow(row)
-  }
 
   const handleAlterStatus = (id: string) => {
     dispatch(alterStatusFornecedor(id))
@@ -285,7 +276,7 @@ const FornecedorList = () => {
           {ability?.can('read', 'ac-fornecedor-page') &&
             <Link href={`/negocios/parceiros/fornecedor/view/${row.id}`} passHref>
               <Tooltip title={t("View")}>
-                <IconButton onClick={() => handleViewFornecedor(row)}>
+                <IconButton>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                 </IconButton>
               </Tooltip>
@@ -294,7 +285,7 @@ const FornecedorList = () => {
           {ability?.can('update', 'ac-fornecedor-page') &&
             <Link href={`/negocios/parceiros/fornecedor/edit/${row.id}`} passHref>
               <Tooltip title={t("Edit")}>
-                <IconButton onClick={() => handleEditFornecedor(row)}>
+                <IconButton>
                   <PencilOutline fontSize='small' />
                 </IconButton>
               </Tooltip>

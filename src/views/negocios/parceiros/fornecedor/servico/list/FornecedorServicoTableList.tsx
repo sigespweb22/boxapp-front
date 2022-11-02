@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, ReactElement, useInsertionEffect } from 'react'
+import { useContext, useState, useEffect, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -55,10 +55,6 @@ import FornecedorServicoEditDrawer from 'src/views/negocios/parceiros/fornecedor
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
-
-import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
-import Cached from 'mdi-material-ui/Cached'
-import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
 
 interface Props {
   id: string | string[] | undefined
@@ -367,7 +363,7 @@ const FornecedorServicoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={id} />
+        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={row?.id} />
         <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
         <FornecedorServicoEditDrawer open={fornecedorServicoEditOpen} toggle={toggleFornecedorServicoEditDrawer} row={row}/>
       </Grid>

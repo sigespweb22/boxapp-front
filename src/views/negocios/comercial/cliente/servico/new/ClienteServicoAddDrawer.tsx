@@ -1,12 +1,11 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
@@ -43,15 +42,22 @@ interface SidebarClienteServicoAddType {
   toggle: () => void
 }
 
+interface ServicoType {
+  id: string | ''
+  nome: string | ''
+}
+
 let servicos: { id: string, nome: string  }[] = [];
 const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 
-interface ClienteServicoData {
-  valorVenda: string,
-  caracteristicas: string,
-  cobrancaTipo: string,
-  clienteId: string,
-  servico: { id: '', nome: ''},
+interface ClienteServicoType {
+  nome: string
+  valorVenda: string
+  caracteristicas: string
+  cobrancaTipo: string
+  clienteId: string | string[] | undefined
+  servicoId: string
+  servico: ServicoType
   status: string
 }
 
@@ -62,11 +68,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-between',
   backgroundColor: theme.palette.background.default
 }))
-
-interface ServicoType {
-  id: string
-  nome: string
-}
 
 const defaultValues = {
   valorVenda: '',
@@ -119,8 +120,8 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     }
   }
 
-  const onSubmit = (data: ClienteServicoData) => {
-    data.clienteId = props?.clienteId || ""
+  const onSubmit = (data: ClienteServicoType): void => {
+    data.clienteId = props?.clienteId
     dispatch(addClienteServico({ ...data,  }))
     toggle()
     reset()
@@ -129,10 +130,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   const handleClose = () => {
     toggle()
     reset()
-  }
-
-  const handleChange = (event: SyntheticEvent, newValue: ServicoType) => {
-    setValue('servico', newValue)
   }
 
   return (
@@ -154,13 +151,15 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
             <Controller
               name="servico"
               control={control}
-              render={({ field: { value } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     value={value}
                     sx={{ width: 360 }}
                     options={servicos}
-                    onChange={handleChange}
+                    onChange={(newValue) => {
+                      onChange(newValue)
+                    }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
                     renderInput={params => <TextField {...params} label='Serviço' />}

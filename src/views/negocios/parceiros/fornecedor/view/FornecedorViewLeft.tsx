@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -22,7 +22,6 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -50,30 +49,8 @@ interface Props {
   id: string | string[] | undefined
 }
 
-const defaultValues: FornecedorType = {
-  id: '',
-  nomeFantasia: '',
-  razaoSocial: '',
-  inscricaoEstadual: '',
-  cnpj: '',
-  telefonePrincipal: '',
-  emailPrincipal: '',
-  observacao: '',
-  codigoMunicipio: 0,
-  rua: '',
-  numero: '',
-  complemento: '',
-  cidade: '',
-  estado: '',
-  cep: '',
-  fornecedorServicos: {id: '', nome: ''},
-  status: '',
-}
-
 const FornecedorViewLeft = ({id}: Props) => {
   // ** Hooks
-  const [error, setError] = useState<boolean>(false)
-  const [data, setData] = useState<null | FornecedorType>(defaultValues)
   const { t } = useTranslation()
 
   // ** States
@@ -93,13 +70,6 @@ const FornecedorViewLeft = ({id}: Props) => {
       })
     )
   }, [dispatch, id])
-
-  useEffect(() => {
-    if(store?.data)
-    {
-      setData(store.data)
-    }
-  }, [store])
 
   useEffect(() => {
     if(store)
@@ -245,7 +215,7 @@ const FornecedorViewLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else if (error) {
+  } else {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -256,8 +226,6 @@ const FornecedorViewLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else {
-    return null
   }
 }
 

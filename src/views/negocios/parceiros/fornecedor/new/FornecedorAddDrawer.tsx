@@ -65,6 +65,7 @@ interface FornecedorData {
   cidade: string
   estado: string
   cep: string
+  fornecedorServicos: {id: string, nome: string}
   status: string
 }
 
@@ -117,6 +118,7 @@ const defaultValues = {
   cidade: '',
   estado: '',
   cep: '',
+  fornecedorServicos: {id: '', nome: ''},
   status: ''
 }
 

@@ -1,12 +1,11 @@
 // ** React Imports
-import { useEffect, SyntheticEvent, useInsertionEffect } from 'react'
+import { useEffect, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
@@ -39,9 +38,14 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
 
 interface SidebarClienteServicoEditType {
-  row: ClienteServicoType
+  row: ClienteServicoType | undefined
   open: boolean
   toggle: () => void
+}
+
+interface ServicoType {
+  id: string
+  nome: string
 }
 
 let servicos: { id: string, nome: string  }[] = [];
@@ -49,11 +53,13 @@ const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 
 interface ClienteServicoData {
   id: string,
+  nome: string
   valorVenda: string,
   caracteristicas: string,
   cobrancaTipo: string,
   clienteId: string,
-  servico: { id: '', nome: ''},
+  servicoId: string,
+  servico: ServicoType,
   status: string
 }
 
@@ -64,11 +70,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-between',
   backgroundColor: theme.palette.background.default
 }))
-
-interface ServicoType {
-  id: string
-  nome: string
-}
 
 const defaultValues = {
   id: '',
@@ -114,9 +115,9 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
   useEffect(() => {
     setValue('id', props?.row?.id || '')
     setValue('clienteId', props?.row?.clienteId || '')
-    setValue('servico', props?.row?.servico || '')
     setValue('valorVenda', props?.row?.valorVenda || '')
     setValue('cobrancaTipo', props?.row?.cobrancaTipo || '')
+    setValue('servico', props?.row?.servico || {id: '', nome: ''})
     setValue('caracteristicas', props?.row?.caracteristicas || '')
   }, [props])
 
@@ -142,10 +143,6 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
     reset()
   }
 
-  const handleChange = (event: SyntheticEvent, newValue: ServicoType) => {
-    setValue('servico', newValue)
-  }
-
   return (
     <Drawer
       open={open}
@@ -165,13 +162,16 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
             <Controller
               name="servico"
               control={control}
-              render={({ field: { value } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     value={value}
                     sx={{ width: 360 }}
                     options={servicos}
-                    onChange={handleChange}
+                    onChange={(event, newValue) => {
+                      setValue('servico', newValue || {id: '', nome: ''})
+                      onChange(newValue)
+                    }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
                     renderInput={params => <TextField {...params} label='Serviço' />}

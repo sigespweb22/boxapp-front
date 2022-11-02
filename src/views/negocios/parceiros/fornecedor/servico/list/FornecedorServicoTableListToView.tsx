@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, ReactElement, useInsertionEffect } from 'react'
+import { useContext, useState, useEffect, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -19,10 +19,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import ElevatorUp from 'mdi-material-ui/ElevatorUp'
-import ElevatorDown from 'mdi-material-ui/ElevatorDown'
-import PencilOutline from 'mdi-material-ui/PencilOutline'
-import Help from 'mdi-material-ui/Help'
 import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
 import DesktopClassic from 'mdi-material-ui/DesktopClassic'
 import Cancel from 'mdi-material-ui/Cancel'
@@ -52,10 +48,6 @@ import FornecedorServicoViewDrawer from 'src/views/negocios/parceiros/fornecedor
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
-
-import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
-import Cached from 'mdi-material-ui/Cached'
-import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
 
 interface Props {
   id: string | string[] | undefined
@@ -142,18 +134,6 @@ const unidadeMedidaIcon: UnidadeMedidaType = {
   HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
   GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
   vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
-}
-
-const cobrancaTipoColor = (ct: string) => {
-  switch (ct) 
-  {
-    case 'NENHUM':
-      return 'second'
-    case 'UNICO':
-      return 'primary'
-    case 'RECORRENTE':
-      return 'info'
-  }
 }
 
 const defaultColumns = [

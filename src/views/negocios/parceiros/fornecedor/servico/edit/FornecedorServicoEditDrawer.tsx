@@ -1,18 +1,16 @@
 // ** React Imports
-import { useEffect, SyntheticEvent, useInsertionEffect } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import Autocomplete from '@mui/material/Autocomplete'
 import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
@@ -32,7 +30,7 @@ import { AppDispatch } from 'src/store'
 import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
 
 interface SidebarFornecedorServicoEditType {
-  row: FornecedorServicoType
+  row: FornecedorServicoType | undefined
   open: boolean
   toggle: () => void
 }
@@ -89,7 +87,7 @@ const SidebarFornecedorServicoEdit = (props: SidebarFornecedorServicoEditType) =
     setValue('codigoServico', props?.row?.codigoServico || '')
     setValue('unidadeMedida', props?.row?.unidadeMedida || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
-    setValue('fornecedorId', props?.row?.fornecedorId)
+    setValue('fornecedorId', props?.row?.fornecedorId || '')
   }, [props])
 
   const ITEM_HEIGHT = 48

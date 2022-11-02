@@ -216,7 +216,6 @@ const ClientList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteAddOpen, setClienteAddOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.cliente)
@@ -232,14 +231,6 @@ const ClientList = () => {
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
-
-  const handleViewClient = (row : ClienteType) => {
-    setRow(row)
-  }
-
-  const handleEditClient = (row : ClienteType) => {
-    setRow(row)
-  }
 
   const handleAlterStatus = (id: string) => {
     dispatch(alterStatusClient(id))
@@ -289,7 +280,7 @@ const ClientList = () => {
           {ability?.can('read', 'ac-cliente-page') &&
             <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
               <Tooltip title={t("View")}>
-                <IconButton onClick={() => handleViewClient(row)}>
+                <IconButton>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                 </IconButton>
               </Tooltip>
@@ -298,7 +289,7 @@ const ClientList = () => {
           {ability?.can('update', 'ac-cliente-page') &&
             <Tooltip title={t("Edit")}>
               <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
-                <IconButton onClick={() => handleEditClient(row)}>
+                <IconButton>
                   <PencilOutline fontSize='small' />
                 </IconButton>
               </Link>

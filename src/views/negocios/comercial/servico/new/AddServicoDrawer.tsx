@@ -22,9 +22,6 @@ import { useForm, Controller } from 'react-hook-form'
 // ** Copmponents Imports
 import Select from '@mui/material/Select'
 
-// Import Translate
-import { useTranslation } from 'react-i18next'
-
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
@@ -96,9 +93,6 @@ interface FornecedorServicoType {
 }
 
 const SidebarAddServico = (props: SidebarAddServicoType) => {
-  // ** Hook
-  const { t } = useTranslation()
-
   // ** Props
   const { open, toggle } = props
 
@@ -252,13 +246,15 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
             <Controller
               name="fornecedorServico"
               control={control}
-              render={({ field: { value } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     value={value}
                     sx={{ width: 360 }}
                     options={fornecedoresServicos}
-                    onChange={handleChange}
+                    onChange={():void => {
+                      onChange(handleChange)
+                    }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
                     renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}

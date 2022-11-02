@@ -1,6 +1,3 @@
-// ** Types
-import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
-
 export type ClienteServicoLayoutType = {
   id: string
 }
@@ -11,9 +8,24 @@ export type ClienteServicoType = {
   valorVenda: string
   caracteristicas: string
   cobrancaTipo: string
-  servicoNome: string
   clienteId: string
-  servico: ServicoType
   servicoId: string
+  servico: Servico
   status: string
+}
+
+export type ClienteServicoAddType = {
+  nome: string
+  valorVenda: string
+  caracteristicas: string
+  cobrancaTipo: string
+  clienteId: string | string[] | undefined
+  servicoId: string
+  servico: Servico
+  status: string
+}
+
+interface Servico {
+  id: string | ''
+  nome: string | ''
 }

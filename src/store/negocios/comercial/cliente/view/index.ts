@@ -10,7 +10,6 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 
 // ** Types
 import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
-import { ThemeColor } from 'src/@core/layouts/types'
 
 // ** Toast
 import toast from 'react-hot-toast'

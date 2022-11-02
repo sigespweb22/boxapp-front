@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -22,7 +22,6 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -58,30 +57,8 @@ interface Props {
   id: string | string[] | undefined
 }
 
-const defaultValues: ClienteType = {
-  id: '',
-  nomeFantasia: '',
-  razaoSocial: '',
-  inscricaoEstadual: '',
-  cnpj: '',
-  telefonePrincipal: '',
-  emailPrincipal: '',
-  observacao: '',
-  dataFundacao: '',
-  codigoMunicipio: 0,
-  rua: '',
-  numero: '',
-  complemento: '',
-  cidade: '',
-  estado: '',
-  cep: '',
-  status: '',
-}
-
 const ClienteViewLeft = ({id}: Props) => {
   // ** Hooks
-  const [error, setError] = useState<boolean>(false)
-  const [data, setData] = useState<null | ClienteType>(defaultValues)
   const { t } = useTranslation()
 
   // ** States
@@ -101,13 +78,6 @@ const ClienteViewLeft = ({id}: Props) => {
       })
     )
   }, [dispatch, id])
-
-  useEffect(() => {
-    if(store?.data)
-    {
-      setData(store.data)
-    }
-  }, [store])
 
   useEffect(() => {
     if(store)
@@ -258,7 +228,7 @@ const ClienteViewLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else if (error) {
+  } else {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
@@ -269,8 +239,6 @@ const ClienteViewLeft = ({id}: Props) => {
         </Grid>
       </Grid>
     )
-  } else {
-    return null
   }
 }
 

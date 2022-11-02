@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, ReactElement, useInsertionEffect } from 'react'
+import { useContext, useState, useEffect, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -121,7 +121,7 @@ const cobrancaTipoColor = (ct: string) => {
   switch (ct) 
   {
     case 'NENHUM':
-      return 'second'
+      return 'secondary'
     case 'UNICO':
       return 'primary'
     case 'RECORRENTE':
@@ -138,7 +138,7 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { nome, servicoNome } = row
+      const { nome } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -153,7 +153,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              ⚙️{servicoNome}
+              ⚙️{nome}
             </Typography>
           </Box>
         </Box>

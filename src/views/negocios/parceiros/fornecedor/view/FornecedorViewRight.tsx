@@ -12,29 +12,8 @@ import TabContext from '@mui/lab/TabContext'
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
 
-// ** Types
-import { ThemeColor } from 'src/@core/layouts/types'
-import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
-
 // ** Custom Components Imports
 import FornecedorServicoTableListToView from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableListToView'
-
-interface ColorsType {
-  [key: string]: ThemeColor
-}
-
-// ** Styled <sup> component
-const Sup = styled('sup')(({ theme }) => ({
-  top: '0.2rem',
-  left: '-0.6rem',
-  position: 'absolute',
-  color: theme.palette.primary.main
-}))
-
-const statusColors: ColorsType = {
-  ACTIVE: 'success',
-  INACTIVE: 'error'
-}
 
 interface Props {
   id: string | string[] | undefined
@@ -49,26 +28,6 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
     marginRight: theme.spacing(3)
   }
 }))
-
-const defaultValues: FornecedorType = {
-  id: '',
-  nomeFantasia: '',
-  razaoSocial: '',
-  inscricaoEstadual: '',
-  cnpj: '',
-  telefonePrincipal: '',
-  emailPrincipal: '',
-  observacao: '',
-  codigoMunicipio: 0,
-  rua: '',
-  numero: '',
-  complemento: '',
-  cidade: '',
-  estado: '',
-  cep: '',
-  fornecedorServicos: {id: '', nome: ''},
-  status: '',
-}
 
 const FornecedorViewRight = ({ id }: Props) => {
   // ** State

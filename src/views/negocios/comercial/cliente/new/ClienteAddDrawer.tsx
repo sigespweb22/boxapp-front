@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, SyntheticEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -12,12 +12,7 @@ import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
 import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
-import Divider from '@mui/material/Divider'
-import Grid, { GridProps } from '@mui/material/Grid'
-import Collapse from '@mui/material/Collapse'
-import { styled, alpha, useTheme } from '@mui/material/styles'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
+import { styled } from '@mui/material/styles'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -31,7 +26,6 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 import Tooltip from '@mui/material/Tooltip';
-import Plus from 'mdi-material-ui/Plus'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -50,9 +44,6 @@ import InputMask from 'react-input-mask'
 
 // ** Api Services
 import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-
-// ** Custom Component Imports
-import Repeater from 'src/@core/components/repeater'
 
 interface SidebarClienteAddType {
   open: boolean

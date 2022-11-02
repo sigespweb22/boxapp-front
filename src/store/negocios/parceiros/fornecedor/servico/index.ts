@@ -40,7 +40,7 @@ export const fetchData = createAsyncThunk('appFornecedorServicos/fetchData', asy
 // ** Add Fornecedor Serviços
 export const addFornecedorServico = createAsyncThunk(
   'appFornecedorServicos/addFornecedorServico',
-  async (data: FornecedorServicoAddType, { getState, dispatch }: Redux) => {
+  async (data: FornecedorServicoAddType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -85,7 +85,7 @@ export const addFornecedorServico = createAsyncThunk(
 // ** Update Fornecedor Serviços
 export const editFornecedorServico = createAsyncThunk(
   'appFornecedorServicos/editFornecedorServico',
-  async (data : FornecedorServicoType, { getState, dispatch }: Redux) => {
+  async (data : FornecedorServicoType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -162,7 +162,7 @@ export const deleteFornecedorServico = createAsyncThunk(
 // ** Alter Status Fornecedor Serviço
 export const alterStatusFornecedorServico = createAsyncThunk(
   'appFornecedorServicos/alterStatusFornecedorServico',
-  async (id: number | string, { getState, dispatch }: Redux) => {
+  async (id: number | string, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
     
     const config = {

@@ -72,7 +72,7 @@ interface ServicoData {
   nome: string
   codigoUnico: string
   tipo: string
-  valorCusto: number
+  valorCusto: string
   caracteristicas: string
   unidadeMedida: string
   status: string
@@ -182,17 +182,6 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
 
   const handleChange = (event: SyntheticEvent, newValue: FornecedorServicoType) => {
     setValue('fornecedorServico', newValue)
-  }
-
-  const resolveValor = (event: { currentTarget: { value: string; name: any } }) => {
-    if (event.currentTarget.value === '')
-    {
-      setValue(event.currentTarget.name, 0);
-    }
-    else
-    {
-      setValue(event.currentTarget.name, event.currentTarget.value);
-    }
   }
 
   return (
@@ -308,13 +297,15 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
             <Controller
               name="fornecedorServico"
               control={control}
-              render={({ field: { value } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     value={value}
                     sx={{ width: 360 }}
                     options={fornecedoresServicos}
-                    onChange={handleChange}
+                    onChange={():void => {
+                      onChange(handleChange)
+                    }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
                     renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}

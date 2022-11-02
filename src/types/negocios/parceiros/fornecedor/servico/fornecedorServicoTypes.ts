@@ -1,6 +1,3 @@
-// ** Types
-import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
-
 export type FornecedorServicoLayoutType = {
   id: string
 }
@@ -11,7 +8,7 @@ export type FornecedorServicoType = {
   codigoServico: string
   unidadeMedida: string
   caracteristicas: string
-  fornecedorId: string | string[] | undefined
+  fornecedorId: string
   status: string
 }
 
@@ -20,6 +17,6 @@ export type FornecedorServicoAddType = {
   codigoServico: string
   unidadeMedida: string
   caracteristicas: string
-  fornecedorId: string | string[] | undefined
+  fornecedorId: string
   status: string
 }

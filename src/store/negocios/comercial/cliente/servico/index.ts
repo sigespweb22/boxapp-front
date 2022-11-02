@@ -9,7 +9,7 @@ import axios from 'axios'
 import clienteServicoApiService from 'src/@api-center/negocios/comercial/cliente/servico/clienteServicoApiService'
 
 // ** Types
-import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
+import { ClienteServicoType, ClienteServicoAddType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -21,15 +21,6 @@ interface DataParams {
 interface Redux {
   getState: any
   dispatch: Dispatch<any>
-}
-
-interface ClienteServicoType {
-  valorVenda: string,
-  caracteristicas: string,
-  cobrancaTipo: string,
-  clienteId: string,
-  servico: { id: '', nome: ''},
-  status: string
 }
 
 // ** Fetch Cliente Serviços
@@ -49,7 +40,7 @@ export const fetchData = createAsyncThunk('appClienteServicos/fetchData', async 
 // ** Add Cliente Serviços
 export const addClienteServico = createAsyncThunk(
   'appClienteServicos/addClienteServico',
-  async (data: ClienteServicoType, { getState, dispatch }: Redux) => {
+  async (data: ClienteServicoAddType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -94,7 +85,7 @@ export const addClienteServico = createAsyncThunk(
 // ** Update Cliente Serviços
 export const editClienteServico = createAsyncThunk(
   'appClienteServicos/updateClienteServico',
-  async (data : ClienteServicoType, { getState, dispatch }: Redux) => {
+  async (data : ClienteServicoType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
@@ -171,7 +162,7 @@ export const deleteClienteServico = createAsyncThunk(
 // ** Alter Status Cliente Serviço
 export const alterStatusClienteServico = createAsyncThunk(
   'appClienteServicos/alterStatusClienteServico',
-  async (id: number | string, { getState, dispatch }: Redux) => {
+  async (id: number | string, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     
     const config = {

@@ -6,8 +6,6 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import IconButton from '@mui/material/IconButton'
-import Key from 'mdi-material-ui/Key'
 
 // ** Third Party Imports
 import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'

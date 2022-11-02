@@ -1,18 +1,13 @@
-// ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
-
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import Autocomplete from '@mui/material/Autocomplete'
 import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
@@ -31,7 +26,7 @@ import { addFornecedorServico } from 'src/store/negocios/parceiros/fornecedor/se
 import { AppDispatch } from 'src/store'
 
 interface SidebarFornecedorServicoAddType {
-  fornecedorId: string | string[] | undefined
+  fornecedorId: string | undefined
   open: boolean
   toggle: () => void
 }
@@ -43,7 +38,7 @@ interface FornecedorServicoData {
   codigoServico: string,
   unidadeMedida: string,
   caracteristicas: string,
-  fornecedorId: string | string[] | undefined,
+  fornecedorId: string,
   fornecedor: { id: '', nome: ''},
   status: string
 }
@@ -74,7 +69,6 @@ const SidebarFornecedorServicoAdd = (props: SidebarFornecedorServicoAddType) => 
   const {
     reset,
     control,
-    setValue,
     handleSubmit
   } = useForm({
       defaultValues,
