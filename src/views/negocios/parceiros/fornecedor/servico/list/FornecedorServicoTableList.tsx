@@ -18,7 +18,6 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
-import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'

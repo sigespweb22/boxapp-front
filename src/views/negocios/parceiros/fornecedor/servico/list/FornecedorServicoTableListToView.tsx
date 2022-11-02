@@ -19,6 +19,15 @@ import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import ElevatorDown from 'mdi-material-ui/ElevatorDown'
+import PencilOutline from 'mdi-material-ui/PencilOutline'
+import Help from 'mdi-material-ui/Help'
+import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
+import DesktopClassic from 'mdi-material-ui/DesktopClassic'
+import Cancel from 'mdi-material-ui/Cancel'
+import Matrix from 'mdi-material-ui/Matrix'
+import Alarm from 'mdi-material-ui/Alarm'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,14 +41,14 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/servico/index'
+import { fetchData } from 'src/store/negocios/parceiros/fornecedor/servico/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
+import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
 
 // ** Custom Components Imports
-import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
+import FornecedorServicoViewDrawer from 'src/views/negocios/parceiros/fornecedor/servico/view/FornecedorServicoViewDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -52,15 +61,15 @@ interface Props {
   id: string | string[] | undefined
 }
 
-interface CobrancaTipoType {
+interface UnidadeMedidaType {
   [key: string]: ReactElement
 }
 
 interface CellType {
-  row: ClienteServicoType
+  row: FornecedorServicoType
 }
 
-const clienteServicoStatusObj = (status: string) => {
+const fornecedorServicoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
@@ -80,8 +89,24 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
+const unidadeMedidaColor = (ct: string) => {
+  switch (ct) 
+  {
+    case 'CPU':
+      return 'info'
+    case 'HR':
+      return 'primary'
+    case 'GB':
+      return 'secondary'
+    case 'vCPU':
+      return 'error'
+    default: 
+      return 'primary'
+  }
+}
+
 // ** renders group column
-const renderServicoNome = (row: ClienteServicoType) => {
+const renderNome = (row: FornecedorServicoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -105,16 +130,18 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clienteServicoStatusObj(status)}
+        color={fornecedorServicoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
 }
 
-const cobrancaTipoIcon: CobrancaTipoType = {
-  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'second.main' }} />,
-  UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'info.main' }} />
+const unidadeMedidaIcon: UnidadeMedidaType = {
+  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
+  vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
 }
 
 const cobrancaTipoColor = (ct: string) => {
@@ -138,11 +165,11 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { nome, servicoNome } = row
+      const { nome } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderServicoNome(row)}
+          {renderNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -153,7 +180,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              ⚙️{servicoNome}
+              ⚙️{nome}
             </Typography>
           </Box>
         </Box>
@@ -163,34 +190,34 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorVenda',
-    headerName: 'Valor venda',
+    field: 'codigoServico',
+    headerName: 'Código serviço',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorVenda}
+          {row.codigoServico}
         </Typography>
       )
     }
   },
   {
     flex: 0.1,
-    field: 'cobrancaTipo',
+    field: 'unidadeMedida',
     minWidth: 130,
-    headerName: 'Cobrança tipo',
+    headerName: 'Unidade medida',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {cobrancaTipoIcon[row.cobrancaTipo]}
+          {unidadeMedidaIcon[row.unidadeMedida]}
           <CustomChip
             skin='light'
             size='small'
-            label={row.cobrancaTipo}
-            color={cobrancaTipoColor(row.cobrancaTipo)}
+            label={row.unidadeMedida}
+            color={unidadeMedidaColor(row.unidadeMedida)}
             sx={{ textTransform: 'capitalize' }}
           />
         </Box>
@@ -216,11 +243,11 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteServicoType | undefined>()
+  const [fornecedorServicoViewOpen, setFornecedorServicoViewOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<FornecedorServicoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteServico)
+  const store = useSelector((state: RootState) => state.fornecedorServico)
 
   useEffect(() => {
     setValue(id)
@@ -229,17 +256,17 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
   useEffect(() => {
     dispatch(
       fetchData({
-        clienteId: value
+        fornecedorId: value
       })
     )
   }, [dispatch, value])
 
-  const handleClienteServicoView = (row : ClienteServicoType) => {
+  const handleFornecedorServicoView = (row : FornecedorServicoType) => {
     setRow(row)
-    setClienteServicoViewOpen(true)
+    setFornecedorServicoViewOpen(true)
   }
 
-  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
+  const toggleFornecedorServicoViewDrawer = () => setFornecedorServicoViewOpen(!fornecedorServicoViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -253,9 +280,9 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-servico-page') &&
+          {ability?.can('read', 'ac-fornecedor-servico-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleClienteServicoView(row)}>
+              <IconButton onClick={() => handleFornecedorServicoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
@@ -295,7 +322,7 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
+        <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )
