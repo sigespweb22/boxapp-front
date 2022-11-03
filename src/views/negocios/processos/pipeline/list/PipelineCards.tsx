@@ -105,7 +105,7 @@ const PipelinesCard = () => {
               {ability?.can('update', 'ac-pipeline-page') ? (
                 <Link 
                   href={{
-                    pathname: `/bussiness/processos/pipelines/manager/[id]`,
+                    pathname: `/negocios/processos/pipeline/manager/[id]`,
                     query: {id: item.id },
                   }}>
                     <IconButton size='small' sx={{ color: 'text.primary' }}>

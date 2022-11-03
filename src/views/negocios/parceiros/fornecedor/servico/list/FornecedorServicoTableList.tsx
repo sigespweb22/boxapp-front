@@ -57,7 +57,7 @@ import FornecedorServicoEditDrawer from 'src/views/negocios/parceiros/fornecedor
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string | undefined
 }
 
 interface UnidadeMedidaType {
@@ -223,6 +223,7 @@ const defaultColumns = [
 ]
 
 const FornecedorServicoTableList = ({ id }: Props) => {
+  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -363,7 +364,7 @@ const FornecedorServicoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={row?.id} />
+        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={id} />
         <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
         <FornecedorServicoEditDrawer open={fornecedorServicoEditOpen} toggle={toggleFornecedorServicoEditDrawer} row={row}/>
       </Grid>

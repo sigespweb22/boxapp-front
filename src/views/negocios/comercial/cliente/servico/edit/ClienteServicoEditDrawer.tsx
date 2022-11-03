@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'

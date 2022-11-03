@@ -12,7 +12,7 @@ import FornecedorEditRight from 'src/views/negocios/parceiros/fornecedor/edit/Fo
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-  fornecedorId: string | string [] | undefined
+  fornecedorId: string | undefined
 }
 
 const FornecedorEditPage = ({ fornecedorId }: Props) => {

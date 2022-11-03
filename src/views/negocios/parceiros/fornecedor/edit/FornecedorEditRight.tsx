@@ -19,7 +19,7 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 import FornecedorServicoTableList from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableList'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string | undefined
 }
 
 // ** Styled Tab component
@@ -33,6 +33,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 }))
 
 const FornecedorEditRight = ({ id }: Props) => {
+  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
 

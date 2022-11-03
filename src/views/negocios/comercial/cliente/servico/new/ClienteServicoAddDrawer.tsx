@@ -102,7 +102,6 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   const {
     reset,
     control,
-    setValue,
     handleSubmit
   } = useForm({
       defaultValues,
@@ -157,7 +156,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
                     value={value}
                     sx={{ width: 360 }}
                     options={servicos}
-                    onChange={(newValue) => {
+                    onChange={(event, newValue) => {
                       onChange(newValue)
                     }}
                     id='autocomplete-controlled'

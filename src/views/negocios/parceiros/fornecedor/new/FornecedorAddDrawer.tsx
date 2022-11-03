@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
 import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
+import Alert from '@mui/material/Alert'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -225,6 +226,7 @@ const SidebarFornecedorAdd = (props: SidebarFornecedorAddType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <Alert sx={{mb:'20px'}} severity="warning">Para vincular serviços a um fornecedor, acesse a sua área de edição.</Alert>
           <FormControl fullWidth sx={{ mb: 6 }}>
           <Controller
               name='nomeFantasia'

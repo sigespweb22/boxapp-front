@@ -85,8 +85,6 @@ const schema = yup.object().shape({
     .required()
 })
 
-
-
 interface FornecedorServicoType {
   id: string
   nome: string

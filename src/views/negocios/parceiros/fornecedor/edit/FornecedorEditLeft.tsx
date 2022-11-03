@@ -74,7 +74,7 @@ const schema = yup.object().shape({
 })
 
 interface Props {
-  id: string | string[] | undefined
+  id: string | undefined
 }
 
 const defaultValues: FornecedorType = {
