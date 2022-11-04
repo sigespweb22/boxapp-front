@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -85,11 +85,6 @@ const schema = yup.object().shape({
     .required()
 })
 
-interface FornecedorServicoType {
-  id: string
-  nome: string
-}
-
 const SidebarAddServico = (props: SidebarAddServicoType) => {
   // ** Props
   const { open, toggle } = props
@@ -108,7 +103,6 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
-    setValue,
     control,
     handleSubmit,
     formState: { errors }
@@ -142,10 +136,6 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
   const handleClose = () => {
     toggle()
     reset()
-  }
-
-  const handleChange = (event: SyntheticEvent, newValue: FornecedorServicoType) => {
-    setValue('fornecedorServico', newValue)
   }
 
   return (
@@ -250,8 +240,8 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
                     value={value}
                     sx={{ width: 360 }}
                     options={fornecedoresServicos}
-                    onChange={():void => {
-                      onChange(handleChange)
+                    onChange={(event, newValue) => {
+                      onChange(newValue)
                     }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
