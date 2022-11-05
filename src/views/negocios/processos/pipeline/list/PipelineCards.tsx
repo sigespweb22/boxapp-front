@@ -86,7 +86,7 @@ const PipelinesCard = () => {
                   }}
                 >
                   {item.avatars.map((img, index: number) => (
-                    <Avatar key={index} alt={item.nome} src={`/images/avatars/${img}`} />
+                    <Avatar key={index} alt={item.nome} src={img} />
                   ))}
               </AvatarGroup>
               <Typography variant='body2'>{item.totalAssinantes} usuários trabalhando neste pipe</Typography>

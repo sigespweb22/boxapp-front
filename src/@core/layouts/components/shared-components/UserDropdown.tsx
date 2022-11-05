@@ -233,7 +233,7 @@ const UserDropdown = (props: Props) => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/sistema/controle-acesso/usuario/profile/${value.id}`, )}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/sistema/controle-acesso/usuario/perfil/${value.id}`, )}>
           <Box sx={styles}>
             <AccountOutline sx={{ mr: 2 }} />
             Perfil

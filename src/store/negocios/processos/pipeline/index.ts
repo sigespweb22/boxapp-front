@@ -25,7 +25,6 @@ interface Redux {
 
 // ** Fetch Pipelines
 export const fetchData = createAsyncThunk('appPipelines/fetchData', async (params: DataParams) => {
-  debugger
   const storedToken = window.localStorage.getItem(pipelineApiService.storageTokenKeyName)!
   const response = await axios
                             .get(pipelineApiService.listAsync, {

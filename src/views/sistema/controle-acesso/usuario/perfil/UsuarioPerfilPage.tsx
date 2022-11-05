@@ -16,9 +16,9 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
-import UsuarioPerfilConta from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilConta'
-import UsuarioPerfilSeguranca from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilSeguranca'
-import UsuarioPerfilInfo from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilInfo'
+import UsuarioPerfilConta from 'src/views/sistema/controle-acesso/usuario/perfil/UsuarioPerfilConta'
+import UsuarioPerfilSeguranca from 'src/views/sistema/controle-acesso/usuario/perfil/UsuarioPerfilSeguranca'
+import UsuarioPerfilInfo from 'src/views/sistema/controle-acesso/usuario/perfil/UsuarioPerfilInfo'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'

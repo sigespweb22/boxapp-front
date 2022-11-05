@@ -243,7 +243,7 @@ export const fetchUsuarioConta = createAsyncThunk('appUsers/fetchUsuarioConta', 
 // ** Update Usuario Conta
 export const editUsuarioConta = createAsyncThunk(
   'appUsers/editUsuarioConta',
-  async (data : UsuarioContaType, { getState, dispatch }: Redux) => {
+  async (data : UsuarioContaType, {}: Redux) => {
     const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
     const config = {
       headers: {

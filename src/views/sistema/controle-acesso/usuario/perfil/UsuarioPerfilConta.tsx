@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, ElementType, ChangeEvent } from 'react'
+import { useState, useEffect, ElementType, ChangeEvent } from 'react'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -62,18 +62,18 @@ interface Props {
   id: string | undefined
 }
 
+interface ApplicationUserGroup {
+  groupId: string
+  name: string
+}
+
 interface UsuarioContaData {
   id: string
   avatar: string
   userName: string
   email: string
   fullName: string
-  applicationUserGroups: applicationUserGroup[]
-}
-
-interface applicationUserGroup {
-  id: string
-  name: string
+  applicationUserGroups: ApplicationUserGroup[]
 }
 
 const defaultValues: UsuarioContaData = {
@@ -86,6 +86,9 @@ const defaultValues: UsuarioContaData = {
 }
 
 const UsuarioPerfilConta = (props: Props) => {
+  // ** States
+  const [groups, setGroups] = useState<ApplicationUserGroup[]>([])
+
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
@@ -112,10 +115,11 @@ const UsuarioPerfilConta = (props: Props) => {
         if (response)
         {
           setValue('id', response.data.id)
+          setValue('avatar', response.data.avatar)
           setValue('fullName', response.data.fullName)
           setValue('userName', response.data.userName)
           setValue('email', response.data.email)
-          setValue('applicationUserGroups', response.data.applicationUserGroups)
+          setGroups(response.data.applicationUserGroups)
         }
       })
   }, [])
@@ -145,12 +149,15 @@ const UsuarioPerfilConta = (props: Props) => {
   }
 
   const onSubmit = (data: UsuarioContaType) => {
-    debugger
     dispatch(editUsuarioConta({ ...data  }))
   }
 
   const handleReset = () => {
     reset()
+  }
+
+  const handleUserName = (data: any) => {
+    setValue('userName', data.currentTarget.value)
   }
 
   return (
@@ -232,6 +239,7 @@ const UsuarioPerfilConta = (props: Props) => {
                   control={control}
                   render={({ field: { value, onChange } }) => (
                     <TextField
+                      disabled={true}
                       label='Nome usuário'
                       placeholder='(e.g.: john@example.com)'
                       onChange={onChange}
@@ -250,7 +258,10 @@ const UsuarioPerfilConta = (props: Props) => {
                     <TextField
                       label='E-mail'
                       placeholder='(e.g.: john@example.com)'
-                      onChange={onChange}
+                      onChange={(newValue) => {
+                        handleUserName(newValue)
+                        onChange(newValue)
+                      }}                      
                       value={value}
                     />
                   )}
@@ -262,24 +273,23 @@ const UsuarioPerfilConta = (props: Props) => {
               <Controller
                 name="applicationUserGroups"
                 control={control}
-                render={( value ) => {
+                render={() => {
                   return (
                     <FormControl fullWidth>
-                      <Box sx={{ fontSize: 16, mb: "10px" }}>Grupos</Box>
-                      {/* {
-                        value.applicationUserGroups.map(group =>
-                          {
+                      <Box sx={{ fontSize: 20, mb: "10px" }}>Grupos de permissões</Box>
+                      {
+                        groups.map((item) => {
                             return (
-                                <Box key={group.groupId}  sx={{ fontSize: 16, mb: "10px" }}>
+                                <Box key={item.groupId}  sx={{ fontSize: 16, mb: "10px" }}>
                                   <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
                                     <GoogleCirclesGroup fontSize='small' />
                                   </IconButton>
-                                  {group.name}
+                                  {item.name}
                                 </Box>
                             )
                           }
                         )
-                      } */}
+                      }
                     </FormControl>
                   )
                 }}
