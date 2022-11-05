@@ -11,18 +11,14 @@ import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
 // ** Icons Imports
-import BellOutline from 'mdi-material-ui/BellOutline'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
-import BookmarkOutline from 'mdi-material-ui/BookmarkOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
 import TabInfo from 'src/views/pages/account-settings/TabInfo'
 import TabAccount from 'src/views/pages/account-settings/TabAccount'
-import TabBilling from 'src/views/pages/account-settings/TabBilling'
 import TabSecurity from 'src/views/pages/account-settings/TabSecurity'
-import TabNotifications from 'src/views/pages/account-settings/TabNotifications'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -49,10 +45,9 @@ interface Props {
   id: string | undefined
 }
 
-const AccountSettings = (props: Props) => {
-  debugger
+const UsuarioPerfilPage = (props: Props) => {
   // ** State
-  const [value, setValue] = useState<string>('account')
+  const [value, setValue] = useState<string>('conta')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -67,70 +62,53 @@ const AccountSettings = (props: Props) => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='account'
+            value='conta'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>Account</TabName>
+                <TabName>Conta</TabName>
               </Box>
             }
           />
           <Tab
-            value='security'
+            value='seguracao'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Security</TabName>
+                <TabName>Segurança</TabName>
               </Box>
             }
           />
           <Tab
-            value='info'
+            value='infos'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
-                <TabName>Info</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='billing'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <BookmarkOutline />
-                <TabName>Billing</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='notifications'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <BellOutline />
-                <TabName>Notifications</TabName>
+                <TabName>Informações Pessoais</TabName>
               </Box>
             }
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
+        <TabPanel sx={{ p: 0 }} value='conta'>
           <TabAccount />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
+        <TabPanel sx={{ p: 0 }} value='seguracao'>
           <TabSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
+        <TabPanel sx={{ p: 0 }} value='infos'>
           <TabInfo />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='billing'>
-          <TabBilling />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='notifications'>
-          <TabNotifications />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default AccountSettings
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+UsuarioPerfilPage.acl = {
+  action: 'update',
+  subject: 'ac-user-page'
+}
+
+export default UsuarioPerfilPage

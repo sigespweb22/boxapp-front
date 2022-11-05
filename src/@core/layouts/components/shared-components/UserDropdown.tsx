@@ -148,7 +148,7 @@ const UserDropdown = (props: Props) => {
     if (url) {
       router.push({
         pathname: url,
-        query: { id: id }
+        query: id
       })
     }
     setAnchorEl(null)
@@ -233,7 +233,7 @@ const UserDropdown = (props: Props) => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings', value.id)}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/sistema/controle-acesso/usuario/profile/${value.id}`, )}>
           <Box sx={styles}>
             <AccountOutline sx={{ mr: 2 }} />
             Perfil
