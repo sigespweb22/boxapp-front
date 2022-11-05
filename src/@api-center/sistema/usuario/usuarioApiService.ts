@@ -8,7 +8,9 @@ export default {
   listToSelectAsync: `${apiUsers}/list-to-select`,
   addAsync: `${apiUsers}/create`,
   updateAsync: `${apiUsers}/update`,
+  updateUsuarioContaAsync: `${apiUsers}/conta/update`,
   deleteAsync: `${apiUsers}/delete/`,
   alterStatusAsync: `${apiUsers}/alter-status/`,
+  contaListOneAsync: `${apiUsers}/conta/list-one`,
   storageTokenKeyName: 'accessToken'
 }

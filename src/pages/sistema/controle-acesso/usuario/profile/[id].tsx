@@ -5,8 +5,6 @@ const UsuarioPerfilRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  debugger
-
   return <UsuarioPerfilPage id={String(id)}/>
 }
 

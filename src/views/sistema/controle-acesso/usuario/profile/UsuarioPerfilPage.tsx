@@ -16,9 +16,9 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
-import TabInfo from 'src/views/pages/account-settings/TabInfo'
-import TabAccount from 'src/views/pages/account-settings/TabAccount'
-import TabSecurity from 'src/views/pages/account-settings/TabSecurity'
+import UsuarioPerfilConta from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilConta'
+import UsuarioPerfilSeguranca from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilSeguranca'
+import UsuarioPerfilInfo from 'src/views/sistema/controle-acesso/usuario/profile/UsuarioPerfilInfo'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -80,7 +80,7 @@ const UsuarioPerfilPage = (props: Props) => {
             }
           />
           <Tab
-            value='infos'
+            value='info'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
@@ -91,13 +91,13 @@ const UsuarioPerfilPage = (props: Props) => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='conta'>
-          <TabAccount />
+          <UsuarioPerfilConta id={props.id} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='seguracao'>
-          <TabSecurity />
+          <UsuarioPerfilSeguranca id={props.id} />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='infos'>
-          <TabInfo />
+        <TabPanel sx={{ p: 0 }} value='info'>
+          <UsuarioPerfilInfo id={props.id} />
         </TabPanel>
       </TabContext>
     </Card>
