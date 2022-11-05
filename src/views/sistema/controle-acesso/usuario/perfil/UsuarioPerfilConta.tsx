@@ -18,7 +18,7 @@ import Button, { ButtonProps } from '@mui/material/Button'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { fetchUsuarioConta, editUsuarioConta } from 'src/store/sistema/controle-acesso/usuario'
+import { editUsuarioConta } from 'src/store/sistema/controle-acesso/usuario'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'

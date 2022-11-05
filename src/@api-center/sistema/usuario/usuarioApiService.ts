@@ -9,6 +9,7 @@ export default {
   addAsync: `${apiUsers}/create`,
   updateAsync: `${apiUsers}/update`,
   updateUsuarioContaAsync: `${apiUsers}/conta/update`,
+  updateUsuarioSegurancaAsync: `${apiUsers}/seguranca/update`,
   deleteAsync: `${apiUsers}/delete/`,
   alterStatusAsync: `${apiUsers}/alter-status/`,
   contaListOneAsync: `${apiUsers}/conta/list-one`,

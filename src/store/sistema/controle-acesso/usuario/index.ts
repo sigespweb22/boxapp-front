@@ -8,9 +8,12 @@ import axios from 'axios'
 // ** Api Services
 import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
 
+// ** Context
+import { useAuth } from 'src/hooks/useAuth'
+
 // ** Toast
 import toast from 'react-hot-toast'
-import { UsersType, UsuarioContaType } from 'src/types/sistema/controle-acesso/userTypes'
+import { UsersType, UsuarioContaType, UsuarioSegurancaType } from 'src/types/sistema/controle-acesso/userTypes'
 
 interface DataParams {
   q: string
@@ -279,6 +282,24 @@ export const editUsuarioConta = createAsyncThunk(
         });
       }
     })
+  }
+)
+
+// ** Métodos Usuário Seguranca
+
+// ** Update Usuario Seguranca
+export const editUsuarioSeguranca = createAsyncThunk(
+  'appUsers/editUsuarioSeguranca',
+  async (data : UsuarioSegurancaType, {}: Redux) => {
+    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    const response =  axios.put(usuarioApiService.updateUsuarioSegurancaAsync, data, config)
+    return response
   }
 )
 
