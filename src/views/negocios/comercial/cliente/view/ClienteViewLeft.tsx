@@ -242,4 +242,9 @@ const ClienteViewLeft = ({id}: Props) => {
   }
 }
 
+ClienteViewLeft.acl = {
+  action: 'read',
+  subject: 'ac-cliente-page'
+}
+
 export default ClienteViewLeft

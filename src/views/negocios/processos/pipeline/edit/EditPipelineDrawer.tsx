@@ -221,4 +221,11 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+SidebarEditPipeline.acl = {
+  action: 'update',
+  subject: 'ac-pipeline-page'
+}
+
 export default SidebarEditPipeline

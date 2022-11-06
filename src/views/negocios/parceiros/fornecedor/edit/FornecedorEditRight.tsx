@@ -66,4 +66,11 @@ const FornecedorEditRight = ({ id }: Props) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+FornecedorEditRight.acl = {
+  action: 'update',
+  subject: 'ac-fornecedor-page'
+}
+
 export default FornecedorEditRight

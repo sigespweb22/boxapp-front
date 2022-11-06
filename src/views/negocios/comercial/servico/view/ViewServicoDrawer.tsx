@@ -181,7 +181,7 @@ const SidebarClienteView = (props: SidebarViewServicoType) => {
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarClienteView.acl = {
-  action: 'reade',
+  action: 'read',
   subject: 'ac-servico-page'
 }
 

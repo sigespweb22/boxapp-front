@@ -39,4 +39,11 @@ const FornecedorEditPage = ({ fornecedorId }: Props) => {
   }
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+FornecedorEditPage.acl = {
+  action: 'update',
+  subject: 'ac-fornecedor-page'
+}
+
 export default FornecedorEditPage

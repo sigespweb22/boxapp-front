@@ -229,4 +229,9 @@ const FornecedorViewLeft = ({id}: Props) => {
   }
 }
 
+FornecedorViewLeft.acl = {
+  action: 'read',
+  subject: 'ac-fornecedor-page'
+}
+
 export default FornecedorViewLeft

@@ -135,8 +135,6 @@ const UsuarioPerfilInfo = (props: Props) => {
 
   const onSubmit = (data: UsuarioInfoType) => {
     data.telefoneCelular = clearMaskPhone(data.telefoneCelular) || ""
-    debugger
-
     dispatch(editUsuarioInfo({ ...data  }))
   }
 

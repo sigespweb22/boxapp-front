@@ -595,4 +595,11 @@ const FornecedorEditLeft = ({id}: Props) => {
   }
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+FornecedorEditLeft.acl = {
+  action: 'update',
+  subject: 'ac-fornecedor-page'
+}
+
 export default FornecedorEditLeft

@@ -32,7 +32,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   }
 }))
 
-const ClienteViewRight = ({ id }: Props) => {
+const ClienteEditRight = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
 
@@ -65,4 +65,11 @@ const ClienteViewRight = ({ id }: Props) => {
   )
 }
 
-export default ClienteViewRight
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteEditRight.acl = {
+  action: 'update',
+  subject: 'ac-cliente-page'
+}
+
+export default ClienteEditRight

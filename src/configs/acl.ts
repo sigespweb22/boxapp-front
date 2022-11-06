@@ -1,7 +1,7 @@
 import { AbilityBuilder, Ability } from '@casl/ability'
 
 export type Subjects = string
-export type Actions = 'manage' | 'list' | 'list-one' | 'read' | 'create' | 'update' | 'delete' 
+export type Actions = 'manage' | 'list' | 'read' | 'create' | 'update' | 'delete' 
 
 export type AppAbility = Ability<[Actions, Subjects]> | undefined
 
@@ -20,25 +20,41 @@ const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
   role.forEach((item) => {
-    /// begin - master
-    if (item === 'Master') {
+    // ** begin - master
+    if (item === 'MasterTenancy') {
       can('manage', 'all')
-    /// end - master
+    ///
 
-    /// begin - user
+    /// begin - dashboard all
+    } else if (item === 'CanDashboardAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-cliente-page')
+      can('read', 'ac-dashboard-controle_acesso-page')
+    /// end - dashboard all
+
+    /// begin - dashboard cliente
+    } else if (item === 'CanDashboardClienteAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-client-page')
+    /// end - dashboard cliente
+
+    /// begin - dashboard controle acesso
+    } else if (item === 'CanDashboardControleAcessoAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-controle_acesso-page')
+    /// end - dashboard controle acesso'
+
+    /// begin user
     } else if (item === 'CanUserAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-user-page')
     } else if (item === 'CanUserList') {
       can('list', 'ac-user-page')
     } else if (item === 'CanUserRead') {
       can('read', 'ac-user-page')
-    } else if (item === 'CanUserUpdate' || item === 'CanUserAlterStatus') {
+    } else if (item === 'CanUserUpdate') {
       can('update', 'ac-user-page')
     } else if (item === 'CanUserCreate') {
       can('create', 'ac-user-page')
     } else if (item === 'CanUserDelete') {
       can('delete', 'ac-user-page')
-    /// end - user
+    // end user
     
     /// begin - role/permissions
     } else if (item === 'CanRoleAll') {
@@ -70,29 +86,27 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-grupo-page')
     /// end - grupo
 
-    /// begin - cnpj
-    } else if (item === 'CanCnpjTPAll') {
-      can(['list', 'read'], 'ac-search-cnpj')
-    } else if (item === 'CanCnpjTPListOne') {
-      can('read', 'ac-search-cnpj')
-    /// end - cnpj
-
     /// begin - cliente
     } else if (item === 'CanClienteAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-page')
     } else if (item === 'CanClienteList') {
       can('list', 'ac-cliente-page')
-    } else if (item === 'CanClienteListOne') {
-      can('list-one', 'ac-cliente-page')
     } else if (item === 'CanClienteRead') {
       can('read', 'ac-cliente-page')
-    } else if (item === 'CanClienteUpdate') {
-      can('update', 'ac-cliente-page')
     } else if (item === 'CanClienteCreate') {
       can('create', 'ac-cliente-page')
+    } else if (item === 'CanClienteUpdate') {
+      can('update', 'ac-cliente-page')
     } else if (item === 'CanClienteDelete') {
       can('delete', 'ac-cliente-page')
     /// end - cliente
+
+    /// begin - cnpj
+    } else if (item === 'CanCnpjTPAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-search-cnpj')
+    } else if (item === 'CanCnpjTPRead') {
+      can('read', 'ac-search-cnpj')
+    /// end - cnpj
 
     /// begin - cliente servico
     } else if (item === 'CanClienteServicoAll') {
@@ -101,10 +115,10 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('list', 'ac-cliente-servico-page')
     } else if (item === 'CanClienteServicoRead') {
       can('read', 'ac-cliente-servico-page')
-    } else if (item === 'CanClienteServicoUpdate') {
-      can('update', 'ac-cliente-servico-page')
     } else if (item === 'CanClienteServicoCreate') {
       can('create', 'ac-cliente-servico-page')
+    } else if (item === 'CanClienteServicoUpdate') {
+      can('update', 'ac-cliente-servico-page')
     } else if (item === 'CanClienteServicoDelete') {
       can('delete', 'ac-cliente-servico-page')
     /// end - cliente servico
@@ -116,10 +130,10 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('list', 'ac-servico-page')
     } else if (item === 'CanServicoRead') {
       can('read', 'ac-servico-page')
-    } else if (item === 'CanServicoUpdate') {
-      can('update', 'ac-servico-page')
     } else if (item === 'CanServicoCreate') {
       can('create', 'ac-servico-page')
+    } else if (item === 'CanServicoUpdate') {
+      can('update', 'ac-servico-page')
     } else if (item === 'CanServicoDelete') {
       can('delete', 'ac-servico-page')
     /// end - Servico
@@ -131,10 +145,10 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('list', 'ac-pipeline-page')
     } else if (item === 'CanPipelineRead') {
       can('read', 'ac-pipeline-page')
-    } else if (item === 'CanPipelineUpdate') {
-      can('update', 'ac-pipeline-page')
     } else if (item === 'CanPipelineCreate') {
       can('create', 'ac-pipeline-page')
+    } else if (item === 'CanPipelineUpdate') {
+      can('update', 'ac-pipeline-page')
     } else if (item === 'CanPipelineDelete') {
       can('delete', 'ac-pipeline-page')
     /// end - pipeline
@@ -144,8 +158,6 @@ const defineRulesFor = (role: string[], subject: string) => {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorList') {
       can('list', 'ac-fornecedor-page')
-    } else if (item === 'CanFornecedorListOne') {
-      can('list-one', 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorRead') {
       can('read', 'ac-fornecedor-page')
     } else if (item === 'CanFornecedorUpdate') {
@@ -169,27 +181,10 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('create', 'ac-fornecedor-servico-page')
     } else if (item === 'CanFornecedorServicoDelete') {
       can('delete', 'ac-fornecedor-servico-page')
-    /// end - fornecedor servico
-
-    /// begin - dashboard all
-    } else if (item === 'CanDashboardAll') {
-      can('list', 'ac-dashboard-cliente-page')
-      can('list', 'ac-dashboard-controle_acesso-page')
-    /// end - dashboard client
-
-    /// begin - dashboard client
-    } else if (item === 'CanDashboardClientList') {
-      can('list', 'ac-dashboard-client-page')
-    /// end - dashboard client
-
-    /// begin - dashboard client
-    } else if (item === 'CanDashboardACList') {
-      can('list', 'ac-dashboard-access-control-page')
     } else {
       can(['list', 'read', 'create', 'update', 'delete'], subject)
     }
-    /// end - dashboard client'
-
+    /// end - fornecedor servico
   });
 
   return rules
