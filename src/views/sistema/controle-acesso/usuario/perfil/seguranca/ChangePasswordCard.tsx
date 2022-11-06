@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -33,9 +33,6 @@ import { AppDispatch } from 'src/store'
 
 // ** Actions Imports
 import { editUsuarioSeguranca } from 'src/store/sistema/controle-acesso/usuario'
-
-// ** Context
-import { useAuth } from 'src/hooks/useAuth'
 
 interface Props {
   id: string | undefined
@@ -98,7 +95,6 @@ const ChangePasswordCard = (props: Props) => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const { logout } = useAuth()
   const {
     reset,
     control,
@@ -129,18 +125,7 @@ const ChangePasswordCard = (props: Props) => {
 
   const onPasswordFormSubmit = (data: UsuarioSegurancaType) => {
     data.id = props?.id || ''
-    dispatch(
-      editUsuarioSeguranca({ ...data  })
-    ).then((response) => {
-      if (typeof(response.payload) == 'undefined')
-      {
-        toast.error("Problemas na redefinição de senha. \nVerifique se a Senha Atual está correta!")
-      } else {
-        logout()
-        toast.success("Dados de segurança do usuário alterado com sucesso.")
-      }
-    })
-
+    dispatch(editUsuarioSeguranca({ ...data  }))
     reset(defaultValues)
   }
 

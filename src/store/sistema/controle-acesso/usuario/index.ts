@@ -298,8 +298,34 @@ export const editUsuarioSeguranca = createAsyncThunk(
       }
     }
 
-    const response =  axios.put(usuarioApiService.updateUsuarioSegurancaAsync, data, config)
-    return response
+    axios.put(usuarioApiService.updateUsuarioSegurancaAsync, data, config).then((resp) => {
+      if (resp.status === 204) return toast.success("Dados de segurança do usuário alterados com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
   }
 )
 
