@@ -10,6 +10,8 @@ export default {
   updateAsync: `${apiUsers}/update`,
   updateUsuarioContaAsync: `${apiUsers}/conta/update`,
   updateUsuarioSegurancaAsync: `${apiUsers}/seguranca/update`,
+  updateUsuarioInfoAsync: `${apiUsers}/info/update`,
+  infoListOneAsync: `${apiUsers}/info/list-one`,
   deleteAsync: `${apiUsers}/delete/`,
   alterStatusAsync: `${apiUsers}/alter-status/`,
   contaListOneAsync: `${apiUsers}/conta/list-one`,

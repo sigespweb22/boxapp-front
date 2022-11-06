@@ -1,5 +1,5 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { useEffect, forwardRef, useState } from 'react'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -15,113 +15,237 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import FormControlLabel from '@mui/material/FormControlLabel'
-
-// ** Third Party Imports
-import DatePicker from 'react-datepicker'
-
-// ** Styled Components
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Types
 import { DateType } from 'src/types/forms/reactDatepickerTypes'
+import { AppDispatch } from 'src/store'
+import { UsuarioInfoType } from 'src/types/sistema/controle-acesso/userTypes'
+
+// ** Store Imports
+import { useDispatch } from 'react-redux'
+
+// ** Third Party Imports
+import { useForm, Controller } from 'react-hook-form'
+
+// ** Actions Imports
+import { editUsuarioInfo } from 'src/store/sistema/controle-acesso/usuario'
+
+// ** InputMask Imports
+import InputMask from 'react-input-mask'
+
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api imports
+import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
+import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
+import { Renderable, Toast, toast, ValueFunction } from 'react-hot-toast'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField inputRef={ref} label='Birth Date' fullWidth {...props} />
+  return <TextField inputRef={ref} label='Data aniversário' fullWidth {...props} />
 })
 
 interface Props {
   id: string | undefined
 }
 
-const TabInfo = (props: Props) => {
-  // ** State
-  const [date, setDate] = useState<DateType>(null)
+interface UsuarioInfoData {
+  id: string,
+  bio: string,
+  dataAniversario: string,
+  telefoneCelular: string,
+  genero: string,
+}
+
+const defaultValues: UsuarioInfoData = {
+  id: '',
+  bio: '',
+  dataAniversario: '',
+  telefoneCelular: '',
+  genero: ''
+}
+
+const defaultValuesGeneros: string[] = []
+
+const clearMaskPhone = (telefone: string) => {
+  if (telefone)
+  {
+    return telefone.replace(" ", "").replace("(", "").replace(")", "").replace(".", "").replace("-", "")
+  }
+}
+
+const UsuarioPerfilInfo = (props: Props) => {
+  // ** Stats
+  const [generos, setGeneros] = useState(defaultValuesGeneros)
+
+  // ** Hooks
+  const dispatch = useDispatch<AppDispatch>()
+  const {
+    reset,
+    control,
+    setValue,
+    handleSubmit
+  } = useForm({
+    defaultValues,
+    mode: 'onChange'
+  })
+
+  useEffect(() => {
+    const storageTokenKeyName = window.localStorage.getItem(enumApiService.storageTokenKeyName)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storageTokenKeyName}`
+      }
+    }
+    axios
+      .get(enumApiService.generosListAsync, config)
+      .then((response) => {
+        setGeneros(response.data)
+      })
+  }, [])
+
+  useEffect(() => {
+    const storageTokenKeyName = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storageTokenKeyName}`
+      }
+    }
+    axios
+      .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, config)
+      .then((response) => {
+        if (response.status === 200) {
+          setValue('id', response.data.id)
+          setValue('bio', response.data.bio)
+          setValue('dataAniversario', response.data.dataAniversario)
+          setValue('telefoneCelular', response.data.telefoneCelular)
+          setValue('genero', response.data.genero)
+        }
+      })
+      .catch((err => {
+        if (err.response.status === 400 || err.response.status === 404)
+        return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
+      }))
+  }, [])
+  
+  const handleReset = () => {
+    reset()
+  }
+
+  const onSubmit = (data: UsuarioInfoType) => {
+    data.telefoneCelular = clearMaskPhone(data.telefoneCelular) || ""
+    debugger
+
+    dispatch(editUsuarioInfo({ ...data  }))
+  }
 
   return (
     <CardContent>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={7}>
           <Grid item xs={12} sx={{ mt: 4.8 }}>
-            <TextField
-              fullWidth
-              multiline
-              label='Bio'
-              minRows={2}
-              placeholder='Bio'
-              defaultValue='The name’s John Deo. I am a tireless seeker of knowledge, occasional purveyor of wisdom and also, coincidentally, a graphic designer. Algolia helps businesses across industries quickly create relevant 😎, scalable 😀, and lightning 😍 fast search and discovery experiences.'
-            />
+            <FormControl fullWidth sx={{ mb: 0 }}>
+                <Controller
+                  name='bio'
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      fullWidth
+                      multiline
+                      minRows={2}
+                      label='Biografia'
+                      placeholder='(e.g.: Meu nome é John Doe, tenho 37 anos, sou casado e amo tecnologia...)'
+                      onChange={(newValue): void => {
+                        onChange(newValue)
+                      }}
+                      value={value}
+                    />
+                  )}
+                />
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={date}
-                showYearDropdown
-                showMonthDropdown
-                id='account-settings-date'
-                placeholderText='MM-DD-YYYY'
-                customInput={<CustomInput />}
-                onChange={(date: Date) => setDate(date)}
+            <FormControl fullWidth sx={{ mb: 0 }}>
+              <Controller
+                name='dataAniversario'
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <InputMask
+                    mask="99/99/9999"
+                    value={value}
+                    disabled={false}
+                    onChange={(newValue): void => {
+                      onChange(newValue)
+                    }}
+                  >
+                    <TextField
+                      disabled={false}
+                      name="dataAniversario"
+                      type="text"
+                      label='Data aniversário'
+                      placeholder='(e.g.: 01/04/1985)'
+                    />
+                  </InputMask>
+                )}
               />
-            </DatePickerWrapper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='number' label='Phone' placeholder='(123) 456-7890' />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label='Website'
-              placeholder='https://example.com/'
-              defaultValue='https://themeselection.com/'
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Country</InputLabel>
-              <Select label='Country' defaultValue='USA'>
-                <MenuItem value='USA'>USA</MenuItem>
-                <MenuItem value='UK'>UK</MenuItem>
-                <MenuItem value='Australia'>Australia</MenuItem>
-                <MenuItem value='Germany'>Germany</MenuItem>
-              </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel id='form-layouts-separator-multiple-select-label'>Languages</InputLabel>
-              <Select
-                multiple
-                defaultValue={['English']}
-                id='account-settings-multiple-select'
-                labelId='account-settings-multiple-select-label'
-                input={<OutlinedInput label='Languages' id='select-multiple-language' />}
-              >
-                <MenuItem value='English'>English</MenuItem>
-                <MenuItem value='French'>French</MenuItem>
-                <MenuItem value='Spanish'>Spanish</MenuItem>
-                <MenuItem value='Portuguese'>Portuguese</MenuItem>
-                <MenuItem value='Italian'>Italian</MenuItem>
-                <MenuItem value='German'>German</MenuItem>
-                <MenuItem value='Arabic'>Arabic</MenuItem>
-              </Select>
-            </FormControl>
+            <FormControl fullWidth sx={{ mb: 0 }}>
+                <Controller
+                  name='telefoneCelular'
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <InputMask
+                      mask="(99) 9.9999-9999"
+                      value={value}
+                      disabled={false}
+                      onChange={(newValue): void => {
+                        onChange(newValue)
+                      }}
+                    >
+                      <TextField
+                        disabled={false}
+                        name="telefoneCelular"
+                        type="text"
+                        label='Telefone celular'
+                        placeholder='(e.g.: (48) 98901-4524)'
+                      />
+                    </InputMask>
+                  )}
+                />
+              </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl>
-              <FormLabel sx={{ fontSize: '0.875rem' }}>Gender</FormLabel>
-              <RadioGroup row defaultValue='male' aria-label='gender' name='account-settings-info-radio'>
-                <FormControlLabel value='male' label='Male' control={<Radio />} />
-                <FormControlLabel value='female' label='Female' control={<Radio />} />
-                <FormControlLabel value='other' label='Other' control={<Radio />} />
-              </RadioGroup>
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name="genero"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <Autocomplete
+                      value={value}
+                      sx={{ width: 360 }}
+                      options={generos}
+                      onChange={(event, newValue) => {
+                        onChange(newValue)
+                      }}
+                      id='autocomplete-controlled'
+                      getOptionLabel={option => option}
+                      renderInput={params => <TextField {...params} label='Gênero' />}
+                    />
+                  )
+                }}
+              />
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Button variant='contained' sx={{ mr: 3.5 }}>
-              Save Changes
+            <Button type='submit' variant='contained' sx={{ mr: 3.5 }}>
+              Salvar alterações
             </Button>
-            <Button type='reset' variant='outlined' color='secondary' onClick={() => setDate(null)}>
-              Reset
+            <Button type='button' onClick={() => handleReset()} variant='outlined' color='secondary'>
+              Limpar
             </Button>
           </Grid>
         </Grid>
@@ -130,4 +254,9 @@ const TabInfo = (props: Props) => {
   )
 }
 
-export default TabInfo
+UsuarioPerfilInfo.acl = {
+  action: 'update',
+  subject: 'ac-user-page'
+}
+
+export default UsuarioPerfilInfo

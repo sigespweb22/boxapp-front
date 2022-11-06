@@ -50,6 +50,14 @@ export type UsuarioContaType = {
   applicationUserGroups: []
 }
 
+export type UsuarioInfoType = {
+  id: string
+  bio: string
+  dataAniversario: string
+  telefoneCelular: string
+  genero: string
+}
+
 export type UsuarioSegurancaType = {
   senhaAnterior: string
   novaSenha: string
