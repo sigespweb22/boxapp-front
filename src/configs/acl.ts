@@ -21,7 +21,7 @@ const defineRulesFor = (role: string[], subject: string) => {
 
   role.forEach((item) => {
     // ** begin - master
-    if (item === 'MasterTenancy') {
+    if (item === 'Master') {
       can('manage', 'all')
     ///
 
