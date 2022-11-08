@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** MUI Imports
-import Button from '@mui/material/Button'
 import Box, { BoxProps } from '@mui/material/Box'
 import Grid, { GridProps } from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -31,9 +30,6 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
 
-// ** Custom Components Imports
-import PageHeader from 'src/@core/components/page-header'
-
 // ** Actions Imports
 import { fetchData } from 'src/store/sistema/controle-acesso/role'
 
@@ -52,9 +48,6 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
-
-// ** Actions Imports
-import { updateRole } from 'src/store/sistema/controle-acesso/role'
 
 interface CellType {
   row: RoleType
@@ -195,7 +188,6 @@ const RoleList = () => {
   const {
     control,
     setValue: setFormValue,
-    handleSubmit,
     formState: { errors }
   } = useForm({ 
     defaultValues

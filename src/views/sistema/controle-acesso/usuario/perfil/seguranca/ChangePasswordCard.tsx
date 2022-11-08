@@ -21,7 +21,6 @@ import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
 import * as yup from 'yup'
-import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -42,6 +41,10 @@ interface State {
   showNewPassword: boolean
   showCurrentPassword: boolean
   showConfirmNewPassword: boolean
+}
+
+function Teste () {
+  const t = 1
 }
 
 interface UsuarioSegurancaType {

@@ -45,11 +45,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-interface Props {
-  id: string | undefined
-}
-
-const AccountSettings = (props: Props) => {
+const AccountSettings = () => {
   debugger
   // ** State
   const [value, setValue] = useState<string>('account')

@@ -1,24 +1,15 @@
 // ** React Imports
-import { useEffect, forwardRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import Radio from '@mui/material/Radio'
-import Select from '@mui/material/Select'
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import FormLabel from '@mui/material/FormLabel'
-import InputLabel from '@mui/material/InputLabel'
-import RadioGroup from '@mui/material/RadioGroup'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Types
-import { DateType } from 'src/types/forms/reactDatepickerTypes'
 import { AppDispatch } from 'src/store'
 import { UsuarioInfoType } from 'src/types/sistema/controle-acesso/userTypes'
 
@@ -41,10 +32,6 @@ import axios from 'axios'
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
 import { Renderable, Toast, toast, ValueFunction } from 'react-hot-toast'
-
-const CustomInput = forwardRef((props, ref) => {
-  return <TextField inputRef={ref} label='Data aniversário' fullWidth {...props} />
-})
 
 interface Props {
   id: string | undefined

@@ -16,13 +16,8 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
-import CogOutline from 'mdi-material-ui/CogOutline'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import EmailOutline from 'mdi-material-ui/EmailOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import MessageOutline from 'mdi-material-ui/MessageOutline'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
 
 // ** Context
@@ -113,8 +108,12 @@ const formatGroupsToTooltip = (groups: string[]) => {
 const formatGroup = (groups: GroupData[]) => {
   if (groups.length > 0)
   {
-    if (groups.length > 1) return `${groups[0].name}...`
-    return groups[0].name
+    if (groups.length > 1) 
+    {
+      return `${groups[0].name}...`
+    } else {
+      return groups[0].name
+    }
   }
 }
 
