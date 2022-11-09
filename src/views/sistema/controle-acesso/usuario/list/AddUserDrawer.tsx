@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useState, MouseEvent, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -11,6 +11,13 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import Autocomplete from '@mui/material/Autocomplete'
+import InputLabel from '@mui/material/InputLabel'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -44,6 +51,11 @@ interface SidebarAddUserType {
   toggle: () => void
 }
 
+interface State {
+  showNewPassword: boolean
+  showConfirmNewPassword: boolean
+}
+
 let groups: { id: string, name: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -75,15 +87,23 @@ const schema = yup.object().shape({
     .required("E-mail é Requerido"),
   password: yup
     .string()
-    .min(3, obj => showErrors('Senha', obj.value.length, obj.min))
-    .typeError('Senha é requerida')
+    .min(6, obj => showErrors('Senha ', obj.value.length, obj.min))
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Deve conter 6 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial'
+    )
+    .required(),
+  confirmNewPassword: yup
+    .string()
     .required()
+    .oneOf([yup.ref('password')], 'As senhas devem ser iguais')
 })
 
 const defaultValues = {
   fullName: '',
   email: '',
   password: '',
+  confirmNewPassword: '',
   applicationUserGroups: [],
 }
 
@@ -109,6 +129,12 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   // ** Props
   const { open, toggle } = props
 
+  // ** States
+  const [values, setValues] = useState<State>({
+    showNewPassword: false,
+    showConfirmNewPassword: false
+  })
+
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
@@ -123,6 +149,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   })
 
   const onSubmit = (data: UsersType) => {
+    debugger
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()
@@ -131,6 +158,20 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   const handleClose = () => {
     toggle()
     reset()
+  }
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showNewPassword: !values.showNewPassword })
+  }
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+  }
+  
+  const handleClickShowConfirmNewPassword = () => {
+    setValues({ ...values, showConfirmNewPassword: !values.showConfirmNewPassword })
+  }
+  const handleMouseDownConfirmNewPassword = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
   }
 
   return (
@@ -183,24 +224,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             />
             {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='password'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="password"
-                  value={value}
-                  label='Senha'
-                  onChange={onChange}
-                  placeholder='(e.g.: Password123*)'
-                  error={Boolean(errors.password)}
-                />
-              )}
-            />
-            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
-          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
               name="applicationUserGroups"
@@ -225,6 +248,76 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                 )
               }}
             />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <InputLabel 
+              htmlFor='input-new-password' 
+              error={Boolean(errors.password)}>
+              Senha
+            </InputLabel>
+            <Controller
+              name='password'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <OutlinedInput
+                  value={value}
+                  label='Senha'
+                  onChange={onChange}
+                  id='input-new-password'
+                  error={Boolean(errors.password)}
+                  type={values.showNewPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        edge='end'
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        <Icon icon={values.showNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              )}
+            />
+            {errors.password && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>
+            )}
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <InputLabel htmlFor='input-confirm-new-password' error={Boolean(errors.confirmNewPassword)}>
+            Confirma Nova Senha
+            </InputLabel>
+            <Controller
+              name='confirmNewPassword'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <OutlinedInput
+                  value={value}
+                  label='Confirma Nova Senha'
+                  onChange={onChange}
+                  id='input-confirm-new-password'
+                  error={Boolean(errors.confirmNewPassword)}
+                  type={values.showConfirmNewPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        edge='end'
+                        onClick={handleClickShowConfirmNewPassword}
+                        onMouseDown={handleMouseDownConfirmNewPassword}
+                      >
+                        <Icon icon={values.showConfirmNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              )}
+            />
+            {errors.confirmNewPassword && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.confirmNewPassword.message}</FormHelperText>
+            )}
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>

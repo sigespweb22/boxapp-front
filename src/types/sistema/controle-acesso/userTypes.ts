@@ -40,3 +40,25 @@ export type UserEditType = {
   email: string
   applicationUserGroups: ApplicationUserGroupViewModelType[]
 }
+
+export type UsuarioContaType = {
+  id: string
+  avatar: string
+  userName: string
+  email: string
+  fullName: string
+  applicationUserGroups: []
+}
+
+export type UsuarioInfoType = {
+  id: string
+  bio: string
+  dataAniversario: string
+  telefoneCelular: string
+  genero: string
+}
+
+export type UsuarioSegurancaType = {
+  senhaAnterior: string
+  novaSenha: string
+}

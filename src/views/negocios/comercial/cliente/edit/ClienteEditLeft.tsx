@@ -97,7 +97,7 @@ const defaultValues: ClienteType = {
   status: '',
 }
 
-const ClienteViewLeft = ({id}: Props) => {
+const ClienteEditLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const [data, setData] = useState<null | ClienteType>(defaultValues)
@@ -616,4 +616,11 @@ const ClienteViewLeft = ({id}: Props) => {
   }
 }
 
-export default ClienteViewLeft
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteEditLeft.acl = {
+  action: 'update',
+  subject: 'ac-cliente-page'
+}
+
+export default ClienteEditLeft

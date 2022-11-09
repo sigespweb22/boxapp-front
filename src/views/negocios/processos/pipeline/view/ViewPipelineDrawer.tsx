@@ -93,19 +93,20 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
               render={() => {
                 return (
                   <FormControl fullWidth>
-                    <Box sx={{ fontSize: 16, mb: "10px" }}>Assinantes</Box>
-                    {props?.row?.pipelineAssinantes.map(assinante =>
-                       {
-                        return (
-                          <>
-                            <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
-                              <AccountGroupOutline fontSize='small' />
-                            </IconButton>
-                            {assinante.name}
-                          </>
-                        )
-                       }
-                    )}
+                    <Box sx={{ fontSize: 20, mb: "10px" }}>Assinantes</Box>
+                    {
+                      props?.row?.pipelineAssinantes.map((item) => {
+                          return (
+                              <Box key={item.name}  sx={{ fontSize: 16, mb: "10px" }}>
+                                <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
+                                  <AccountGroupOutline fontSize='small' />
+                                </IconButton>
+                                {item.name}
+                              </Box>
+                          )
+                        }
+                      )
+                    }
                   </FormControl>
                 )
               }}

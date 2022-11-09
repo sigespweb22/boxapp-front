@@ -32,4 +32,11 @@ const PipelineManagerPage = ({id}: Propstype) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade específica para ter acesso a esta página com o subject abaixo
+PipelineManagerPage.acl = {
+  action: 'update',
+  subject: 'ac-pipeline-page'
+}
+
 export default PipelineManagerPage

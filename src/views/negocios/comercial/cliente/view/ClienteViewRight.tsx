@@ -57,4 +57,9 @@ const ClienteViewRight = ({ id }: Props) => {
   )
 }
 
+ClienteViewRight.acl = {
+  action: 'read',
+  subject: 'ac-cliente-page'
+}
+
 export default ClienteViewRight

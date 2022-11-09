@@ -301,4 +301,11 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteServicoTableListToView.acl = {
+  action: 'list',
+  subject: 'ac-cliente-servico-page'
+}
+
 export default ClienteServicoTableListToView

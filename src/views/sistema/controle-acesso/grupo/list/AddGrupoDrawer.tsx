@@ -197,7 +197,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarAddGroup.acl = {
   action: 'create',
-  subject: 'ac-group-page'
+  subject: 'ac-grupo-page'
 }
 
 export default SidebarAddGroup

@@ -163,4 +163,11 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+SidebarAddRole.acl = {
+  action: 'create',
+  subject: 'ac-role-page'
+}
+
 export default SidebarAddRole

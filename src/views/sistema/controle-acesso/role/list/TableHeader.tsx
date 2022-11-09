@@ -1,6 +1,5 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 
 // ** Third Party Imports
@@ -17,7 +16,7 @@ const TableHeader = (props: TableHeaderProps) => {
   const { t } = useTranslation()
 
   // ** Props
-  const { handleFilter, toggle, value } = props
+  const { handleFilter, value } = props
 
   return (
     <Box sx={{ p: 5, pb: 3, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'flex-end' }}>
@@ -29,9 +28,6 @@ const TableHeader = (props: TableHeaderProps) => {
           placeholder={t("Search Permission")}
           onChange={e => handleFilter(e.target.value)}
         />
-        <Button sx={{ mb: 2 }} onClick={toggle} variant='contained'>
-          + {t("Add Permission")}
-        </Button>
       </Box>
     </Box>
   )

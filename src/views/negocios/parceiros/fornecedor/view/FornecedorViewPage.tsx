@@ -40,6 +40,8 @@ const FornecedorViewPage = ({ fornecedorId }: Props) => {
   }
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
 FornecedorViewPage.acl = {
   action: 'read',
   subject: 'ac-fornecedor-page'

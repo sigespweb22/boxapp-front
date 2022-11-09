@@ -10,10 +10,16 @@ import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService
 
 // ** Toast
 import toast from 'react-hot-toast'
-import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
+
+// ** Types
+import { UsersType, UsuarioContaType, UsuarioSegurancaType, UsuarioInfoType } from 'src/types/sistema/controle-acesso/userTypes'
 
 interface DataParams {
   q: string
+}
+
+interface IdParams {
+  id: string
 }
 
 interface Redux {
@@ -219,5 +225,151 @@ export const appUsersSlice = createSlice({
     })
   }
 })
+
+// ** Métodos Usuário Conta
+
+// ** Fetch Users
+export const fetchUsuarioConta = createAsyncThunk('appUsers/fetchUsuarioConta', async (params: IdParams) => {
+  const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+  const response = await axios
+                            .get(usuarioApiService.listAsync, {
+                                  headers: {
+                                    Authorization: "Bearer " + storedToken
+                                  },
+                                  params
+                            })
+
+  return response.data
+})
+
+// ** Update Usuario Conta
+export const editUsuarioConta = createAsyncThunk(
+  'appUsers/editUsuarioConta',
+  async (data : UsuarioContaType, {}: Redux) => {
+    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    axios.put(usuarioApiService.updateUsuarioContaAsync, data, config).then((resp) => {
+      if (resp.status === 204) return toast.success("Conta Usuário atualizada com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
+
+// ** Métodos Usuário Seguranca
+
+// ** Update Usuario Seguranca
+export const editUsuarioSeguranca = createAsyncThunk(
+  'appUsers/editUsuarioSeguranca',
+  async (data : UsuarioSegurancaType, {}: Redux) => {
+    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    axios.put(usuarioApiService.updateUsuarioSegurancaAsync, data, config).then((resp) => {
+      if (resp.status === 204) return toast.success("Dados de segurança do usuário alterados com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
+
+// ** Métodos Usuário Info
+
+// ** Update Usuario Info
+export const editUsuarioInfo = createAsyncThunk(
+  'appUsers/editUsuarioInfo',
+  async (data : UsuarioInfoType, {}: Redux) => {
+    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: "Bearer " + storedToken
+      }
+    }
+
+    axios.put(usuarioApiService.updateUsuarioInfoAsync, data, config).then((resp) => {
+      if (resp.status === 204) return toast.success("Informações pessoais do usuário alteradas com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        } else {
+          resp.response.data.errors.forEach((err: any) => {
+            toast.error(err)
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie)        
+          })
+        });
+      }
+    })
+  }
+)
 
 export default appUsersSlice.reducer

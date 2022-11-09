@@ -215,7 +215,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteServicoTableListToView = ({ id }: Props) => {
+const FornecedorServicoTableListToView = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -308,4 +308,11 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
   )
 }
 
-export default ClienteServicoTableListToView
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+FornecedorServicoTableListToView.acl = {
+  action: 'list',
+  subject: 'ac-fornecedor-servico-page'
+}
+
+export default FornecedorServicoTableListToView

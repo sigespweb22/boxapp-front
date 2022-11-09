@@ -15,7 +15,7 @@ interface Props {
     clienteId: string | string [] | undefined
 }
 
-const ClienteViewPage = ({ clienteId }: Props) => {
+const ClienteEditPage = ({ clienteId }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
 
@@ -39,4 +39,11 @@ const ClienteViewPage = ({ clienteId }: Props) => {
   }
 }
 
-export default ClienteViewPage
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteEditPage.acl = {
+  action: 'update',
+  subject: 'ac-cliente-page'
+}
+
+export default ClienteEditPage

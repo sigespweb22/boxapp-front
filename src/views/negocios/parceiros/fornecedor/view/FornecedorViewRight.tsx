@@ -57,4 +57,11 @@ const FornecedorViewRight = ({ id }: Props) => {
   )
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+FornecedorViewRight.acl = {
+  action: 'read',
+  subject: 'ac-fornecedor-page'
+}
+
 export default FornecedorViewRight
