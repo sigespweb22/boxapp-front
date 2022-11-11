@@ -181,10 +181,26 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('create', 'ac-fornecedor-servico-page')
     } else if (item === 'CanFornecedorServicoDelete') {
       can('delete', 'ac-fornecedor-servico-page')
+    /// end - fornecedor servico
+
+    // begin - chave api
+    } else if (item === 'CanChaveApiAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiList') {
+      can('list', 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiRead') {
+      can('read', 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiUpdate') {
+      can('update', 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiCreate') {
+      can('create', 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiDelete') {
+      can('delete', 'ac-chave_api-page')
     } else {
       can(['list', 'read', 'create', 'update', 'delete'], subject)
     }
-    /// end - fornecedor servico
+    /// end - chave api
+
   });
 
   return rules
