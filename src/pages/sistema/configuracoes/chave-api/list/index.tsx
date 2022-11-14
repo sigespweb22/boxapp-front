@@ -37,57 +37,42 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusChaveApi } from 'src/store/sistema/configuracoes/chave-api/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApiTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'
-import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAddDrawer'
+import TableHeader from 'src/views/sistema/configuracoes/chave-api/new/TableHeader'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ClientStatusType {
+interface ChaveApiStatusType {
   [key: string]: ThemeColor
 }
 
 interface CellType {
-  row: ClienteType
+  row: ChaveApiType
 }
 
-interface Props {
-  id: string
-  name: string
-  idade: string
-}
-
-const clientStatusObj: ClientStatusType = {
+const chaveApiStatusObj: ChaveApiStatusType = {
   ACTIVE: 'success',
-  RECORRENTE: 'secondary'
+  DEACTIVE: 'secondary'
 }
-
-// ** Styled component for the link for the avatar without image
-const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  marginRight: theme.spacing(3)
-}))
 
 // ** renders cliente column
-const renderClient = (row: ClienteType) => {
+const renderChaveApi = (row: ChaveApiType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/cliente/view/${row.id}`}>
-      <CustomAvatar
-          skin='light'
-          color={'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
-      </CustomAvatar>
-    </AvatarWithoutImageLink>
+    <CustomAvatar
+        skin='light'
+        color={'primary'}
+        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+      >
+        {getInitials(row.apiTerceiro ? row.apiTerceiro : 'CAPI')}
+    </CustomAvatar>
   )
 }
 
@@ -101,7 +86,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clientStatusObj[status]}
+        color={chaveApiStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -111,32 +96,28 @@ const defaultColumns = [
   {
     flex: 0.2,
     minWidth: 30,
-    field: 'nome',
-    headerName: 'Nome',
+    field: 'apiTerceiro',
+    headerName: 'Api terceiro',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, nomeFantasia, emailPrincipal } = row
+      const { apiTerceiro } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderChaveApi(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/cliente/view/${id}`} passHref>
-              <Typography
+            <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {nomeFantasia}
-              </Typography>
-            </Link>
-            <Link href={`/apps/cliente/view/${id}`} passHref>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                📬{emailPrincipal}
-              </Typography>
-            </Link>
+                {apiTerceiro}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              🔐{apiTerceiro}
+            </Typography>
           </Box>
         </Box>
       )
@@ -145,14 +126,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'cnpj',
-    headerName: 'CNPJ',
+    field: 'key',
+    headerName: 'key',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.cnpj}
+          {row.key}
         </Typography>
       )
     }
@@ -160,14 +141,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'telefonePrincipal',
-    headerName: 'Telefone principal',
+    field: 'descricao',
+    headerName: 'descricao',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.telefonePrincipal}
+          {row.descricao}
         </Typography>
       )
     }
@@ -175,29 +156,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'cidade',
-    headerName: 'Cidade',
+    field: 'dataValidade',
+    headerName: 'data Validade',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.cidade}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'Estado',
-    headerName: 'estado',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.estado}
+          {row.dataValidade}
         </Typography>
       )
     }
@@ -213,7 +179,7 @@ const defaultColumns = [
   }
 ]
 
-const ChaveApiList = (props: Props) => {
+const ChaveApiList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -221,10 +187,9 @@ const ChaveApiList = (props: Props) => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteAddOpen, setClienteAddOpen] = useState<boolean>(false)
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.cliente)
+  const store = useSelector((state: RootState) => state.chaveApi)
 
   useEffect(() => {
     dispatch(
@@ -239,7 +204,7 @@ const ChaveApiList = (props: Props) => {
   }, [])
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusClient(id))
+    dispatch(alterStatusChaveApi(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -269,8 +234,6 @@ const ChaveApiList = (props: Props) => {
     }
   }
 
-  const toggleClienteAddDrawer = () => setClienteAddOpen(!clienteAddOpen)
-
   const columns = [
     ...defaultColumns,
     {
@@ -283,8 +246,8 @@ const ChaveApiList = (props: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-page') &&
-            <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
+          {ability?.can('read', 'ac-chave_api-page') &&
+            <Link href={`/sistema/configuracoes/chave-api/view/${row.id}`} passHref>
               <Tooltip title={t("View")}>
                 <IconButton>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -292,16 +255,16 @@ const ChaveApiList = (props: Props) => {
               </Tooltip>
             </Link>
           }
-          {ability?.can('update', 'ac-cliente-page') &&
+          {ability?.can('update', 'ac-chave_api-page') &&
             <Tooltip title={t("Edit")}>
-              <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
+              <Link href={`/sistema/configuracoes/chave-api/edit/${row.id}`} passHref>
                 <IconButton>
                   <PencilOutline fontSize='small' />
                 </IconButton>
               </Link>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-cliente-page') &&
+          {ability?.can('delete', 'ac-chave_api-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -314,18 +277,18 @@ const ChaveApiList = (props: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Clients")}</Typography>}
+            title={<Typography variant='h5'>{t("Api Key")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Clients listing")}.
+                {t("Api key listing")}.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-page') ? (
+        {ability?.can('list', 'ac-chave_api-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleClienteAddDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -340,7 +303,6 @@ const ChaveApiList = (props: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
       </Grid>
     </Grid>
   )

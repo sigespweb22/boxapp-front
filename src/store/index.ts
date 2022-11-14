@@ -14,6 +14,7 @@ import pipeline from 'src/store/negocios/processos/pipeline'
 import fornecedor from 'src/store/negocios/parceiros/fornecedor'
 import fornecedorServico from 'src/store/negocios/parceiros/fornecedor/servico'
 import fornecedorView from 'src/store/negocios/parceiros/fornecedor/view'
+import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -30,6 +31,7 @@ export const store = configureStore({
     fornecedor,
     fornecedorServico,
     fornecedorView,
+    chaveApi,
     chat,
     email,
     calendar
