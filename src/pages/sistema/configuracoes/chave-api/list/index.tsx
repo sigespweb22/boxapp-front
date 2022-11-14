@@ -46,6 +46,7 @@ import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApi
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/configuracoes/chave-api/new/TableHeader'
+import ChaveApiPageEdit from 'src/views/sistema/configuracoes/chave-api/edit/ChaveApiPageEdit'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -187,6 +188,8 @@ const ChaveApiList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
+  const [chaveApiPageEditOpen, setChaveApiPageEditOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<UsersType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.chaveApi)
@@ -233,6 +236,8 @@ const ChaveApiList = () => {
       )
     }
   }
+
+  const toggleChaveApiPageEdit = () => setChaveApiPageEditOpen(!chaveApiPageEditOpen)
 
   const columns = [
     ...defaultColumns,
@@ -303,6 +308,7 @@ const ChaveApiList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
+        <ChaveApiPageEdit open={chaveApiPageEditOpen} toggle={toggleChaveApiPageEdit} row={row}/>
       </Grid>
     </Grid>
   )

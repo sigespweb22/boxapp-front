@@ -7,7 +7,7 @@ export default {
   listAsync: `${apiChaveApiTerceiro}/list`,
   addAsync: `${apiChaveApiTerceiro}/create`,
   updateAsync: `${apiChaveApiTerceiro}/update`,
-  deleteAsync: `${apiChaveApiTerceiro}/delete/`,
-  alterStatusAsync: `${apiChaveApiTerceiro}/alter-status/`,
+  deleteAsync: `${apiChaveApiTerceiro}/delete`,
+  alterStatusAsync: `${apiChaveApiTerceiro}/alter-status`,
   storageTokenKeyName: 'accessToken'
 }
