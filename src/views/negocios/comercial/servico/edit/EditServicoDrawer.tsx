@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect, SyntheticEvent, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -57,8 +57,8 @@ const MenuProps = {
 }
 
 interface FornecedorServicoType {
-  id: string
-  nome: string
+  id: string | null
+  nome: string | null
 }
 
 interface SidebarAddServicoType {
@@ -180,10 +180,6 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
     reset()
   }
 
-  const handleChange = (event: SyntheticEvent, newValue: FornecedorServicoType) => {
-    setValue('fornecedorServico', newValue)
-  }
-
   return (
     <Drawer
       open={open}
@@ -293,22 +289,26 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
               }}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <Controller
-              name="fornecedorServico"
+              name={"fornecedorServico"}
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
+                    multiple={false}
+                    options={fornecedoresServicos || []}
+                    filterSelectedOptions
                     value={value}
-                    sx={{ width: 360 }}
-                    options={fornecedoresServicos}
-                    onChange={():void => {
-                      onChange(handleChange)
-                    }}
-                    id='autocomplete-controlled'
+                    id="autocomplete-multiple-outlined"
                     getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
+                    renderInput={params => (
+                      <TextField {...params} label="Fornecedor Serviço" placeholder='(e.g.: E-mail 50GB)' />
+                    )}
+                    onChange={(event, newValue) => {
+                      setValue('fornecedorServico', newValue || {id: '', nome: ''})
+                      onChange(newValue)
+                    }}
                   />
                 )
               }}
