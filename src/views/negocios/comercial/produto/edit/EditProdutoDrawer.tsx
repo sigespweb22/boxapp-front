@@ -56,11 +56,6 @@ const MenuProps = {
   }
 }
 
-interface FornecedorProdutoType {
-  id: string
-  nome: string
-}
-
 interface SidebarAddProdutoType {
   row: ProdutoType | undefined
   open: boolean
@@ -71,18 +66,12 @@ interface ProdutoData {
   id: string
   nome: string
   codigoUnico: string
-  tipo: string
-  valorCusto: string
   caracteristicas: string
-  unidadeMedida: string
+  descricao: string
+  valorCusto: string
   status: string
-  fornecedorServico: {id: string, nome: string}
-  fornecedorServicoId: string
   avatarColor: ThemeColor
 }
-
-const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
-let fornecedoresProdutos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -113,11 +102,9 @@ const defaultValues = {
   id: '',
   nome: '',
   codigoUnico: '',
-  tipo: '',
-  valorCusto: '',
-  unidadeMedida: '',
-  fornecedorServico: {id: '', nome: ''},
   caracteristicas: '',
+  descricao: '',
+  valorCusto: '',
   status: ''
 }
 
@@ -147,11 +134,9 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
     setValue('codigoUnico', props?.row?.codigoUnico || '')
-    setValue('tipo', props?.row?.tipo || '')
-    setValue('valorCusto', props?.row?.valorCusto || '')
-    setValue('unidadeMedida', props?.row?.unidadeMedida || '')
-    setValue('fornecedorServico', props?.row?.fornecedorServico || {id: '', nome: ''})
     setValue('caracteristicas', props?.row?.caracteristicas || '')
+    setValue('descricao', props?.row?.descricao || '')
+    setValue('valorCusto', props?.row?.valorCusto || '')
   }, [props])
 
   const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
@@ -160,14 +145,6 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
       Authorization: "Bearer " + storedToken
     }
   }
-
-  useEffect(() => {
-    axios
-      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        fornecedoresProdutos = response.data
-      })
-  }, [fornecedoresProdutos]);
   
   const onSubmit = (data: ProdutoData) => {
     dispatch(editProduto({ ...data,  }))
@@ -178,10 +155,6 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
   const handleClose = () => {
     toggle()
     reset()
-  }
-
-  const handleChange = (event: SyntheticEvent, newValue: FornecedorProdutoType) => {
-    setValue('fornecedorServico', newValue)
   }
 
   return (
@@ -222,7 +195,7 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
                   value={value}
                   label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: Hospedagem de sites 10GB)'
+                  placeholder='(e.g.: Ex.: Nome do produto)'
                   error={Boolean(errors.nome)}
                 />
               )}
@@ -246,87 +219,46 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorCusto'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type='string'
-                  value={value}
-                  label='Valor custo'
-                  name='valorCusto'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="unidadeMedida"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
-                    <Select
-                      name="unidadeMedida"
-                      autoWidth
-                      label="Unidade medida"
-                      value={value}
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      {
-                        unidadesMedida.map(um => (
-                          <MenuItem key={um} value={um}>
-                            {um}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="fornecedorServico"
-              control={control}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <Autocomplete
-                    value={value}
-                    sx={{ width: 360 }}
-                    options={fornecedoresProdutos}
-                    onChange={():void => {
-                      onChange(handleChange)
-                    }}
-                    id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
-                  />
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
               name='caracteristicas'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   label='Características'
                   onChange={onChange}
-                  placeholder='(e.g.: Produto frágil ou Serviço de baixa complexidade)'
+                  placeholder='(e.g.: Características do produto)'
                 />
               )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="descricao"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Descrição'
+                  onChange={onChange}
+                  placeholder='(e.g.: Descrição do produto)'
+                />
+              )}
+            />
+          </FormControl> 
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="valorCusto"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <TextField
+                  value={value}
+                  label='Valor custo'
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
+                />
+                )
+              }}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

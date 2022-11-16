@@ -101,6 +101,32 @@ const SidebarClienteView = (props: SidebarViewProdutoType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller              
+              name='caracteristicas'
+              control={control}
+              render={() => (
+                <TextField
+                  disabled={true}
+                  value={props?.row?.caracteristicas}
+                  placeholder='Caracteristicas'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller              
+              name='descricao'
+              control={control}
+              render={() => (
+                <TextField
+                  disabled={true}
+                  value={props?.row?.descricao}
+                  placeholder='Descrição'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller              
               name='valorCusto'
               control={control}
               render={() => (
@@ -108,45 +134,6 @@ const SidebarClienteView = (props: SidebarViewProdutoType) => {
                   disabled={true}
                   value={props?.row?.valorCusto}
                   placeholder='Valor custo'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller              
-              name='unidadeMedida'
-              control={control}
-              render={() => (
-                <TextField
-                  disabled={true}
-                  value={props?.row?.unidadeMedida}
-                  placeholder='Unidade medida'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller              
-              name='fornecedorServico'
-              control={control}
-              render={() => (
-                <TextField
-                  disabled={true}
-                  value={props?.row?.fornecedorServico.nome}
-                  placeholder='Fornecedor serviço'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller              
-              name='caracteristicas'
-              control={control}
-              render={() => (
-                <TextField
-                  disabled={true}
-                  value={props?.row?.caracteristicas}
-                  placeholder='Características'
                 />
               )}
             />

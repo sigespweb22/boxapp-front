@@ -9,12 +9,9 @@ export type ProdutoType = {
   id: string
   nome: string
   codigoUnico: string
-  tipo: string
-  valorCusto: string
   caracteristicas: string
-  unidadeMedida: string
-  fornecedorServico: {id: string, nome: string}
-  fornecedorServicoId: string
+  descricao: string
+  valorCusto: string
   status: string
   avatarColor: ThemeColor
 }

@@ -1,6 +1,3 @@
-// ** React Imports
-import { useEffect } from 'react'
-
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -57,9 +54,6 @@ interface SidebarAddProdutoType {
   toggle: () => void
 }
 
-const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
-let fornecedoresServicos: { id: string, nome: string  }[] = [];
-
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
     return `${field} é requerido (a)`
@@ -93,9 +87,8 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
     nome: '',
     codigoUnico: '',
     valorCusto: '',
-    unidadeMedida: '',
+    descricao: '',
     caracteristicas: '',
-    fornecedorServico: {id: '', nome: ''},
     status: ''
   }
 
@@ -118,14 +111,6 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
       Authorization: "Bearer " + storedToken
     }
   }
-
-  useEffect(() => {
-    axios
-      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        fornecedoresServicos = response.data
-      })
-  }, [fornecedoresServicos]);
 
   const onSubmit = (data: ProdutoType) => {
     dispatch(addProduto({ ...data,  }))
@@ -163,7 +148,7 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
                   value={value}
                   label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: Hospedagem de sites 10GB)'
+                  placeholder='(e.g.: Ex.: Nome do produto)'
                   error={Boolean(errors.nome)}
                 />
               )}
@@ -187,83 +172,46 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Valor custo'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="unidadeMedida"
-              control={control}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>Unidade medida</InputLabel>
-                    <Select
-                      value={value}
-                      name="unidadeMedida"
-                      autoWidth
-                      label="Unidade medida"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      {
-                        unidadesMedida.map(um => (
-                          <MenuItem key={um} value={um}>
-                            {um}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                )
-              }}
-            />
-          </FormControl> 
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="fornecedorServico"
-              control={control}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <Autocomplete
-                    value={value}
-                    sx={{ width: 360 }}
-                    options={fornecedoresServicos}
-                    onChange={(event, newValue) => {
-                      onChange(newValue)
-                    }}
-                    id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
-                  />
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
               name='caracteristicas'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   label='Características'
                   onChange={onChange}
-                  placeholder='(e.g.: Serviço de alta complexidade)'
+                  placeholder='(e.g.: Características do produto)'
                 />
               )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="descricao"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Descrição'
+                  onChange={onChange}
+                  placeholder='(e.g.: Descrição do produto)'
+                />
+              )}
+            />
+          </FormControl> 
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="valorCusto"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <TextField
+                  value={value}
+                  label='Valor custo'
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
+                />
+                )
+              }}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -284,7 +232,7 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarAddProduto.acl = {
   action: 'create',
-  subject: 'ac-servico-page'
+  subject: 'ac-produto-page'
 }
 
 export default SidebarAddProduto
