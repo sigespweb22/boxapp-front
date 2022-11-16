@@ -8,8 +8,8 @@ export type ChaveApiLayoutType = {
 export type ChaveApiType = {
   id: string,
   apiTerceiro: string,
-  descricao: string,
-  key: string,
+  descricao: string | undefined,
+  key: string | undefined,
   dataValidade: string
   status: string
 }

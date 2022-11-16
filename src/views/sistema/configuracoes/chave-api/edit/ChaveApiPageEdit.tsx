@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,8 +9,9 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import FormHelperText from '@mui/material/FormHelperText'
-import Autocomplete from '@mui/material/Autocomplete'
+
+// ** InputMask Imports
+import InputMask from 'react-input-mask'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -45,6 +46,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+const defaultValues = {
+  id: '',
+  apiTerceiro: '',
+  key: '',
+  descricao: '',
+  dataValidade: '',
+  status: ''
+}
+
 const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
   // ** Hook
   const { t } = useTranslation()
@@ -58,13 +68,14 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
     reset,
     control,
     setValue,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
   } = useForm({
+    defaultValues,
     mode: 'onChange'
   })
 
   const onSubmit = (data: ChaveApiType) => {
+    debugger
     dispatch(updateChaveApi({ ...data,  }))
     toggle()
     reset()
@@ -72,20 +83,23 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
 
   useEffect(() => {
     if(props?.row){
-      setValue('id', props?.row?.id ?? '')
-      setValue('key', props?.row?.key ?? '')
-      setValue('descricao', props?.row?.descricao ?? '')
-      setValue('dataValidade', props?.row?.dataValidade ?? '')
+      debugger
+      setValue('id', props?.row?.id || '')
+      setValue('apiTerceiro', props?.row?.apiTerceiro || '')
+      setValue('key', props?.row?.key || '')
+      setValue('descricao', props?.row?.descricao || '')
+      setValue('dataValidade', props?.row?.dataValidade || '')
     }
-  }, [props?.row])
+  }, [props])
 
   const handleClose = () => {
     toggle()
     reset()
-    setValue('id', props?.row?.id ?? '')
-    setValue('key', props?.row?.key ?? '')
-    setValue('descricao', props?.row?.descricao ?? '')
-    setValue('dataValidade', props?.row?.dataValidade ?? '')
+    setValue('id', props?.row?.id || '')
+    setValue('apiTerceiro', props?.row?.apiTerceiro || '')
+    setValue('key', props?.row?.key || '')
+    setValue('descricao', props?.row?.descricao || '')
+    setValue('dataValidade', props?.row?.dataValidade || '')
   }
 
   return (
@@ -98,7 +112,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("User Edit")}</Typography>
+        <Typography variant='h6'>{t("Api key Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -117,59 +131,68 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='fullName'
+              name='apiTerceiro'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  disabled={true}
                   value={value}
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: Loren Ipsun)'
-                  error={Boolean(errors.fullName)}
+                  placeholder='(e.g.: Bom controle)'
                 />
               )}
             />
-            {errors.fullName && <FormHelperText sx={{ color: 'error.main' }}>{errors.fullName.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='email'
+              name='key'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: loren@dominio.com'
-                  error={Boolean(errors.email)}
+                  label={"Chave"}
+                  placeholder='(e.g.: d00d77c7-253a-406f-b8b1-a8a7af23e614'
                 />
               )}
             />
-            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
+          <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name={"applicationUserGroups"}
+              name='descricao'
               control={control}
-              render={({ field: { onChange } }) => {
-                return (
-                  <Autocomplete
-                    multiple
-                    options={groups || []}
-                    filterSelectedOptions
-                    value={group}
-                    id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.name}
-                    renderInput={params => (
-                      <TextField {...params} label="Grupos" placeholder='(e.g.: Master)' />
-                    )}
-                    onChange={(event, newValue) => {
-                      setGroup(newValue)
-                      onChange(newValue)
-                    }}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  onChange={onChange}
+                  label={"Descrição"}
+                  placeholder='(e.g.: Esta chave de api oferece permissão para atualizar dados do módulo financeiro'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='dataValidade'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <InputMask
+                  mask="99/99/9999"
+                  value={value}
+                  disabled={false}
+                  onChange={(newValue): void => {
+                    onChange(newValue)
+                  }}
+                >
+                  <TextField
+                    disabled={false}
+                    label={"Data validade"}
+                    name="dataValidade"
+                    type="text"
+                    placeholder='(e.g.: 01/04/1985)'
                   />
-                )
-              }}
+                </InputMask>
+              )}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

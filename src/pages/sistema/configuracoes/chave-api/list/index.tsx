@@ -189,9 +189,10 @@ const ChaveApiList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [chaveApiPageEditOpen, setChaveApiPageEditOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<UsersType | undefined>()
+  const [row, setRow] = useState<ChaveApiType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
+  debugger
   const store = useSelector((state: RootState) => state.chaveApi)
 
   useEffect(() => {
@@ -205,6 +206,15 @@ const ChaveApiList = () => {
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
+
+  const handleViewChaveApi = (row : ChaveApiType) => {
+    setRow(row)
+  }
+
+  const handleEditChaveApi = (row : ChaveApiType) => {
+    setRow(row)
+    setChaveApiPageEditOpen(true)
+  }
 
   const handleAlterStatus = (id: string) => {
     dispatch(alterStatusChaveApi(id))
@@ -252,24 +262,20 @@ const ChaveApiList = () => {
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('read', 'ac-chave_api-page') &&
-            <Link href={`/sistema/configuracoes/chave-api/view/${row.id}`} passHref>
-              <Tooltip title={t("View")}>
-                <IconButton>
-                  <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                </IconButton>
-              </Tooltip>
-            </Link>
+            <Tooltip title={t("View")}>
+              <IconButton onClick={() => handleViewChaveApi(row)}>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
           }
           {ability?.can('update', 'ac-chave_api-page') &&
             <Tooltip title={t("Edit")}>
-              <Link href={`/sistema/configuracoes/chave-api/edit/${row.id}`} passHref>
-                <IconButton>
-                  <PencilOutline fontSize='small' />
-                </IconButton>
-              </Link>
+              <IconButton onClick={() => handleEditChaveApi(row)}>
+                <PencilOutline fontSize='small' />
+              </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-chave_api-page') &&
+          {ability?.can('delete', 'ac-user-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
