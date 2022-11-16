@@ -83,7 +83,7 @@ export const updateChaveApi = createAsyncThunk(
 
     axios.put(chaveApiApiServices.updateAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().chaveApi.params))
-      if (resp.status === 204) return toast.success("Permissão atualizada com sucesso.")
+      if (resp.status === 204) return toast.success("Chave de api atualizada com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
