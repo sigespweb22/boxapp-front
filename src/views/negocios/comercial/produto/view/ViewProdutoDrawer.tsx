@@ -8,15 +8,15 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
+import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
 import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarViewServicoType {
-  row: ServicoType | undefined
+interface SidebarViewProdutoType {
+  row: ProdutoType | undefined
   open: boolean
   toggle: () => void
 }
@@ -29,7 +29,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarClienteView = (props: SidebarViewServicoType) => {
+const SidebarClienteView = (props: SidebarViewProdutoType) => {
   // ** Hook
   const {
     reset,
@@ -55,7 +55,7 @@ const SidebarClienteView = (props: SidebarViewServicoType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Serviço</Typography>
+        <Typography variant='h6'>Visualizar Produto</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -182,7 +182,7 @@ const SidebarClienteView = (props: SidebarViewServicoType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarClienteView.acl = {
   action: 'read',
-  subject: 'ac-servico-page'
+  subject: 'ac-produto-page'
 }
 
 export default SidebarClienteView

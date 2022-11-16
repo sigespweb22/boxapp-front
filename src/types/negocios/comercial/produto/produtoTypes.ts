@@ -1,11 +1,11 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
-export type ServicoLayoutType = {
+export type ProdutoLayoutType = {
   id: string
 }
 
-export type ServicoType = {
+export type ProdutoType = {
   id: string
   nome: string
   codigoUnico: string
