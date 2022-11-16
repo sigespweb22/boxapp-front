@@ -49,11 +49,9 @@ export const addProduto = createAsyncThunk(
     const data2 = {
       nome: data.nome,
       codigoUnico: data.codigoUnico,
-      tipo: data.tipo,
-      valorCusto: data.valorCusto,
-      unidadeMedida: data.unidadeMedida,
-      fornecedorServico: data.fornecedorServico,
       caracteristicas: data.caracteristicas,
+      descricao: data.descricao,
+      valorCusto: data.valorCusto,
     }
 
     axios.post(produtoApiService.addAsync, data2, config).then((resp) => {
@@ -100,14 +98,11 @@ export const editProduto = createAsyncThunk(
     }
 
     const data2 = {
-      id: data.id,
       nome: data.nome,
       codigoUnico: data.codigoUnico,
-      tipo: data.tipo,
-      valorCusto: data.valorCusto,
-      unidadeMedida: data.unidadeMedida,
-      fornecedorServico: data.fornecedorServico,
       caracteristicas: data.caracteristicas,
+      descricao: data.descricao,
+      valorCusto: data.valorCusto,
     }
 
     axios.put(produtoApiService.updateAsync, data2, config).then((resp) => {

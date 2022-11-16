@@ -61,10 +61,6 @@ interface ProdutoStatusType {
   [key: string]: ThemeColor
 }
 
-interface UnidadeMedidaType {
-  [key: string]: ReactElement
-}
-
 interface CellType {
   row: ProdutoType
 }
@@ -74,13 +70,6 @@ const produtoStatusObj: ProdutoStatusType = {
   RECORRENTE: 'secondary'
 }
 
-const unidadeMedidaObj: UnidadeMedidaType = {
-  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
-  HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
-  vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
-}
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -119,21 +108,6 @@ const RenderStatus = ({ status } : { status: string }) => {
   )
 }
 
-const umResolveColor = (um: string) => {
-  switch (um) 
-  {
-    case 'CPU':
-      return 'info'
-    case 'HR':
-      return 'primary'
-    case 'GB':
-      return 'secondary'
-    case 'vCPU':
-      return 'error'
-    default: 
-      return 'primary'
-  }
-}
 
 const defaultColumns = [
   {
@@ -144,7 +118,7 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, nome, unidadeMedida } = row
+      const { id, nome, caracteristicas } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -162,7 +136,7 @@ const defaultColumns = [
             </Link>
             <Link href={`/apps/produto/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🩺{unidadeMedida}
+                🩺{caracteristicas}
               </Typography>
             </Link>
           </Box>
@@ -187,22 +161,15 @@ const defaultColumns = [
   },
   {
     flex: 0.1,
-    field: 'unidadeMedida',
+    field: 'caracteristicas',
     minWidth: 130,
-    headerName: 'Unidade medida',
+    headerName: 'Características',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {unidadeMedidaObj[row.unidadeMedida]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.unidadeMedida}
-            color={umResolveColor(row.unidadeMedida)}
-            sx={{ textTransform: 'capitalize' }}
-          />
+          {row.caracteristicas}
         </Box>
       )
     }
