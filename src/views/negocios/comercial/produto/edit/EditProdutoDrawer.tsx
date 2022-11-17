@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent, useState } from 'react'
+import { useEffect, SyntheticEvent } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -32,18 +32,18 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { editServico } from 'src/store/negocios/comercial/servico'
+import { editProduto } from 'src/store/negocios/comercial/produto'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ServicoType } from 'src/types/negocios/comercial/servico/servicoTypes'
+import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
 import { ThemeColor } from 'src/@core/layouts/types'
 
 // ** Axios Imports
 import axios from 'axios'
 
 // ** Api Services
-import fornecedorServicoApiService from 'src/@api-center/negocios/parceiros/fornecedor/servico/fornecedorServicoApiService'
+import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/fornecedor/produto/fornecedorProdutoApiService'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -56,33 +56,32 @@ const MenuProps = {
   }
 }
 
-interface FornecedorServicoType {
-  id: string | null
-  nome: string | null
-}
-
-interface SidebarAddServicoType {
-  row: ServicoType | undefined
+interface SidebarAddProdutoType {
+  row: ProdutoType | undefined
   open: boolean
   toggle: () => void
 }
 
-interface ServicoData {
+interface ProdutoData {
   id: string
   nome: string
   codigoUnico: string
-  tipo: string
-  valorCusto: string
   caracteristicas: string
-  unidadeMedida: string
+  descricao: string
+  valorCusto: string
   status: string
-  fornecedorServico: {id: string, nome: string}
-  fornecedorServicoId: string
   avatarColor: ThemeColor
 }
 
-const unidadesMedida : string[] = ["NENHUM", "CPU", "HR", "GB", "vCPU"];
-let fornecedoresServicos: { id: string, nome: string  }[] = [];
+const defaultValues = {
+  id: '',
+  nome: '',
+  codigoUnico: '',
+  caracteristicas: '',
+  descricao: '',
+  valorCusto: '',
+  status: ''
+}
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -109,19 +108,7 @@ const schema = yup.object().shape({
     .required()
 })
 
-const defaultValues = {
-  id: '',
-  nome: '',
-  codigoUnico: '',
-  tipo: '',
-  valorCusto: '',
-  unidadeMedida: '',
-  fornecedorServico: {id: '', nome: ''},
-  caracteristicas: '',
-  status: ''
-}
-
-const SidebarServicoEdit = (props: SidebarAddServicoType) => {
+const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -147,30 +134,21 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
     setValue('codigoUnico', props?.row?.codigoUnico || '')
-    setValue('tipo', props?.row?.tipo || '')
-    setValue('valorCusto', props?.row?.valorCusto || '')
-    setValue('unidadeMedida', props?.row?.unidadeMedida || '')
-    setValue('fornecedorServico', props?.row?.fornecedorServico || {id: '', nome: ''})
     setValue('caracteristicas', props?.row?.caracteristicas || '')
+    setValue('descricao', props?.row?.descricao || '')
+    setValue('valorCusto', props?.row?.valorCusto || '')
   }, [props])
 
-  const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
+  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
   const config = {
     headers: {
       Authorization: "Bearer " + storedToken
     }
   }
-
-  useEffect(() => {
-    axios
-      .get(`${fornecedorServicoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        fornecedoresServicos = response.data
-      })
-  }, [fornecedoresServicos]);
   
-  const onSubmit = (data: ServicoData) => {
-    dispatch(editServico({ ...data,  }))
+  
+  const onSubmit = (data: ProdutoData) => {
+    dispatch(editProduto({ ...data,  }))
     toggle()
     reset()
   }
@@ -190,7 +168,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Serviço</Typography>
+        <Typography variant='h6'>Editar Produto</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -199,6 +177,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
             <Controller
               name='id'
               control={control}
+              rules={{ required: true }}
               render={({ field: { value } }) => (
                 <TextField
                   disabled
@@ -218,7 +197,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
                   value={value}
                   label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: Hospedagem de sites 10GB)'
+                  placeholder='(e.g.: Ex.: Nome do produto)'
                   error={Boolean(errors.nome)}
                 />
               )}
@@ -242,91 +221,46 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorCusto'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type='string'
-                  value={value}
-                  label='Valor custo'
-                  name='valorCusto'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="unidadeMedida"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>{t("Unit Measurement")}</InputLabel>
-                    <Select
-                      name="unidadeMedida"
-                      autoWidth
-                      label="Unidade medida"
-                      value={value}
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      {
-                        unidadesMedida.map(um => (
-                          <MenuItem key={um} value={um}>
-                            {um}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <Controller
-              name={"fornecedorServico"}
-              control={control}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <Autocomplete
-                    multiple={false}
-                    options={fornecedoresServicos || []}
-                    filterSelectedOptions
-                    value={value}
-                    id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.nome}
-                    renderInput={params => (
-                      <TextField {...params} label="Fornecedor Serviço" placeholder='(e.g.: E-mail 50GB)' />
-                    )}
-                    onChange={(event, newValue) => {
-                      setValue('fornecedorServico', newValue || {id: '', nome: ''})
-                      onChange(newValue)
-                    }}
-                  />
-                )
-              }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
               name='caracteristicas'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   label='Características'
                   onChange={onChange}
-                  placeholder='(e.g.: Produto frágil ou Serviço de baixa complexidade)'
+                  placeholder='(e.g.: Características do produto)'
                 />
               )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="descricao"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Descrição'
+                  onChange={onChange}
+                  placeholder='(e.g.: Descrição do produto)'
+                />
+              )}
+            />
+          </FormControl> 
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="valorCusto"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <TextField
+                  value={value}
+                  label='Valor custo'
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
+                />
+                )
+              }}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -345,9 +279,9 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarServicoEdit.acl = {
+SidebarProdutoEdit.acl = {
   action: 'update',
-  subject: 'ac-servico-page'
+  subject: 'ac-produto-page'
 }
 
-export default SidebarServicoEdit
+export default SidebarProdutoEdit

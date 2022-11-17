@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback } from 'react'
+import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -19,11 +19,15 @@ import Typography from '@mui/material/Typography'
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
+import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
+import DesktopClassic from 'mdi-material-ui/DesktopClassic'
+import Cancel from 'mdi-material-ui/Cancel'
+import Matrix from 'mdi-material-ui/Matrix'
+import Alarm from 'mdi-material-ui/Alarm'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
 import Tooltip from '@mui/material/Tooltip';
-
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,43 +41,54 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusChaveApi } from 'src/store/sistema/configuracoes/chave-api/index'
+import { fetchData, alterStatusProduto } from 'src/store/negocios/comercial/produto'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApiTypes'
+import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/sistema/configuracoes/chave-api/new/TableHeader'
-import ChaveApiPageEdit from 'src/views/sistema/configuracoes/chave-api/edit/ChaveApiPageEdit'
+import TableHeader from 'src/views/negocios/comercial/produto/new/TableHeader'
+import AddProdutoDrawer from 'src/views/negocios/comercial/produto/new/AddProdutoDrawer'
+import ViewProdutoDrawer from 'src/views/negocios/comercial/produto/view/ViewProdutoDrawer'
+import EditProdutoDrawer from 'src/views/negocios/comercial/produto/edit/EditProdutoDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ChaveApiStatusType {
+interface ProdutoStatusType {
   [key: string]: ThemeColor
 }
 
 interface CellType {
-  row: ChaveApiType
+  row: ProdutoType
 }
 
-const chaveApiStatusObj: ChaveApiStatusType = {
+const produtoStatusObj: ProdutoStatusType = {
   ACTIVE: 'success',
-  DEACTIVE: 'secondary'
+  RECORRENTE: 'secondary'
 }
 
-// ** renders cliente column
-const renderChaveApi = (row: ChaveApiType) => {
+
+// ** Styled component for the link for the avatar without image
+const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
+  textDecoration: 'none',
+  marginRight: theme.spacing(3)
+}))
+
+// ** renders client column
+const renderClient = (row: ProdutoType) => {
   return (
-    <CustomAvatar
-        skin='light'
-        color={'primary'}
-        sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-      >
-        {getInitials(row.apiTerceiro ? row.apiTerceiro : 'CAPI')}
-    </CustomAvatar>
+    <AvatarWithoutImageLink href={`/apps/produto/view/${row.id}`}>
+      <CustomAvatar
+          skin='light'
+          color={'primary'}
+          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
+        >
+          {getInitials(row.nome ? row.nome : 'NA')}
+      </CustomAvatar>
+    </AvatarWithoutImageLink>
   )
 }
 
@@ -87,38 +102,43 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={chaveApiStatusObj[status]}
+        color={produtoStatusObj[status]}
         sx={{ textTransform: 'capitalize' }}
     />
   )
 }
 
+
 const defaultColumns = [
   {
     flex: 0.2,
     minWidth: 30,
-    field: 'apiTerceiro',
-    headerName: 'Api terceiro',
+    field: 'nome',
+    headerName: 'Nome',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { apiTerceiro } = row
+      const { id, nome, caracteristicas } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderChaveApi(row)}
+          {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography
+            <Link href={`/apps/produto/view/${id}`} passHref>
+              <Typography
                 noWrap
                 component='a'
                 variant='body2'
                 sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
               >
-                {apiTerceiro}
-            </Typography>
-            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              🔐{apiTerceiro}
-            </Typography>
+                {nome}
+              </Typography>
+            </Link>
+            <Link href={`/apps/produto/view/${id}`} passHref>
+              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+                🩺{caracteristicas}
+              </Typography>
+            </Link>
           </Box>
         </Box>
       )
@@ -127,45 +147,30 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'key',
-    headerName: 'key',
+    field: 'valorCusto',
+    headerName: 'Valor custo',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.key}
+          {row.valorCusto}
         </Typography>
       )
     }
   },
   {
     flex: 0.1,
-    minWidth: 100,
     field: 'descricao',
-    headerName: 'descricao',
+    minWidth: 130,
+    headerName: 'Descrição',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
-        <Typography noWrap variant='body2'>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {row.descricao}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'dataValidade',
-    headerName: 'data Validade',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.dataValidade}
-        </Typography>
+        </Box>
       )
     }
   },
@@ -180,7 +185,7 @@ const defaultColumns = [
   }
 ]
 
-const ChaveApiList = () => {
+const ProdutoList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -188,12 +193,14 @@ const ChaveApiList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [chaveApiPageEditOpen, setChaveApiPageEditOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ChaveApiType | undefined>()
+  const [addProdutoOpen, setAddProdutoOpen] = useState<boolean>(false)
+  const [viewProdutoOpen, setViewProdutoOpen] = useState<boolean>(false)
+  const [editProdutoOpen, setEditProdutoOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ProdutoType>()
 
+  // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  debugger
-  const store = useSelector((state: RootState) => state.chaveApi)
+  const store = useSelector((state: RootState) => state.produto)
 
   useEffect(() => {
     dispatch(
@@ -207,17 +214,18 @@ const ChaveApiList = () => {
     setValue(val)
   }, [])
 
-  const handleViewChaveApi = (row : ChaveApiType) => {
+  const handleViewProduto = (row : ProdutoType) => {
     setRow(row)
+    setViewProdutoOpen(true)
   }
 
-  const handleEditChaveApi = (row : ChaveApiType) => {
+  const handleEditProduto = (row : ProdutoType) => {
     setRow(row)
-    setChaveApiPageEditOpen(true)
+    setEditProdutoOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusChaveApi(id))
+    dispatch(alterStatusProduto(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -247,7 +255,9 @@ const ChaveApiList = () => {
     }
   }
 
-  const toggleChaveApiPageEdit = () => setChaveApiPageEditOpen(!chaveApiPageEditOpen)
+  const toggleAddProdutoDrawer = () => setAddProdutoOpen(!addProdutoOpen)
+  const handleProdutoViewToggle = () => setViewProdutoOpen(!viewProdutoOpen)
+  const handleProdutoEditToggle = () => setEditProdutoOpen(!editProdutoOpen)
 
   const columns = [
     ...defaultColumns,
@@ -257,25 +267,25 @@ const ChaveApiList = () => {
       sortable: false,
       field: 'actions',
       headerName: 'Ações',
-      headerAlign: 'center' as const,
-      align: 'center' as const,
+      headerAlign: 'right' as const,
+      align: 'right' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-chave_api-page') &&
+          {ability?.can('read', 'ac-produto-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewChaveApi(row)}>
+              <IconButton onClick={() => handleViewProduto(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-chave_api-page') &&
+          {ability?.can('update', 'ac-produto-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditChaveApi(row)}>
+              <IconButton onClick={() => handleEditProduto(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-user-page') &&
+          {ability?.can('delete', 'ac-produto-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -288,18 +298,18 @@ const ChaveApiList = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Api Key")}</Typography>}
+            title={<Typography variant='h5'>{t("Produtos")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("Api key listing")}.
+                Listagem dos produtos.
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-chave_api-page') ? (
+        {ability?.can('list', 'ac-produto-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddProdutoDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -314,7 +324,9 @@ const ChaveApiList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ChaveApiPageEdit open={chaveApiPageEditOpen} toggle={toggleChaveApiPageEdit} row={row}/>
+        <AddProdutoDrawer open={addProdutoOpen} toggle={toggleAddProdutoDrawer} />
+        <ViewProdutoDrawer open={viewProdutoOpen} toggle={handleProdutoViewToggle} row={row}/>
+        <EditProdutoDrawer open={editProdutoOpen} toggle={handleProdutoEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
@@ -322,9 +334,9 @@ const ChaveApiList = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ChaveApiList.acl = {
+ProdutoList.acl = {
   action: 'list',
-  subject: 'ac-chave_api-page'
+  subject: 'ac-produto-page'
 }
 
-export default ChaveApiList
+export default ProdutoList
