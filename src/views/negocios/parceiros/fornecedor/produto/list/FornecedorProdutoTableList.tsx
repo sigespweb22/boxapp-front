@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, ReactElement } from 'react'
+import { useContext, useState, useEffect, ReactElement } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -15,19 +15,19 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
+import EyeOutline from 'mdi-material-ui/EyeOutline'
+import PencilOutline from 'mdi-material-ui/PencilOutline'
+import Help from 'mdi-material-ui/Help'
 import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
 import DesktopClassic from 'mdi-material-ui/DesktopClassic'
 import Cancel from 'mdi-material-ui/Cancel'
 import Matrix from 'mdi-material-ui/Matrix'
 import Alarm from 'mdi-material-ui/Alarm'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import PencilOutline from 'mdi-material-ui/PencilOutline'
-import Help from 'mdi-material-ui/Help'
-import Tooltip from '@mui/material/Tooltip';
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,35 +41,46 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusProduto } from 'src/store/negocios/comercial/produto'
+import { fetchData, alterStatusFornecedorServico } from 'src/store/negocios/parceiros/fornecedor/servico/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ThemeColor } from 'src/@core/layouts/types'
-import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
+import { FornecedorServicoType } from 'src/types/negocios/parceiros/fornecedor/servico/fornecedorServicoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/produto/new/TableHeader'
-import AddProdutoDrawer from 'src/views/negocios/comercial/produto/new/AddProdutoDrawer'
-import ViewProdutoDrawer from 'src/views/negocios/comercial/produto/view/ViewProdutoDrawer'
-import EditProdutoDrawer from 'src/views/negocios/comercial/produto/edit/EditProdutoDrawer'
+import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
+import FornecedorServicoAddDrawer from 'src/views/negocios/parceiros/fornecedor/servico/new/FornecedorServicoAddDrawer'
+import FornecedorServicoViewDrawer from 'src/views/negocios/parceiros/fornecedor/servico/view/FornecedorServicoViewDrawer'
+import FornecedorServicoEditDrawer from 'src/views/negocios/parceiros/fornecedor/servico/edit/FornecedorServicoEditDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ProdutoStatusType {
-  [key: string]: ThemeColor
+interface Props {
+  id: string | undefined
+}
+
+interface UnidadeMedidaType {
+  [key: string]: ReactElement
 }
 
 interface CellType {
-  row: ProdutoType
+  row: FornecedorServicoType
 }
 
-const produtoStatusObj: ProdutoStatusType = {
-  ACTIVE: 'success',
-  RECORRENTE: 'secondary'
+const fornecedorServicoStatusObj = (status: string) => {
+  switch (status)
+  {
+    case "NENHUM":
+      return 'primary'
+    case "ACTIVE":
+      return 'success'
+    case "INACTIVE":
+      return 'secondary'
+    default:
+      return 'secondary'
+  }
 }
-
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -77,16 +88,16 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-// ** renders client column
-const renderClient = (row: ProdutoType) => {
+// ** renders group column
+const renderNome = (row: FornecedorServicoType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/produto/view/${row.id}`}>
+    <AvatarWithoutImageLink href="#">
       <CustomAvatar
           skin='light'
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.nome ? row.nome : 'NA')}
+          {getInitials(row.nome ? row.nome : 'SN')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -102,80 +113,106 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={produtoStatusObj[status]}
+        color={fornecedorServicoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
 }
 
+const unidadeMedidaIcon: UnidadeMedidaType = {
+  NENHUM:  <Cancel fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  CPU:  <DesktopClassic fontSize='small' sx={{ mr: 3, color: 'info.main' }} />,
+  HR: <Alarm fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  GB: <Matrix fontSize='small' sx={{ mr: 3, color: 'secondary.main' }} />,
+  vCPU: <Cpu64Bit fontSize='small' sx={{ mr: 3, color: 'error.main' }} />
+}
+
+const unidadeMedidaColor = (ct: string) => {
+  switch (ct) 
+  {
+    case 'CPU':
+      return 'info'
+    case 'HR':
+      return 'primary'
+    case 'GB':
+      return 'secondary'
+    case 'vCPU':
+      return 'error'
+    default: 
+      return 'primary'
+  }
+}
 
 const defaultColumns = [
   {
-    flex: 0.2,
+    flex: 0.08,
     minWidth: 30,
-    field: 'nome',
+    field: 'name',
     headerName: 'Nome',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, nome, caracteristicas } = row
+      const { nome } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/produto/view/${id}`} passHref>
-              <Typography
-                noWrap
-                component='a'
-                variant='body2'
-                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {nome}
-              </Typography>
-            </Link>
-            <Link href={`/apps/produto/view/${id}`} passHref>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🛒{caracteristicas}
-              </Typography>
-            </Link>
+            <Typography
+              noWrap
+              component='a'
+              variant='body2'
+              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+            >
+              {nome}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              ⚙️{nome}
+            </Typography>
           </Box>
         </Box>
       )
     }
   },
   {
-    flex: 0.1,
+    flex: 0.04,
     minWidth: 100,
-    field: 'valorCusto',
-    headerName: 'Valor custo',
+    field: 'codigoServico',
+    headerName: 'Código serviço',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorCusto}
+          {row.codigoServico}
         </Typography>
       )
     }
   },
   {
-    flex: 0.1,
-    field: 'descricao',
+    flex: 0.04,
+    field: 'unidadeMedida',
     minWidth: 130,
-    headerName: 'Descrição',
+    headerName: 'Unidade medida',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.descricao}
+          {unidadeMedidaIcon[row.unidadeMedida]}
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.unidadeMedida}
+            color={unidadeMedidaColor(row.unidadeMedida)}
+            sx={{ textTransform: 'capitalize' }}
+          />
         </Box>
       )
     }
   },
   {
-    flex: 0.09,
+    flex: 0.03,
     minWidth: 50,
     field: 'status',
     headerName: 'Status',
@@ -185,51 +222,51 @@ const defaultColumns = [
   }
 ]
 
-const ProdutoList = () => {
+const FornecedorServicoTableList = ({ id }: Props) => {
+  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string>('')
+  const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [addProdutoOpen, setAddProdutoOpen] = useState<boolean>(false)
-  const [viewProdutoOpen, setViewProdutoOpen] = useState<boolean>(false)
-  const [editProdutoOpen, setEditProdutoOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ProdutoType>()
+  const [fornecedorServicoAddOpen, setFornecedorServicoAddOpen] = useState<boolean>(false)
+  const [fornecedorServicoViewOpen, setFornecedorServicoViewOpen] = useState<boolean>(false)
+  const [fornecedorServicoEditOpen, setFornecedorServicoEditOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<FornecedorServicoType | undefined>()
 
-  // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.produto)
+  const store = useSelector((state: RootState) => state.fornecedorServico)
+
+  useEffect(() => {
+    setValue(id)
+  }, [id])
 
   useEffect(() => {
     dispatch(
       fetchData({
-        q: value
+        fornecedorId: value
       })
     )
   }, [dispatch, value])
 
-  const handleFilter = useCallback((val: string) => {
-    setValue(val)
-  }, [])
-
-  const handleViewProduto = (row : ProdutoType) => {
+  const handleViewFornecedorServico = (row : FornecedorServicoType) => {
     setRow(row)
-    setViewProdutoOpen(true)
+    setFornecedorServicoViewOpen(true)
   }
 
-  const handleEditProduto = (row : ProdutoType) => {
+  const handleEditFornecedorServico = (row : FornecedorServicoType) => {
     setRow(row)
-    setEditProdutoOpen(true)
+    setFornecedorServicoEditOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusProduto(id))
+    dispatch(alterStatusFornecedorServico(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
-    if (status === 'INACTIVE')
+    if (status === 'INACTIVE' || status === 'PENDING')
     {
       return (
         <Tooltip title={t("Activate")}>
@@ -246,7 +283,8 @@ const ProdutoList = () => {
           </IconButton>
         </Tooltip>
       )
-    } else {
+    }
+    else {
       return (
         <IconButton onClick={() => handleAlterStatus(id)}>
           <Help fontSize='small' />
@@ -255,37 +293,37 @@ const ProdutoList = () => {
     }
   }
 
-  const toggleAddProdutoDrawer = () => setAddProdutoOpen(!addProdutoOpen)
-  const handleProdutoViewToggle = () => setViewProdutoOpen(!viewProdutoOpen)
-  const handleProdutoEditToggle = () => setEditProdutoOpen(!editProdutoOpen)
+  const toggleFornecedorServicoAddDrawer = () => setFornecedorServicoAddOpen(!fornecedorServicoAddOpen)
+  const toggleFornecedorServicoViewDrawer = () => setFornecedorServicoViewOpen(!fornecedorServicoViewOpen)
+  const toggleFornecedorServicoEditDrawer = () => setFornecedorServicoEditOpen(!fornecedorServicoEditOpen)
 
   const columns = [
     ...defaultColumns,
     {
-      flex: 0.1,
+      flex: 0.05,
       minWidth: 90,
       sortable: false,
-      field: 'actions',
+      field: 'actions', 
       headerName: 'Ações',
-      headerAlign: 'right' as const,
-      align: 'right' as const,
+      headerAlign: 'center' as const,
+      align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-produto-page') &&
+          {ability?.can('read', 'ac-fornecedor-servico-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewProduto(row)}>
+              <IconButton onClick={() => handleViewFornecedorServico(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-produto-page') &&
+          {ability?.can('update', 'ac-fornecedor-servico-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditProduto(row)}>
+              <IconButton onClick={() => handleEditFornecedorServico(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-produto-page') &&
+          {ability?.can('delete', 'ac-fornecedor-servico-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -294,22 +332,24 @@ const ProdutoList = () => {
   ]
 
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={1}>
       <Grid container spacing={6}>
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ mt: "10px"}}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Produtos")}</Typography>}
+            title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Listagem dos produtos.
+                Lista de serviços
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-produto-page') ? (
+        {ability?.can('list', 'ac-fornecedor-servico-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddProdutoDrawer} />
+              {ability?.can('create', 'ac-fornecedor-servico-page') &&
+                <TableHeader toggle={toggleFornecedorServicoAddDrawer} />
+              }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -324,9 +364,9 @@ const ProdutoList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddProdutoDrawer open={addProdutoOpen} toggle={toggleAddProdutoDrawer} />
-        <ViewProdutoDrawer open={viewProdutoOpen} toggle={handleProdutoViewToggle} row={row}/>
-        <EditProdutoDrawer open={editProdutoOpen} toggle={handleProdutoEditToggle} row={row}/>
+        <FornecedorServicoAddDrawer open={fornecedorServicoAddOpen} toggle={toggleFornecedorServicoAddDrawer} fornecedorId={id} />
+        <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
+        <FornecedorServicoEditDrawer open={fornecedorServicoEditOpen} toggle={toggleFornecedorServicoEditDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -334,9 +374,9 @@ const ProdutoList = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ProdutoList.acl = {
+FornecedorServicoTableList.acl = {
   action: 'list',
-  subject: 'ac-produto-page'
+  subject: 'ac-fornecedor-servico-page'
 }
 
-export default ProdutoList
+export default FornecedorServicoTableList
