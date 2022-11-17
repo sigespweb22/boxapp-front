@@ -8,6 +8,7 @@ import role from 'src/store/sistema/controle-acesso/role'
 import grupo from 'src/store/sistema/controle-acesso/grupo'
 import servico from 'src/store/negocios/comercial/servico'
 import cliente from 'src/store/negocios/comercial/cliente'
+import produto from 'src/store/negocios/comercial/produto'
 import clienteServico from 'src/store/negocios/comercial/cliente/servico'
 import clienteView from 'src/store/negocios/comercial/cliente/view'
 import pipeline from 'src/store/negocios/processos/pipeline'
@@ -25,6 +26,7 @@ export const store = configureStore({
     grupo,
     servico,
     cliente,
+    produto,
     clienteServico,
     clienteView,
     pipeline,

@@ -200,7 +200,7 @@ const ProdutoList = () => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.servico)
+  const store = useSelector((state: RootState) => state.produto)
 
   useEffect(() => {
     dispatch(
