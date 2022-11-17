@@ -98,6 +98,7 @@ export const editProduto = createAsyncThunk(
     }
 
     const data2 = {
+      id: data.id,
       nome: data.nome,
       codigoUnico: data.codigoUnico,
       caracteristicas: data.caracteristicas,

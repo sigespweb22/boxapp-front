@@ -161,15 +161,15 @@ const defaultColumns = [
   },
   {
     flex: 0.1,
-    field: 'caracteristicas',
+    field: 'descricao',
     minWidth: 130,
-    headerName: 'Características',
+    headerName: 'Descrição',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.caracteristicas}
+          {row.descricao}
         </Box>
       )
     }

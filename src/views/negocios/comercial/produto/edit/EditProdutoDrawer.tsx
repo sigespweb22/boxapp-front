@@ -73,6 +73,16 @@ interface ProdutoData {
   avatarColor: ThemeColor
 }
 
+const defaultValues = {
+  id: '',
+  nome: '',
+  codigoUnico: '',
+  caracteristicas: '',
+  descricao: '',
+  valorCusto: '',
+  status: ''
+}
+
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
     return `${field} é requerido (a)`
@@ -97,16 +107,6 @@ const schema = yup.object().shape({
     .min(3, obj => showErrors('Nome', obj.value.length, obj.min))
     .required()
 })
-
-const defaultValues = {
-  id: '',
-  nome: '',
-  codigoUnico: '',
-  caracteristicas: '',
-  descricao: '',
-  valorCusto: '',
-  status: ''
-}
 
 const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
   // ** Hook
@@ -176,6 +176,7 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
             <Controller
               name='id'
               control={control}
+              rules={{ required: true }}
               render={({ field: { value } }) => (
                 <TextField
                   disabled
