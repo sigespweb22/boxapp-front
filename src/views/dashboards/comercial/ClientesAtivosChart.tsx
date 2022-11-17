@@ -11,11 +11,13 @@ import ChevronUp from 'mdi-material-ui/ChevronUp'
 // ** Third Party Imports
 import { ApexOptions } from 'apexcharts'
 
-// ** Custom Components Imports
+// ** Custom Components Importss
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 
 // ** Util Import
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+
+// **
 
 const ClientesAtivosChart = () => {
   // ** Hook
@@ -78,7 +80,7 @@ const ClientesAtivosChart = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
             <Typography variant='h6' sx={{ mb: 7.5 }}>
-              Cliente com contratos
+              Clientes com contratos
             </Typography>
             <Typography component='p' variant='caption'>
               Total de clientes que possuem contratos ativos
