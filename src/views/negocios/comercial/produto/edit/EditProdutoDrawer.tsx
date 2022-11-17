@@ -146,6 +146,7 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
     }
   }
   
+  
   const onSubmit = (data: ProdutoData) => {
     dispatch(editProduto({ ...data,  }))
     toggle()
