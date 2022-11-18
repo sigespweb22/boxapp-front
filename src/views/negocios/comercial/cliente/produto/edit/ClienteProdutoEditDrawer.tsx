@@ -1,3 +1,6 @@
+// ** React Imports
+import { useEffect } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -8,6 +11,7 @@ import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import Autocomplete from '@mui/material/Autocomplete'
 import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
@@ -20,25 +24,39 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addFornecedorProduto } from 'src/store/negocios/parceiros/fornecedor/produto/index'
+import { editClienteProduto } from 'src/store/negocios/comercial/cliente/produto'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
+import { ClienteProdutoType } from 'src/types/negocios/comercial/cliente/produto/clienteProdutoTypes'
 
-interface SidebarFornecedorProdutoAddType {
-  fornecedorId: string | undefined
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
+
+interface SidebarClienteProdutoEditType {
+  row: ClienteProdutoType | undefined
   open: boolean
   toggle: () => void
 }
 
-interface FornecedorProdutoData {
-  nome: string,
-  codigoUnico: string,
-  descricao: string,
-  valorCusto: string,
-  caracteristicas: string,
-  fornecedorId: string,
-  fornecedor: { id: '', nome: ''},
+interface ProdutoType {
+  id: string
+  nome: string
+}
+
+let produtos: { id: string, nome: string  }[] = [];
+
+interface ClienteProdutoData {
+  id: string
+  nome: string
+  codigoUnico: string
+  caracteristicas: string
+  descricao: string
+  valorCusto: string
   status: string
 }
 
@@ -51,16 +69,32 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
+  id: '',
   nome: '',
   codigoUnico: '',
+  caracteristicas: '',
   descricao: '',
   valorCusto: '',
-  caracteristicas: '',
-  fornecedor: {id: '', nome: ''},
-  status: ''
+  produto: {id: '', nome: ''},
+  status: '',
 }
 
-const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => {
+const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
+  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${produtoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        produtos = response.data
+      })
+  }, [produtos]);
+
   // ** Props
   const { open, toggle } = props
   
@@ -69,11 +103,22 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
   const {
     reset,
     control,
+    setValue,
     handleSubmit
   } = useForm({
       defaultValues,
       mode: 'onChange'
   })
+
+  useEffect(() => {
+    setValue('id', props?.row?.id || '')
+    setValue('nome', props?.row?.nome || '')
+    setValue('codigoUnico', props?.row?.codigoUnico || '')
+    setValue('caracteristicas', props?.row?.caracteristicas || '')
+    setValue('descricao', props?.row?.descricao || '')
+    setValue('valorCusto', props?.row?.valorCusto || '')
+    //**setValue('produto', props?.row?.produto || {id: '', nome: ''})
+  }, [props])
 
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
@@ -86,10 +131,8 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
     }
   }
 
-  const onSubmit = (data: FornecedorProdutoData) => {
-    debugger
-    data.fornecedorId = props?.fornecedorId || ""
-    dispatch(addFornecedorProduto({ ...data,  }))
+  const onSubmit = (data: ClienteProdutoData) => {
+    dispatch(editClienteProduto({ ...data,  }))
     toggle()
     reset()
   }
@@ -109,23 +152,31 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Fornecedor Produto</Typography>
+        <Typography variant='h6'>Editar Cliente Produto</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>          
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='nome'
+              name="produto"
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Nome'
-                  onChange={onChange}
-                  placeholder='(e.g.: Nome do produto)'
-                />
-              )}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    value={value}
+                    sx={{ width: 360 }}
+                    options={produtos}
+                    onChange={(event, newValue) => {
+                      setValue('produto', newValue || {id: '', nome: ''})
+                      onChange(newValue)
+                    }}
+                    id='autocomplete-controlled'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Produto' />}
+                  />
+                )
+              }}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -135,9 +186,23 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código único'
+                  label='Código Único'
                   onChange={onChange}
                   placeholder='(e.g.: #ABCD1234)'
+                />
+              )}
+            />
+          </FormControl>  
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='caracteristicas'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Características'
+                  onChange={onChange}
+                  placeholder='(e.g.: Característica do produto)'
                 />
               )}
             />
@@ -158,20 +223,6 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='caracteristicas'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Características'
-                  onChange={onChange}
-                  placeholder='(e.g.: Característica do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
               name='valorCusto'
               control={control}
               render={({ field: { value, onChange } }) => (
@@ -179,7 +230,7 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
                   value={value}
                   label='Custo do produto'
                   onChange={onChange}
-                  placeholder='(e.g.: Valor do produto)'
+                  placeholder='(e.g.: R$ 150,00)'
                 />
               )}
             />
@@ -200,9 +251,9 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarFornecedorProdutoAdd.acl = {
-  action: 'create',
-  subject: 'ac-fornecedor-produto-page'
+SidebarClienteProdutoEdit.acl = {
+  action: 'update',
+  subject: 'ac-cliente-produto-page'
 }
 
-export default SidebarFornecedorProdutoAdd
+export default SidebarClienteProdutoEdit

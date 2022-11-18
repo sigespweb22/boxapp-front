@@ -18,16 +18,7 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
-import ElevatorUp from 'mdi-material-ui/ElevatorUp'
-import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import PencilOutline from 'mdi-material-ui/PencilOutline'
-import Help from 'mdi-material-ui/Help'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Cancel from 'mdi-material-ui/Cancel'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,34 +32,35 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusFornecedorProduto } from 'src/store/negocios/parceiros/fornecedor/produto/index'
+import { fetchData } from 'src/store/negocios/comercial/cliente/servico/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { FornecedorProdutoType } from 'src/types/negocios/parceiros/fornecedor/produto/fornecedorProdutoTypes'
+import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/produto/list/TableHeader'
-import FornecedorProdutoAddDrawer from 'src/views/negocios/parceiros/fornecedor/produto/new/FornecedorProdutoAddDrawer'
-import FornecedorProdutoViewDrawer from 'src/views/negocios/parceiros/fornecedor/produto/view/FornecedorProdutoViewDrawer'
-import FornecedorProdutoEditDrawer from 'src/views/negocios/parceiros/fornecedor/produto/edit/FornecedorProdutoEditDrawer'
+import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
+import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
+import Cached from 'mdi-material-ui/Cached'
+import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
+
 interface Props {
-  id: string | undefined
+  id: string | string[] | undefined
 }
 
-interface UnidadeMedidaType {
+interface CobrancaTipoType {
   [key: string]: ReactElement
 }
 
 interface CellType {
-  row: FornecedorProdutoType
+  row: ClienteServicoType
 }
 
-const fornecedorProdutoStatusObj = (status: string) => {
+const clienteServicoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
@@ -89,7 +81,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders group column
-const renderNome = (row: FornecedorProdutoType) => {
+const renderServicoNome = (row: ClienteServicoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -113,10 +105,28 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={fornecedorProdutoStatusObj(status)}
+        color={clienteServicoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
+}
+
+const cobrancaTipoIcon: CobrancaTipoType = {
+  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'second.main' }} />,
+  UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
+  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'info.main' }} />
+}
+
+const cobrancaTipoColor = (ct: string) => {
+  switch (ct) 
+  {
+    case 'NENHUM':
+      return 'secondary'
+    case 'UNICO':
+      return 'primary'
+    case 'RECORRENTE':
+      return 'info'
+  }
 }
 
 const defaultColumns = [
@@ -132,7 +142,7 @@ const defaultColumns = [
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderNome(row)}
+          {renderServicoNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -143,7 +153,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              🛒{nome}
+              ⚙️{nome}
             </Typography>
           </Box>
         </Box>
@@ -151,37 +161,44 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.04,
+    flex: 0.1,
     minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código único',
+    field: 'valorVenda',
+    headerName: 'Valor venda',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.codigoUnico}
+          {row.valorVenda}
         </Typography>
       )
     }
   },
   {
-    flex: 0.04,
-    field: 'descricao',
+    flex: 0.1,
+    field: 'cobrancaTipo',
     minWidth: 130,
-    headerName: 'Descrição',
+    headerName: 'Cobrança tipo',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.descricao}
+          {cobrancaTipoIcon[row.cobrancaTipo]}
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.cobrancaTipo}
+            color={cobrancaTipoColor(row.cobrancaTipo)}
+            sx={{ textTransform: 'capitalize' }}
+          />
         </Box>
       )
     }
   },
   {
-    flex: 0.03,
+    flex: 0.04,
     minWidth: 50,
     field: 'status',
     headerName: 'Status',
@@ -191,8 +208,7 @@ const defaultColumns = [
   }
 ]
 
-const FornecedorProdutoTableList = ({ id }: Props) => {
-  debugger
+const ClienteServicoTableListToView = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -200,13 +216,11 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [fornecedorProdutoAddOpen, setFornecedorProdutoAddOpen] = useState<boolean>(false)
-  const [fornecedorProdutoViewOpen, setFornecedorProdutoViewOpen] = useState<boolean>(false)
-  const [fornecedorProdutoEditOpen, setFornecedorProdutoEditOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<FornecedorProdutoType | undefined>()
+  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ClienteServicoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.fornecedorProduto)
+  const store = useSelector((state: RootState) => state.clienteServico)
 
   useEffect(() => {
     setValue(id)
@@ -215,56 +229,17 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
   useEffect(() => {
     dispatch(
       fetchData({
-        fornecedorId: value
+        clienteId: value
       })
     )
   }, [dispatch, value])
 
-  const handleViewFornecedorProduto = (row : FornecedorProdutoType) => {
+  const handleClienteServicoView = (row : ClienteServicoType) => {
     setRow(row)
-    setFornecedorProdutoViewOpen(true)
+    setClienteServicoViewOpen(true)
   }
 
-  const handleEditFornecedorProduto = (row : FornecedorProdutoType) => {
-    setRow(row)
-    setFornecedorProdutoEditOpen(true)
-  }
-
-  const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusFornecedorProduto(id))
-  }
-
-  const RenderButton = ({ id, status } : { id: string, status: string }) => {
-    if (status === 'INACTIVE' || status === 'PENDING')
-    {
-      return (
-        <Tooltip title={t("Activate")}>
-          <IconButton onClick={() => handleAlterStatus(id)}>
-            <ElevatorUp fontSize='small' />
-          </IconButton>
-        </Tooltip>        
-      )
-    } else if (status === 'ACTIVE') {
-      return (
-        <Tooltip title={t("Deactivate")}>
-          <IconButton onClick={() => handleAlterStatus(id)}>
-            <ElevatorDown fontSize='small' />
-          </IconButton>
-        </Tooltip>
-      )
-    }
-    else {
-      return (
-        <IconButton onClick={() => handleAlterStatus(id)}>
-          <Help fontSize='small' />
-        </IconButton>
-      )
-    }
-  }
-
-  const toggleFornecedorProdutoAddDrawer = () => setFornecedorProdutoAddOpen(!fornecedorProdutoAddOpen)
-  const toggleFornecedorProdutoViewDrawer = () => setFornecedorProdutoViewOpen(!fornecedorProdutoViewOpen)
-  const toggleFornecedorProdutoEditDrawer = () => setFornecedorProdutoEditOpen(!fornecedorProdutoEditOpen)
+  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -278,22 +253,12 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-fornecedor-produto-page') &&
+          {ability?.can('read', 'ac-cliente-servico-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewFornecedorProduto(row)}>
+              <IconButton onClick={() => handleClienteServicoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
-          }
-          {ability?.can('update', 'ac-fornecedor-produto-page') &&
-            <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditFornecedorProduto(row)}>
-                <PencilOutline fontSize='small' />
-              </IconButton>
-            </Tooltip>
-          }
-          {ability?.can('delete', 'ac-fornecedor-produto-page') &&
-            <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
       )
@@ -308,17 +273,14 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de produtos
+                Lista de serviços
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-fornecedor-produto-page') ? (
+        {ability?.can('list', 'ac-cliente-servico-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-fornecedor-produto-page') &&
-                <TableHeader toggle={toggleFornecedorProdutoAddDrawer} />
-              }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -333,9 +295,7 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <FornecedorProdutoAddDrawer open={fornecedorProdutoAddOpen} toggle={toggleFornecedorProdutoAddDrawer} fornecedorId={id} />
-        <FornecedorProdutoViewDrawer open={fornecedorProdutoViewOpen} toggle={toggleFornecedorProdutoViewDrawer} row={row}/>
-        <FornecedorProdutoEditDrawer open={fornecedorProdutoEditOpen} toggle={toggleFornecedorProdutoEditDrawer} row={row}/>
+        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -343,9 +303,9 @@ const FornecedorProdutoTableList = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-FornecedorProdutoTableList.acl = {
+ClienteServicoTableListToView.acl = {
   action: 'list',
-  subject: 'ac-fornecedor-produto-page'
+  subject: 'ac-cliente-servico-page'
 }
 
-export default FornecedorProdutoTableList
+export default ClienteServicoTableListToView
