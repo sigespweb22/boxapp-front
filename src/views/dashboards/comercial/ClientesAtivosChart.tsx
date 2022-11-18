@@ -1,3 +1,5 @@
+import { SetStateAction, useEffect, useState } from 'react'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -17,11 +19,54 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Util Import
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
-// **
+// ** Import Api services
+import dashboardApiServices from 'src/@api-center/dashboards/comercial/dashboardComercialApiService'
+
+// ** Import Axios
+import axios from 'axios'
+
+// ** Toast
+import toast from 'react-hot-toast'
+
+interface ClienteContrato {
+  totalClientesSemContrato: number
+  totalClientesComContrato: number
+  totalClientesUltimosMeses: number
+}
+
+const clientesContratosDefaultValues: ClienteContrato = {
+  totalClientesComContrato: 0,
+  totalClientesSemContrato: 0,
+  totalClientesUltimosMeses: 0
+}
 
 const ClientesAtivosChart = () => {
   // ** Hook
   const theme = useTheme()
+
+  // ** State
+  const [clientesContratos, setClientesContratos] = useState<ClienteContrato>(clientesContratosDefaultValues)
+
+  const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  }
+
+  useEffect(() => {
+    const response = axios.get(dashboardApiServices.clientesContratosAsync, config)
+    
+    response.then((response: { data: SetStateAction<ClienteContrato> }): void => {
+      setClientesContratos(response.data)
+    }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
+      debugger
+      const returnObj = Object.entries(error.response.data.errors);
+      returnObj.forEach((err: any) => {
+        toast.error(err)
+      })
+    })
+  }, [])
 
   const options: ApexOptions = {
     chart: {
@@ -86,7 +131,9 @@ const ClientesAtivosChart = () => {
               Total de clientes que possuem contratos ativos
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant='h6'>31</Typography>
+              <Typography variant='h6'>
+                {clientesContratos.totalClientesComContrato}
+              </Typography>
               <ChevronUp sx={{ color: 'success.main' }} />
               <Typography variant='caption' sx={{ color: 'success.main' }}>
                 48% somente nos últimos 6 meses
