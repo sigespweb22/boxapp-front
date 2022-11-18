@@ -36,17 +36,17 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClienteServico } from 'src/store/negocios/comercial/cliente/servico/index'
+import { fetchData, alterStatusClienteProduto } from 'src/store/negocios/comercial/cliente/produto/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
+import { ClienteProdutoType } from 'src/types/negocios/comercial/cliente/produto/clienteProdutoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/servico/list/TableHeader'
-import ClienteServicoAddDrawer from 'src/views/negocios/comercial/cliente/servico/new/ClienteServicoAddDrawer'
-import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
-import ClienteServicoEditDrawer from 'src/views/negocios/comercial/cliente/servico/edit/ClienteServicoEditDrawer'
+import TableHeader from 'src/views/negocios/comercial/cliente/produto/list/TableHeader'
+import ClienteProdutoAddDrawer from 'src/views/negocios/comercial/cliente/produto/new/ClienteProdutoAddDrawer'
+import ClienteProdutoViewDrawer from 'src/views/negocios/comercial/cliente/produto/view/ClienteProdutoViewDrawer'
+import ClienteProdutoEditDrawer from 'src/views/negocios/comercial/cliente/produto/edit/ClienteProdutoEditDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -59,15 +59,11 @@ interface Props {
   id: string | string[] | undefined
 }
 
-interface CobrancaTipoType {
-  [key: string]: ReactElement
-}
-
 interface CellType {
-  row: ClienteServicoType
+  row: ClienteProdutoType
 }
 
-const clienteServicoStatusObj = (status: string) => {
+const clienteProdutoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
@@ -88,7 +84,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders group column
-const renderServicoNome = (row: ClienteServicoType) => {
+const renderProdutoNome = (row: ClienteProdutoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -112,16 +108,10 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clienteServicoStatusObj(status)}
+        color={clienteProdutoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
-}
-
-const cobrancaTipoIcon: CobrancaTipoType = {
-  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'second.main' }} />,
-  UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'info.main' }} />
 }
 
 const cobrancaTipoColor = (ct: string) => {
@@ -151,7 +141,7 @@ const defaultColumns = [
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderServicoNome(row)}
+          {renderProdutoNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -162,7 +152,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              ⚙️{nome}
+              🛒{nome}
             </Typography>
           </Box>
         </Box>
@@ -172,37 +162,15 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorVenda',
-    headerName: 'Valor venda',
+    field: 'codigoUnico',
+    headerName: 'Código Único',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorVenda}
+          {row.codigoUnico}
         </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    field: 'cobrancaTipo',
-    minWidth: 130,
-    headerName: 'Cobrança tipo',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {cobrancaTipoIcon[row.cobrancaTipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.cobrancaTipo}
-            color={cobrancaTipoColor(row.cobrancaTipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
       )
     }
   },
@@ -217,7 +185,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteServicoTableList = ({ id }: Props) => {
+const ClienteProdutoTableList = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -225,13 +193,13 @@ const ClienteServicoTableList = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteServicoAddOpen, setClienteServicoAddOpen] = useState<boolean>(false)
-  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
-  const [clienteServicoEditOpen, setClienteServicoEditOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteServicoType | undefined>()
+  const [clienteProdutoAddOpen, setClienteProdutoAddOpen] = useState<boolean>(false)
+  const [clienteProdutoViewOpen, setClienteProdutoViewOpen] = useState<boolean>(false)
+  const [clienteProdutoEditOpen, setClienteProdutoEditOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ClienteProdutoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteServico)
+  const store = useSelector((state: RootState) => state.clienteProduto)
 
   useEffect(() => {
     setValue(id)
@@ -245,18 +213,18 @@ const ClienteServicoTableList = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleViewClienteServico = (row : ClienteServicoType) => {
+  const handleViewClienteProduto = (row : ClienteProdutoType) => {
     setRow(row)
-    setClienteServicoViewOpen(true)
+    setClienteProdutoViewOpen(true)
   }
 
-  const handleEditClienteServico = (row : ClienteServicoType) => {
+  const handleEditClienteProduto = (row : ClienteProdutoType) => {
     setRow(row)
-    setClienteServicoEditOpen(true)
+    setClienteProdutoEditOpen(true)
   }
 
   const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusClienteServico(id))
+    dispatch(alterStatusClienteProduto(id))
   }
 
   const RenderButton = ({ id, status } : { id: string, status: string }) => {
@@ -287,9 +255,9 @@ const ClienteServicoTableList = ({ id }: Props) => {
     }
   }
 
-  const toggleClienteServicoAddDrawer = () => setClienteServicoAddOpen(!clienteServicoAddOpen)
-  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
-  const toggleClienteServicoEditDrawer = () => setClienteServicoEditOpen(!clienteServicoEditOpen)
+  const toggleClienteProdutoAddDrawer = () => setClienteProdutoAddOpen(!clienteProdutoAddOpen)
+  const toggleClienteProdutoViewDrawer = () => setClienteProdutoViewOpen(!clienteProdutoViewOpen)
+  const toggleClienteProdutoEditDrawer = () => setClienteProdutoEditOpen(!clienteProdutoEditOpen)
 
   const columns = [
     ...defaultColumns,
@@ -303,21 +271,21 @@ const ClienteServicoTableList = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-servico-page') &&
+          {ability?.can('read', 'ac-cliente-produto-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewClienteServico(row)}>
+              <IconButton onClick={() => handleViewClienteProduto(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-cliente-servico-page') &&
+          {ability?.can('update', 'ac-cliente-produto-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditClienteServico(row)}>
+              <IconButton onClick={() => handleEditClienteProduto(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-cliente-servico-page') &&
+          {ability?.can('delete', 'ac-cliente-produto-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -333,16 +301,16 @@ const ClienteServicoTableList = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de serviços
+                Lista de produtos
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
+        {ability?.can('list', 'ac-cliente-produto-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-cliente-servico-page') &&
-                <TableHeader toggle={toggleClienteServicoAddDrawer} />
+              {ability?.can('create', 'ac-cliente-produto-page') &&
+                <TableHeader toggle={toggleClienteProdutoAddDrawer} />
               }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
@@ -358,9 +326,9 @@ const ClienteServicoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteServicoAddDrawer open={clienteServicoAddOpen} toggle={toggleClienteServicoAddDrawer} clienteId={id} />
-        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
-        <ClienteServicoEditDrawer open={clienteServicoEditOpen} toggle={toggleClienteServicoEditDrawer} row={row}/>
+        <ClienteProdutoAddDrawer open={clienteProdutoAddOpen} toggle={toggleClienteProdutoAddDrawer} clienteId={id} />
+        <ClienteProdutoViewDrawer open={clienteProdutoViewOpen} toggle={toggleClienteProdutoViewDrawer} row={row}/>
+        <ClienteProdutoEditDrawer open={clienteProdutoEditOpen} toggle={toggleClienteProdutoEditDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -368,9 +336,9 @@ const ClienteServicoTableList = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteServicoTableList.acl = {
+ClienteProdutoTableList.acl = {
   action: 'list',
-  subject: 'ac-cliente-servico-page'
+  subject: 'ac-cliente-produto-page'
 }
 
-export default ClienteServicoTableList
+export default ClienteProdutoTableList

@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState, useContext } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -28,6 +28,9 @@ import axios from 'axios'
 // ** Toast
 import toast from 'react-hot-toast'
 
+// ** Context Imports
+import { AbilityContext } from 'src/layouts/components/acl/Can'
+
 interface ClienteContrato {
   totalClientesSemContrato: number
   totalClientesComContrato: number
@@ -43,6 +46,7 @@ const clientesContratosDefaultValues: ClienteContrato = {
 const ClientesAtivosChart = () => {
   // ** Hook
   const theme = useTheme()
+  const ability = useContext(AbilityContext)
 
   // ** State
   const [clientesContratos, setClientesContratos] = useState<ClienteContrato>(clientesContratosDefaultValues)
@@ -151,6 +155,13 @@ const ClientesAtivosChart = () => {
       </CardContent>
     </Card>
   )
+}
+
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClientesAtivosChart.acl = {
+  action: 'read',
+  subject: 'ac-dashboard-comercial-page'
 }
 
 export default ClientesAtivosChart

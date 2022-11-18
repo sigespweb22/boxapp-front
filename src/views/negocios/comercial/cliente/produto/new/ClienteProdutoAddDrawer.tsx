@@ -24,7 +24,7 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClienteServico } from 'src/store/negocios/comercial/cliente/servico'
+import { addClienteProduto } from 'src/store/negocios/comercial/cliente/produto'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -34,30 +34,31 @@ import axios from 'axios'
 
 // ** Api Services
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-import servicoApiService from 'src/@api-center/negocios/comercial/servico/servicoApiService'
+import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
 
-interface SidebarClienteServicoAddType {
+interface SidebarClienteProdutoAddType {
   clienteId: string | string[] | undefined
   open: boolean
   toggle: () => void
 }
 
-interface ServicoType {
+interface ProdutoType {
   id: string | ''
   nome: string | ''
 }
 
-let servicos: { id: string, nome: string  }[] = [];
-const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
+let produtos: { id: string, nome: string  }[] = [];
 
-interface ClienteServicoType {
+interface ClienteProdutoType {
+  id: string
   nome: string
-  valorVenda: string
+  codigoUnico: string
   caracteristicas: string
-  cobrancaTipo: string
+  descricao: string
+  valorCusto: string
   clienteId: string | string[] | undefined
-  servicoId: string
-  servico: ServicoType
+  produtoId: string
+  produto: ProdutoType
   status: string
 }
 
@@ -70,15 +71,16 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  valorVenda: '',
+  codigoUnico: '',
   caracteristicas: '',
-  cobrancaTipo: 'NENHUM',
+  descricao: '',
+  valorCusto: '',
   clienteId: '',
-  servico: {id: '', nome: ''},
+  produto: {id: '', nome: ''},
   status: ''
 }
 
-const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
+const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
@@ -88,11 +90,11 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
   useEffect(() => {
     axios
-      .get(`${servicoApiService.listToSelectAsync}`, config)
+      .get(`${produtoApiService.listToSelectAsync}`, config)
       .then(response => {
-        servicos = response.data
+        produtos = response.data
       })
-  }, [servicos]);
+  }, [produtos]);
 
   // ** Props
   const { open, toggle } = props
@@ -119,9 +121,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     }
   }
 
-  const onSubmit = (data: ClienteServicoType): void => {
+  const onSubmit = (data: ClienteProdutoType): void => {
     data.clienteId = props?.clienteId
-    dispatch(addClienteServico({ ...data,  }))
+    dispatch(addClienteProduto({...data,  }))
     toggle()
     reset()
   }
@@ -141,27 +143,27 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Cliente Serviço</Typography>
+        <Typography variant='h6'>Novo Cliente Produto</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="servico"
+              name="produto"
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     value={value}
                     sx={{ width: 360 }}
-                    options={servicos}
+                    options={produtos}
                     onChange={(event, newValue) => {
                       onChange(newValue)
                     }}
                     id='autocomplete-controlled'
                     getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Serviço' />}
+                    renderInput={params => <TextField {...params} label='Produto' />}
                   />
                 )
               }}
@@ -169,49 +171,18 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorVenda'
+              name='codigoUnico'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Valor venda'
+                  label='Código único'
                   onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
+                  placeholder='(e.g.: #ABCD1234)'
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name="cobrancaTipo"
-              control={control}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <InputLabel id='single-select-um-chip-label'>Cobrança tipo</InputLabel>
-                    <Select
-                      value={value}
-                      name="cobrancaTipo"
-                      autoWidth
-                      label="Cobrança tipo"
-                      MenuProps={MenuProps}
-                      onChange={onChange}
-                      id='single-select-um'
-                      labelId='single-select-um-chip-label'
-                    >
-                      {
-                        cobrancaTipos.map(ct => (
-                          <MenuItem key={ct} value={ct}>
-                            {ct}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                )
-              }}
-            />
-          </FormControl>  
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='caracteristicas'
@@ -221,7 +192,35 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
                   value={value}
                   label='Características'
                   onChange={onChange}
-                  placeholder='(e.g.: Consultoria especializada para serviços especiais)'
+                  placeholder='(e.g.: Características do produto)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='descricao'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Descrição'
+                  onChange={onChange}
+                  placeholder='(e.g.: Descrição do produto)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='valorCusto'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  label='Custo do produto'
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
                 />
               )}
             />
@@ -242,9 +241,9 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteServicoAdd.acl = {
+SidebarClienteProdutoAdd.acl = {
   action: 'create',
-  subject: 'ac-cliente-servico-page'
+  subject: 'ac-cliente-produto-page'
 }
 
-export default SidebarClienteServicoAdd
+export default SidebarClienteProdutoAdd
