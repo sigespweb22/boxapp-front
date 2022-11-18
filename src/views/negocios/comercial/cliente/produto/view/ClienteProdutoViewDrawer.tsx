@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
+import { ClienteProdutoType } from 'src/types/negocios/comercial/cliente/produto/clienteProdutoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -17,8 +17,8 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarClienteServicoViewType {
-  row: ClienteServicoType | undefined
+interface SidebarClienteProdutoViewType {
+  row: ClienteProdutoType | undefined
   open: boolean
   toggle: () => void
 }
@@ -31,7 +31,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarClienteServicoView = (props: SidebarClienteServicoViewType) => {
+const SidebarClienteProdutoView = (props: SidebarClienteProdutoViewType) => {
   // ** Hook
   const {
     reset,
@@ -59,7 +59,7 @@ const SidebarClienteServicoView = (props: SidebarClienteServicoViewType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Cliente Serviço</Typography>
+        <Typography variant='h6'>Visualizar Cliente Produto</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -73,19 +73,25 @@ const SidebarClienteServicoView = (props: SidebarClienteServicoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.valorVenda}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.cobrancaTipo}
+              value={props?.row?.codigoUnico}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
               value={props?.row?.caracteristicas}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              value={props?.row?.descricao}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              value={props?.row?.valorCusto}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -117,9 +123,9 @@ const SidebarClienteServicoView = (props: SidebarClienteServicoViewType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteServicoView.acl = {
+SidebarClienteProdutoView.acl = {
   action: 'read',
-  subject: 'ac-cliente-servico-page'
+  subject: 'ac-cliente-produto-page'
 }
 
-export default SidebarClienteServicoView
+export default SidebarClienteProdutoView

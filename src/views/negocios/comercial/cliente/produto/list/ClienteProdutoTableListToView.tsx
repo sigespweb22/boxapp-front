@@ -32,14 +32,14 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/servico/index'
+import { fetchData } from 'src/store/negocios/comercial/cliente/produto/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteServicoType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
+import { ClienteProdutoType } from 'src/types/negocios/comercial/cliente/produto/clienteProdutoTypes'
 
 // ** Custom Components Imports
-import ClienteServicoViewDrawer from 'src/views/negocios/comercial/cliente/servico/view/ClienteServicoViewDrawer'
+import ClienteProdutoViewDrawer from 'src/views/negocios/comercial/cliente/produto/view/ClienteProdutoViewDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -51,16 +51,11 @@ import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOut
 interface Props {
   id: string | string[] | undefined
 }
-
-interface CobrancaTipoType {
-  [key: string]: ReactElement
-}
-
 interface CellType {
-  row: ClienteServicoType
+  row: ClienteProdutoType
 }
 
-const clienteServicoStatusObj = (status: string) => {
+const clienteProdutoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
@@ -81,7 +76,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders group column
-const renderServicoNome = (row: ClienteServicoType) => {
+const renderProdutoNome = (row: ClienteProdutoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -105,28 +100,10 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clienteServicoStatusObj(status)}
+        color={clienteProdutoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
-}
-
-const cobrancaTipoIcon: CobrancaTipoType = {
-  NENHUM:  <CurrencyUsdOff fontSize='small' sx={{ mr: 3, color: 'second.main' }} />,
-  UNICO: <CheckboxMarkedCircleOutline fontSize='small' sx={{ mr: 3, color: 'primary.main' }} />,
-  RECORRENTE: <Cached fontSize='small' sx={{ mr: 3, color: 'info.main' }} />
-}
-
-const cobrancaTipoColor = (ct: string) => {
-  switch (ct) 
-  {
-    case 'NENHUM':
-      return 'secondary'
-    case 'UNICO':
-      return 'primary'
-    case 'RECORRENTE':
-      return 'info'
-  }
 }
 
 const defaultColumns = [
@@ -142,7 +119,7 @@ const defaultColumns = [
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderServicoNome(row)}
+          {renderProdutoNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -153,7 +130,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              ⚙️{nome}
+              🛒{nome}
             </Typography>
           </Box>
         </Box>
@@ -163,37 +140,15 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorVenda',
-    headerName: 'Valor venda',
+    field: 'codigoUnico',
+    headerName: 'Código Único',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorVenda}
+          {row.codigoUnico}
         </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    field: 'cobrancaTipo',
-    minWidth: 130,
-    headerName: 'Cobrança tipo',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {cobrancaTipoIcon[row.cobrancaTipo]}
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.cobrancaTipo}
-            color={cobrancaTipoColor(row.cobrancaTipo)}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        </Box>
       )
     }
   },
@@ -208,7 +163,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteServicoTableListToView = ({ id }: Props) => {
+const ClienteProdutoTableListToView = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -216,11 +171,11 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteServicoViewOpen, setClienteServicoViewOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteServicoType | undefined>()
+  const [clienteProdutoViewOpen, setClienteProdutoViewOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<ClienteProdutoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteServico)
+  const store = useSelector((state: RootState) => state.clienteProduto)
 
   useEffect(() => {
     setValue(id)
@@ -234,12 +189,12 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleClienteServicoView = (row : ClienteServicoType) => {
+  const handleClienteProdutoView = (row : ClienteProdutoType) => {
     setRow(row)
-    setClienteServicoViewOpen(true)
+    setClienteProdutoViewOpen(true)
   }
 
-  const toggleClienteServicoViewDrawer = () => setClienteServicoViewOpen(!clienteServicoViewOpen)
+  const toggleClienteProdutoViewDrawer = () => setClienteProdutoViewOpen(!clienteProdutoViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -253,9 +208,9 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-servico-page') &&
+          {ability?.can('read', 'ac-cliente-produto-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleClienteServicoView(row)}>
+              <IconButton onClick={() => handleClienteProdutoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
@@ -273,12 +228,12 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de serviços
+                Lista de produtos
               </Typography>
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
+        {ability?.can('list', 'ac-cliente-produto-page') ? (
           <Grid item xs={12}>
             <Card>
               <DataGrid
@@ -295,7 +250,7 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteServicoViewDrawer open={clienteServicoViewOpen} toggle={toggleClienteServicoViewDrawer} row={row}/>
+        <ClienteProdutoViewDrawer open={clienteProdutoViewOpen} toggle={toggleClienteProdutoViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -303,9 +258,9 @@ const ClienteServicoTableListToView = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteServicoTableListToView.acl = {
+ClienteProdutoTableListToView.acl = {
   action: 'list',
-  subject: 'ac-cliente-servico-page'
+  subject: 'ac-cliente-produto-page'
 }
 
-export default ClienteServicoTableListToView
+export default ClienteProdutoTableListToView

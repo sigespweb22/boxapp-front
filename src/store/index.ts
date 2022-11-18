@@ -10,6 +10,7 @@ import servico from 'src/store/negocios/comercial/servico'
 import cliente from 'src/store/negocios/comercial/cliente'
 import produto from 'src/store/negocios/comercial/produto'
 import clienteServico from 'src/store/negocios/comercial/cliente/servico'
+import clienteProduto from 'src/store/negocios/comercial/cliente/produto'
 import clienteView from 'src/store/negocios/comercial/cliente/view'
 import pipeline from 'src/store/negocios/processos/pipeline'
 import fornecedor from 'src/store/negocios/parceiros/fornecedor'
@@ -29,6 +30,7 @@ export const store = configureStore({
     cliente,
     produto,
     clienteServico,
+    clienteProduto,
     clienteView,
     pipeline,
     fornecedor,
