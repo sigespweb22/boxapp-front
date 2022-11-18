@@ -33,7 +33,7 @@ const defineRulesFor = (role: string[], subject: string) => {
 
     /// begin - dashboard cliente
     } else if (item === 'CanDashboardClienteAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-client-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-cliente-page')
     /// end - dashboard cliente
 
     /// begin - dashboard controle acesso
@@ -196,11 +196,17 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('create', 'ac-chave_api-page')
     } else if (item === 'CanChaveApiDelete') {
       can('delete', 'ac-chave_api-page')
-    } else {
-      can(['list', 'read', 'create', 'update', 'delete'], subject)
-    }
     /// end - chave api
 
+    /// begin - dashboard comercial
+    } else if (item === 'CanDashboardComercialAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
+    /// end - dashboard comercial
+
+    /// begin - dynamic subject 
+        can(['list', 'read', 'create', 'update', 'delete'], subject)
+    }
+    /// end - dynamic subject 
   });
 
   return rules
