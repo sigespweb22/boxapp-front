@@ -3,6 +3,7 @@ import env from '../../../../environment';
 const apiClientes = `${env.API_URL}/clientes`
 
 export default {
+  sincronizarThirdPartyAsync: `${apiClientes}/sincronizar-third-party`,
   listOneTPAsync: `${apiClientes}/tp/`,
   listToSelectAsync: `${apiClientes}/list-to-select`,
   listAsync: `${apiClientes}/list`,

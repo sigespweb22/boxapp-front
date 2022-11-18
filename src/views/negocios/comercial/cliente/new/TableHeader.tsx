@@ -14,6 +14,24 @@ import { useTranslation } from 'react-i18next'
 // ** Demo Components Imports
 import Connection from 'mdi-material-ui/Connection'
 
+// ** Imports Api Services Imports
+import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+
+// ** Import Axios
+import axios from 'axios'
+
+// ** Import Toast
+import toast from 'react-hot-toast'
+
+// ** Store Imports
+import { useDispatch, useSelector } from 'react-redux'
+
+// ** Types Imports
+import { AppDispatch } from 'src/store'
+
+// ** Actions Imports
+import { fetchData } from 'src/store/negocios/comercial/cliente'
+
 interface TableHeaderProps {
   value: string
   toggle: () => void
@@ -23,10 +41,11 @@ interface TableHeaderProps {
 const TableHeader = (props: TableHeaderProps) => {
   // ** Hook
   const { t } = useTranslation()
-
+  
+  // ** States
+  const dispatch = useDispatch<AppDispatch>()
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const timer = useRef<number>();
 
   const buttonSx = {
     ...(success && {
@@ -37,20 +56,40 @@ const TableHeader = (props: TableHeaderProps) => {
     }),
   };
 
-  useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
   const handleButtonClick = () => {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
+
+      const storageTokenKeyName = window.localStorage.getItem(clienteApiService.storageTokenKeyName)
+      const config = {
+        headers: {
+          Authorization: `Bearer ${storageTokenKeyName}`
+        }
+      }
+      const request = axios.get(clienteApiService.sincronizarThirdPartyAsync, config)
+      request
+        .then((response) => {
+          setSuccess(true);
+          setLoading(false);
+
+          dispatch(fetchData({q: ''}))
+
+          toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} cliente(s).`, {
+            duration: 12000
+          })
+          toast.error(`${response.data.totalIsNotDocumento} cliente(s) não fora(m) sincronizado(s), pois não possui CNPJ/CPF.`, {
+            duration: 12000,
+          })
+        }).catch((err) => {
+          setSuccess(true);
+          setLoading(false);
+
+          const returnObj = Object.entries(err.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err)
+          });
+        })
     }
   };
 
@@ -77,7 +116,7 @@ const TableHeader = (props: TableHeaderProps) => {
               disabled={loading}
               onClick={handleButtonClick}
             >
-              Sincronizar BC
+              Sincronizar Bom Controle
             </Button>
           </Tooltip>
           {loading && (
