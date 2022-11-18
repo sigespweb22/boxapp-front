@@ -15,6 +15,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
@@ -22,8 +23,6 @@ import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
-import Tooltip from '@mui/material/Tooltip';
-
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
