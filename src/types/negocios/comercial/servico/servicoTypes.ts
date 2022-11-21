@@ -13,7 +13,7 @@ export type ServicoType = {
   valorCusto: string
   caracteristicas: string
   unidadeMedida: string
-  fornecedorServico: {id: string, nome: string} | null
+  fornecedorServico: {id: string, nome: string}
   fornecedorServicoId: string
   status: string
   avatarColor: ThemeColor

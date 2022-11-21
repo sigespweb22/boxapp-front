@@ -9,14 +9,17 @@ import TabList from '@mui/lab/TabList'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 
+
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
+import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Custom Components Imports
 import FornecedorServicoTableList from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableList'
+import FornecedorProdutoTableList from 'src/views/negocios/parceiros/fornecedor/produto/list/FornecedorProdutoTableList'
 
 interface Props {
   id: string | undefined
@@ -54,11 +57,19 @@ const FornecedorEditRight = ({ id }: Props) => {
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
         <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
+        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-fornecedor-servico-page') ? (
           <TabPanel sx={{ p: 0 }} value='servicos'>
             <FornecedorServicoTableList id={id} />
+          </TabPanel>
+        ) : "Você não tem permissão para ver este recurso."}  
+      </Box>
+      <Box sx={{ mt: 6 }}>
+        {ability?.can('list', 'ac-fornecedor-produto-page') ? (
+          <TabPanel sx={{ p: 0 }} value='produtos'>
+            <FornecedorProdutoTableList id={id} />
           </TabPanel>
         ) : "Você não tem permissão para ver este recurso."}  
       </Box>
