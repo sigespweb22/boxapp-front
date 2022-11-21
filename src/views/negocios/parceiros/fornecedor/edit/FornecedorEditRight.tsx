@@ -12,6 +12,7 @@ import TabContext from '@mui/lab/TabContext'
 
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
+import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -56,7 +57,7 @@ const FornecedorEditRight = ({ id }: Props) => {
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
         <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
-        <Tab value='produtos' label='PRODUTOS' icon={<CogOutline />} />
+        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-fornecedor-servico-page') ? (
