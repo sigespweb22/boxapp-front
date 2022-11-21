@@ -42,7 +42,7 @@ const ButtonGroupSplit = () => {
   }
 
   return (
-    <Fragment>
+    <Fragment style={{zIndex: 10000}}>
       <ButtonGroup variant='contained' ref={anchorRef} aria-label='split button'>
         <Button onClick={handleClick}>{options[selectedIndex]}</Button>
         <Button
@@ -56,7 +56,7 @@ const ButtonGroupSplit = () => {
           <MenuDown />
         </Button>
       </ButtonGroup>
-      <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+      <Popper style={{zIndex: 10000}}  open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
