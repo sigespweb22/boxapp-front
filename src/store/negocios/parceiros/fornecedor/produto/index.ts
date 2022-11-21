@@ -82,7 +82,7 @@ export const addFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Update Fornecedor Serviços
+// ** Update Fornecedor Produtos
 export const editFornecedorProduto = createAsyncThunk(
   'appFornecedorProdutos/editFornecedorProduto',
   async (data : FornecedorProdutoType, { dispatch }: Redux) => {

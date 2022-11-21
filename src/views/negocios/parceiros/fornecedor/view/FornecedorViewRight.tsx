@@ -14,6 +14,7 @@ import CogOutline from 'mdi-material-ui/CogOutline'
 
 // ** Custom Components Imports
 import FornecedorServicoTableListToView from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableListToView'
+import FornecedorProdutoTableListToView from '../produto/list/FornecedorProdutoTableListToView'
 
 interface Props {
   id: string | string[] | undefined
@@ -47,10 +48,16 @@ const FornecedorViewRight = ({ id }: Props) => {
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
         <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
+        <Tab value='produtos' label='PRODUTOS' icon={<CogOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='servicos'>
           <FornecedorServicoTableListToView id={id} />
+        </TabPanel>
+      </Box>
+      <Box sx={{ mt: 6 }}>
+        <TabPanel sx={{ p: 0 }} value='produtos'> 
+          <FornecedorProdutoTableListToView id={id} />
         </TabPanel>
       </Box>
     </TabContext>
