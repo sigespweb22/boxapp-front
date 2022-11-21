@@ -27,6 +27,7 @@ import Connection from 'mdi-material-ui/Connection'
 
 // ** Imports Api Services Imports
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
 
 // ** Import Axios
 import axios from 'axios'
@@ -123,38 +124,30 @@ const TableHeader = (props: TableHeaderProps) => {
   }
 
   const sincronizarContratosThirdPartyAsync = () => {
-    alert("Ok")
-    setSuccess(true);
-    setLoading(false);
-    // const storageTokenKeyName = window.localStorage.getItem(clienteApiService.storageTokenKeyName)
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${storageTokenKeyName}`
-    //   }
-    // }
-    // const request = axios.get(clienteApiService.sincronizarThirdPartyAsync, config)
-    // request
-    //   .then((response) => {
-    //     setSuccess(true);
-    //     setLoading(false);
+    const storageTokenKeyName = window.localStorage.getItem(clienteApiService.storageTokenKeyName)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storageTokenKeyName}`
+      }
+    }
+    const request = axios.get(clienteContratoApiService.sincronizarThirdPartyAsync, config)
+    request
+      .then((response) => {
+        setSuccess(true);
+        setLoading(false);
 
-    //     dispatch(fetchData({q: ''}))
+        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} contrato(s) de cliente(s).`, {
+          duration: 12000
+        })
+      }).catch((err) => {
+        setSuccess(true);
+        setLoading(false);
 
-    //     toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} cliente(s).`, {
-    //       duration: 12000
-    //     })
-    //     toast.error(`${response.data.totalIsNotDocumento} cliente(s) não fora(m) sincronizado(s), pois não possui CNPJ/CPF.`, {
-    //       duration: 12000,
-    //     })
-    //   }).catch((err) => {
-    //     setSuccess(true);
-    //     setLoading(false);
-
-    //     const returnObj = Object.entries(err.response.data.errors);
-    //     returnObj.forEach((err: any) => {
-    //       toast.error(err)
-    //     });
-    //   })
+        const returnObj = Object.entries(err.response.data.errors);
+        returnObj.forEach((err: any) => {
+          toast.error(err)
+        });
+      })
   }
 
   const handleSincronizar = (indexButtonSelected: EventTarget & HTMLButtonElement) => {
