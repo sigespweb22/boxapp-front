@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect} from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -19,11 +19,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Cancel from 'mdi-material-ui/Cancel'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -51,10 +46,6 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
   id: string | string[] | undefined
-}
-
-interface UnidadeMedidaType {
-  [key: string]: ReactElement
 }
 
 interface CellType {
@@ -255,7 +246,7 @@ const FornecedorProdutoTableListToView = ({ id }: Props) => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
+        {ability?.can('list', 'ac-cliente-produto-page') ? (
           <Grid item xs={12}>
             <Card>
               <DataGrid

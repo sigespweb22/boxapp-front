@@ -24,7 +24,6 @@ const Home = () => {
   const router = useRouter()
 
   useEffect(() => {
-    debugger
     if (auth.user && auth.user.applicationUserGroups.length >= 1) {
       const homeRoute = getHomeRoute('Master')
 

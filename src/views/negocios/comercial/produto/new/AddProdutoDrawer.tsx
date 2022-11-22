@@ -37,6 +37,7 @@ import axios from 'axios'
 
 // ** Api Services
 import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/fornecedor/produto/fornecedorProdutoApiService'
+import { useEffect } from 'react'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -64,6 +65,8 @@ const showErrors = (field: string, valueLen: number, min: number) => {
   }
 }
 
+let fornecedoresProdutos: { id: string, nome: string  }[] = [];
+
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -89,6 +92,7 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
     valorCusto: '',
     descricao: '',
     caracteristicas: '',
+    fornecedorProduto: '',
     status: ''
   }
 
@@ -117,6 +121,14 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
     toggle()
     reset()
   }
+
+  useEffect(() => {
+    axios
+      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        fornecedoresProdutos = response.data
+      })
+  }, [fornecedoresProdutos]);
 
   const handleClose = () => {
     toggle()
@@ -210,6 +222,26 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
+                )
+              }}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name="fornecedorProduto"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    sx={{ width: 360 }}
+                    options={fornecedoresProdutos}
+                    onChange={(event, newValue) => {
+                      onChange(newValue)
+                    }}
+                    id='autocomplete-controlled'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Fornecedor Produto' />}
+                  />
                 )
               }}
             />

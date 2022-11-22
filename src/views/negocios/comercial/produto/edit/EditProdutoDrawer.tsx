@@ -69,6 +69,8 @@ interface ProdutoData {
   caracteristicas: string
   descricao: string
   valorCusto: string
+  fornecedorProduto: {id: string, nome: string}
+  fornecedorProdutoId: string
   status: string
   avatarColor: ThemeColor
 }
@@ -80,8 +82,12 @@ const defaultValues = {
   caracteristicas: '',
   descricao: '',
   valorCusto: '',
+  fornecedorProduto: {id: '', nome: ''},
+  fornecedorProdutoId: '',
   status: ''
 }
+
+let fornecedoresProdutos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -136,6 +142,7 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
     setValue('codigoUnico', props?.row?.codigoUnico || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
     setValue('descricao', props?.row?.descricao || '')
+    setValue('fornecedorProduto', props?.row?.fornecedorProduto || {id: '', nome: ''})
     setValue('valorCusto', props?.row?.valorCusto || '')
   }, [props])
 
@@ -259,6 +266,31 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
+                )
+              }}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <Controller
+              name={"fornecedorProduto"}
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    multiple={false}
+                    options={fornecedoresProdutos || []}
+                    filterSelectedOptions
+                    value={value}
+                    id="autocomplete-multiple-outlined"
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => (
+                      <TextField {...params} label="Fornecedor Produto" placeholder='(e.g.: Roteador)' />
+                    )}
+                    onChange={(event, newValue) => {
+                      setValue('fornecedorProduto', newValue || {id: '', nome: ''})
+                      onChange(newValue)
+                    }}
+                  />
                 )
               }}
             />

@@ -6,16 +6,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/fornecedor/produto/fornecedorProdutoApiService'
+import clienteServicoApiService from 'src/@api-center/negocios/comercial/cliente/servico/clienteServicoApiService'
 
 // ** Types
-import { FornecedorProdutoType, FornecedorProdutoAddType } from 'src/types/negocios/parceiros/fornecedor/produto/fornecedorProdutoTypes'
+import { ClienteServicoType, ClienteServicoAddType } from 'src/types/negocios/comercial/cliente/servico/clienteServicoTypes'
 
 // ** Toast
 import toast from 'react-hot-toast'
 
 interface DataParams {
-  fornecedorId: string | string[] | undefined
+  clienteId: string | string[] | undefined
 }
 
 interface Redux {
@@ -23,11 +23,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Fornecedor Serviços
-export const fetchData = createAsyncThunk('appFornecedorProdutos/fetchData', async (params: DataParams) => {
-  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
+// ** Fetch Cliente Serviços
+export const fetchData = createAsyncThunk('appClienteServicos/fetchData', async (params: DataParams) => {
+  const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
   const response = await axios
-                            .get(fornecedorProdutoApiService.listAsync, {
+                            .get(clienteServicoApiService.listAsync, {
                                   headers: {
                                     Authorization: "Bearer " + storedToken
                                   },
@@ -37,21 +37,22 @@ export const fetchData = createAsyncThunk('appFornecedorProdutos/fetchData', asy
   return response.data
 })
 
-// ** Add Fornecedor Serviços
-export const addFornecedorProduto = createAsyncThunk(
-  'appFornecedorProdutos/addFornecedorProduto',
-  async (data: FornecedorProdutoAddType, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
+// ** Add Cliente Serviços
+export const addClienteServico = createAsyncThunk(
+  'appClienteServicos/addClienteServico',
+  async (data: ClienteServicoAddType, { dispatch }: Redux) => {
+    debugger
+    const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
     }
 
-    axios.post(fornecedorProdutoApiService.addAsync, data, config).then((resp) => {
-      dispatch(fetchData({fornecedorId: resp.data.fornecedorId }))
+    axios.post(clienteServicoApiService.addAsync, data, config).then((resp) => {
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
-      if (resp.status === 201) return toast.success("Produto adicionado com sucesso.")
+      if (resp.status === 201) return toast.success("Serviço adicionado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -82,20 +83,20 @@ export const addFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Update Fornecedor Produtos
-export const editFornecedorProduto = createAsyncThunk(
-  'appFornecedorProdutos/editFornecedorProduto',
-  async (data : FornecedorProdutoType, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
+// ** Update Cliente Serviços
+export const editClienteServico = createAsyncThunk(
+  'appClienteServicos/updateClienteServico',
+  async (data : ClienteServicoType, { dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: "Bearer " + storedToken
       }
     }
 
-    axios.put(fornecedorProdutoApiService.updateAsync, data, config).then((resp) => {
-      dispatch(fetchData({fornecedorId: resp.data.fornecedorId }))
-      if (resp.status === 200) return toast.success("Produto atualizado com sucesso.")
+    axios.put(clienteServicoApiService.updateAsync, data, config).then((resp) => {
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
+      if (resp.status === 200) return toast.success("Serviço atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -125,19 +126,19 @@ export const editFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Delete Fornecedor Serviços
-export const deleteFornecedorProduto = createAsyncThunk(
-  'appFornecedorProdutos/ClienteProduto',
+// ** Delete Cliente Serviços
+export const deleteClienteServico = createAsyncThunk(
+  'appClienteServicos/ClienteServico',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     
     const headers = {
       Authorization: "Bearer " + storedToken
     }
 
-    axios.delete(fornecedorProdutoApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().fornecedorProduto.params))
-      if (resp.status === 204) return toast.success("Produto deletado com sucesso.")
+    axios.delete(clienteServicoApiService.deleteAsync+id, { headers }).then((resp) => {
+      dispatch(fetchData(getState().clienteServico.params))
+      if (resp.status === 204) return toast.success("Serviço deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -159,11 +160,11 @@ export const deleteFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Alter Status Fornecedor Serviço
-export const alterStatusFornecedorProduto = createAsyncThunk(
-  'appFornecedorProdutos/alterStatusFornecedorProduto',
+// ** Alter Status Cliente Serviço
+export const alterStatusClienteServico = createAsyncThunk(
+  'appClienteServicos/alterStatusClienteServico',
   async (id: number | string, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(clienteServicoApiService.storageTokenKeyName)!
     
     const config = {
       headers: {
@@ -171,8 +172,8 @@ export const alterStatusFornecedorProduto = createAsyncThunk(
       }
     }
 
-    axios.put(fornecedorProdutoApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData({fornecedorId: resp.data.fornecedorId }))
+    axios.put(clienteServicoApiService.alterStatusAsync+id, null, config).then((resp) => {
+      dispatch(fetchData({clienteId: resp.data.clienteId }))
       toast.success(resp.data.message)
 
       return resp.data.data
@@ -197,8 +198,8 @@ export const alterStatusFornecedorProduto = createAsyncThunk(
   }
 )
 
-export const appFornecedorProdutosSlice = createSlice({
-  name: 'appFornecedorProdutos',
+export const appClienteServicosSlice = createSlice({
+  name: 'appClienteServicos',
   initialState: {
     data: [],
     total: 0,
@@ -208,7 +209,7 @@ export const appFornecedorProdutosSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload.fornecedorProdutos
+      state.data = action.payload.clienteServicos
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData
@@ -216,4 +217,4 @@ export const appFornecedorProdutosSlice = createSlice({
   }
 })
   
-export default appFornecedorProdutosSlice.reducer
+export default appClienteServicosSlice.reducer
