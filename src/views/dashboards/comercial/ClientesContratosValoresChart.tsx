@@ -9,11 +9,14 @@ import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
 import ChartTimelineVariant from 'mdi-material-ui/ChartTimelineVariant'
+import Cash from 'mdi-material-ui/Cash'
+import CashMultiple from 'mdi-material-ui/CashMultiple'
 
 // ** Third Party Imports
 import { ApexOptions } from 'apexcharts'
 
 // ** Custom Components Importss
+import CustomAvatar from 'src/@core/components/mui/avatar'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 
 // ** Util Import
@@ -62,7 +65,7 @@ const calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos = (dat
   } else return 0
 }
 
-const ClientesAtivosChart = () => {
+const ClientesContratosValoresChart = () => {
   // ** Hook
   const theme = useTheme()
   const ability = useContext(AbilityContext)
@@ -80,12 +83,12 @@ const ClientesAtivosChart = () => {
   }
 
   useEffect(() => {
-    const response = axios.get(dashboardApiServices.clientesContratosAsync, config)
+    const response = axios.get(dashboardApiServices.clientesContratosValoresAsync, config)
     
     response.then((response: { data: ClienteContrato }): void => {
-      setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(response.data))
-      setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(response.data))
-      setClientesContratos(response.data)
+      // setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(response.data))
+      // setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(response.data))
+      // setClientesContratos(response.data)
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
@@ -120,12 +123,12 @@ const ClientesAtivosChart = () => {
     legend: { show: false },
     dataLabels: { enabled: false },
     colors: [
-      hexToRGBA(theme.palette.primary.main, 0.1),
-      hexToRGBA(theme.palette.primary.main, 0.1),
-      hexToRGBA(theme.palette.primary.main, 0.1),
-      hexToRGBA(theme.palette.primary.main, 0.1),
-      theme.palette.primary.main,
-      hexToRGBA(theme.palette.primary.main, 0.1),
+      hexToRGBA(theme.palette.success.main, 0.1),
+      theme.palette.success.main,
+      hexToRGBA(theme.palette.success.main, 0.1),
+      hexToRGBA(theme.palette.success.main, 0.1),
+      hexToRGBA(theme.palette.success.main, 0.1),
+      hexToRGBA(theme.palette.success.main, 0.1),
     ],
     states: {
       hover: {
@@ -149,59 +152,69 @@ const ClientesAtivosChart = () => {
     <Card>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <ReactApexcharts
+            type='bar'
+            width={144}
+            height={144}
+            options={options}
+            series={[{ data: [40, 90, 50, 60, 40, 40] }]}
+          />
           <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='h6' sx={{ mb: 7.5 }}>
-              Clientes com contratos
-            </Typography>
-            <Typography component='p' variant='caption'>
-              Total de clientes que possui contrato(s) ativo(s)
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='success'>
+                <Cash sx={{ fontSize: '1.875rem', color: 'success.main' }} />
+              </CustomAvatar>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h5"  sx={{ fontWeight: 600 }}>Contratos mensais (R$)</Typography>
+              </Box>
+            </Box>
+            <Typography component='p' variant='caption' sx={{ mt: 12 }}>
+              Valor total dos contratos mensais ativos - em real - 
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
                 {clientesContratos.totalClientesComContrato}
               </Typography>
-              <ChartTimelineVariant sx={{ color: 'success.main', ml: 2, mr: 2 }} />
+              <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'success.main' }}>
-                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total de todos os contratos ativos
               </Typography>
             </Box>
-          </Box>
-          <ReactApexcharts
-            type='bar'
-            width={144}
-            height={144}
-            options={options}
-            series={[{ data: [40, 60, 50, 60, 90, 40] }]}
-          />
+          </Box>          
         </Box>
       </CardContent>
       <Divider />
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='h6' sx={{ mb: 7.5 }}>
-              Clientes sem contratos
-            </Typography>
-            <Typography component='p' variant='caption'>
-              Total de clientes sem contrato(s) ativo(s)
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant='h6'>
-                {clientesContratos.totalClientesSemContrato}
-              </Typography>
-              <ChartTimelineVariant sx={{ color: 'success.main', ml: 2, mr: 2 }} />
-              <Typography variant='caption' sx={{ color: 'success.main' }}>
-                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
-              </Typography>
-            </Box>
-          </Box>
           <ReactApexcharts
             type='bar'
             width={144}
             height={144}
             options={options}
-            series={[{ data: [40, 60, 50, 60, 90, 40] }]}
+            series={[{ data: [40, 90, 50, 60, 40, 40] }]}
           />
+          <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='success'>
+                <CashMultiple sx={{ fontSize: '1.875rem', color: 'success.main' }} />
+              </CustomAvatar>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h5"  sx={{ fontWeight: 600 }}>Contratos anuais (R$)</Typography>
+              </Box>
+            </Box>
+            <Typography component='p' variant='caption' sx={{ mt: 12 }}>
+              Valor total dos contratos anuais ativos - em real - 
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant='h6'>
+                {clientesContratos.totalClientesSemContrato}
+              </Typography>
+              <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
+              <Typography variant='caption' sx={{ color: 'success.main' }}>
+                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </CardContent>
     </Card>
@@ -210,9 +223,9 @@ const ClientesAtivosChart = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClientesAtivosChart.acl = {
+ClientesContratosValoresChart.acl = {
   action: 'read',
   subject: 'ac-dashboard-comercial-page'
 }
 
-export default ClientesAtivosChart
+export default ClientesContratosValoresChart
