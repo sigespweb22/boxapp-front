@@ -53,8 +53,6 @@ interface TableHeaderProps {
   handleFilter: (val: string) => void
 }
 
-
-
 const options = ['Sincronizar Clientes a partir do Bom Controle', 'Sincronizar Contratos a partir do Bom Controle', 'Atualizar Periodicidade Contratos a partir do Bom Controle']
 
 const TableHeader = (props: TableHeaderProps) => {

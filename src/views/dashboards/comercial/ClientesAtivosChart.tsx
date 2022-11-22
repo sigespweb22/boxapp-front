@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
-import ChevronUp from 'mdi-material-ui/ChevronUp'
+import ChartTimelineVariant from 'mdi-material-ui/ChartTimelineVariant'
 
 // ** Third Party Imports
 import { ApexOptions } from 'apexcharts'
@@ -30,6 +30,7 @@ import toast from 'react-hot-toast'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
+import Divider from '@mui/material/Divider'
 
 interface ClienteContrato {
   totalClientesSemContrato: number
@@ -43,6 +44,24 @@ const clientesContratosDefaultValues: ClienteContrato = {
   totalClientesUltimosMeses: 0
 }
 
+const calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos = (data: ClienteContrato) => {
+  if (data.totalClientesSemContrato > 0 && data.totalClientesComContrato > 0)
+  {
+    const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
+    const calculo = (data.totalClientesComContrato / totalClientesAtivos) * 100
+    return calculo
+  } else return 0
+}
+
+const calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos = (data: ClienteContrato) => {
+  if (data.totalClientesSemContrato > 0 && data.totalClientesComContrato > 0)
+  {
+    const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
+    const calculo = (data.totalClientesSemContrato / totalClientesAtivos) * 100
+    return calculo
+  } else return 0
+}
+
 const ClientesAtivosChart = () => {
   // ** Hook
   const theme = useTheme()
@@ -50,6 +69,8 @@ const ClientesAtivosChart = () => {
 
   // ** State
   const [clientesContratos, setClientesContratos] = useState<ClienteContrato>(clientesContratosDefaultValues)
+  const [percentualClienteComContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
+  const [percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
 
   const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
   const config = {
@@ -61,10 +82,11 @@ const ClientesAtivosChart = () => {
   useEffect(() => {
     const response = axios.get(dashboardApiServices.clientesContratosAsync, config)
     
-    response.then((response: { data: SetStateAction<ClienteContrato> }): void => {
+    response.then((response: { data: ClienteContrato }): void => {
+      setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(response.data))
+      setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(response.data))
       setClientesContratos(response.data)
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
-      debugger
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
         toast.error(err)
@@ -132,15 +154,44 @@ const ClientesAtivosChart = () => {
               Clientes com contratos
             </Typography>
             <Typography component='p' variant='caption'>
-              Total de clientes que possuem contratos ativos
+              Total de clientes que possui contrato(s) ativo(s)
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
                 {clientesContratos.totalClientesComContrato}
               </Typography>
-              <ChevronUp sx={{ color: 'success.main' }} />
+              <ChartTimelineVariant sx={{ color: 'success.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'success.main' }}>
-                48% somente nos últimos 6 meses
+                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+              </Typography>
+            </Box>
+          </Box>
+          <ReactApexcharts
+            type='bar'
+            width={144}
+            height={144}
+            options={options}
+            series={[{ data: [40, 60, 50, 60, 90, 40] }]}
+          />
+        </Box>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='h6' sx={{ mb: 7.5 }}>
+              Clientes sem contratos
+            </Typography>
+            <Typography component='p' variant='caption'>
+              Total de clientes sem contrato(s) ativo(s)
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant='h6'>
+                {clientesContratos.totalClientesSemContrato}
+              </Typography>
+              <ChartTimelineVariant sx={{ color: 'success.main', ml: 2, mr: 2 }} />
+              <Typography variant='caption' sx={{ color: 'success.main' }}>
+                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
               </Typography>
             </Box>
           </Box>
