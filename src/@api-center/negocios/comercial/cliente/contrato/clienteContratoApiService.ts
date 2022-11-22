@@ -3,6 +3,7 @@ import env from '../../../../../environment';
 const apiClientesContratos = `${env.API_URL}/clientes-contratos`
 
 export default {
-  sincronizarThirdPartyAsync: `${apiClientesContratos}/sincronizar-third-party`,
+  sincronizarFromThirdPartyAsync: `${apiClientesContratos}/sincronizar-from-third-party`,
+  updatePeriodicidadeFromThirdPartyAsync: `${apiClientesContratos}/update-periodicidade-from-third-party`,
   storageTokenKeyName: 'accessToken'
 }
