@@ -261,14 +261,14 @@ const ChaveApiList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-chave_api-page') &&
+          {ability?.can('read', 'ac-chave_api_terceiro-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewChaveApi(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-chave_api-page') &&
+          {ability?.can('update', 'ac-chave_api_terceiro-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditChaveApi(row)}>
                 <PencilOutline fontSize='small' />
@@ -296,7 +296,7 @@ const ChaveApiList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-chave_api-page') ? (
+        {ability?.can('list', 'ac-chave_api_terceiro-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} />
@@ -324,7 +324,7 @@ const ChaveApiList = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ChaveApiList.acl = {
   action: 'list',
-  subject: 'ac-chave_api-page'
+  subject: 'ac-chave_api_terceiro-page'
 }
 
 export default ChaveApiList

@@ -184,18 +184,18 @@ const defineRulesFor = (role: string[], subject: string) => {
       /// end - fornecedor servico
 
       // begin - chave api
-    } else if (item === 'CanChaveApiAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-chave_api-page')
-    } else if (item === 'CanChaveApiList') {
-      can('list', 'ac-chave_api-page')
-    } else if (item === 'CanChaveApiRead') {
-      can('read', 'ac-chave_api-page')
-    } else if (item === 'CanChaveApiUpdate') {
-      can('update', 'ac-chave_api-page')
-    } else if (item === 'CanChaveApiCreate') {
-      can('create', 'ac-chave_api-page')
-    } else if (item === 'CanChaveApiDelete') {
-      can('delete', 'ac-chave_api-page')
+    } else if (item === 'CanChaveApiTerceiroAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-chave_api_terceiro-page')
+    } else if (item === 'CanChaveApiTerceiroList') {
+      can('list', 'ac-chave_api_terceiro-page')
+    } else if (item === 'CanChaveApiTerceiroRead') {
+      can('read', 'ac-chave_api_terceiro-page')
+    } else if (item === 'CanChaveApiTerceiroUpdate') {
+      can('update', 'ac-chave_api_terceiro-page')
+    } else if (item === 'CanChaveApiTerceiroCreate') {
+      can('create', 'ac-chave_api_terceiro-page')
+    } else if (item === 'CanChaveApiTerceiroDelete') {
+      can('delete', 'ac-chave_api_terceiro-page')
       /// end - chave api
 
       /// begin - dashboard comercial
