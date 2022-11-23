@@ -35,34 +35,36 @@ import toast from 'react-hot-toast'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 import Divider from '@mui/material/Divider'
 
-interface ClienteContrato {
-  totalClientesSemContrato: number
-  totalClientesComContrato: number
-  totalClientesUltimosMeses: number
+interface ClienteContratoValor {
+  totalEmReaisTodosOsContratos: number
+  totalEmReaisContratosMensais: number
+  totalEmReaisContratosAnuais: number
 }
 
-const clientesContratosDefaultValues: ClienteContrato = {
-  totalClientesComContrato: 0,
-  totalClientesSemContrato: 0,
-  totalClientesUltimosMeses: 0
+const clientesContratosValoresDefaultValues: ClienteContratoValor = {
+  totalEmReaisTodosOsContratos: 0,
+  totalEmReaisContratosMensais: 0,
+  totalEmReaisContratosAnuais: 0
 }
 
-const calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos = (data: ClienteContrato) => {
-  if (data.totalClientesSemContrato > 0 && data.totalClientesComContrato > 0)
+const calcularPercentualValorMensalEmRelacaoAoValorTotal = (data: ClienteContratoValor) => {
+  if (data.totalEmReaisContratosMensais > 0 && data.totalEmReaisTodosOsContratos > 0)
   {
-    const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
-    const calculo = (data.totalClientesComContrato / totalClientesAtivos) * 100
+    const calculo = (data.totalEmReaisContratosMensais / data.totalEmReaisTodosOsContratos) * 100
     return calculo
   } else return 0
 }
 
-const calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos = (data: ClienteContrato) => {
-  if (data.totalClientesSemContrato > 0 && data.totalClientesComContrato > 0)
+const calcularPercentualValorAnualEmRelacaoAoValorTotal = (data: ClienteContratoValor) => {
+  if (data.totalEmReaisContratosAnuais > 0 && data.totalEmReaisTodosOsContratos > 0)
   {
-    const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
-    const calculo = (data.totalClientesSemContrato / totalClientesAtivos) * 100
+    const calculo = (data.totalEmReaisContratosAnuais / data.totalEmReaisTodosOsContratos) * 100
     return calculo
   } else return 0
+}
+
+const formatToCurrency = (value: number) => {
+  return value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
 const ClientesContratosValoresChart = () => {
@@ -71,9 +73,9 @@ const ClientesContratosValoresChart = () => {
   const ability = useContext(AbilityContext)
 
   // ** State
-  const [clientesContratos, setClientesContratos] = useState<ClienteContrato>(clientesContratosDefaultValues)
-  const [percentualClienteComContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
-  const [percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
+  const [clientesContratosValores, setClientesContratosValores] = useState<ClienteContratoValor>(clientesContratosValoresDefaultValues)
+  const [percentualValorMensalEmRelacaoAoValorTotal, setPercentualValorMensalEmRelacaoAoValorTotal] = useState(0)
+  const [percentualValorAnualEmRelacaoAoValorTotal, setPercentualValorAnualEmRelacaoAoValorTotal] = useState(0)
 
   const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
   const config = {
@@ -85,10 +87,10 @@ const ClientesContratosValoresChart = () => {
   useEffect(() => {
     const response = axios.get(dashboardApiServices.clientesContratosValoresAsync, config)
     
-    response.then((response: { data: ClienteContrato }): void => {
-      // setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(response.data))
-      // setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(response.data))
-      // setClientesContratos(response.data)
+    response.then((response: { data: ClienteContratoValor }): void => {
+      setPercentualValorMensalEmRelacaoAoValorTotal(calcularPercentualValorMensalEmRelacaoAoValorTotal(response.data))
+      setPercentualValorAnualEmRelacaoAoValorTotal(calcularPercentualValorAnualEmRelacaoAoValorTotal(response.data))
+      setClientesContratosValores(response.data)
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
@@ -159,13 +161,13 @@ const ClientesContratosValoresChart = () => {
             options={options}
             series={[{ data: [40, 90, 50, 60, 40, 40] }]}
           />
-          <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ mr: 0, display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='success'>
                 <Cash sx={{ fontSize: '1.875rem', color: 'success.main' }} />
               </CustomAvatar>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h5"  sx={{ fontWeight: 600 }}>Contratos mensais (R$)</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>Contratos mensais (R$)</Typography>
               </Box>
             </Box>
             <Typography component='p' variant='caption' sx={{ mt: 12 }}>
@@ -173,14 +175,14 @@ const ClientesContratosValoresChart = () => {
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
-                {clientesContratos.totalClientesComContrato}
+                {formatToCurrency(clientesContratosValores.totalEmReaisContratosMensais)}
               </Typography>
               <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'success.main' }}>
-                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total de todos os contratos ativos
+                {Math.round(percentualValorMensalEmRelacaoAoValorTotal)}% em relação ao total dos contratos
               </Typography>
             </Box>
-          </Box>          
+          </Box>
         </Box>
       </CardContent>
       <Divider />
@@ -207,11 +209,11 @@ const ClientesContratosValoresChart = () => {
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
-                {clientesContratos.totalClientesSemContrato}
+                {formatToCurrency(clientesContratosValores.totalEmReaisContratosAnuais)}
               </Typography>
               <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'success.main' }}>
-                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+                {Math.round(percentualValorAnualEmRelacaoAoValorTotal)}% em relação ao total dos contratos
               </Typography>
             </Box>
           </Box>
