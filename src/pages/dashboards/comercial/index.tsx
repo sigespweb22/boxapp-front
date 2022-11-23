@@ -14,9 +14,11 @@ import CardStatisticsVerticalComponent from 'src/@core/components/card-statistic
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
+import BoasVindas from 'src/views/dashboards/comercial/BoasVindas'
 import ClientesContratosNumerosChart from 'src/views/dashboards/comercial/ClientesContratosNumerosChart'
 import ClientesContratosValoresChart from 'src/views/dashboards/comercial/ClientesContratosValoresChart'
-import BoasVindas from 'src/views/dashboards/comercial/BoasVindas'
+import ClientesContratosTicketMedioMensalChart from 'src/views/dashboards/comercial/ClientesContratosTicketMedioMensalChart'
+import ClientesContratosTicketMedioAnualChart from 'src/views/dashboards/comercial/ClientesContratosTicketMedioAnualChart'
 
 const EcommerceDashboard = () => {
   return (
@@ -24,6 +26,20 @@ const EcommerceDashboard = () => {
       <Grid container spacing={6}>
         <Grid item xs={12} md={12} sx={{ order: 0, alignSelf: 'flex-end' }}>
           <BoasVindas />
+        </Grid>
+        <Grid item xs={12} md={6} lg={6} sx={{ order: 0 }}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <ClientesContratosTicketMedioMensalChart />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6} lg={6} sx={{ order: 0 }}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <ClientesContratosTicketMedioAnualChart />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={6} lg={6} sx={{ order: 0 }}>
           <Grid container spacing={6}>
