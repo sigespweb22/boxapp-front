@@ -119,7 +119,9 @@ const TableHeader = (props: TableHeaderProps) => {
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1], {
+            duration: 12000,
+          })
         });
       })
   }
@@ -146,7 +148,9 @@ const TableHeader = (props: TableHeaderProps) => {
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1], {
+            duration: 12000,
+          })
         });
       })
   }
@@ -173,7 +177,9 @@ const TableHeader = (props: TableHeaderProps) => {
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1], {
+            duration: 12000,
+          })
         });
       })
   }
