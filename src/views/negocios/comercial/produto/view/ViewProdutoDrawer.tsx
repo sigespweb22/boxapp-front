@@ -31,6 +31,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const SidebarClienteView = (props: SidebarViewProdutoType) => {
+  debugger
   // ** Hook
   const {
     reset,

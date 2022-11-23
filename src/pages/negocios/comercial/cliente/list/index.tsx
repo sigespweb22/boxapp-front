@@ -15,7 +15,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
 
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
@@ -73,29 +73,25 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 const renderClient = (row: ClienteType) => {
   return (
     <AvatarWithoutImageLink href={`/apps/cliente/view/${row.id}`}>
-      <CustomAvatar
-          skin='light'
-          color={'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
+      <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
+        {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
 }
 
 // ** renders status column
-const RenderStatus = ({ status } : { status: string }) => {
+const RenderStatus = ({ status }: { status: string }) => {
   // ** Hooks
   const { t } = useTranslation()
 
   return (
     <CustomChip
-        skin='light'
-        size='small'
-        label={t(status)}
-        color={clientStatusObj[status]}
-        sx={{ textTransform: 'capitalize' }}
+      skin='light'
+      size='small'
+      label={t(status)}
+      color={clientStatusObj[status]}
+      sx={{ textTransform: 'capitalize' }}
     />
   )
 }
@@ -202,7 +198,7 @@ const defaultColumns = [
     headerName: 'Status',
     headerAlign: 'center' as const,
     align: 'center' as const,
-    renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
+    renderCell: ({ row }: CellType) => <RenderStatus status={row.status} />
   }
 ]
 
@@ -210,7 +206,7 @@ const ClientList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
-   
+
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
@@ -235,19 +231,18 @@ const ClientList = () => {
     dispatch(alterStatusClient(id))
   }
 
-  const RenderButton = ({ id, status } : { id: string, status: string }) => {
-    if (status === 'INACTIVE')
-    {
+  const RenderButton = ({ id, status }: { id: string; status: string }) => {
+    if (status === 'INACTIVE') {
       return (
-        <Tooltip title={t("Activate")}>
+        <Tooltip title={t('Activate')}>
           <IconButton onClick={() => handleAlterStatus(id)}>
             <ElevatorUp fontSize='small' />
           </IconButton>
-        </Tooltip>        
+        </Tooltip>
       )
     } else if (status === 'ACTIVE') {
       return (
-        <Tooltip title={t("Deactivate")}>
+        <Tooltip title={t('Deactivate')}>
           <IconButton onClick={() => handleAlterStatus(id)}>
             <ElevatorDown fontSize='small' />
           </IconButton>
@@ -276,27 +271,25 @@ const ClientList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-page') &&
+          {ability?.can('read', 'ac-cliente-page') && (
             <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
-              <Tooltip title={t("View")}>
+              <Tooltip title={t('View')}>
                 <IconButton>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                 </IconButton>
               </Tooltip>
             </Link>
-          }
-          {ability?.can('update', 'ac-cliente-page') &&
-            <Tooltip title={t("Edit")}>
+          )}
+          {ability?.can('update', 'ac-cliente-page') && (
+            <Tooltip title={t('Edit')}>
               <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
                 <IconButton>
                   <PencilOutline fontSize='small' />
                 </IconButton>
               </Link>
             </Tooltip>
-          }
-          {ability?.can('delete', 'ac-cliente-page') &&
-            <RenderButton id={row.id} status={row.status}/>
-          }
+          )}
+          {ability?.can('delete', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }
@@ -307,14 +300,10 @@ const ClientList = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t("Clients")}</Typography>}
-            subtitle={
-              <Typography variant='body2'>
-                {t("Clients listing")}.
-              </Typography>
-            }
+            title={<Typography variant='h5'>{t('Clients')}</Typography>}
+            subtitle={<Typography variant='body2'>{t('Clients listing')}.</Typography>}
           />
-        </Grid> 
+        </Grid>
         {ability?.can('list', 'ac-cliente-page') ? (
           <Grid item xs={12}>
             <Card>
@@ -332,7 +321,9 @@ const ClientList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : (
+          'Você não tem permissão para ver este recurso.'
+        )}
         <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
       </Grid>
     </Grid>

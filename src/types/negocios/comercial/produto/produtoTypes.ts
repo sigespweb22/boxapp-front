@@ -12,7 +12,7 @@ export type ProdutoType = {
   caracteristicas: string
   descricao: string
   valorCusto: string
-  fornecedorProduto: {id: string, nome: string}
+  fornecedorProduto: { id: string, nome: string }
   fornecedorProdutoId: string
   status: string
   avatarColor: ThemeColor

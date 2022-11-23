@@ -10,6 +10,7 @@ export type ClienteType = {
   nomeFantasia: string
   razaoSocial: string
   inscricaoEstadual: string
+  tipoPessoa: string
   cnpj: string
   telefonePrincipal: string
   emailPrincipal: string
