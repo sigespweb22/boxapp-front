@@ -41,7 +41,7 @@ const formatToCurrency = (value: number) => {
   return value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const ClientesContratosTicketMedioMensalChart = () => {
+const ClientesContratosTicketMedioAnualChart = () => {
   // ** Hook
   const theme = useTheme()
   const ability = useContext(AbilityContext)
@@ -78,22 +78,22 @@ const ClientesContratosTicketMedioMensalChart = () => {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Box sx={{ mr: 0, display: 'flex', flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='info'>
-                    <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'info.main' }} />
+                  <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='secondary'>
+                    <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'secondary.main' }} />
                   </CustomAvatar>
                   <Box sx={{ display: 'flex', flexDirection: 'column', mr: 4 }}>
-                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ticket Médio (R$) | Mensal</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ticket Médio (R$) | Global</Typography>
                   </Box>
-                  <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='info'>
-                    <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'info.main' }} />
+                  <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='secondary'>
+                    <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'secondary.main' }} />
                   </CustomAvatar>
                 </Box>
                 <Typography component='p' variant='caption' sx={{ mt: 12 }}>
-                  Valor do ticket médio | Contratos Periodicidade Mensal |
+                  Valor do ticket | Todos os contratos |
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant='h6'>
-                    {formatToCurrency(clientesContratosTicketMedio.valorTicketMedioMensal)}
+                    {formatToCurrency(clientesContratosTicketMedio.valorTicketMedioMensal + clientesContratosTicketMedio.valorTicketMedioAnual)}
                   </Typography>
                 </Box>
               </Box>
@@ -109,9 +109,9 @@ const ClientesContratosTicketMedioMensalChart = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClientesContratosTicketMedioMensalChart.acl = {
+ClientesContratosTicketMedioAnualChart.acl = {
   action: 'read',
   subject: 'ac-dashboard-comercial-page'
 }
 
-export default ClientesContratosTicketMedioMensalChart
+export default ClientesContratosTicketMedioAnualChart
