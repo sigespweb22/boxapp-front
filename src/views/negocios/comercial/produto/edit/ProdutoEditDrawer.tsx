@@ -56,7 +56,7 @@ const MenuProps = {
   }
 }
 
-interface SidebarAddProdutoType {
+interface ProdutoEditDrawerType {
   row: ProdutoType | undefined
   open: boolean
   toggle: () => void
@@ -114,7 +114,7 @@ const schema = yup.object().shape({
     .required()
 })
 
-const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
+const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
   // ** Hook
   const { t } = useTranslation()
 
@@ -311,9 +311,9 @@ const SidebarProdutoEdit = (props: SidebarAddProdutoType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarProdutoEdit.acl = {
+ProdutoEditDrawer.acl = {
   action: 'update',
   subject: 'ac-produto-page'
 }
 
-export default SidebarProdutoEdit
+export default ProdutoEditDrawer

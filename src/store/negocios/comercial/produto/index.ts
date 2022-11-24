@@ -46,15 +46,7 @@ export const addProduto = createAsyncThunk(
       }
     }
 
-    const data2 = {
-      nome: data.nome,
-      codigoUnico: data.codigoUnico,
-      caracteristicas: data.caracteristicas,
-      descricao: data.descricao,
-      valorCusto: data.valorCusto,
-    }
-
-    axios.post(produtoApiService.addAsync, data2, config).then((resp) => {
+    axios.post(produtoApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().servico.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Serviço criado com sucesso.")

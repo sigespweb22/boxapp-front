@@ -30,8 +30,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarClienteView = (props: SidebarViewProdutoType) => {
-  debugger
+const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
   // ** Hook
   const {
     reset,
@@ -182,9 +181,9 @@ const SidebarClienteView = (props: SidebarViewProdutoType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteView.acl = {
+ProdutoViewDrawer.acl = {
   action: 'read',
   subject: 'ac-produto-page'
 }
 
-export default SidebarClienteView
+export default ProdutoViewDrawer

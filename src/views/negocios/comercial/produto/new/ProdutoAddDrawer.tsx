@@ -16,9 +16,6 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
-
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
@@ -39,18 +36,7 @@ import axios from 'axios'
 import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/fornecedor/produto/fornecedorProdutoApiService'
 import { useEffect } from 'react'
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
-
-interface SidebarAddProdutoType {
+interface ProdutoAddDrawerType {
   open: boolean
   toggle: () => void
 }
@@ -82,19 +68,19 @@ const schema = yup.object().shape({
     .required()
 })
 
-const SidebarAddProduto = (props: SidebarAddProdutoType) => {
+const defaultValues = {
+  nome: '',
+  codigoUnico: '',
+  valorCusto: '',
+  descricao: '',
+  caracteristicas: '',
+  fornecedorProduto: '',
+  status: ''
+}
+
+const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
-
-  const defaultValues = {
-    nome: '',
-    codigoUnico: '',
-    valorCusto: '',
-    descricao: '',
-    caracteristicas: '',
-    fornecedorProduto: '',
-    status: ''
-  }
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
@@ -117,6 +103,7 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
   }
 
   const onSubmit = (data: ProdutoType) => {
+    debugger
     dispatch(addProduto({ ...data,  }))
     toggle()
     reset()
@@ -262,9 +249,9 @@ const SidebarAddProduto = (props: SidebarAddProdutoType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarAddProduto.acl = {
+ProdutoAddDrawer.acl = {
   action: 'create',
   subject: 'ac-produto-page'
 }
 
-export default SidebarAddProduto
+export default ProdutoAddDrawer

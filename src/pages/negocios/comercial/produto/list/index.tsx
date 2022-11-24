@@ -19,11 +19,6 @@ import Typography from '@mui/material/Typography'
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import ElevatorDown from 'mdi-material-ui/ElevatorDown'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Cancel from 'mdi-material-ui/Cancel'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
@@ -50,9 +45,9 @@ import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/produto/new/TableHeader'
-import AddProdutoDrawer from 'src/views/negocios/comercial/produto/new/AddProdutoDrawer'
-import ViewProdutoDrawer from 'src/views/negocios/comercial/produto/view/ViewProdutoDrawer'
-import EditProdutoDrawer from 'src/views/negocios/comercial/produto/edit/EditProdutoDrawer'
+import ProdutoAddDrawer from 'src/views/negocios/comercial/produto/new/ProdutoAddDrawer'
+import ProdutoViewDrawer from 'src/views/negocios/comercial/produto/view/ProdutoViewDrawer'
+import ProdutoEditDrawer from 'src/views/negocios/comercial/produto/edit/ProdutoEditDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -69,7 +64,6 @@ const produtoStatusObj: ProdutoStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
 }
-
 
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
@@ -200,7 +194,6 @@ const ProdutoList = () => {
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.produto)
-  debugger
 
   useEffect(() => {
     dispatch(
@@ -324,9 +317,9 @@ const ProdutoList = () => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <AddProdutoDrawer open={addProdutoOpen} toggle={toggleAddProdutoDrawer} />
-        <ViewProdutoDrawer open={viewProdutoOpen} toggle={handleProdutoViewToggle} row={row}/>
-        <EditProdutoDrawer open={editProdutoOpen} toggle={handleProdutoEditToggle} row={row}/>
+        <ProdutoAddDrawer open={addProdutoOpen} toggle={toggleAddProdutoDrawer} />
+        <ProdutoViewDrawer open={viewProdutoOpen} toggle={handleProdutoViewToggle} row={row}/>
+        <ProdutoEditDrawer open={editProdutoOpen} toggle={handleProdutoEditToggle} row={row}/>
       </Grid>
     </Grid>
   )
