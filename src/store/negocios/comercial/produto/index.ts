@@ -89,16 +89,7 @@ export const editProduto = createAsyncThunk(
       }
     }
 
-    const data2 = {
-      id: data.id,
-      nome: data.nome,
-      codigoUnico: data.codigoUnico,
-      caracteristicas: data.caracteristicas,
-      descricao: data.descricao,
-      valorCusto: data.valorCusto,
-    }
-
-    axios.put(produtoApiService.updateAsync, data2, config).then((resp) => {
+    axios.put(produtoApiService.updateAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().servico.params))
       if (resp.status === 204) return toast.success("Serviço atualizado com sucesso.")
     }).catch((resp) => {

@@ -146,7 +146,7 @@ const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={props?.row?.fornecedorProduto.nome}
+                  value={props?.row?.fornecedorProduto}
                   placeholder='Fornecedor serviço'
                 />
               )}

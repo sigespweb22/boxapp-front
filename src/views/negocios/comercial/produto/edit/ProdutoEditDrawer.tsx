@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -18,12 +18,6 @@ import Autocomplete from '@mui/material/Autocomplete'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import Select from '@mui/material/Select'
-
-// Import Translate
-import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -45,17 +39,6 @@ import axios from 'axios'
 // ** Api Services
 import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/fornecedor/produto/fornecedorProdutoApiService'
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 350,
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-}
-
 interface ProdutoEditDrawerType {
   row: ProdutoType | undefined
   open: boolean
@@ -69,7 +52,7 @@ interface ProdutoData {
   caracteristicas: string
   descricao: string
   valorCusto: string
-  fornecedorProduto: {id: string, nome: string}
+  fornecedorProduto: { id: string; nome: string }
   fornecedorProdutoId: string
   status: string
   avatarColor: ThemeColor
@@ -82,12 +65,10 @@ const defaultValues = {
   caracteristicas: '',
   descricao: '',
   valorCusto: '',
-  fornecedorProduto: {id: '', nome: ''},
+  fornecedorProduto: { id: '', nome: '' },
   fornecedorProdutoId: '',
   status: ''
 }
-
-let fornecedoresProdutos: { id: string, nome: string  }[] = [];
 
 const showErrors = (field: string, valueLen: number, min: number) => {
   if (valueLen === 0) {
@@ -115,9 +96,6 @@ const schema = yup.object().shape({
 })
 
 const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
-  // ** Hook
-  const { t } = useTranslation()
-
   // ** Props
   const { open, toggle } = props
 
@@ -135,6 +113,27 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
     resolver: yupResolver(schema)
   })
 
+  // ** States
+  const [fornecedoresProdutos, setFornecedoresProdutos] = useState([])
+
+  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)
+  const config = {
+    headers: {
+      Authorization: `Bearer ${storedToken}`
+    }
+  }
+
+  useEffect(() => {
+    const fornecedoresProdutosRequest = axios.get(fornecedorProdutoApiService.listToSelectAsync, config)
+    fornecedoresProdutosRequest
+      .then(response => {
+        setFornecedoresProdutos(response.data)
+      })
+      .catch(error => {
+        setFornecedoresProdutos(error)
+      })
+  }, [])
+
   useEffect(() => {
     // ** Set values
     setValue('id', props?.row?.id || '')
@@ -142,20 +141,12 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
     setValue('codigoUnico', props?.row?.codigoUnico || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
     setValue('descricao', props?.row?.descricao || '')
-    setValue('fornecedorProduto', props?.row?.fornecedorProduto || {id: '', nome: ''})
+    setValue('fornecedorProduto', props?.row?.fornecedorProduto || { id: '', nome: '' })
     setValue('valorCusto', props?.row?.valorCusto || '')
   }, [props])
 
-  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-  
-  
   const onSubmit = (data: ProdutoData) => {
-    dispatch(editProduto({ ...data,  }))
+    dispatch(editProduto({ ...data }))
     toggle()
     reset()
   }
@@ -185,13 +176,7 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
               name='id'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value } }) => (
-                <TextField
-                  disabled
-                  value={value}
-                  label='Id'
-                />
-              )}
+              render={({ field: { value } }) => <TextField disabled value={value} label='Id' />}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -217,12 +202,7 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Código único'
-                  onChange={onChange}
-                  placeholder='(e.g.: #AB12345)'
-                />
+                <TextField value={value} label='Código único' onChange={onChange} placeholder='(e.g.: #AB12345)' />
               )}
             />
           </FormControl>
@@ -242,7 +222,7 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="descricao"
+              name='descricao'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
@@ -253,26 +233,21 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
                 />
               )}
             />
-          </FormControl> 
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name="valorCusto"
+              name='valorCusto'
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <TextField
-                  value={value}
-                  label='Valor custo'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
-                />
+                  <TextField value={value} label='Valor custo' onChange={onChange} placeholder='(e.g.: R$ 150,00)' />
                 )
               }}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
+          <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name={"fornecedorProduto"}
+              name={'fornecedorProduto'}
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
@@ -281,13 +256,13 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
                     options={fornecedoresProdutos || []}
                     filterSelectedOptions
                     value={value}
-                    id="autocomplete-multiple-outlined"
+                    id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option.nome}
                     renderInput={params => (
-                      <TextField {...params} label="Fornecedor Produto" placeholder='(e.g.: Roteador)' />
+                      <TextField {...params} label='Fornecedor Produto' placeholder='(e.g.: Roteador)' />
                     )}
                     onChange={(event, newValue) => {
-                      setValue('fornecedorProduto', newValue || {id: '', nome: ''})
+                      setValue('fornecedorProduto', newValue || { id: '', nome: '' })
                       onChange(newValue)
                     }}
                   />
