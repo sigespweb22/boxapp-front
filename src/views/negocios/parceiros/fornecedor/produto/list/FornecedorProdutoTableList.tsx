@@ -60,10 +60,6 @@ interface Props {
   id: string | undefined
 }
 
-interface UnidadeMedidaType {
-  [key: string]: ReactElement
-}
-
 interface CellType {
   row: FornecedorProdutoType
 }
@@ -153,29 +149,29 @@ const defaultColumns = [
   {
     flex: 0.04,
     minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código único',
+    field: 'codigoProduto',
+    headerName: 'Código produto',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.codigoUnico}
+          {row.codigoProduto}
         </Typography>
       )
     }
   },
   {
     flex: 0.04,
-    field: 'descricao',
+    field: 'caracteristicas',
     minWidth: 130,
-    headerName: 'Descrição',
+    headerName: 'Características',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.descricao}
+          {row.caracteristicas}
         </Box>
       )
     }
@@ -192,7 +188,6 @@ const defaultColumns = [
 ]
 
 const FornecedorProdutoTableList = ({ id }: Props) => {
-  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()

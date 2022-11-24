@@ -5,20 +5,16 @@ export type FornecedorProdutoLayoutType = {
 export type FornecedorProdutoType = {
   id: string
   nome: string
-  codigoUnico: string
+  codigoProduto: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
   fornecedorId: string
   status: string
 }
 
 export type FornecedorProdutoAddType = {
-  nome: string
-  codigoUnico: string
-  caracteristicas: string
-  descricao: string
-  valorCusto: string
-  fornecedorId: string
+  nome: string,
+  codigoProduto: string,
+  caracteristicas: string,
+  fornecedorId: string,
   status: string
 }

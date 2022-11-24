@@ -25,7 +25,7 @@ import { addFornecedorProduto } from 'src/store/negocios/parceiros/fornecedor/pr
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 
-interface SidebarFornecedorProdutoAddType {
+interface FornecedorProdutoAddType {
   fornecedorId: string | undefined
   open: boolean
   toggle: () => void
@@ -33,12 +33,9 @@ interface SidebarFornecedorProdutoAddType {
 
 interface FornecedorProdutoData {
   nome: string,
-  codigoUnico: string,
-  descricao: string,
-  valorCusto: string,
+  codigoProduto: string,
   caracteristicas: string,
   fornecedorId: string,
-  fornecedor: { id: '', nome: ''},
   status: string
 }
 
@@ -52,15 +49,13 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const defaultValues = {
   nome: '',
-  codigoUnico: '',
-  descricao: '',
-  valorCusto: '',
+  codigoProduto: '',
   caracteristicas: '',
-  fornecedor: {id: '', nome: ''},
+  fornecedorId: '',
   status: ''
 }
 
-const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => {
+const FornecedorProdutoAddDrawer = (props: FornecedorProdutoAddType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -75,21 +70,10 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
       mode: 'onChange'
   })
 
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
-    }
-  }
-
   const onSubmit = (data: FornecedorProdutoData) => {
     debugger
-    data.fornecedorId = props?.fornecedorId || ""
-    dispatch(addFornecedorProduto({ ...data,  }))
+    data.fornecedorId = props?.fornecedorId || ''
+    dispatch(addFornecedorProduto({ ...data }))
     toggle()
     reset()
   }
@@ -130,28 +114,14 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='codigoUnico'
+              name='codigoProduto'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código único'
+                  label='Código produto'
                   onChange={onChange}
                   placeholder='(e.g.: #ABCD1234)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='descricao'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Descrição'
-                  onChange={onChange}
-                  placeholder='(e.g.: Descrição do produto)'
                 />
               )}
             />
@@ -166,20 +136,6 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
                   label='Características'
                   onChange={onChange}
                   placeholder='(e.g.: Característica do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Custo do produto'
-                  onChange={onChange}
-                  placeholder='(e.g.: Valor do produto)'
                 />
               )}
             />
@@ -200,9 +156,9 @@ const SidebarFornecedorProdutoAdd = (props: SidebarFornecedorProdutoAddType) => 
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarFornecedorProdutoAdd.acl = {
+FornecedorProdutoAddDrawer.acl = {
   action: 'create',
   subject: 'ac-fornecedor-produto-page'
 }
 
-export default SidebarFornecedorProdutoAdd
+export default FornecedorProdutoAddDrawer
