@@ -12,6 +12,7 @@ export type ClienteType = {
   inscricaoEstadual: string
   tipoPessoa: string
   cnpj: string
+  cpf: string
   telefonePrincipal: string
   emailPrincipal: string
   observacao: string
