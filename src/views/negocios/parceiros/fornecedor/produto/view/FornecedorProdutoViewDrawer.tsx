@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarFornecedorProdutoViewType {
+interface FornecedorProdutoViewDrawerType {
   row: FornecedorProdutoType | undefined
   open: boolean
   toggle: () => void
@@ -31,7 +31,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarFornecedorProdutoView = (props: SidebarFornecedorProdutoViewType) => {
+const FornecedorProdutoViewDrawer = (props: FornecedorProdutoViewDrawerType) => {
   // ** Hook
   const {
     reset,
@@ -79,19 +79,7 @@ const SidebarFornecedorProdutoView = (props: SidebarFornecedorProdutoViewType) =
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.codigoUnico}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.descricao}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.valorCusto}
+              value={props?.row?.codigoProduto}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -129,9 +117,9 @@ const SidebarFornecedorProdutoView = (props: SidebarFornecedorProdutoViewType) =
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarFornecedorProdutoView.acl = {
+FornecedorProdutoViewDrawer.acl = {
   action: 'read',
   subject: 'ac-fornecedor-produto-page'
 }
 
-export default SidebarFornecedorProdutoView
+export default FornecedorProdutoViewDrawer
