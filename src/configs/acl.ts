@@ -28,7 +28,8 @@ const defineRulesFor = (role: string[], subject: string) => {
       /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-cliente-page')
-      can('read', 'ac-dashboard-controle_acesso-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-controle_acesso-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
       /// end - dashboard all
 
       /// begin - dashboard cliente
