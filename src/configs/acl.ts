@@ -43,6 +43,7 @@ const defineRulesFor = (role: string[], subject: string) => {
 
       /// begin user
     } else if (item === 'CanUserAll') {
+      debugger
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-user-page')
     } else if (item === 'CanUserList') {
       can('list', 'ac-user-page')

@@ -31,6 +31,8 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
+  debugger
+
   // ** Hook
   const {
     reset,
@@ -146,7 +148,7 @@ const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
               render={() => (
                 <TextField
                   disabled={true}
-                  value={props?.row?.fornecedorProduto}
+                  value={props?.row?.fornecedorProduto.nome}
                   placeholder='Fornecedor serviço'
                 />
               )}
