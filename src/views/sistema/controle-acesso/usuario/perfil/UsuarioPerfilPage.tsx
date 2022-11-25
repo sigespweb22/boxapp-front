@@ -89,7 +89,6 @@ const UsuarioPerfilPage = (props: Props) => {
             }
           />
         </TabList>
-
         <TabPanel sx={{ p: 0 }} value='conta'>
           <UsuarioPerfilConta id={props.id} />
         </TabPanel>

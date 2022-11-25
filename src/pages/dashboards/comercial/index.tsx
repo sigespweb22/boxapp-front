@@ -12,7 +12,7 @@ import ClientesContratosTicketMedioGlobalChart from 'src/views/dashboards/comerc
 import ClientesContratosTicketMedioMensalChart from 'src/views/dashboards/comercial/ClientesContratosTicketMedioMensalChart'
 import ClientesContratosTicketMedioAnualChart from 'src/views/dashboards/comercial/ClientesContratosTicketMedioAnualChart'
 
-const EcommerceDashboard = () => {
+const DashboardComercial = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -59,4 +59,9 @@ const EcommerceDashboard = () => {
   )
 }
 
-export default EcommerceDashboard
+DashboardComercial.acl = {
+  action: 'list',
+  subject: 'ac-dashboard-comercial-page'
+}
+
+export default DashboardComercial

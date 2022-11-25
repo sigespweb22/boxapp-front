@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -36,7 +36,7 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
 
-interface SidebarClienteProdutoAddType {
+interface ClienteProdutoAddDrawerType {
   clienteId: string | string[] | undefined
   open: boolean
   toggle: () => void
@@ -46,8 +46,6 @@ interface ProdutoType {
   id: string | ''
   nome: string | ''
 }
-
-let produtos: { id: string, nome: string  }[] = [];
 
 interface ClienteProdutoType {
   id: string
@@ -80,22 +78,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${produtoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        produtos = response.data
-      })
-  }, [produtos]);
-
+const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -110,16 +93,23 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
       mode: 'onChange'
   })
 
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
+  // ** States
+  const [produtos, setProdutos] = useState([])
+
+  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
     }
   }
+
+  useEffect(() => {
+    axios
+      .get(`${produtoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        setProdutos(response.data)
+      })
+  }, []);
 
   const onSubmit = (data: ClienteProdutoType): void => {
     data.clienteId = props?.clienteId
@@ -241,9 +231,9 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteProdutoAdd.acl = {
+ClienteProdutoAddDrawer.acl = {
   action: 'create',
   subject: 'ac-cliente-produto-page'
 }
 
-export default SidebarClienteProdutoAdd
+export default ClienteProdutoAddDrawer
