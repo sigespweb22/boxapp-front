@@ -6,7 +6,6 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'

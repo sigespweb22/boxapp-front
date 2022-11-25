@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -23,11 +23,6 @@ import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Cancel from 'mdi-material-ui/Cancel'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
