@@ -37,7 +37,7 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
 
 interface ClienteProdutoAddDrawerType {
-  clienteId: string | string[] | undefined
+  clienteId: string
   open: boolean
   toggle: () => void
 }
@@ -50,11 +50,9 @@ interface ProdutoType {
 interface ClienteProdutoType {
   id: string
   nome: string
-  codigoUnico: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
-  clienteId: string | string[] | undefined
+  valorVenda: string
+  clienteId: string
   produtoId: string
   produto: ProdutoType
   status: string
@@ -69,10 +67,9 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  codigoUnico: '',
+  nome: '', 
   caracteristicas: '',
-  descricao: '',
-  valorCusto: '',
+  valorVenda: '',
   clienteId: '',
   produto: {id: '', nome: ''},
   status: ''
@@ -113,7 +110,7 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
 
   const onSubmit = (data: ClienteProdutoType): void => {
     data.clienteId = props?.clienteId
-    dispatch(addClienteProduto({...data,  }))
+    dispatch(addClienteProduto({...data}))
     toggle()
     reset()
   }
@@ -161,14 +158,14 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='codigoUnico'
+              name='nome'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código único'
+                  label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: #ABCD1234)'
+                  placeholder='(e.g.: Mikrotik)'
                 />
               )}
             />
@@ -189,26 +186,12 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='descricao'
+              name='valorVenda'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Descrição'
-                  onChange={onChange}
-                  placeholder='(e.g.: Descrição do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Custo do produto'
+                  label='Valor venda'
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />

@@ -5,20 +5,20 @@ export type ClienteProdutoLayoutType = {
 export type ClienteProdutoType = {
   id: string
   nome: string
-  codigoUnico: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
+  valorVenda: string
+  clienteId: string
+  produto: Produto
   status: string
 }
 
 export type ClienteProdutoAddType = {
   id: string
   nome: string
-  codigoUnico: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
+  valorVenda: string
+  clienteId: string
+  produto: Produto
   status: string
 }
 
