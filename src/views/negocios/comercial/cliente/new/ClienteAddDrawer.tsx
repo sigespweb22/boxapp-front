@@ -110,6 +110,10 @@ const schema = yup.object().shape({
   cpf: yup
     .string()
     .min(11, obj => showErrors('Cpf', obj.value.length, obj.min))
+    .required(),
+  cep: yup
+    .string()
+    .min(8, obj => showErrors('Cep', obj.value.length, obj.min))
     .required()
 })
 
@@ -587,8 +591,26 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
             <Controller
               name='cep'
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField value={value} label='Cep' onChange={onChange} placeholder='e.g.: 88801-430' />
+              render={props => (
+                <InputMask
+                  mask='99999-999'
+                  value={props.field.value}
+                  disabled={false}
+                  onChange={(value): void => {
+                    props.field.onChange(value)
+                    changeHandler(value)
+                  }}
+                >
+                  <TextField
+                    sx={{ width: 'auto' }}
+                    disabled={false}
+                    name='cep'
+                    type='text'
+                    label='Cep'
+                    placeholder='e.g.: 57894-486'
+                    error={Boolean(errors.cep)}
+                  />
+                </InputMask>
               )}
             />
           </FormControl>

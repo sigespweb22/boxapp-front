@@ -136,31 +136,31 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
+    flex: 0.04,
     minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código único',
+    field: 'codigoProduto',
+    headerName: 'Código produto',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.codigoUnico}
+          {row.codigoProduto}
         </Typography>
       )
     }
   },
   {
-    flex: 0.1,
-    field: 'descricao',
+    flex: 0.04,
+    field: 'caracteristica',
     minWidth: 130,
-    headerName: 'Descrição',
+    headerName: 'Características',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.descricao}
+          {row.caracteristicas}
         </Box>
       )
     }
