@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,10 +9,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import Autocomplete from '@mui/material/Autocomplete'
-import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -43,20 +40,13 @@ interface SidebarClienteProdutoEditType {
   toggle: () => void
 }
 
-interface ProdutoType {
-  id: string
-  nome: string
-}
-
-let produtos: { id: string, nome: string  }[] = [];
-
 interface ClienteProdutoData {
   id: string
   nome: string
-  codigoUnico: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
+  clienteId: string
+  produto: {id: string, nome: string},
+  valorVenda: string
   status: string
 }
 
@@ -71,29 +61,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const defaultValues = {
   id: '',
   nome: '',
-  codigoUnico: '',
   caracteristicas: '',
-  descricao: '',
-  valorCusto: '',
+  valorVenda: '',
+  clienteId: '',
   produto: {id: '', nome: ''},
   status: '',
 }
 
 const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${produtoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        produtos = response.data
-      })
-  }, [produtos]);
+  
 
   // ** Props
   const { open, toggle } = props
@@ -110,26 +86,31 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
       mode: 'onChange'
   })
 
+  const [produtos, setProdutos] = useState([])
+
+  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${produtoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        setProdutos(response.data)
+      })
+  }, []);
+
   useEffect(() => {
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
-    setValue('codigoUnico', props?.row?.codigoUnico || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
-    setValue('descricao', props?.row?.descricao || '')
-    setValue('valorCusto', props?.row?.valorCusto || '')
-    //**setValue('produto', props?.row?.produto || {id: '', nome: ''})
+    setValue('valorVenda', props?.row?.valorVenda || '')
+    setValue('clienteId', props?.row?.clienteId || '')
+    setValue('produto', props?.row?.produto || {id: '', nome: ''})
   }, [props])
-
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
-    }
-  }
 
   const onSubmit = (data: ClienteProdutoData) => {
     dispatch(editClienteProduto({ ...data,  }))
@@ -181,14 +162,14 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='codigoUnico'
+              name='nome'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código Único'
+                  label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: #ABCD1234)'
+                  placeholder='(e.g.: Mikrotik)'
                 />
               )}
             />
@@ -209,28 +190,14 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='descricao'
+              name='valorVenda'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Descrição'
+                  label='Valor venda'
                   onChange={onChange}
-                  placeholder='(e.g.: Descrição do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Custo do produto'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
+                  placeholder='(e.g.: R$ 150.00)'
                 />
               )}
             />
