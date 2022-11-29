@@ -12,7 +12,7 @@ import ClienteViewRight from 'src/views/negocios/comercial/cliente/view/ClienteV
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-    clienteId: string | string [] | undefined
+    clienteId: string
 }
 
 const ClienteViewPage = ({ clienteId }: Props) => {

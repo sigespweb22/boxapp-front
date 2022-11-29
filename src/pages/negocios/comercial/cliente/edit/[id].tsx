@@ -5,7 +5,7 @@ const ClienteEditRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <ClienteEditPage clienteId={id}/>
+  return <ClienteEditPage clienteId={String(id)}/>
 }
 
 export default ClienteEditRoute

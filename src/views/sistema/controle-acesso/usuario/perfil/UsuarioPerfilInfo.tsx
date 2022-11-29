@@ -114,7 +114,7 @@ const UsuarioPerfilInfo = (props: Props) => {
         if (err.response.status === 400 || err.response.status === 404)
         return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
       }))
-  }, [])
+  }, [props.id])
   
   const handleReset = () => {
     reset()

@@ -1,9 +1,5 @@
 // ** React Imports
 import { useContext, useState, useEffect, useCallback } from 'react'
-
-// ** Next Import
-import Link from 'next/link'
-
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
 
@@ -12,7 +8,6 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 

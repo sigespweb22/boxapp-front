@@ -85,6 +85,8 @@ const defaultValues: ClienteType = {
   cnpj: '',
   telefonePrincipal: '',
   emailPrincipal: '',
+  tipoPessoa: '',
+  cpf: '',
   observacao: '',
   dataFundacao: '',
   codigoMunicipio: 0,

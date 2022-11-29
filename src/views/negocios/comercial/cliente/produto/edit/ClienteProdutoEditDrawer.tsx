@@ -69,8 +69,6 @@ const defaultValues = {
 }
 
 const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
-  
-
   // ** Props
   const { open, toggle } = props
   

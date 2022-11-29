@@ -9,10 +9,6 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import Autocomplete from '@mui/material/Autocomplete'
-import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -37,14 +33,9 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
 
 interface SidebarClienteContratoAddType {
-  clienteId: string | string[] | undefined
+  clienteId: string
   open: boolean
   toggle: () => void
-}
-
-interface ContratoType {
-  id: string | ''
-  nome: string | ''
 }
 
 let contratos: { id: string, nome: string  }[] = [];
@@ -104,17 +95,6 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
       defaultValues,
       mode: 'onChange'
   })
-
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
-    }
-  }
 
   const onSubmit = (data: ClienteContratoType): void => {
     data.clienteId = props?.clienteId

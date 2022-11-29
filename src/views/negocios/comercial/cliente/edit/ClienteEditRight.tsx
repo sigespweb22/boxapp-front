@@ -23,7 +23,7 @@ import ClienteProdutoListTable from 'src/views/negocios/comercial/cliente/produt
 import ClienteContratoListTable from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableList'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string
 }
 
 // ** Styled Tab component

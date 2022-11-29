@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Fragment, SyntheticEvent, MouseEvent, useContext   } from 'react';
+import { useState, useRef, Fragment, SyntheticEvent, useContext   } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -36,7 +36,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // ** Store Imports
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'

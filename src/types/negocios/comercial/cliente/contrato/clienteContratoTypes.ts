@@ -19,8 +19,3 @@ export type ClienteContratoAddType = {
   bomControleContratoId: string
   status: string
 }
-
-interface Contrato {
-  id: string | ''
-  nome: string | ''
-}

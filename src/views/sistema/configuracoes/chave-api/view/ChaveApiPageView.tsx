@@ -9,10 +9,7 @@ import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
 import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApiTypes'
-import { useForm, Controller } from 'react-hook-form'
-
-// ** Copmponents Imports
-import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -44,12 +44,8 @@ import ClienteProdutoViewDrawer from 'src/views/negocios/comercial/cliente/produ
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
-import Cached from 'mdi-material-ui/Cached'
-import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
-
 interface Props {
-  id: string | string[] | undefined
+  id: string
 }
 interface CellType {
   row: ClienteProdutoType
@@ -138,21 +134,6 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código Único',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.codigoUnico}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.04,
     minWidth: 50,
     field: 'status',
@@ -169,7 +150,7 @@ const ClienteProdutoTableListToView = ({ id }: Props) => {
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string | string[] | undefined>('')
+  const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteProdutoViewOpen, setClienteProdutoViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteProdutoType | undefined>()

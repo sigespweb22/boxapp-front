@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -11,10 +11,6 @@ import CardContent from '@mui/material/CardContent'
 import ChartTimelineVariant from 'mdi-material-ui/ChartTimelineVariant'
 import AccountCheck from 'mdi-material-ui/AccountCheck'
 import AccountRemove from 'mdi-material-ui/AccountRemove'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
-
-import DotsVertical from 'mdi-material-ui/DotsVertical'
 
 // ** Third Party Imports
 import { ApexOptions } from 'apexcharts'
@@ -36,7 +32,6 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // ** Context Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
 import Divider from '@mui/material/Divider'
 
 interface ClienteContrato {
@@ -56,23 +51,27 @@ const calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos = (dat
   {
     const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
     const calculo = (data.totalClientesComContrato / totalClientesAtivos) * 100
+    
     return calculo
+
   } else return 0
 }
 
 const calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos = (data: ClienteContrato) => {
+
   if (data.totalClientesSemContrato > 0 && data.totalClientesComContrato > 0)
   {
     const totalClientesAtivos: number = data.totalClientesSemContrato + data.totalClientesComContrato
     const calculo = (data.totalClientesSemContrato / totalClientesAtivos) * 100
+
     return calculo
+
   } else return 0
 }
 
 const ClientesContratosNumerosChart = () => {
   // ** Hook
   const theme = useTheme()
-  const ability = useContext(AbilityContext)
 
   // ** State
   const [clientesContratos, setClientesContratos] = useState<ClienteContrato>(clientesContratosDefaultValues)

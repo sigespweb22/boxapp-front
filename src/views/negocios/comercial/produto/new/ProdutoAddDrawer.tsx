@@ -215,7 +215,7 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
             <Controller
               name="fornecedorProduto"
               control={control}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <Autocomplete
                     sx={{ width: 360 }}

@@ -1,6 +1,3 @@
-// ** Types
-import { ThemeColor } from 'src/@core/layouts/types'
-
 export type ChaveApiLayoutType = {
   id: string | undefined
 }

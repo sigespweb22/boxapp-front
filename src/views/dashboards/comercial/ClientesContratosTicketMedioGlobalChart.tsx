@@ -1,9 +1,8 @@
-import { SetStateAction, useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import { useTheme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
@@ -24,7 +23,6 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // ** Context Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
 import Divider from '@mui/material/Divider'
 
 interface ClienteContratoTicketMedio {
@@ -42,10 +40,6 @@ const formatToCurrency = (value: number) => {
 }
 
 const ClientesContratosTicketMedioAnualChart = () => {
-  // ** Hook
-  const theme = useTheme()
-  const ability = useContext(AbilityContext)
-
   // ** State
   const [clientesContratosTicketMedio, setClientesContratosTicketMedio] = useState<ClienteContratoTicketMedio>(clientesContratosTicketMedioDefaultValues)
 

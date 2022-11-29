@@ -56,11 +56,6 @@ const MenuProps = {
   }
 }
 
-interface FornecedorServicoType {
-  id: string | null
-  nome: string | null
-}
-
 interface SidebarAddServicoType {
   row: ServicoType | undefined
   open: boolean

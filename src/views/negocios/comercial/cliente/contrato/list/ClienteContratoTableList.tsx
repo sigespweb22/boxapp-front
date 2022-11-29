@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -52,7 +52,7 @@ import ClienteContratoEditDrawer from 'src/views/negocios/comercial/cliente/cont
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string
 }
 
 interface CellType {
@@ -173,7 +173,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string | string[] | undefined>('')
+  const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteContratoAddOpen, setClienteContratoAddOpen] = useState<boolean>(false)
   const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)

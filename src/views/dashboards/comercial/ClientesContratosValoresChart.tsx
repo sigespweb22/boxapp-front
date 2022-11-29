@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -32,7 +32,6 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // ** Context Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
 import Divider from '@mui/material/Divider'
 
 interface ClienteContratoValor {
@@ -51,7 +50,9 @@ const calcularPercentualValorMensalEmRelacaoAoValorTotal = (data: ClienteContrat
   if (data.totalEmReaisContratosMensais > 0 && data.totalEmReaisTodosOsContratos > 0)
   {
     const calculo = (data.totalEmReaisContratosMensais / data.totalEmReaisTodosOsContratos) * 100
+
     return calculo
+
   } else return 0
 }
 
@@ -59,7 +60,9 @@ const calcularPercentualValorAnualEmRelacaoAoValorTotal = (data: ClienteContrato
   if (data.totalEmReaisContratosAnuais > 0 && data.totalEmReaisTodosOsContratos > 0)
   {
     const calculo = (data.totalEmReaisContratosAnuais / data.totalEmReaisTodosOsContratos) * 100
+
     return calculo
+
   } else return 0
 }
 
@@ -70,7 +73,6 @@ const formatToCurrency = (value: number) => {
 const ClientesContratosValoresChart = () => {
   // ** Hook
   const theme = useTheme()
-  const ability = useContext(AbilityContext)
 
   // ** State
   const [clientesContratosValores, setClientesContratosValores] = useState<ClienteContratoValor>(clientesContratosValoresDefaultValues)
