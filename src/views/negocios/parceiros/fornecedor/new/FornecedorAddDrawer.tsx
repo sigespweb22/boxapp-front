@@ -226,7 +226,7 @@ const SidebarFornecedorAdd = (props: SidebarFornecedorAddType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Alert sx={{mb:'20px'}} severity="warning">Para vincular serviços a um fornecedor, acesse a sua área de edição.</Alert>
+          <Alert sx={{mb:'20px'}} severity="warning">Para vincular serviços e produtos a um fornecedor, acesse a sua área de edição.</Alert>
           <FormControl fullWidth sx={{ mb: 6 }}>
           <Controller
               name='nomeFantasia'

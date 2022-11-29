@@ -47,6 +47,7 @@ export const addClient = createAsyncThunk(
         Authorization: "Bearer " + storedToken
       }
     }
+    debugger
 
     axios.post(clienteApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().cliente.params))

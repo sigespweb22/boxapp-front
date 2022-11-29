@@ -48,13 +48,12 @@ import clientApiService from 'src/@api-center/negocios/comercial/cliente/cliente
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 import { Autocomplete } from '@mui/material'
 
-interface SidebarClienteAddType {
+interface ClienteAddDrawerType {
   open: boolean
   toggle: () => void
 }
 
 interface ClientData {
-  id: string
   nomeFantasia: string
   razaoSocial: string
   inscricaoEstadual: string
@@ -97,38 +96,21 @@ const schema = yup.object().shape({
   nomeFantasia: yup
     .string()
     .min(3, obj => showErrors('Nome fantasia', obj.value.length, obj.min))
-    .required(),
-  razaoSocial: yup
-    .string()
-    .min(3, obj => showErrors('Razão social', obj.value.length, obj.min))
-    .required(),
-  cnpj: yup
-    .string()
-    .min(14, obj => showErrors('Cnpj', obj.value.length, obj.min))
-    .required(),
-  cpf: yup
-    .string()
-    .min(11, obj => showErrors('Cpf', obj.value.length, obj.min))
-    .required(),
-  cep: yup
-    .string()
-    .min(8, obj => showErrors('Cep', obj.value.length, obj.min))
     .required()
 })
 
 const defaultValues = {
-  id: '',
   nomeFantasia: '',
   razaoSocial: '',
   inscricaoEstadual: '',
-  tipoPessoa: '',
+  tipoPessoa: 'JURIDICA',
   cnpj: '',
   cpf: '',
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
   dataFundacao: '0001-01-01 00:00:00',
-  codigoMunicipio: 0,
+  codigoMunicipio: '',
   rua: '',
   numero: '',
   complemento: '',
@@ -138,7 +120,7 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarClienteAdd = (props: SidebarClienteAddType) => {
+const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
 
@@ -309,7 +291,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid item xs={12} md={12} lg={12}>
             <Alert sx={{ mb: '20px' }} severity='warning'>
-              Para vincular serviços a um cliente, acesse a sua área de edição.
+              Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição.
             </Alert>
           </Grid>
           <Grid>
@@ -356,20 +338,15 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
             <Controller
               name='razaoSocial'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   label='Razão social'
                   onChange={onChange}
                   placeholder='e.g.: Empresa de software LTDA'
-                  error={Boolean(errors.razaoSocial)}
                 />
               )}
             />
-            {errors.razaoSocial && (
-              <FormHelperText sx={{ color: 'error.main' }}>{errors.razaoSocial.message}</FormHelperText>
-            )}
           </FormControl>
           ):(<></>)}
           {isTipoPessoaFisica? (
@@ -387,7 +364,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
           ):(<></>)}
           {isTipoPessoaFisica? (
             <Grid sx={{ display: 'flex', alignItems: 'center', width: 'auto' }} xs={12} md={12} lg={12}>
-            <Grid sx={{ width: 'auto' }} xs={10} md={10} lg={10}>
+            <Grid sx={{ width: 'auto' }} xs={10} md={12} lg={12}>
               <FormControl sx={{ mb: 6 }} fullWidth={true}>
                 <Controller
                   name='cpf'
@@ -414,15 +391,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                     </InputMask>
                   )}
                 />
-                {errors.cpf && <FormHelperText sx={{ color: 'error.main' }}>{errors.cpf.message}</FormHelperText>}
               </FormControl>
-            </Grid>
-            <Grid xs={2} md={2} lg={2}>
-              <Tooltip title={t('Search CPF')}>
-                <IconButton onClick={handleClick} sx={{ ml: 4, mb: 6 }} aria-label='capture screenshot' color='primary'>
-                  <StoreSearchOutline fontSize='medium' />
-                </IconButton>
-              </Tooltip>
             </Grid>
           </Grid>
           ): isTipoPessoaJuridica? (
@@ -470,13 +439,25 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
             <Controller
               name='telefonePrincipal'
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Telefone principal'
-                  onChange={onChange}
-                  placeholder='e.g.: (48) 3051.8896'
-                />
+              render={props => (
+                <InputMask
+                  mask='(99) 9.9999-9999'
+                  value={props.field.value}
+                  disabled={false}
+                  onChange={(value): void => {
+                    props.field.onChange(value)
+                    changeHandler(value)
+                  }}
+                >
+                  <TextField
+                    sx={{ width: 'auto' }}
+                    disabled={false}
+                    name='telefonePrincipal'
+                    type='text'
+                    label='Telefone principal'
+                    placeholder='e.g.: (48) 9.8896-1111'
+                  />
+                </InputMask>
               )}
             />
           </FormControl>
@@ -606,8 +587,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                     name='cep'
                     type='text'
                     label='Cep'
-                    placeholder='e.g.: 57894-486'
-                    error={Boolean(errors.cep)}
+                    placeholder='e.g.: 88801-000'
                   />
                 </InputMask>
               )}
@@ -630,9 +610,9 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteAdd.acl = {
+ClienteAddDrawer.acl = {
   action: 'create',
   subject: 'ac-cliente-page'
 }
 
-export default SidebarClienteAdd
+export default ClienteAddDrawer
