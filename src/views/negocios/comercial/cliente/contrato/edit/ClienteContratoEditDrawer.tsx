@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -32,6 +33,7 @@ import axios from 'axios'
 // ** Api Services
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
+import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 
 interface SidebarClienteContratoEditType {
   row: ClienteContratoType | undefined
@@ -69,21 +71,6 @@ const defaultValues = {
 }
 
 const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${clienteContratoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        contratos = response.data
-      })
-  }, [contratos]);
-
   // ** Props
   const { open, toggle } = props
   
@@ -98,6 +85,32 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       defaultValues,
       mode: 'onChange'
   })
+
+  // ** States
+  const [periodicidades, setPeriodicidades] = useState([])
+
+  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
+  const config = {
+    headers: {
+      Authorization: "Bearer " + storedToken
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${enumApiService.periodicidadesListAsync}`, config)
+      .then(response => {
+        setPeriodicidades(response.data)
+      })
+  }, [periodicidades])
+
+  useEffect(() => {
+    axios
+      .get(`${clienteContratoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        contratos = response.data
+      })
+  }, [contratos]);
 
   useEffect(() => {
     setValue('id', props?.row?.id || '')
@@ -168,17 +181,25 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
           </FormControl>  
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='periodicidade'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Periodicidade'
-                  onChange={onChange}
-                  placeholder='(e.g.: Periodicidade do produto)'
-                />
-              )}
-            />
+                name="periodicidade"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <Autocomplete
+                      value={value}
+                      sx={{ width: 360 }}
+                      options={periodicidades}
+                      onChange={(event, newValue) => {
+                        setValue('periodicidade', newValue || '')
+                        onChange(newValue)
+                      }}
+                      id='autocomplete-controlled'
+                      getOptionLabel={option => option}
+                      renderInput={params => <TextField {...params} label='Periodicidade' />}
+                    />
+                  )
+                }}
+              />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
