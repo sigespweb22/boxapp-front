@@ -43,7 +43,7 @@ let contratos: { id: string, nome: string  }[] = [];
 
 interface ClienteContratoData {
   id: string
-  valorContrato: string
+  valorContrato: number
   periodicidade: string
   clienteId: string
   bomControleContratoId: string
@@ -60,7 +60,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const defaultValues = {
   id: '',
-  valorContrato: '',
+  valorContrato: 0,
   periodicidade: '',
   clienteId: '',
   bomControleContratoId: '',
@@ -101,7 +101,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
 
   useEffect(() => {
     setValue('id', props?.row?.id || '')
-    setValue('valorContrato', props?.row?.valorContrato || '')
+    setValue('valorContrato', props?.row?.valorContrato || 0)
     setValue('periodicidade', props?.row?.periodicidade || '')
     setValue('clienteId', props?.row?.clienteId || '')
     setValue('bomControleContratoId', props?.row?.bomControleContratoId || '')
@@ -139,6 +139,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  disabled
                   value={value}
                   label='ID'
                   onChange={onChange}
@@ -153,10 +154,11 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                   value={value}
                   label='Valor do contrato'
                   onChange={onChange}
-                  placeholder='(e.g.: R$ 1500,00)'
+                  placeholder='(e.g.: R$ 150,00)'
                 />
               )}
             />
@@ -171,34 +173,6 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                   label='Periodicidade'
                   onChange={onChange}
                   placeholder='(e.g.: Periodicidade do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='clienteId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Id do cliente'
-                  onChange={onChange}
-                  placeholder='(e.g.: Id do cliente)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='bomControleContratoId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Id contrato Bom Controle'
-                  onChange={onChange}
-                  placeholder='(e.g.: Id contrato Bom Controle'
                 />
               )}
             />

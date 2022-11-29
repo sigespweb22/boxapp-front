@@ -79,6 +79,10 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
+const formatCurrency = (currency: number) => {
+  return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+}
+
 // ** renders group column
 const renderContratoNome = (row: ClienteContratoType) => {
   return (
@@ -88,7 +92,7 @@ const renderContratoNome = (row: ClienteContratoType) => {
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.id ? row.id : 'SN')}
+          {getInitials(row.id ? row.id : 'CC')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -114,12 +118,12 @@ const defaultColumns = [
   {
     flex: 0.08,
     minWidth: 30,
-    field: 'name',
-    headerName: 'Nome',
+    field: 'periodicidade',
+    headerName: 'Periodicidade',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id } = row
+      const { periodicidade } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -131,10 +135,10 @@ const defaultColumns = [
               variant='body2'
               sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
             >
-              {id}
+              {periodicidade}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📝{id}
+              📝{periodicidade}
             </Typography>
           </Box>
         </Box>
@@ -151,7 +155,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorContrato}
+          {formatCurrency(row.valorContrato)}
         </Typography>
       )
     }

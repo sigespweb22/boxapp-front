@@ -31,6 +31,13 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+const formatCurrency = (currency: string) => {
+  let newValue: number = 0
+  newValue = parseInt(currency)
+  
+  return newValue.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+}
+
 const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
   // ** Hook
   const {
@@ -73,25 +80,13 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.valorContrato}
+              value={formatCurrency(props?.row?.valorContrato || '0')}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
               value={props?.row?.periodicidade}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.clienteId}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.bomControleContratoId}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
