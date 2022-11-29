@@ -319,7 +319,7 @@ const GrupoList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-group-page') ? (
+        {ability?.can('list', 'ac-grupo-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />

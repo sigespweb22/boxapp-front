@@ -38,7 +38,7 @@ const EcommerceDashboard = () => {
 
   return (
     <ApexChartWrapper>
-      {ability?.can('read', 'ac-dashboard-client-page') ? (
+      {ability?.can('read', 'ac-dashboard-cliente-page') ? (
         <Grid container spacing={6}>
           <Grid item xs={12} md={8} sx={{ order: 0, alignSelf: 'flex-end' }}>
             <EcommerceCongratulations />

@@ -42,9 +42,14 @@ const defineRulesFor = (role: string[], subject: string) => {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-controle_acesso-page')
       /// end - dashboard controle acesso'
 
+      /// begin - dashboard comercial
+    } else if (item === 'CanDashboardComercialAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
+      /// end - dashboard comercial  
+
       /// begin user
-    } else if (item === 'CanUserAll') {
       debugger
+    } else if (item === 'CanUserAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-user-page')
     } else if (item === 'CanUserList') {
       can('list', 'ac-user-page')
@@ -200,11 +205,6 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-chave_api_terceiro-page')
       /// end - chave api
 
-      /// begin - dashboard comercial
-    } else if (item === 'CanDashboardComercialAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
-      /// end - dashboard comercial
-
       /// begin - cliente contrato
     } else if (item === 'CanClienteContratoAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-contrato-page')
@@ -219,21 +219,6 @@ const defineRulesFor = (role: string[], subject: string) => {
     } else if (item === 'CanClienteContratoDelete') {
       can('delete', 'ac-cliente-contrato-page')
       /// end - cliente contrato
-
-      // begin - produto
-    } else if (item === 'CanProdutoAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-produto-page')
-    } else if (item === 'CanProdutoList') {
-      can('list', 'ac-produto-page')
-    } else if (item === 'CanProdutoRead') {
-      can('read', 'ac-produto-page')
-    } else if (item === 'CanProdutoUpdate') {
-      can('update', 'ac-produto-page')
-    } else if (item === 'CanProdutoCreate') {
-      can('create', 'ac-produto-page')
-    } else if (item === 'CanProdutoDelete') {
-      can('delete', 'ac-produto-page')
-      /// end - produto
 
       // begin - produto
     } else if (item === 'CanProdutoAll') {

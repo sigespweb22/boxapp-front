@@ -246,7 +246,7 @@ const FornecedorProdutoTableListToView = ({ id }: Props) => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-produto-page') ? (
+        {ability?.can('list', 'ac-fornecedor-produto-page') ? (
           <Grid item xs={12}>
             <Card>
               <DataGrid
