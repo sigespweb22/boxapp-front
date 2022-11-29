@@ -31,11 +31,8 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const formatCurrency = (currency: string) => {
-  let newValue: number = 0
-  newValue = parseInt(currency)
-  
-  return newValue.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+const formatCurrency = (currency: number) => {
+  return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
 const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
@@ -80,13 +77,19 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={formatCurrency(props?.row?.valorContrato || '0')}
+              value={formatCurrency(props?.row?.valorContrato || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
               value={props?.row?.periodicidade}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              value={props?.row?.bomControleContratoId || null}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -100,7 +103,6 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
                   type='status'
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
-                  placeholder='(e.g.: ATIVO)'
                 />
               )}
             />

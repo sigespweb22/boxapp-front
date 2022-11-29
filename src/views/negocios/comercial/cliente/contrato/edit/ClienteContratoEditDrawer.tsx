@@ -48,7 +48,7 @@ interface ClienteContratoData {
   valorContrato: number
   periodicidade: string
   clienteId: string
-  bomControleContratoId: string
+  bomControleContratoId: number
   status: string
 }
 
@@ -65,7 +65,7 @@ const defaultValues = {
   valorContrato: 0,
   periodicidade: '',
   clienteId: '',
-  bomControleContratoId: '',
+  bomControleContratoId: 0,
   contrato: {id: '', nome: ''},
   status: '',
 }
@@ -102,7 +102,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       .then(response => {
         setPeriodicidades(response.data)
       })
-  }, [periodicidades])
+  }, [])
 
   useEffect(() => {
     axios
@@ -117,7 +117,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
     setValue('valorContrato', props?.row?.valorContrato || 0)
     setValue('periodicidade', props?.row?.periodicidade || '')
     setValue('clienteId', props?.row?.clienteId || '')
-    setValue('bomControleContratoId', props?.row?.bomControleContratoId || '')
+    setValue('bomControleContratoId', props?.row?.bomControleContratoId || 0)
   }, [props])
 
   const onSubmit = (data: ClienteContratoData) => {
@@ -146,7 +146,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='id'
               control={control}
@@ -178,7 +178,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                 />
               )}
             />
-          </FormControl>  
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
                 name="periodicidade"
@@ -200,6 +200,24 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                   )
                 }}
               />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='bomControleContratoId'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={value}
+                  label='Id contrato no Bom Controle'
+                  onChange={onChange}
+                  placeholder='(e.g.: 10)'
+                />
+              )}
+            />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>

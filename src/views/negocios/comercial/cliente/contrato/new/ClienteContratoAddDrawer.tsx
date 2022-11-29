@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -31,6 +32,7 @@ import axios from 'axios'
 // ** Api Services
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
+import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 
 interface SidebarClienteContratoAddType {
   clienteId: string
@@ -38,14 +40,11 @@ interface SidebarClienteContratoAddType {
   toggle: () => void
 }
 
-let contratos: { id: string, nome: string  }[] = [];
-
 interface ClienteContratoType {
-  id: string
-  valorContrato: string
+  valorContrato: number
   periodicidade: string
   clienteId: string
-  bomControleContratoId: string
+  bomControleContratoId: number
   status: string
 }
 
@@ -58,7 +57,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  id: '',
   valorContrato: '',
   periodicidade: '',
   clienteId: '',
@@ -67,6 +65,24 @@ const defaultValues = {
 }
 
 const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
+  // ** Props
+  const { open, toggle } = props
+  
+  // ** Hooks
+  const dispatch = useDispatch<AppDispatch>()
+  const {
+    reset,
+    control,
+    setValue,
+    handleSubmit
+  } = useForm({
+      defaultValues,
+      mode: 'onChange'
+  })
+
+  // ** States
+  const [periodicidades, setPeriodicidades] = useState([])
+
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
@@ -76,25 +92,11 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
 
   useEffect(() => {
     axios
-      .get(`${clienteContratoApiService.listToSelectAsync}`, config)
+      .get(`${enumApiService.periodicidadesListAsync}`, config)
       .then(response => {
-        contratos = response.data
+        setPeriodicidades(response.data)
       })
-  }, [contratos]);
-
-  // ** Props
-  const { open, toggle } = props
-  
-  // ** Hooks
-  const dispatch = useDispatch<AppDispatch>()
-  const {
-    reset,
-    control,
-    handleSubmit
-  } = useForm({
-      defaultValues,
-      mode: 'onChange'
-  })
+  }, []);
 
   const onSubmit = (data: ClienteContratoType): void => {
     data.clienteId = props?.clienteId
@@ -123,26 +125,13 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='id'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Id'
-                  onChange={onChange}
-                  placeholder='(e.g.: Id do contrato)'
-                />
-              )}
-            />
-          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='valorContrato'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
+                  type="number"
                   value={value}
                   label='Valor do contrato'
                   onChange={onChange}
@@ -153,31 +142,25 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='periodicidade'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Periodicidade'
-                  onChange={onChange}
-                  placeholder='(e.g.: Periodicidade do contrato)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='clienteId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Id do cliente'
-                  onChange={onChange}
-                  placeholder='(e.g.: Id do cliente)'
-                />
-              )}
-            />
+                name="periodicidade"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <Autocomplete
+                      value={value}
+                      sx={{ width: 360 }}
+                      options={periodicidades}
+                      onChange={(event, newValue) => {
+                        setValue('periodicidade', newValue || '')
+                        onChange(newValue)
+                      }}
+                      id='autocomplete-controlled'
+                      getOptionLabel={option => option}
+                      renderInput={params => <TextField {...params} label='Periodicidade' />}
+                    />
+                  )
+                }}
+              />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
@@ -186,9 +169,9 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Id contrato do bom controle'
+                  label='Bom controle id'
                   onChange={onChange}
-                  placeholder='(e.g.: Id contrato do bom controle)'
+                  placeholder='(e.g.: Id do contrato no Bom Controle)'
                 />
               )}
             />

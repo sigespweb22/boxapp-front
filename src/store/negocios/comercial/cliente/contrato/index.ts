@@ -29,7 +29,7 @@ export const fetchData = createAsyncThunk('appClienteContratos/fetchData', async
   const response = await axios
                             .get(clienteContratoApiService.listAsync, {
                                   headers: {
-                                    Authorization: "Bearer " + storedToken
+                                    Authorization: `Bearer ${storedToken}`
                                   },
                                   params
                             })
@@ -41,14 +41,14 @@ export const fetchData = createAsyncThunk('appClienteContratos/fetchData', async
 export const addClienteContrato = createAsyncThunk(
   'appClienteContratos/addClienteContrato',
   async (data: ClienteContratoAddType, { dispatch }: Redux) => {
-    debugger
     const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
     const config = {
       headers: {
-        Authorization: "Bearer " + storedToken
+        Authorization: `Bearer ${storedToken}` 
       }
     }
 
+    debugger
     axios.post(clienteContratoApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData({clienteId: resp.data.clienteId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
@@ -90,7 +90,7 @@ export const editClienteContrato = createAsyncThunk(
     const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
     const config = {
       headers: {
-        Authorization: "Bearer " + storedToken
+        Authorization: `Bearer ${storedToken}`
       }
     }
 
@@ -133,7 +133,7 @@ export const deleteClienteContrato = createAsyncThunk(
     const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
     
     const headers = {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${storedToken}`
     }
 
     axios.delete(clienteContratoApiService.deleteAsync+id, { headers }).then((resp) => {
@@ -168,7 +168,7 @@ export const alterStatusClienteContrato = createAsyncThunk(
     
     const config = {
       headers: {
-        Authorization: "Bearer " + storedToken
+        Authorization: `Bearer ${storedToken}`
       }
     }
 
