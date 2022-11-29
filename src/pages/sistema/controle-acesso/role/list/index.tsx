@@ -252,7 +252,7 @@ const RoleList = () => {
             </Typography>
             <Typography sx={{ mb: 9.5, color: 'text.secondary' }}>
               Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades.
-              Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidade de acesso.
+              Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso.
             </Typography>
           </Grid>
           <GridStyled item xs={12} md={4}>
