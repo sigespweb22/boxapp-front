@@ -154,7 +154,10 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   value={value}
                   label='Valor do contrato'
                   onChange={onChange}

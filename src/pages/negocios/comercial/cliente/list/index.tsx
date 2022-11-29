@@ -72,7 +72,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 // ** renders cliente column
 const renderClient = (row: ClienteType) => {
   return (
-    <AvatarWithoutImageLink href={`/apps/cliente/view/${row.id}`}>
+    <AvatarWithoutImageLink href="#">
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
         {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
       </CustomAvatar>
@@ -105,27 +105,23 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, nomeFantasia, emailPrincipal } = row
+      const { nomeFantasia, emailPrincipal } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/cliente/view/${id}`} passHref>
-              <Typography
-                noWrap
-                component='a'
-                variant='body2'
-                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {nomeFantasia}
-              </Typography>
-            </Link>
-            <Link href={`/apps/cliente/view/${id}`} passHref>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                📬{emailPrincipal}
-              </Typography>
-            </Link>
+            <Typography
+              noWrap
+              component='a'
+              variant='body2'
+              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+            >
+              {nomeFantasia}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              📬{emailPrincipal}
+            </Typography>
           </Box>
         </Box>
       )

@@ -65,6 +65,10 @@ const clienteContratoStatusObj = (status: string) => {
   }
 }
 
+const formatCurrency = (currency: number) => {
+  return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+}
+
 // ** Styled component for the link for the avatar without image
 const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
@@ -80,7 +84,7 @@ const renderContratoNome = (row: ClienteContratoType) => {
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.id ? row.id : 'SN')}
+          {getInitials(row.periodicidade ? row.periodicidade : 'SN')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -106,12 +110,12 @@ const defaultColumns = [
   {
     flex: 0.08,
     minWidth: 30,
-    field: 'id',
-    headerName: 'Id',
+    field: 'periodicidade',
+    headerName: 'Periodicidade',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id } = row
+      const { periodicidade } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -123,10 +127,10 @@ const defaultColumns = [
               variant='body2'
               sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
             >
-              {id}
+              {periodicidade}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📝{id}
+              📝{periodicidade}
             </Typography>
           </Box>
         </Box>
@@ -143,7 +147,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.valorContrato}
+          {formatCurrency(row.valorContrato)}
         </Typography>
       )
     }
@@ -171,7 +175,8 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   const [row, setRow] = useState<ClienteContratoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteProduto)
+  const store = useSelector((state: RootState) => state.clienteContrato)
+  debugger
 
   useEffect(() => {
     setValue(id)
