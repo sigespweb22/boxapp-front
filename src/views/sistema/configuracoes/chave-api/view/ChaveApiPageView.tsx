@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl'
 // ** Third Party Imports
 import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApiTypes'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -41,6 +42,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
     toggle()
     reset()
   }
+  const { t } = useTranslation()
 
   return (
     <Drawer
@@ -58,6 +60,12 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              value={props?.row?.id}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
@@ -85,7 +93,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.status}
+              value={t(`${props?.row?.status}`)}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

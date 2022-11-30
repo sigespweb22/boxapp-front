@@ -95,7 +95,7 @@ const schema = yup.object().shape({
     .required(),
   confirmNewPassword: yup
     .string()
-    .required()
+    .required("Confirmação de senha é requerida")
     .oneOf([yup.ref('password')], 'As senhas devem ser iguais')
 })
 
