@@ -162,7 +162,7 @@ export const deleteClient = createAsyncThunk(
 // ** Alter Status Client
 export const alterStatusClient = createAsyncThunk(
   'appClients/alterStatusClient',
-  async (id: number | string, { getState, dispatch }: Redux) => {
+  async (id: number | string | undefined, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
     const config = {

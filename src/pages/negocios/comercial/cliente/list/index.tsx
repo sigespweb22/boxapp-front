@@ -246,11 +246,11 @@ const ClientList = () => {
     setValue(val)
   }, [])
 
-  const handleAlterStatus = (id: string) => {
+  const handleAlterStatus = (id: string | undefined) => {
     dispatch(alterStatusClient(id))
   }
 
-  const RenderButton = ({ id, status }: { id: string; status: string }) => {
+  const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
     if (status === 'INACTIVE') {
       return (
         <Tooltip title={t('Activate')}>

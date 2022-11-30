@@ -65,7 +65,7 @@ const clienteContratoStatusObj = (status: string) => {
   }
 }
 
-const formatCurrency = (currency: number) => {
+const formatCurrency = (currency: number | null) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 

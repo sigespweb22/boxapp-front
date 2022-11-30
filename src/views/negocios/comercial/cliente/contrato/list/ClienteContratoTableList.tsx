@@ -79,7 +79,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
   marginRight: theme.spacing(3)
 }))
 
-const formatCurrency = (currency: number) => {
+const formatCurrency = (currency: number | null) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
