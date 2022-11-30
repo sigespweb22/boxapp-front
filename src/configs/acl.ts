@@ -108,13 +108,6 @@ const defineRulesFor = (role: string[], subject: string) => {
       can('delete', 'ac-cliente-page')
       /// end - cliente
 
-      /// begin - cnpj
-    } else if (item === 'CanCnpjTPAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-search-cnpj')
-    } else if (item === 'CanCnpjTPRead') {
-      can('read', 'ac-search-cnpj')
-      /// end - cnpj
-
       /// begin - cliente servico
     } else if (item === 'CanClienteServicoAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-cliente-servico-page')

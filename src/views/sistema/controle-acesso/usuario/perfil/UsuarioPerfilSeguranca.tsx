@@ -18,9 +18,4 @@ const UsuarioPerfilSeguranca = (props: Props) => {
   )
 }
 
-UsuarioPerfilSeguranca.acl = {
-  action: 'update',
-  subject: 'ac-user-page'
-}
-
 export default UsuarioPerfilSeguranca

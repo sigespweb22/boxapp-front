@@ -239,9 +239,4 @@ const UsuarioPerfilInfo = (props: Props) => {
   )
 }
 
-UsuarioPerfilInfo.acl = {
-  action: 'update',
-  subject: 'ac-user-page'
-}
-
 export default UsuarioPerfilInfo

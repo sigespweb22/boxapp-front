@@ -103,11 +103,5 @@ const UsuarioPerfilPage = (props: Props) => {
   )
 }
 
-// ** Controle de acesso da página
-// ** Usuário deve possuir a habilidade para ter acesso a esta página
-UsuarioPerfilPage.acl = {
-  action: 'update',
-  subject: 'ac-user-page'
-}
 
 export default UsuarioPerfilPage
