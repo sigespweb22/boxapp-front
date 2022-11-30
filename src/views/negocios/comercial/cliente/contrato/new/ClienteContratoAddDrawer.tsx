@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -82,17 +82,19 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
   // ** States
   const [periodicidades, setPeriodicidades] = useState([])
 
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)}` 
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(`${enumApiService.periodicidadesListAsync}`, configMemo.config)
+      .get(`${enumApiService.periodicidadesListAsync}`, config)
       .then(response => {
         setPeriodicidades(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: ClienteContratoType): void => {

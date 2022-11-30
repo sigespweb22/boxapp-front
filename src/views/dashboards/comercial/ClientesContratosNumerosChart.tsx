@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -78,13 +78,14 @@ const ClientesContratosNumerosChart = () => {
   const [percentualClienteComContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
   const [percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
 
-  const storedToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(dashboardApiServices.storageTokenKeyName)}`
+    }
+  }
 
   useEffect(() => {
-    const response = axios.get(dashboardApiServices.clientesContratosNumerosAsync, configMemo.config)
+    const response = axios.get(dashboardApiServices.clientesContratosNumerosAsync, config)
     
     response.then((response: { data: ClienteContrato }): void => {
       
@@ -98,6 +99,7 @@ const ClientesContratosNumerosChart = () => {
         toast.error(err)
       })
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const options: ApexOptions = {

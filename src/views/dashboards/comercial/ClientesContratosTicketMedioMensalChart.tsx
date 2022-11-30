@@ -43,10 +43,9 @@ const ClientesContratosTicketMedioMensalChart = () => {
   // ** State
   const [clientesContratosTicketMedio, setClientesContratosTicketMedio] = useState<ClienteContratoTicketMedio>(clientesContratosTicketMedioDefaultValues)
 
-  const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
   const config = {
     headers: {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${window.localStorage.getItem(dashboardApiServices.storageTokenKeyName)}`
     }
   }
 
@@ -61,6 +60,7 @@ const ClientesContratosTicketMedioMensalChart = () => {
         toast.error(err)
       })
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

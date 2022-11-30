@@ -128,10 +128,13 @@ const FornecedorEditLeft = ({id}: Props) => {
   }, [dispatch, id])
 
   useEffect(() => {
+    
     if(store?.data)
     {
       setData(store?.data)
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
 
   useEffect(() => {
@@ -153,6 +156,7 @@ const FornecedorEditLeft = ({id}: Props) => {
       setValue('codigoMunicipio', store?.data.codigoMunicipio)
       setValue('observacao', store?.data.observacao)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
 
   const renderFornecedorAvatar = () => {

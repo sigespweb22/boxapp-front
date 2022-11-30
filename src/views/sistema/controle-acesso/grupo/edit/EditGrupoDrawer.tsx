@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -90,33 +90,37 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
   const [roles, setRoles] = useState<RoleDataType[]>(rolesDefaultValues)
   const [role, setRole] = useState<RoleDataType[]>(rolesDefaultValues)
 
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(groupApiService.storageTokenKeyName)!}` 
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(roleApiService.listToSelectAsync, configMemo.config)
+      .get(roleApiService.listToSelectAsync, config)
       .then(response => {
         setRoles(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit = (data: GrupoEditType) => {
-    debugger
     dispatch(editGroup({ ...data,  }))
     toggle()
     reset()
   }
 
   useEffect(() => {
+    
     if(props?.row){
       setValue('id', props?.row?.id ?? '')
       setValue('name', props?.row?.name ?? '')
       setValue('applicationRoleGroups', props?.row?.applicationRoleGroups ?? [])
       setRole(props?.row?.applicationRoleGroups ?? [])
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.row])
 
   const handleClose = () => {

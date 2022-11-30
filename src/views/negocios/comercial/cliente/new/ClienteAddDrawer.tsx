@@ -133,15 +133,15 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
   const [isTipoPessoaJuridica, setIsTipoPessoaJuridica] = useState(true)
   const [tiposPessoa, setTiposPessoa] = useState([])
 
-  const storedToken = window.localStorage.getItem(enumApiService.storageTokenKeyName)
   const config = {
     headers: {
-      Authorization: `Bearer ${storedToken}`
+      Authorization: `Bearer ${window.localStorage.getItem(enumApiService.storageTokenKeyName)!}`
     }
   }
 
   useEffect(() => {
     const tiposPessoaRequest = axios.get(enumApiService.tiposPessoaListAsync, config)
+    
     tiposPessoaRequest
       .then(response => {
         if (response.status == 200) setTiposPessoa(response.data)
@@ -163,6 +163,7 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
           })
         }
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const dispatch = useDispatch<AppDispatch>()

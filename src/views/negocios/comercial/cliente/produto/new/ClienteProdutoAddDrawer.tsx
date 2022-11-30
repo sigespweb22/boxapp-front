@@ -90,10 +90,9 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
   // ** States
   const [produtos, setProdutos] = useState([])
 
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -103,6 +102,7 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
       .then(response => {
         setProdutos(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: ClienteProdutoType): void => {

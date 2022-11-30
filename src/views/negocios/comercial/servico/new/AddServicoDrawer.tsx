@@ -112,19 +112,21 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
     resolver: yupResolver(schema)
   })
 
-  const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!}`
     }
   }
 
   useEffect(() => {
+
     axios
       .get(`${fornecedorServicoApiService.listToSelectAsync}`, config)
       .then(response => {
         fornecedoresServicos = response.data
       })
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fornecedoresServicos]);
 
   const onSubmit = (data: ServicoType) => {

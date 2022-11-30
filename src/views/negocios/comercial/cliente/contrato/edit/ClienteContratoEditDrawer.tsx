@@ -89,10 +89,9 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
   // ** States
   const [periodicidades, setPeriodicidades] = useState([])
 
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -102,6 +101,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       .then(response => {
         setPeriodicidades(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -110,7 +110,8 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       .then(response => {
         contratos = response.data
       })
-  }, [contratos]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contratos])
 
   useEffect(() => {
     setValue('id', props?.row?.id || '')
@@ -118,6 +119,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
     setValue('periodicidade', props?.row?.periodicidade || '')
     setValue('clienteId', props?.row?.clienteId || '')
     setValue('bomControleContratoId', props?.row?.bomControleContratoId || 0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const onSubmit = (data: ClienteContratoData) => {

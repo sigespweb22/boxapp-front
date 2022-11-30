@@ -90,6 +90,8 @@ const FornecedorViewLeft = ({id}: Props) => {
       setValue('codigoMunicipio', store?.data.codigoMunicipio)
       setValue('observacao', store?.data.observacao)
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
 
   const renderFornecedorAvatar = () => {

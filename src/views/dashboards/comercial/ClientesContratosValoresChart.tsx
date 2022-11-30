@@ -79,10 +79,9 @@ const ClientesContratosValoresChart = () => {
   const [percentualValorMensalEmRelacaoAoValorTotal, setPercentualValorMensalEmRelacaoAoValorTotal] = useState(0)
   const [percentualValorAnualEmRelacaoAoValorTotal, setPercentualValorAnualEmRelacaoAoValorTotal] = useState(0)
 
-  const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
   const config = {
     headers: {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${window.localStorage.getItem(dashboardApiServices.storageTokenKeyName)}`
     }
   }
 
@@ -99,6 +98,7 @@ const ClientesContratosValoresChart = () => {
         toast.error(err)
       })
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const options: ApexOptions = {

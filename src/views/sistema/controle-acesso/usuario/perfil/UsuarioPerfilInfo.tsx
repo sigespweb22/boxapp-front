@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -78,22 +78,27 @@ const UsuarioPerfilInfo = (props: Props) => {
     mode: 'onChange'
   })
 
-  const storedToken = window.localStorage.getItem(enumApiService.storageTokenKeyName)
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(enumApiService.storageTokenKeyName)!}`
+    }
+  }
 
   useEffect(() => {
+
     axios
-      .get(enumApiService.generosListAsync, configMemo.config)
+      .get(enumApiService.generosListAsync, config)
       .then((response) => {
         setGeneros(response.data)
       })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
+
     axios
-      .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, configMemo.config)
+      .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, config)
       .then((response) => {
         if (response.status === 200) {
           setValue('id', response.data.id)
@@ -107,6 +112,8 @@ const UsuarioPerfilInfo = (props: Props) => {
         if (err.response.status === 400 || err.response.status === 404)
         return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
       }))
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
   
   const handleReset = () => {

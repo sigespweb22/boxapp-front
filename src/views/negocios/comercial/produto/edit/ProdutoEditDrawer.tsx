@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -114,13 +114,16 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
   // ** States
   const [fornecedoresProdutos, setFornecedoresProdutos] = useState([])
 
-  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: {
+       Authorization: `Bearer ${window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!}`
+    }
+  }
 
   useEffect(() => {
-    const fornecedoresProdutosRequest = axios.get(fornecedorProdutoApiService.listToSelectAsync, configMemo.config)
+
+    const fornecedoresProdutosRequest = axios.get(fornecedorProdutoApiService.listToSelectAsync, config)
+    
     fornecedoresProdutosRequest
       .then(response => {
         setFornecedoresProdutos(response.data)
@@ -128,9 +131,12 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
       .catch(error => {
         setFornecedoresProdutos(error)
       })
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
+
     // ** Set values
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
@@ -139,6 +145,8 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
     setValue('descricao', props?.row?.descricao || '')
     setValue('fornecedorProduto', props?.row?.fornecedorProduto || { id: '', nome: '' })
     setValue('valorCusto', props?.row?.valorCusto || '')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const onSubmit = (data: ProdutoData) => {

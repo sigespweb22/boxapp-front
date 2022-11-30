@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -103,17 +103,19 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   })
   const [users, setUsers] = useState<UserDataType[]>(userDefaultValues)
 
-  const storedToken = window.localStorage.getItem(usersApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(usersApiService.storageTokenKeyName)!}` 
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(usersApiService.listToSelectAsync, configMemo.config)
+      .get(usersApiService.listToSelectAsync, config)
       .then(response => {
         setUsers(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: PipelineType) => {

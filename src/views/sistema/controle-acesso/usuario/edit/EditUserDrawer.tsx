@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -92,17 +92,19 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
   const [group, setGroup] = useState<GroupDataType[]>(groupsDefaultValues)
 
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(groupApiService.storageTokenKeyName)!}` 
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(groupApiService.listToSelectAsync, configMemo.config)
+      .get(groupApiService.listToSelectAsync, config)
       .then(response => {
         setGroups(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit = (data: UsersType) => {
@@ -119,6 +121,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
       setGroup(props?.row?.applicationUserGroups ?? [])
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.row])
 
   const handleClose = () => {

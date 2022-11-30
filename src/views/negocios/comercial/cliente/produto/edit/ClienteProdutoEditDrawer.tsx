@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -86,17 +86,19 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
 
   const [produtos, setProdutos] = useState([])
 
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: {
+      Authorization: `${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(`${produtoApiService.listToSelectAsync}`, configMemo.config)
+      .get(`${produtoApiService.listToSelectAsync}`, config)
       .then(response => {
         setProdutos(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -106,6 +108,7 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
     setValue('valorVenda', props?.row?.valorVenda || '')
     setValue('clienteId', props?.row?.clienteId || '')
     setValue('produto', props?.row?.produto || {id: '', nome: ''})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const onSubmit = (data: ClienteProdutoData) => {

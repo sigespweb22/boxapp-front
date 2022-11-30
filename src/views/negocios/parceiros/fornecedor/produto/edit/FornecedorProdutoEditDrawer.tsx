@@ -75,15 +75,18 @@ const FornecedorProdutoEditDrawer = (props: FornecedorProdutoEditDrawerType) => 
   })
 
   useEffect(() => {
+    
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
     setValue('codigoProduto', props?.row?.codigoProduto || '')
     setValue('fornecedorId', props?.row?.fornecedorId || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const onSubmit = (data: FornecedorProdutoData) => {
-    dispatch(editFornecedorProduto({ ...data,  }))
+    dispatch(editFornecedorProduto({ ...data }))
     toggle()
     reset()
   }

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, MouseEvent, useEffect, useMemo } from 'react'
+import { useState, MouseEvent, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -108,17 +108,19 @@ const defaultValues = {
 }
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(apiGroup.storageTokenKeyName)!}` 
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(`${apiGroup.listToSelectAsync}`, configMemo.config)
+      .get(`${apiGroup.listToSelectAsync}`, config)
       .then(response => {
         groups = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups]);
 
   // ** Hook

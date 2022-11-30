@@ -1,6 +1,3 @@
-// ** React Imports
-import { useMemo } from 'react'
-
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -96,10 +93,11 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
     resolver: yupResolver(schema)
   })
 
-  const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!}`
+    }
+  }
 
   const onSubmit = (data: ProdutoType) => {
     dispatch(addProduto({ ...data }))
@@ -109,10 +107,11 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
 
   useEffect(() => {
     axios
-      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, configMemo.config)
+      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, config)
       .then(response => {
         fornecedoresProdutos = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fornecedoresProdutos]);
 
   const handleClose = () => {

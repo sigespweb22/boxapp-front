@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -93,17 +93,19 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       mode: 'onChange'
   })
 
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
+    }
+  }
 
   useEffect(() => {
     axios
-      .get(`${servicoApiService.listToSelectAsync}`, configMemo.config)
+      .get(`${servicoApiService.listToSelectAsync}`, config)
       .then(response => {
         servicos = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ITEM_HEIGHT = 48

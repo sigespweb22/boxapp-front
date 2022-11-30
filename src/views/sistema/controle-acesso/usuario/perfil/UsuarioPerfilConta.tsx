@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, ElementType, ChangeEvent, useMemo } from 'react'
+import { useState, useEffect, ElementType, ChangeEvent } from 'react'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -101,14 +101,16 @@ const UsuarioPerfilConta = (props: Props) => {
     mode: 'onChange'
   })
 
-  const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
-  const configMemo = useMemo(() => {
-    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
-  }, []);
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!}` 
+    }
+  }
 
   useEffect(() => {
+    
     axios
-      .get(`${usuarioApiService.contaListOneAsync}/${props.id}`, configMemo.config)
+      .get(`${usuarioApiService.contaListOneAsync}/${props.id}`, config)
       .then(response => {
         if (response)
         {
@@ -120,6 +122,8 @@ const UsuarioPerfilConta = (props: Props) => {
           setGroups(response.data.applicationUserGroups)
         }
       })
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
 
   const onChange = (file: ChangeEvent) => {
