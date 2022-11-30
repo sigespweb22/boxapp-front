@@ -49,6 +49,7 @@ import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAd
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
+import { Api } from 'mdi-material-ui'
 
 interface ClientStatusType {
   [key: string]: ThemeColor
@@ -96,6 +97,14 @@ const RenderStatus = ({ status }: { status: string }) => {
   )
 }
 
+const formatCnpj = (cnpj: string) => {
+  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+}
+
+const formatCpf = (cpf: string) => {
+  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+}
+
 const defaultColumns = [
   {
     flex: 0.2,
@@ -137,7 +146,22 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.cnpj}
+          {formatCnpj(row.cnpj)}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'cpf',
+    headerName: 'CPF',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {formatCpf(row.cpf)}
         </Typography>
       )
     }

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, ChangeEvent } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -17,8 +17,10 @@ import FormControl from '@mui/material/FormControl'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
-import FormHelperText from '@mui/material/FormHelperText'
 import Alert from '@mui/material/Alert'
+
+// ** InputMask Imports
+import InputMask from 'react-input-mask'
 
 // ** Next Import
 import Link from 'next/link'
@@ -79,13 +81,13 @@ interface Props {
 
 const defaultValues: ClienteType = {
   id: '',
+  tipoPessoa: '',
   nomeFantasia: '',
   razaoSocial: '',
   inscricaoEstadual: '',
   cnpj: '',
   telefonePrincipal: '',
   emailPrincipal: '',
-  tipoPessoa: '',
   cpf: '',
   observacao: '',
   dataFundacao: '',
@@ -97,6 +99,14 @@ const defaultValues: ClienteType = {
   estado: '',
   cep: '',
   status: '',
+}
+
+const formatCnpj = (cnpj: string) => {
+  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+}
+
+const formatCpf = (cpf: string) => {
+  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
 }
 
 const ClienteEditLeft = ({id}: Props) => {
@@ -114,11 +124,9 @@ const ClienteEditLeft = ({id}: Props) => {
     reset,
     setValue,
     control,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
   } = useForm({
-    mode: 'onChange',
-    resolver: yupResolver(schema)
+    mode: 'onChange'
   })
 
   useEffect(() => {
@@ -140,10 +148,12 @@ const ClienteEditLeft = ({id}: Props) => {
     if(store)
     {
       setValue('id', store?.data.id)
+      setValue('tipoPessoa', store?.data.tipoPessoa)
       setValue('nomeFantasia', store?.data.nomeFantasia)
       setValue('razaoSocial', store?.data.razaoSocial)
       setValue('inscricaoEstadual', store?.data.inscricaoEstadual)
       setValue('cnpj', store?.data.cnpj)
+      setValue('cpf', store?.data.cpf)
       setValue('telefonePrincipal', store?.data.telefonePrincipal)
       setValue('emailPrincipal', store?.data.emailPrincipal)
       setValue('dataFundacao', store?.data.dataFundacao)
@@ -176,7 +186,7 @@ const ClienteEditLeft = ({id}: Props) => {
   }
 
   const onSubmit = (data: ClienteType) => {
-    dispatch(editCliente({ ...data,  }))
+    dispatch(editCliente({ ...data  }))
     handleEditClose()
     reset()
   }  
@@ -205,7 +215,7 @@ const ClienteEditLeft = ({id}: Props) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.razaoSocial}
+                label={store?.data.razaoSocial || store?.data.nomeFantasia}
                 color='primary'
                 sx={{
                   height: 20,
@@ -221,15 +231,23 @@ const ClienteEditLeft = ({id}: Props) => {
             <CardContent>
               <Typography variant='h6'>Detalhes</Typography>
               <Divider />
+              <Box sx={{ display: 'flex', mb: 0 }}>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tipo pessoa:</Typography>
+                <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
+                  {store?.data.tipoPessoa}
+                </Typography>
+              </Box>
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
                   <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
-                  <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
-                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
+                    <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
@@ -245,17 +263,27 @@ const ClienteEditLeft = ({id}: Props) => {
                       textTransform: 'capitalize'
                     }}
                   />
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
-                  <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                    {store?.data.inscricaoEstadual}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                  <Typography variant='body2'>{store?.data.cnpj}</Typography>
-                </Box>
+                </Box>                
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
+                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
+                      {store?.data.inscricaoEstadual}
+                    </Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
+                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'FISICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cpf:</Typography>
+                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
                   <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
@@ -268,10 +296,12 @@ const ClienteEditLeft = ({id}: Props) => {
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
                   <Typography variant='body2'>{store?.data.observacao}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                  <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
-                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
+                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
                   <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
@@ -326,6 +356,23 @@ const ClienteEditLeft = ({id}: Props) => {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
+                          name='tipoPessoa'
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <TextField
+                              disabled
+                              value={value}
+                              label='Tipo pessoa'
+                              onChange={onChange}
+                              placeholder='(e.g.: Ex.: JURIDICA)'
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth sx={{ mb: 6 }}>
+                        <Controller
                           name='id'
                           control={control}
                           render={({ field: { value, onChange } }) => (
@@ -339,79 +386,106 @@ const ClienteEditLeft = ({id}: Props) => {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
                           name='nomeFantasia'
                           control={control}
-                          rules={{ required: true }}
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
                               label='Nome fantasia'
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: Empresa de Tecnologia)'
-                              error={Boolean(errors.nomeFantasia)}
                             />
                           )}
                         />
-                        {errors.nomeFantasia && <FormHelperText sx={{ color: 'error.main' }}>{errors.nomeFantasia.message}</FormHelperText>}
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='razaoSocial'
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { value, onChange } }) => (
-                              <TextField
-                                value={value}
-                                label='Razão social'
-                                onChange={onChange}
-                                placeholder='(e.g.: Ex.: Empresa de Tecnologia LTDA)'
-                                error={Boolean(errors.razaoSocial)}
-                              />
-                            )}
-                          />
-                          {errors.razaoSocial && <FormHelperText sx={{ color: 'error.main' }}>{errors.razaoSocial.message}</FormHelperText>}
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth sx={{ mb: 6 }}>
-                      <Controller
-                        name='inscricaoEstadual'
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <TextField
-                            value={value}
-                            label='Inscrição estadual'
-                            onChange={onChange}
-                            placeholder='(e.g.: Ex.: 64.228.202/0001-78)'
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
+                    {store.data.tipoPessoa === 'JURIDICA' &&
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth sx={{ mb: 6 }}>
                             <Controller
-                              name='cnpj'
+                              name='razaoSocial'
                               control={control}
-                              rules={{ required: true }}
                               render={({ field: { value, onChange } }) => (
                                 <TextField
                                   value={value}
-                                  label='Cnpj'
+                                  label='Razão social'
                                   onChange={onChange}
-                                  placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
-                                  error={Boolean(errors.cnpj)}
+                                  placeholder='(e.g.: Ex.: Empresa de Tecnologia LTDA)'
                                 />
                               )}
                             />
-                            {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
                           </FormControl>
-                    </Grid>
+                      </Grid>
+                    }
+                    {store.data.tipoPessoa === 'JURIDICA' &&
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth sx={{ mb: 6 }}>
+                          <Controller
+                            name='inscricaoEstadual'
+                            control={control}
+                            render={({ field: { value, onChange } }) => (
+                              <TextField
+                                value={value}
+                                label='Inscrição estadual'
+                                onChange={onChange}
+                                placeholder='(e.g.: Ex.: 123456)'
+                              />
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {store.data.tipoPessoa === 'FISICA' &&
+                      <Grid item xs={12} sm={12}>
+                        <FormControl fullWidth sx={{ mb: 6 }}>
+                          <Controller
+                            name='cpf'
+                            control={control}
+                            render={props => (
+                              <InputMask
+                                mask='999.999.999-99'
+                                value={props.field.value}
+                                disabled={false}
+                                onChange={(value): void => {
+                                  props.field.onChange(value)
+                                  setValue('cpf', value)
+                                }}
+                              >
+                                <TextField
+                                  sx={{ width: 'auto' }}
+                                  disabled={false}
+                                  name='cpf'
+                                  type='text'
+                                  label='Cpf'
+                                  placeholder='e.g.: 035.753.486-13'
+                                />
+                              </InputMask>
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {store.data.tipoPessoa === 'JURIDICA' &&
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth sx={{ mb: 6 }}>
+                          <Controller
+                            name='cnpj'
+                            control={control}
+                            render={({ field: { value, onChange } }) => (
+                              <TextField
+                                value={value}
+                                label='Cnpj'
+                                onChange={onChange}
+                                placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
+                              />
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
@@ -444,22 +518,24 @@ const ClienteEditLeft = ({id}: Props) => {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='store?.dataFundacao'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Data fundação'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: 10/01/2000'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
+                    {store.data.tipoPessoa === 'JURIDICA' &&
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth sx={{ mb: 6 }}>
+                          <Controller
+                            name='store?.dataFundacao'
+                            control={control}
+                            render={({ field: { value, onChange } }) => (
+                              <TextField
+                                value={value}
+                                label='Data fundação'
+                                onChange={onChange}
+                                placeholder='(e.g.: Ex.: 10/01/2000'
+                              />
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
                     <Grid item xs={12} sm={6}>
                     <FormControl fullWidth sx={{ mb: 6 }}>
                       <Controller

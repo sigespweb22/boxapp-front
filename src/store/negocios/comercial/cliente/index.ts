@@ -47,7 +47,6 @@ export const addClient = createAsyncThunk(
         Authorization: "Bearer " + storedToken
       }
     }
-    debugger
 
     axios.post(clienteApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().cliente.params))
@@ -95,7 +94,6 @@ export const editCliente = createAsyncThunk(
     }
 
     axios.put(clienteApiService.updateAsync, data, config).then((resp) => {
-      debugger
       dispatch(fetchData(getState().cliente.params))
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {

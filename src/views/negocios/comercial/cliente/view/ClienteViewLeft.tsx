@@ -57,6 +57,14 @@ interface Props {
   id: string | string[] | undefined
 }
 
+const formatCnpj = (cnpj: string) => {
+  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+}
+
+const formatCpf = (cpf: string) => {
+  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+}
+
 const ClienteViewLeft = ({id}: Props) => {
   // ** Hooks
   const { t } = useTranslation()
@@ -131,8 +139,8 @@ const ClienteViewLeft = ({id}: Props) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.razaoSocial}
-                color={roleColors[store?.data.nomeFantasia || 'primary']}
+                label={store?.data.razaoSocial || store?.data.nomeFantasia}
+                color='primary'
                 sx={{
                   height: 20,
                   fontSize: '0.875rem',
@@ -149,13 +157,19 @@ const ClienteViewLeft = ({id}: Props) => {
               <Divider />
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tipo pessoa:</Typography>
+                  <Typography variant='body2'>{store?.data.tipoPessoa}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
                   <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
-                  <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
-                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
+                    <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
@@ -172,16 +186,26 @@ const ClienteViewLeft = ({id}: Props) => {
                     }}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
-                  <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                    {store?.data.inscricaoEstadual}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                  <Typography variant='body2'>{store?.data.cnpj}</Typography>
-                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
+                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
+                      {store?.data.inscricaoEstadual}
+                    </Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
+                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'FISICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
+                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
                   <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
@@ -194,10 +218,12 @@ const ClienteViewLeft = ({id}: Props) => {
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
                   <Typography variant='body2'>{store?.data.observacao}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                  <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
-                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
+                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
+                  </Box>
+                }
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
                   <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
