@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, ElementType, ChangeEvent } from 'react'
+import { useState, useEffect, ElementType, ChangeEvent, useMemo } from 'react'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -101,16 +101,14 @@ const UsuarioPerfilConta = (props: Props) => {
     mode: 'onChange'
   })
 
-  useEffect(() => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
-    const config = {
-      headers: {
-        Authorization: "Bearer " + storedToken
-      }
-    }
+  const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
+  useEffect(() => {
     axios
-      .get(`${usuarioApiService.contaListOneAsync}/${props.id}`, config)
+      .get(`${usuarioApiService.contaListOneAsync}/${props.id}`, configMemo.config)
       .then(response => {
         if (response)
         {
@@ -122,7 +120,7 @@ const UsuarioPerfilConta = (props: Props) => {
           setGroups(response.data.applicationUserGroups)
         }
       })
-  }, [])
+  }, [props.id])
 
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader()

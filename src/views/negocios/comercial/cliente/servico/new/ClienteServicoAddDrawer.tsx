@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -79,21 +79,6 @@ const defaultValues = {
 }
 
 const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${servicoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        servicos = response.data
-      })
-  }, [servicos]);
-
   // ** Props
   const { open, toggle } = props
   
@@ -108,6 +93,19 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       mode: 'onChange'
   })
 
+  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${servicoApiService.listToSelectAsync}`, configMemo.config)
+      .then(response => {
+        servicos = response.data
+      })
+  }, []);
+
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
   const MenuProps = {
@@ -121,7 +119,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
   const onSubmit = (data: ClienteServicoType): void => {
     data.clienteId = props?.clienteId
-    dispatch(addClienteServico({ ...data,  }))
+    dispatch(addClienteServico({ ...data }))
     toggle()
     reset()
   }

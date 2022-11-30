@@ -30,8 +30,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
-  debugger
-
   // ** Hook
   const {
     reset,

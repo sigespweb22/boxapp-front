@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -93,22 +93,20 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   const [group, setGroup] = useState<GroupDataType[]>(groupsDefaultValues)
 
   const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
     axios
-      .get(groupApiService.listToSelectAsync, config)
+      .get(groupApiService.listToSelectAsync, configMemo.config)
       .then(response => {
         setGroups(response.data)
       })
   }, [])
 
   const onSubmit = (data: UsersType) => {
-    dispatch(editUser({ ...data,  }))
+    dispatch(editUser({ ...data  }))
     toggle()
     reset()
   }

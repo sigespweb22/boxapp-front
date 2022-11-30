@@ -49,7 +49,6 @@ import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAd
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
-import { Api } from 'mdi-material-ui'
 
 interface ClientStatusType {
   [key: string]: ThemeColor

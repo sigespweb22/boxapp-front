@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, MouseEvent, useEffect } from 'react'
+import { useState, MouseEvent, useEffect, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -109,15 +109,13 @@ const defaultValues = {
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
   const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
     axios
-      .get(`${apiGroup.listToSelectAsync}`, config)
+      .get(`${apiGroup.listToSelectAsync}`, configMemo.config)
       .then(response => {
         groups = response.data
       })

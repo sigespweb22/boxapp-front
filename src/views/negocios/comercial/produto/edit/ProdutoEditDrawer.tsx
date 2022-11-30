@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -115,14 +115,12 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
   const [fornecedoresProdutos, setFornecedoresProdutos] = useState([])
 
   const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)
-  const config = {
-    headers: {
-      Authorization: `Bearer ${storedToken}`
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
-    const fornecedoresProdutosRequest = axios.get(fornecedorProdutoApiService.listToSelectAsync, config)
+    const fornecedoresProdutosRequest = axios.get(fornecedorProdutoApiService.listToSelectAsync, configMemo.config)
     fornecedoresProdutosRequest
       .then(response => {
         setFornecedoresProdutos(response.data)

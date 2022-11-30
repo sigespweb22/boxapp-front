@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext, useEffect, ChangeEvent } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -26,8 +26,6 @@ import InputMask from 'react-input-mask'
 import Link from 'next/link'
 
 // ** Third Party Imports
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Custom Components
@@ -62,18 +60,6 @@ const statusColors: ColorsType = {
   ACTIVE: 'success',
   INACTIVE: 'error'
 }
-
-const schema = yup.object().shape({
-  nomeFantasia: yup
-    .string()
-    .required("Nome fantasia é requerido."),
-  razaoSocial: yup
-    .string()
-    .required("Razão social é requerida."),
-  cnpj: yup
-    .string()
-    .required("CNPJ é requerido.")
-})
 
 interface Props {
   id: string | string[] | undefined

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -78,20 +78,20 @@ const ClientesContratosNumerosChart = () => {
   const [percentualClienteComContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
   const [percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos, setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos] = useState(0)
 
-  const accessToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  }
+  const storedToken = window.localStorage.getItem(dashboardApiServices.storageTokenKeyName);
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
-    const response = axios.get(dashboardApiServices.clientesContratosNumerosAsync, config)
+    const response = axios.get(dashboardApiServices.clientesContratosNumerosAsync, configMemo.config)
     
     response.then((response: { data: ClienteContrato }): void => {
+      
       setPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteComContratosEmRelacaoAoTotalClientesAtivos(response.data))
       setPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos(response.data))
       setClientesContratos(response.data)
+
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {

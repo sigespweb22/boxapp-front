@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -78,15 +78,13 @@ const defaultValues = {
 
 const SidebarAddGroup = (props: SidebarAddGroupType) => {
   const storedToken = window.localStorage.getItem(roleApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
     axios
-      .get(roleApiService.listToSelectAsync, config)
+      .get(roleApiService.listToSelectAsync, configMemo.config)
       .then(response => {
         roles = response.data
       })

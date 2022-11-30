@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -87,15 +87,13 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
   const [produtos, setProdutos] = useState([])
 
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
     axios
-      .get(`${produtoApiService.listToSelectAsync}`, config)
+      .get(`${produtoApiService.listToSelectAsync}`, configMemo.config)
       .then(response => {
         setProdutos(response.data)
       })

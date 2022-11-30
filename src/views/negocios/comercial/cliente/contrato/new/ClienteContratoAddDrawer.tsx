@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -31,7 +31,6 @@ import axios from 'axios'
 
 // ** Api Services
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 
 interface SidebarClienteContratoAddType {
@@ -84,15 +83,13 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
   const [periodicidades, setPeriodicidades] = useState([])
 
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   useEffect(() => {
     axios
-      .get(`${enumApiService.periodicidadesListAsync}`, config)
+      .get(`${enumApiService.periodicidadesListAsync}`, configMemo.config)
       .then(response => {
         setPeriodicidades(response.data)
       })

@@ -40,14 +40,6 @@ interface ColorsType {
   [key: string]: ThemeColor
 }
 
-const roleColors: ColorsType = {
-  admin: 'error',
-  editor: 'info',
-  author: 'warning',
-  maintainer: 'success',
-  subscriber: 'primary'
-}
-
 const statusColors: ColorsType = {
   ACTIVE: 'success',
   INACTIVE: 'error'

@@ -1,3 +1,6 @@
+// ** React Imports
+import { useMemo } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -94,22 +97,19 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
   })
 
   const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
 
   const onSubmit = (data: ProdutoType) => {
-    debugger
-    dispatch(addProduto({ ...data,  }))
+    dispatch(addProduto({ ...data }))
     toggle()
     reset()
   }
 
   useEffect(() => {
     axios
-      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, config)
+      .get(`${fornecedorProdutoApiService.listToSelectAsync}`, configMemo.config)
       .then(response => {
         fornecedoresProdutos = response.data
       })

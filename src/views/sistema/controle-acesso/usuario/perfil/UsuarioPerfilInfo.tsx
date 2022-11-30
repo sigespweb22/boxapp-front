@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -78,29 +78,22 @@ const UsuarioPerfilInfo = (props: Props) => {
     mode: 'onChange'
   })
 
+  const storedToken = window.localStorage.getItem(enumApiService.storageTokenKeyName)
+  const configMemo = useMemo(() => {
+    return { config: { headers: { Authorization: `Bearer ${storedToken}` }}}
+  }, []);
+
   useEffect(() => {
-    const storageTokenKeyName = window.localStorage.getItem(enumApiService.storageTokenKeyName)
-    const config = {
-      headers: {
-        Authorization: `Bearer ${storageTokenKeyName}`
-      }
-    }
     axios
-      .get(enumApiService.generosListAsync, config)
+      .get(enumApiService.generosListAsync, configMemo.config)
       .then((response) => {
         setGeneros(response.data)
       })
   }, [])
 
   useEffect(() => {
-    const storageTokenKeyName = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)
-    const config = {
-      headers: {
-        Authorization: `Bearer ${storageTokenKeyName}`
-      }
-    }
     axios
-      .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, config)
+      .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, configMemo.config)
       .then((response) => {
         if (response.status === 200) {
           setValue('id', response.data.id)
