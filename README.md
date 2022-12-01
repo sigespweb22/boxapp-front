@@ -51,3 +51,20 @@ oferecendo uma arquitetura madura e sustentável.
   
 *Lançamento v1.4.0 em 14/11/2022  
   * Perfil de usuários (Conta, Segurança, Informações pessoais)
+
+*Lançamento v1.5.0 em 01/12/2022  
+ * Cadastro de Produtos
+ * Cadastro de Clientes Produtos
+ * Cadastro de Fornecedores Produtos
+ * Cadastro de Contratos
+ * Cadastro de Clientes Contratos
+ * Dashboard Comercial
+   * Total clientes Ativos com contrato
+   * Total contratos mensais (Em Reais)
+   * Total contratos anuais (Em Reais)
+   * Ticket médio ( Global | Mensal | Anual)
+ * Sincronização de clientes com o BOM CONTROLE
+ * Sincronização de contratos com o BOM CONTROLE
+ * Atualização da periodicidade dos contratos a partir do BOM CONTROLE
+ * Cadastro de clientes agora atende aos tipos de pessoa (Física e Jurídica)
+ 
