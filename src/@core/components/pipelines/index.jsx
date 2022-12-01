@@ -33,21 +33,26 @@ const pipeline = {
     columns: {
       'column-1': {
         id: 'column-1',
-        title: '1º Contato',
+        title: 'A fazer',
         taskIds: ['task-1', 'task-2', 'task-3', 'task-7']
       },
       'column-2': {
         id: 'column-2',
-        title: 'Reunião Agendada',
+        title: 'Em andamento',
         taskIds: ['task-4', 'task-8']
       },
       'column-3': {
         id: 'column-3',
-        title: 'Contato pós-reunião',
-        taskIds: ['task-5', 'task-6'],
+        title: 'Concluído',
+        taskIds: ['task-5', 'task-6']
+      },
+      'column-4': {
+        id: 'column-4',
+        title: 'Adicionar nova etapa',
+        taskIds: []
       }
     },
-    columnOrder: ['column-1', 'column-2', 'column-3']
+    columnOrder: ['column-1', 'column-2', 'column-3', 'column-4']
 }
 
 const PipelineKanBan = () => {

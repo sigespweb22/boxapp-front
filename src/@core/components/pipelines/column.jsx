@@ -4,33 +4,29 @@ import { Droppable } from 'react-beautiful-dnd'
 import Task from './task'
 
 // ** Icon imports
-import DotsHorizontal from 'mdi-material-ui/DotsHorizontal'
+import DotsVertical from 'mdi-material-ui/DotsVertical'
 import NumericPositive1 from 'mdi-material-ui/NumericPositive1'
 import Numeric2CircleOutline from 'mdi-material-ui/Numeric2CircleOutline'
 
 import Grid from '@mui/material/Grid'
+import ContentEditable from 'react-contenteditable'
+import Typography from '@mui/material/Typography'
 
 const Container = styled.div`
     margin: 8px;
-    border: 1px solid #393842;
-    border-radius: 5px;
-    background-color: #28243d;
+    // border: 1px solid #393842;
+    border-radius: 7px;
+    background-color: ${props => (props.isDragging ? '#393842' : '#201d34')};
     width: 100%;
     display: flex;
     flex-direction: column;
-`
-
-const Title = styled.h3`
-    font-size: 15px;
-    color: #ff671f;
-    padding: 8px;
 `
 
 const TaskList = styled.div`
     font-size: 13px;
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? '#2f2b46' : '#28243d')}
+    background-color: #201d34;
     flex-grow: 1;
     min-height: 100px;
 `
@@ -76,37 +72,24 @@ const TaskList = styled.div`
 // }
 
 export default class Column extends React.Component {
+    
+    handleChange = evt => {
+        this.setState({html: evt.target.value});
+    };
+
     render() {
         return (
             <Container>
                 <Grid container spacing={0} sx={{ marginTop:"4px" }}>
-                    <Grid xs={7}>
-                        <Title>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <Typography sx={{ fontSize: 16, fontWeight: 500, color: 'white', ml: 2.35, pt: 1 }}>
                             {this.props.column.title}
-                        </Title>
+                        </Typography>
                     </Grid>
-                    <Grid xs={5} sx={{ paddingTop: "8px", textAlign: "center", paddingLeft: "25%" }}>
-                        <Numeric2CircleOutline 
-                            sx={{
-                                    marginRight: "5%",
-                                    color: '#4a4948',
-                                    fontSize: "20px"
-                                }}
-                        />
-                        <NumericPositive1 
-                            sx={{
-                                    cursor: "pointer",
-                                    color: '#4a4948',
-                                    fontSize: "20px"
-                                }}
-                        />
-                        <DotsHorizontal 
-                            sx={{
-                                    cursor: "pointer",
-                                    color: '#4a4948',
-                                    fontSize: "20px"
-                                }}
-                        />                        
+                    <Grid item xs={12} md={6} lg={6} sx={{ textAlign: 'right', p: 1, pr: 1  }}>
+                        <Numeric2CircleOutline sx={{ marginRight: "10%", color: '#959595', fontSize: "20px" }} />
+                        <NumericPositive1 sx={{ cursor: "pointer", color: '#959595', fontSize: "20px" }} />
+                        <DotsVertical sx={{ cursor: "pointer", color: '#959595', fontSize: "20px" }} />
                     </Grid>
                 </Grid>
                 <Droppable 
@@ -131,3 +114,5 @@ export default class Column extends React.Component {
         )
     }
 }
+// ** ContentEditable
+// ** https://github.com/lovasoa/react-contenteditable
