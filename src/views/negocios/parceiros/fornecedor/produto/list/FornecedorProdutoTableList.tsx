@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -23,11 +23,6 @@ import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
-import Cpu64Bit from 'mdi-material-ui/Cpu64Bit'
-import DesktopClassic from 'mdi-material-ui/DesktopClassic'
-import Cancel from 'mdi-material-ui/Cancel'
-import Matrix from 'mdi-material-ui/Matrix'
-import Alarm from 'mdi-material-ui/Alarm'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -58,10 +53,6 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
   id: string | undefined
-}
-
-interface UnidadeMedidaType {
-  [key: string]: ReactElement
 }
 
 interface CellType {
@@ -153,29 +144,29 @@ const defaultColumns = [
   {
     flex: 0.04,
     minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código único',
+    field: 'codigoProduto',
+    headerName: 'Código produto',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.codigoUnico}
+          {row.codigoProduto}
         </Typography>
       )
     }
   },
   {
     flex: 0.04,
-    field: 'descricao',
+    field: 'caracteristicas',
     minWidth: 130,
-    headerName: 'Descrição',
+    headerName: 'Características',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {row.descricao}
+          {row.caracteristicas}
         </Box>
       )
     }
@@ -192,7 +183,6 @@ const defaultColumns = [
 ]
 
 const FornecedorProdutoTableList = ({ id }: Props) => {
-  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()

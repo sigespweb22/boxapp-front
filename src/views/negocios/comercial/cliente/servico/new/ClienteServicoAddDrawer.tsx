@@ -79,21 +79,6 @@ const defaultValues = {
 }
 
 const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${servicoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        servicos = response.data
-      })
-  }, [servicos]);
-
   // ** Props
   const { open, toggle } = props
   
@@ -108,6 +93,21 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
       mode: 'onChange'
   })
 
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${servicoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        servicos = response.data
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
   const MenuProps = {
@@ -121,7 +121,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
 
   const onSubmit = (data: ClienteServicoType): void => {
     data.clienteId = props?.clienteId
-    dispatch(addClienteServico({ ...data,  }))
+    dispatch(addClienteServico({ ...data }))
     toggle()
     reset()
   }

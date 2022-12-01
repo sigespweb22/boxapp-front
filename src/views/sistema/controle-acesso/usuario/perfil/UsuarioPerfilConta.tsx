@@ -101,14 +101,14 @@ const UsuarioPerfilConta = (props: Props) => {
     mode: 'onChange'
   })
 
-  useEffect(() => {
-    const storedToken = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!
-    const config = {
-      headers: {
-        Authorization: "Bearer " + storedToken
-      }
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(usuarioApiService.storageTokenKeyName)!}` 
     }
+  }
 
+  useEffect(() => {
+    
     axios
       .get(`${usuarioApiService.contaListOneAsync}/${props.id}`, config)
       .then(response => {
@@ -122,7 +122,9 @@ const UsuarioPerfilConta = (props: Props) => {
           setGroups(response.data.applicationUserGroups)
         }
       })
-  }, [])
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.id])
 
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader()

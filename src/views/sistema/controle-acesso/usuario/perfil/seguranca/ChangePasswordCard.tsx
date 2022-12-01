@@ -43,10 +43,6 @@ interface State {
   showConfirmNewPassword: boolean
 }
 
-function Teste () {
-  const t = 1
-}
-
 interface UsuarioSegurancaType {
   id: string
   senhaAnterior: string

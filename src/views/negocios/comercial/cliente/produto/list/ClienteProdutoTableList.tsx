@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, ReactElement } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -51,12 +51,8 @@ import ClienteProdutoEditDrawer from 'src/views/negocios/comercial/cliente/produ
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-import CurrencyUsdOff from 'mdi-material-ui/CurrencyUsdOff'
-import Cached from 'mdi-material-ui/Cached'
-import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
-
 interface Props {
-  id: string | string[] | undefined
+  id: string
 }
 
 interface CellType {
@@ -114,23 +110,9 @@ const RenderStatus = ({ status } : { status: string }) => {
   )
 }
 
-const cobrancaTipoColor = (ct: string) => {
-  switch (ct) 
-  {
-    case 'NENHUM':
-      return 'secondary'
-    case 'UNICO':
-      return 'primary'
-    case 'RECORRENTE':
-      return 'info'
-    default:
-      return 'primary'
-  }
-}
-
 const defaultColumns = [
   {
-    flex: 0.08,
+    flex: 0.1,
     minWidth: 30,
     field: 'name',
     headerName: 'Nome',
@@ -152,7 +134,7 @@ const defaultColumns = [
               {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              🛒{nome}
+              🛒{ `Nome produto do Fornecedor 👉  ${row.produto.nome}`}
             </Typography>
           </Box>
         </Box>
@@ -160,16 +142,16 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
+    flex: 0.04,
     minWidth: 100,
-    field: 'codigoUnico',
-    headerName: 'Código Único',
+    field: 'valorVenda',
+    headerName: 'Valor venda',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.codigoUnico}
+          {row.valorVenda}
         </Typography>
       )
     }
@@ -191,7 +173,7 @@ const ClienteProdutoTableList = ({ id }: Props) => {
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string | string[] | undefined>('')
+  const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteProdutoAddOpen, setClienteProdutoAddOpen] = useState<boolean>(false)
   const [clienteProdutoViewOpen, setClienteProdutoViewOpen] = useState<boolean>(false)

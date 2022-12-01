@@ -15,7 +15,7 @@ import { ClienteProdutoType, ClienteProdutoAddType } from 'src/types/negocios/co
 import toast from 'react-hot-toast'
 
 interface DataParams {
-  clienteId: string | string[] | undefined
+  clienteId: string
 }
 
 interface Redux {

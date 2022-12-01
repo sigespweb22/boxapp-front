@@ -6,11 +6,13 @@ export type ClienteLayoutType = {
 }
 
 export type ClienteType = {
-  id: string
+  id?: string
   nomeFantasia: string
   razaoSocial: string
   inscricaoEstadual: string
+  tipoPessoa: string
   cnpj: string
+  cpf: string
   telefonePrincipal: string
   emailPrincipal: string
   observacao: string

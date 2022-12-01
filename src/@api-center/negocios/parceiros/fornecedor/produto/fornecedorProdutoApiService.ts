@@ -8,7 +8,7 @@ export default {
   listOneAsync: `${apiFornecedoresProdutos}/list-one/`,
   addAsync: `${apiFornecedoresProdutos}/create`,
   deleteAsync: `${apiFornecedoresProdutos}/delete/`,
-  alterStatusAsync: `${apiFornecedoresProdutos}/alter-status/`,
+  alterStatusAsync: `${apiFornecedoresProdutos}/alter-status`,
   updateAsync: `${apiFornecedoresProdutos}/update`,
   storageTokenKeyName: 'accessToken'
 }

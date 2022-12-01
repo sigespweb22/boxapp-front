@@ -12,6 +12,7 @@ import TabContext from '@mui/lab/TabContext'
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
 import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
+import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -19,9 +20,10 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 // ** Custom Components Imports
 import ClienteServicoListTable from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableList'
 import ClienteProdutoListTable from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableList'
+import ClienteContratoListTable from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableList'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string
 }
 
 // ** Styled Tab component
@@ -56,6 +58,7 @@ const ClienteEditRight = ({ id }: Props) => {
       >
         <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} />
+        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-cliente-servico-page') ? (
@@ -68,6 +71,13 @@ const ClienteEditRight = ({ id }: Props) => {
         {ability?.can('list', 'ac-cliente-produto-page') ? (
           <TabPanel sx={{ p: 0 }} value='produtos'>
             <ClienteProdutoListTable id={id} />
+          </TabPanel>
+        ) : "Você não tem permissão para ver este recurso."}  
+      </Box>
+      <Box sx={{ mt: 6 }}>
+        {ability?.can('list', 'ac-cliente-contrato-page') ? (
+          <TabPanel sx={{ p: 0 }} value='contratos'>
+            <ClienteContratoListTable id={id} />
           </TabPanel>
         ) : "Você não tem permissão para ver este recurso."}  
       </Box>

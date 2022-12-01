@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -13,6 +13,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
 import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
 import { styled } from '@mui/material/styles'
+import Grid from '@mui/material/Grid'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -25,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -44,18 +45,21 @@ import InputMask from 'react-input-mask'
 
 // ** Api Services
 import clientApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
+import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
+import { Autocomplete } from '@mui/material'
 
-interface SidebarClienteAddType {
+interface ClienteAddDrawerType {
   open: boolean
   toggle: () => void
 }
 
 interface ClientData {
-  id: string
   nomeFantasia: string
   razaoSocial: string
   inscricaoEstadual: string
+  tipoPessoa: string
   cnpj: string
+  cpf: string
   telefonePrincipal: string
   emailPrincipal: string
   observacao: string
@@ -92,28 +96,21 @@ const schema = yup.object().shape({
   nomeFantasia: yup
     .string()
     .min(3, obj => showErrors('Nome fantasia', obj.value.length, obj.min))
-    .required(),
-  razaoSocial: yup
-    .string()
-    .min(3, obj => showErrors('Razão social', obj.value.length, obj.min))
-    .required(),
-  cnpj: yup
-    .string()
-    .min(14, obj => showErrors('Cnpj', obj.value.length, obj.min))
     .required()
 })
 
 const defaultValues = {
-  id: '',
   nomeFantasia: '',
   razaoSocial: '',
   inscricaoEstadual: '',
+  tipoPessoa: 'JURIDICA',
   cnpj: '',
+  cpf: '',
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
   dataFundacao: '0001-01-01 00:00:00',
-  codigoMunicipio: 0,
+  codigoMunicipio: '',
   rua: '',
   numero: '',
   complemento: '',
@@ -123,15 +120,54 @@ const defaultValues = {
   status: ''
 }
 
-const SidebarClienteAdd = (props: SidebarClienteAddType) => {
+const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
-  
+
   // ** Hooks
   const { t } = useTranslation()
   const [cnpjToSearch, setCnpjToSearch] = useState('')
 
+  // ** State
+  const [isTipoPessoaFisica, setIsTipoPessoaFisica] = useState(false)
+  const [isTipoPessoaJuridica, setIsTipoPessoaJuridica] = useState(true)
+  const [tiposPessoa, setTiposPessoa] = useState([])
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(enumApiService.storageTokenKeyName)!}`
+    }
+  }
+
+  useEffect(() => {
+    const tiposPessoaRequest = axios.get(enumApiService.tiposPessoaListAsync, config)
+    
+    tiposPessoaRequest
+      .then(response => {
+        if (response.status == 200) setTiposPessoa(response.data)
+      })
+      .catch(resp => {
+        if (resp.message == 'Network Error') return toast.error('Você não tem permissão para esta ação.')
+
+        if (typeof resp.response.data != 'undefined') {
+          resp.response.data.errors.forEach((err: any) => {
+            try {
+              const statusCode = err.match(/\d+/)[0]
+              if (statusCode === '0') return toast.error('Ops! Algo deu errado.')
+              if (statusCode === '404') return toast.error('CNPJ não encontrado na receita federal.')
+              if (statusCode === '400')
+                return toast.error('Ops! Algo deu errado. Verifique o CNPJ informado e tente novamente.')
+            } catch (e) {
+              return toast.error(`${e}<br>Ops! Algo deu errado.`)
+            }
+          })
+        }
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const dispatch = useDispatch<AppDispatch>()
+
   const {
     reset,
     control,
@@ -139,13 +175,13 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-      defaultValues,
-      mode: 'onChange',
-      resolver: yupResolver(schema)
+    defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema)
   })
 
   const onSubmit = (data: ClientData) => {
-    dispatch(addClient({ ...data,  }))
+    dispatch(addClient({ ...data }))
     toggle()
     reset()
   }
@@ -160,55 +196,83 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
   }
 
   const handleClick = () => {
-    if (typeof cnpjToSearch == 'undefined' ||
-        cnpjToSearch == '')
-    { 
-      return toast.error("CNPJ é requerido para efetuar a busca.")
+    if (typeof cnpjToSearch == 'undefined' || cnpjToSearch == '') {
+      return toast.error('CNPJ é requerido para efetuar a busca.')
     }
 
     const storedToken = window.localStorage.getItem(clientApiService.storageTokenKeyName)!
     const config = {
       headers: {
-        Authorization: "Bearer " + storedToken
+        Authorization: 'Bearer ' + storedToken
       }
     }
 
-    const cnpjScape = cnpjToSearch.replace(".", "").replace(".", "").replace("/", "").replace("-", "")
+    const cnpjScape = cnpjToSearch.replace('.', '').replace('.', '').replace('/', '').replace('-', '')
     axios
       .get(clientApiService.listOneTPAsync.concat(cnpjScape), config)
       .then(response => {
-        toast.success("CNPJ encontrado! Os dados da empresa serão automaticamente populados nos campos.")
+        toast.success('CNPJ encontrado! Os dados da empresa serão automaticamente populados nos campos.')
 
         setValue('nomeFantasia', response.data.alias != '' ? response.data.alias : defaultValues.nomeFantasia)
-        setValue('razaoSocial', response.data.company.name != '' ? response.data.company.name : defaultValues.razaoSocial)
-        setValue('telefonePrincipal', response.data.phones.length >= 1 ? response.data.phones[0].number : defaultValues.telefonePrincipal)
-        setValue('emailPrincipal', response.data.emails.length >= 1 ? response.data.emails[0].address : defaultValues.emailPrincipal)
+        setValue(
+          'razaoSocial',
+          response.data.company.name != '' ? response.data.company.name : defaultValues.razaoSocial
+        )
+        setValue(
+          'telefonePrincipal',
+          response.data.phones.length >= 1 ? response.data.phones[0].number : defaultValues.telefonePrincipal
+        )
+        setValue(
+          'emailPrincipal',
+          response.data.emails.length >= 1 ? response.data.emails[0].address : defaultValues.emailPrincipal
+        )
         setValue('dataFundacao', response.data.founded != '' ? response.data.founded : defaultValues.dataFundacao)
-        setValue('codigoMunicipio', response.data.address.municipality != '' ? response.data.address.municipality : defaultValues.dataFundacao)
-        setValue('rua', response.data.address.street + " - " +response.data.address.district)
+        setValue(
+          'codigoMunicipio',
+          response.data.address.municipality != '' ? response.data.address.municipality : defaultValues.dataFundacao
+        )
+        setValue('rua', response.data.address.street + ' - ' + response.data.address.district)
         setValue('numero', response.data.address.number != '' ? response.data.address.number : defaultValues.numero)
-        setValue('complemento', response.data.address.details != '' ? response.data.address.details : defaultValues.complemento)
+        setValue(
+          'complemento',
+          response.data.address.details != '' ? response.data.address.details : defaultValues.complemento
+        )
         setValue('cidade', response.data.address.city != '' ? response.data.address.city : defaultValues.cidade)
         setValue('estado', response.data.address.state != '' ? response.data.address.state : defaultValues.estado)
         setValue('cep', response.data.address.zip != '' ? response.data.address.zip : defaultValues.cep)
-      }).catch((resp) => {
-        if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
-        
-        if (typeof resp.response.data != 'undefined')
-        {
+      })
+      .catch(resp => {
+        if (resp.message == 'Network Error') return toast.error('Você não tem permissão para esta ação.')
+
+        if (typeof resp.response.data != 'undefined') {
           resp.response.data.errors.forEach((err: any) => {
             try {
-              const statusCode =  err.match(/\d+/)[0]
-              if (statusCode === "0") return toast.error("Ops! Algo deu errado.")
-              if (statusCode === "404") return toast.error("CNPJ não encontrado na receita federal.")
-              if (statusCode === "400") return toast.error("Ops! Algo deu errado. Verifique o CNPJ informado e tente novamente.")
-            }
-            catch (e) {
+              const statusCode = err.match(/\d+/)[0]
+              if (statusCode === '0') return toast.error('Ops! Algo deu errado.')
+              if (statusCode === '404') return toast.error('CNPJ não encontrado na receita federal.')
+              if (statusCode === '400')
+                return toast.error('Ops! Algo deu errado. Verifique o CNPJ informado e tente novamente.')
+            } catch (e) {
               return toast.error(`${e}<br>Ops! Algo deu errado.`)
             }
-          });
+          })
         }
       })
+  }
+
+  const onChangeIsTipoPessoa = (value: string | null) => {
+    switch (value) {
+      case 'FISICA':
+        setIsTipoPessoaFisica(true)
+        setIsTipoPessoaJuridica(false)
+        break
+      case 'JURIDICA':
+        setIsTipoPessoaFisica(false)
+        setIsTipoPessoaJuridica(true)
+        break
+      default:
+        return null
+    }
   }
 
   return (
@@ -221,66 +285,164 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Client New")}</Typography>
+        <Typography variant='h6'>{t('Client New')}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
-      <Box sx={{ p: 5 }}>
+      <Grid container spacing={0} sx={{ pl: 2, pt: 2, pr: 2, pb: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Alert sx={{mb:'20px'}} severity="warning">Para vincular serviços a um cliente, acesse a sua área de edição.</Alert>
+          <Grid item xs={12} md={12} lg={12}>
+            <Alert sx={{ mb: '20px' }} severity='warning'>
+              Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição.
+            </Alert>
+          </Grid>
+          <Grid>
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name='tipoPessoa'
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <Autocomplete
+                      value={value}
+                      options={tiposPessoa}
+                      onChange={(event, newValue) => {
+                        onChange(newValue), onChangeIsTipoPessoa(newValue)
+                      }}
+                      id='autocomplete-controlled'
+                      renderInput={params => <TextField {...params} label='Tipo de pessoa' />}
+                    />
+                  )
+                }}
+              />
+            </FormControl>
+          </Grid>
           <FormControl fullWidth sx={{ mb: 6 }}>
-          <Controller
+            <Controller
               name='nomeFantasia'
               control={control}
-              rules={{ required: true }}
+              rules={{ required: true }}           
               render={({ field: { value, onChange } }) => (
-                <TextField
+                  <TextField
                   value={value}
                   label='Nome fantasia'
                   onChange={onChange}
-                  placeholder='(e.g.: Empresa de software)'
+                  placeholder='e.g.: Empresa de software'
                   error={Boolean(errors.nomeFantasia)}
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          {isTipoPessoaFisica? (
+            <></>
+          ): isTipoPessoaJuridica? (
+            <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='razaoSocial'
               control={control}
-              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
                   label='Razão social'
                   onChange={onChange}
-                  placeholder='(e.g.: Empresa de software LTDA)'
-                  error={Boolean(errors.razaoSocial)}
+                  placeholder='e.g.: Empresa de software LTDA'
                 />
               )}
             />
-            {errors.razaoSocial && <FormHelperText sx={{ color: 'error.main' }}>{errors.razaoSocial.message}</FormHelperText>}
           </FormControl>
+          ):(<></>)}
+          {isTipoPessoaFisica? (
+            <></>
+          ): isTipoPessoaJuridica? (
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name='inscricaoEstadual'
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <TextField value={value} label='Inscrição estadual' onChange={onChange} placeholder='e.g.: 123456' />
+                )}
+              />
+            </FormControl>
+          ):(<></>)}
+          {isTipoPessoaFisica? (
+            <Grid sx={{ display: 'flex', alignItems: 'center', width: 'auto' }} xs={12} md={12} lg={12}>
+            <Grid sx={{ width: 'auto' }} xs={10} md={12} lg={12}>
+              <FormControl sx={{ mb: 6 }} fullWidth={true}>
+                <Controller
+                  name='cpf'
+                  control={control}
+                  render={props => (
+                    <InputMask
+                      mask='999.999.999-99'
+                      value={props.field.value}
+                      disabled={false}
+                      onChange={(value): void => {
+                        props.field.onChange(value)
+                        changeHandler(value)
+                      }}
+                    >
+                      <TextField
+                        sx={{ width: 'auto' }}
+                        disabled={false}
+                        name='cpf'
+                        type='text'
+                        label='Cpf'
+                        placeholder='e.g.: 159.753.486-13'
+                        error={Boolean(errors.cnpj)}
+                      />
+                    </InputMask>
+                  )}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+          ): isTipoPessoaJuridica? (
+            <Grid sx={{ display: 'flex', alignItems: 'center', width: 'auto' }} xs={12} md={12} lg={12}>
+              <Grid sx={{ width: 'auto' }} xs={10} md={10} lg={10}>
+                <FormControl sx={{ mb: 6 }} fullWidth={true}>
+                  <Controller
+                    name='cnpj'
+                    control={control}
+                    render={props => (
+                      <InputMask
+                        mask='99.999.999/9999-99'
+                        value={props.field.value}
+                        disabled={false}
+                        onChange={(value): void => {
+                          props.field.onChange(value)
+                          changeHandler(value)
+                        }}
+                      >
+                        <TextField
+                          sx={{ width: 'auto' }}
+                          disabled={false}
+                          name='cnpj'
+                          type='text'
+                          label='Cnpj'
+                          placeholder='e.g.: 60.133.365/0001-16'
+                          error={Boolean(errors.cnpj)}
+                        />
+                      </InputMask>
+                    )}
+                  />
+                  {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+              <Grid xs={2} md={2} lg={2}>
+                <Tooltip title={t('Search CNPJ')}>
+                  <IconButton onClick={handleClick} sx={{ ml: 4, mb: 6 }} aria-label='capture screenshot' color='primary'>
+                    <StoreSearchOutline fontSize='medium' />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          ):(<></>)}
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='inscricaoEstadual'
+              name='telefonePrincipal'
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Inscrição estadual'
-                  onChange={onChange}
-                  placeholder='(e.g.: 123456)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth={false} sx={{ width: '290px', mb: 6 }}>
-            <Controller
-              name='cnpj'
-              control={control}
-              render={(props) => (
+              render={props => (
                 <InputMask
-                  mask="99.999.999/9999-99"
+                  mask='(99) 9.9999-9999'
                   value={props.field.value}
                   disabled={false}
                   onChange={(value): void => {
@@ -289,34 +451,14 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                   }}
                 >
                   <TextField
+                    sx={{ width: 'auto' }}
                     disabled={false}
-                    name="cnpj"
-                    type="text"
-                    label='Cnpj'
-                    placeholder='(e.g.: 60.133.365/0001-16)'
-                    error={Boolean(errors.cnpj)} 
+                    name='telefonePrincipal'
+                    type='text'
+                    label='Telefone principal'
+                    placeholder='e.g.: (48) 9.8896-1111'
                   />
                 </InputMask>
-              )}
-            />
-            {errors.cnpj && <FormHelperText sx={{ color: 'error.main' }}>{errors.cnpj.message}</FormHelperText>}
-          </FormControl>
-          <Tooltip title={t("Search CNPJ")}>
-            <IconButton onClick={handleClick} sx={{ ml: 2, height: '58px', width: '38px' }} aria-label='capture screenshot' color='primary'>
-              <StoreSearchOutline fontSize='medium' />
-            </IconButton>
-          </Tooltip>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='telefonePrincipal'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Telefone principal'
-                  onChange={onChange}
-                  placeholder='(e.g.: (48) 3051.8896))'
-                />
               )}
             />
           </FormControl>
@@ -329,7 +471,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                   value={value}
                   label='E-mail principal'
                   onChange={onChange}
-                  placeholder='(e.g.: empresa@empresa.com'
+                  placeholder='e.g.: nome@email.com'
                 />
               )}
             />
@@ -343,36 +485,35 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                   value={value}
                   label='Observacao'
                   onChange={onChange}
-                  placeholder='(e.g.: Esta empresa está em processo de evolução'
+                  placeholder='e.g.: Observação sobre o cliente'
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='dataFundacao'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Data fundação'
-                  onChange={onChange}
-                  placeholder='(e.g.: 10/01/2000'
-                />
-              )}
-            />
-          </FormControl>
+          {isTipoPessoaFisica? (
+            <></>
+          ): isTipoPessoaJuridica? (
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name='dataFundacao'
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <TextField value={value} label='Data fundação' onChange={onChange} placeholder='e.g.: 10/01/2000' />
+                )}
+              />
+            </FormControl>
+          ):(<></>)}
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='codigoMunicipio'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type="number"
+                  type='number'
                   value={value}
                   label='Código município'
                   onChange={onChange}
-                  placeholder='(e.g.: 654789'
+                  placeholder='e.g.: 654789'
                 />
               )}
             />
@@ -382,12 +523,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
               name='rua'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Rua'
-                  onChange={onChange}
-                  placeholder='(e.g.: Rua Abílio Diniz'
-                />
+                <TextField value={value} label='Rua' onChange={onChange} placeholder='e.g.: Rua Abílio Diniz' />
               )}
             />
           </FormControl>
@@ -396,12 +532,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
               name='numero'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Número'
-                  onChange={onChange}
-                  placeholder='(e.g.: 52'
-                />
+                <TextField value={value} label='Número' onChange={onChange} placeholder='e.g.: 52' />
               )}
             />
           </FormControl>
@@ -414,7 +545,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
                   value={value}
                   label='Complemento'
                   onChange={onChange}
-                  placeholder='(e.g.: Próximo ao Banco do Brasil'
+                  placeholder='e.g.: Próximo ao Banco do Brasil'
                 />
               )}
             />
@@ -424,12 +555,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
               name='cidade'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Cidade'
-                  onChange={onChange}
-                  placeholder='(e.g.: Criciúma'
-                />
+                <TextField value={value} label='Cidade' onChange={onChange} placeholder='e.g.: Criciúma' />
               )}
             />
           </FormControl>
@@ -438,12 +564,7 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
               name='estado'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Estado'
-                  onChange={onChange}
-                  placeholder='(e.g.: Santa Catarina'
-                />
+                <TextField value={value} label='Estado' onChange={onChange} placeholder='e.g.: Santa Catarina' />
               )}
             />
           </FormControl>
@@ -451,16 +572,29 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
             <Controller
               name='cep'
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Cep'
-                  onChange={onChange}
-                  placeholder='(e.g.: 88801-430'
-                />
+              render={props => (
+                <InputMask
+                  mask='99999-999'
+                  value={props.field.value}
+                  disabled={false}
+                  onChange={(value): void => {
+                    props.field.onChange(value)
+                    changeHandler(value)
+                  }}
+                >
+                  <TextField
+                    sx={{ width: 'auto' }}
+                    disabled={false}
+                    name='cep'
+                    type='text'
+                    label='Cep'
+                    placeholder='e.g.: 88801-000'
+                  />
+                </InputMask>
               )}
             />
           </FormControl>
+          {isTipoPessoaFisica}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
               Salvar
@@ -470,16 +604,16 @@ const SidebarClienteAdd = (props: SidebarClienteAddType) => {
             </Button>
           </Box>
         </form>
-      </Box>
+      </Grid>
     </Drawer>
   )
 }
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteAdd.acl = {
+ClienteAddDrawer.acl = {
   action: 'create',
   subject: 'ac-cliente-page'
 }
 
-export default SidebarClienteAdd
+export default ClienteAddDrawer

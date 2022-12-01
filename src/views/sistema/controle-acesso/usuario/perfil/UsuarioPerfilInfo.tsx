@@ -78,27 +78,25 @@ const UsuarioPerfilInfo = (props: Props) => {
     mode: 'onChange'
   })
 
-  useEffect(() => {
-    const storageTokenKeyName = window.localStorage.getItem(enumApiService.storageTokenKeyName)
-    const config = {
-      headers: {
-        Authorization: `Bearer ${storageTokenKeyName}`
-      }
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(enumApiService.storageTokenKeyName)!}`
     }
+  }
+
+  useEffect(() => {
+
     axios
       .get(enumApiService.generosListAsync, config)
       .then((response) => {
         setGeneros(response.data)
       })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    const storageTokenKeyName = window.localStorage.getItem(usuarioApiService.storageTokenKeyName)
-    const config = {
-      headers: {
-        Authorization: `Bearer ${storageTokenKeyName}`
-      }
-    }
+
     axios
       .get(`${usuarioApiService.infoListOneAsync}/${props.id}`, config)
       .then((response) => {
@@ -114,7 +112,9 @@ const UsuarioPerfilInfo = (props: Props) => {
         if (err.response.status === 400 || err.response.status === 404)
         return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
       }))
-  }, [])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.id])
   
   const handleReset = () => {
     reset()

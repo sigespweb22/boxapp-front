@@ -36,7 +36,6 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 }))
 
 const FornecedorEditRight = ({ id }: Props) => {
-  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
 

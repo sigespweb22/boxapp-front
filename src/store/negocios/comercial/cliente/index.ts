@@ -48,26 +48,7 @@ export const addClient = createAsyncThunk(
       }
     }
 
-    const data2 = {
-      nomeFantasia: data.nomeFantasia,
-      razaoSocial: data.razaoSocial,
-      inscricaoEstadual: data.inscricaoEstadual,
-      cnpj: data.cnpj,
-      telefonePrincipal: data.telefonePrincipal,
-      emailPrincipal: data.emailPrincipal,
-      observacao: data.observacao,
-      dataFundacao: data.dataFundacao,
-      codigoMunicipio: data.codigoMunicipio,
-      rua: data.rua,
-      numero: data.numero,
-      complemento: data.complemento,
-      cidade: data.cidade,
-      estado: data.estado,
-      cep: data.cep,
-      status: data.status
-    }
-
-    axios.post(clienteApiService.addAsync, data2, config).then((resp) => {
+    axios.post(clienteApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().cliente.params))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
       if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
@@ -112,28 +93,7 @@ export const editCliente = createAsyncThunk(
       }
     }
 
-    const data2 = {
-      id: data.id,
-      nomeFantasia: data.nomeFantasia,
-      razaoSocial: data.razaoSocial,
-      inscricaoEstadual: data.inscricaoEstadual,
-      cnpj: data.cnpj,
-      telefonePrincipal: data.telefonePrincipal,
-      emailPrincipal: data.emailPrincipal,
-      observacao: data.observacao,
-      dataFundacao: data.dataFundacao,
-      codigoMunicipio: data.codigoMunicipio,
-      rua: data.rua,
-      numero: data.numero,
-      complemento: data.complemento,
-      cidade: data.cidade,
-      estado: data.estado,
-      cep: data.cep,
-      status: data.status
-    }
-
-    axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
-      debugger
+    axios.put(clienteApiService.updateAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().cliente.params))
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
     }).catch((resp) => {
@@ -202,7 +162,7 @@ export const deleteClient = createAsyncThunk(
 // ** Alter Status Client
 export const alterStatusClient = createAsyncThunk(
   'appClients/alterStatusClient',
-  async (id: number | string, { getState, dispatch }: Redux) => {
+  async (id: number | string | undefined, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
     const config = {

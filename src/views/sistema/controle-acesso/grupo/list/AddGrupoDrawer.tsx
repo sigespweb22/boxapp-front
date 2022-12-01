@@ -77,10 +77,9 @@ const defaultValues = {
 }
 
 const SidebarAddGroup = (props: SidebarAddGroupType) => {
-  const storedToken = window.localStorage.getItem(roleApiService.storageTokenKeyName)!
   const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(roleApiService.storageTokenKeyName)!}` 
     }
   }
 
@@ -90,6 +89,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
       .then(response => {
         roles = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ** Hook

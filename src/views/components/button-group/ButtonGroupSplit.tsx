@@ -42,10 +42,11 @@ const ButtonGroupSplit = () => {
   }
 
   return (
-    <Fragment style={{zIndex: 10000}}>
+    <Fragment>
       <ButtonGroup variant='contained' ref={anchorRef} aria-label='split button'>
         <Button onClick={handleClick}>{options[selectedIndex]}</Button>
         <Button
+          style={{zIndex: 10000}}
           size='small'
           aria-haspopup='menu'
           onClick={handleToggle}

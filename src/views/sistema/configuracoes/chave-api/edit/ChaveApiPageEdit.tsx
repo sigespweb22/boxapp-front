@@ -75,21 +75,22 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
   })
 
   const onSubmit = (data: ChaveApiType) => {
-    debugger
     dispatch(updateChaveApi({ ...data,  }))
     toggle()
     reset()
   }
 
   useEffect(() => {
+
     if(props?.row){
-      debugger
       setValue('id', props?.row?.id || '')
       setValue('apiTerceiro', props?.row?.apiTerceiro || '')
       setValue('key', props?.row?.key || '')
       setValue('descricao', props?.row?.descricao || '')
       setValue('dataValidade', props?.row?.dataValidade || '')
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const handleClose = () => {
@@ -213,7 +214,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ChaveApiPageEdit.acl = {
   action: 'update',
-  subject: 'ac-chave_api-page'
+  subject: 'ac-chave_api_terceiro-page'
 }
 
 export default ChaveApiPageEdit

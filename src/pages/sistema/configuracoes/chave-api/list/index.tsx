@@ -1,9 +1,5 @@
 // ** React Imports
 import { useContext, useState, useEffect, useCallback } from 'react'
-
-// ** Next Import
-import Link from 'next/link'
-
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
 
@@ -12,7 +8,6 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
@@ -47,6 +42,7 @@ import { ChaveApiType } from 'src/types/sistema/configuracoes/chave-api/chaveApi
 // ** Custom Components Imports
 import TableHeader from 'src/views/sistema/configuracoes/chave-api/new/TableHeader'
 import ChaveApiPageEdit from 'src/views/sistema/configuracoes/chave-api/edit/ChaveApiPageEdit'
+import ChaveApiPageView from 'src/views/sistema/configuracoes/chave-api/view/ChaveApiPageView'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -128,7 +124,7 @@ const defaultColumns = [
     flex: 0.1,
     minWidth: 100,
     field: 'key',
-    headerName: 'key',
+    headerName: 'Key',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
@@ -189,10 +185,10 @@ const ChaveApiList = () => {
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [chaveApiPageEditOpen, setChaveApiPageEditOpen] = useState<boolean>(false)
+  const [chaveApiPageViewOpen, setChaveApiPageViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ChaveApiType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  debugger
   const store = useSelector((state: RootState) => state.chaveApi)
 
   useEffect(() => {
@@ -209,6 +205,7 @@ const ChaveApiList = () => {
 
   const handleViewChaveApi = (row : ChaveApiType) => {
     setRow(row)
+    setChaveApiPageViewOpen(true)
   }
 
   const handleEditChaveApi = (row : ChaveApiType) => {
@@ -248,6 +245,7 @@ const ChaveApiList = () => {
   }
 
   const toggleChaveApiPageEdit = () => setChaveApiPageEditOpen(!chaveApiPageEditOpen)
+  const toggleChaveApiPageView = () => setChaveApiPageViewOpen(!chaveApiPageViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -261,14 +259,14 @@ const ChaveApiList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-chave_api-page') &&
+          {ability?.can('read', 'ac-chave_api_terceiro-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewChaveApi(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-chave_api-page') &&
+          {ability?.can('update', 'ac-chave_api_terceiro-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditChaveApi(row)}>
                 <PencilOutline fontSize='small' />
@@ -296,7 +294,7 @@ const ChaveApiList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-chave_api-page') ? (
+        {ability?.can('list', 'ac-chave_api_terceiro-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} />
@@ -315,6 +313,7 @@ const ChaveApiList = () => {
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
         <ChaveApiPageEdit open={chaveApiPageEditOpen} toggle={toggleChaveApiPageEdit} row={row}/>
+        <ChaveApiPageView open={chaveApiPageViewOpen} toggle={toggleChaveApiPageView} row={row}/>
       </Grid>
     </Grid>
   )
@@ -324,7 +323,7 @@ const ChaveApiList = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ChaveApiList.acl = {
   action: 'list',
-  subject: 'ac-chave_api-page'
+  subject: 'ac-chave_api_terceiro-page'
 }
 
 export default ChaveApiList

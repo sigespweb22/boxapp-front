@@ -6,7 +6,6 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
@@ -30,7 +29,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-const SidebarClienteView = (props: SidebarViewProdutoType) => {
+const ProdutoViewDrawer = (props: SidebarViewProdutoType) => {
   // ** Hook
   const {
     reset,
@@ -181,9 +180,9 @@ const SidebarClienteView = (props: SidebarViewProdutoType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteView.acl = {
+ProdutoViewDrawer.acl = {
   action: 'read',
   subject: 'ac-produto-page'
 }
 
-export default SidebarClienteView
+export default ProdutoViewDrawer

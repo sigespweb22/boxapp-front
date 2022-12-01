@@ -73,25 +73,13 @@ const SidebarClienteProdutoView = (props: SidebarClienteProdutoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.codigoUnico}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
               value={props?.row?.caracteristicas}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.descricao}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              value={props?.row?.valorCusto}
+              value={props?.row?.valorVenda}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>

@@ -130,7 +130,7 @@ const UserDropdown = (props: Props) => {
     const userStorageConverted = JSON.parse(userStorage)
 
     setValue(userStorageConverted)
-  }, [window.localStorage.getItem('userData')])
+  }, [])
 
   // ** Hooks
   const router = useRouter()

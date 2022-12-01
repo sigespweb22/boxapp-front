@@ -103,10 +103,9 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   })
   const [users, setUsers] = useState<UserDataType[]>(userDefaultValues)
 
-  const storedToken = window.localStorage.getItem(usersApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(usersApiService.storageTokenKeyName)!}` 
     }
   }
 
@@ -116,6 +115,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
       .then(response => {
         setUsers(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: PipelineType) => {

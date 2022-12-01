@@ -92,10 +92,9 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   const [groups, setGroups] = useState<GroupDataType[]>(groupsDefaultValues)
   const [group, setGroup] = useState<GroupDataType[]>(groupsDefaultValues)
 
-  const storedToken = window.localStorage.getItem(groupApiService.storageTokenKeyName)!
   const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
+    headers: { 
+      Authorization: `Bearer ${window.localStorage.getItem(groupApiService.storageTokenKeyName)!}` 
     }
   }
 
@@ -105,10 +104,11 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       .then(response => {
         setGroups(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit = (data: UsersType) => {
-    dispatch(editUser({ ...data,  }))
+    dispatch(editUser({ ...data  }))
     toggle()
     reset()
   }
@@ -121,6 +121,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
       setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
       setGroup(props?.row?.applicationUserGroups ?? [])
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.row])
 
   const handleClose = () => {

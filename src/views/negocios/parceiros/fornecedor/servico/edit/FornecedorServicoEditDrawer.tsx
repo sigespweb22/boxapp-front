@@ -82,12 +82,15 @@ const SidebarFornecedorServicoEdit = (props: SidebarFornecedorServicoEditType) =
   })
 
   useEffect(() => {
+
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
     setValue('codigoServico', props?.row?.codigoServico || '')
     setValue('unidadeMedida', props?.row?.unidadeMedida || '')
     setValue('caracteristicas', props?.row?.caracteristicas || '')
     setValue('fornecedorId', props?.row?.fornecedorId || '')
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const ITEM_HEIGHT = 48

@@ -82,10 +82,9 @@ const defaultValues = {
 }
 
 const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -95,6 +94,7 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
       .then(response => {
         servicos = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servicos]);
 
   // ** Props
@@ -113,12 +113,15 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
   })
 
   useEffect(() => {
+    
     setValue('id', props?.row?.id || '')
     setValue('clienteId', props?.row?.clienteId || '')
     setValue('valorVenda', props?.row?.valorVenda || '')
     setValue('cobrancaTipo', props?.row?.cobrancaTipo || '')
     setValue('servico', props?.row?.servico || {id: '', nome: ''})
     setValue('caracteristicas', props?.row?.caracteristicas || '')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const ITEM_HEIGHT = 48

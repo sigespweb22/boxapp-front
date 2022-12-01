@@ -23,7 +23,7 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Fornecedor Serviços
+// ** Fetch Fornecedor Produtos
 export const fetchData = createAsyncThunk('appFornecedorProdutos/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(fornecedorProdutoApiService.storageTokenKeyName)!
   const response = await axios
@@ -37,7 +37,7 @@ export const fetchData = createAsyncThunk('appFornecedorProdutos/fetchData', asy
   return response.data
 })
 
-// ** Add Fornecedor Serviços
+// ** Add Fornecedor Produtos
 export const addFornecedorProduto = createAsyncThunk(
   'appFornecedorProdutos/addFornecedorProduto',
   async (data: FornecedorProdutoAddType, { dispatch }: Redux) => {
@@ -125,7 +125,7 @@ export const editFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Delete Fornecedor Serviços
+// ** Delete Fornecedor Produtos
 export const deleteFornecedorProduto = createAsyncThunk(
   'appFornecedorProdutos/ClienteProduto',
   async (id: number | string, { getState, dispatch }: Redux) => {
@@ -159,7 +159,7 @@ export const deleteFornecedorProduto = createAsyncThunk(
   }
 )
 
-// ** Alter Status Fornecedor Serviço
+// ** Alter Status Fornecedor Produto
 export const alterStatusFornecedorProduto = createAsyncThunk(
   'appFornecedorProdutos/alterStatusFornecedorProduto',
   async (id: number | string, { dispatch }: Redux) => {
@@ -171,7 +171,7 @@ export const alterStatusFornecedorProduto = createAsyncThunk(
       }
     }
 
-    axios.put(fornecedorProdutoApiService.alterStatusAsync+id, null, config).then((resp) => {
+    axios.put(`${fornecedorProdutoApiService.alterStatusAsync}/${id}`, null, config).then((resp) => {
       dispatch(fetchData({fornecedorId: resp.data.fornecedorId }))
       toast.success(resp.data.message)
 

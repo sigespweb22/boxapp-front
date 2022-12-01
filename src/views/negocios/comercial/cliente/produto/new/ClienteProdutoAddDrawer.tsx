@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,10 +9,7 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import Autocomplete from '@mui/material/Autocomplete'
-import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -36,8 +33,8 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
 
-interface SidebarClienteProdutoAddType {
-  clienteId: string | string[] | undefined
+interface ClienteProdutoAddDrawerType {
+  clienteId: string
   open: boolean
   toggle: () => void
 }
@@ -47,16 +44,12 @@ interface ProdutoType {
   nome: string | ''
 }
 
-let produtos: { id: string, nome: string  }[] = [];
-
 interface ClienteProdutoType {
   id: string
   nome: string
-  codigoUnico: string
   caracteristicas: string
-  descricao: string
-  valorCusto: string
-  clienteId: string | string[] | undefined
+  valorVenda: string
+  clienteId: string
   produtoId: string
   produto: ProdutoType
   status: string
@@ -71,31 +64,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  codigoUnico: '',
+  nome: '', 
   caracteristicas: '',
-  descricao: '',
-  valorCusto: '',
+  valorVenda: '',
   clienteId: '',
   produto: {id: '', nome: ''},
   status: ''
 }
 
-const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
-  const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
-  const config = {
-    headers: {
-      Authorization: "Bearer " + storedToken
-    }
-  }
-
-  useEffect(() => {
-    axios
-      .get(`${produtoApiService.listToSelectAsync}`, config)
-      .then(response => {
-        produtos = response.data
-      })
-  }, [produtos]);
-
+const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -110,20 +87,27 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
       mode: 'onChange'
   })
 
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
+  // ** States
+  const [produtos, setProdutos] = useState([])
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
     }
   }
 
+  useEffect(() => {
+    axios
+      .get(`${produtoApiService.listToSelectAsync}`, config)
+      .then(response => {
+        setProdutos(response.data)
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onSubmit = (data: ClienteProdutoType): void => {
     data.clienteId = props?.clienteId
-    dispatch(addClienteProduto({...data,  }))
+    dispatch(addClienteProduto({...data}))
     toggle()
     reset()
   }
@@ -171,14 +155,14 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='codigoUnico'
+              name='nome'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código único'
+                  label='Nome'
                   onChange={onChange}
-                  placeholder='(e.g.: #ABCD1234)'
+                  placeholder='(e.g.: Mikrotik)'
                 />
               )}
             />
@@ -199,26 +183,12 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='descricao'
+              name='valorVenda'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Descrição'
-                  onChange={onChange}
-                  placeholder='(e.g.: Descrição do produto)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Custo do produto'
+                  label='Valor venda'
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
@@ -241,9 +211,9 @@ const SidebarClienteProdutoAdd = (props: SidebarClienteProdutoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteProdutoAdd.acl = {
+ClienteProdutoAddDrawer.acl = {
   action: 'create',
   subject: 'ac-cliente-produto-page'
 }
 
-export default SidebarClienteProdutoAdd
+export default ClienteProdutoAddDrawer

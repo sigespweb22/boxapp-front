@@ -9,9 +9,6 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -29,7 +26,7 @@ import { editFornecedorProduto } from 'src/store/negocios/parceiros/fornecedor/p
 import { AppDispatch } from 'src/store'
 import { FornecedorProdutoType } from 'src/types/negocios/parceiros/fornecedor/produto/fornecedorProdutoTypes'
 
-interface SidebarFornecedorProdutoEditType {
+interface FornecedorProdutoEditDrawerType {
   row: FornecedorProdutoType | undefined
   open: boolean
   toggle: () => void
@@ -38,11 +35,9 @@ interface SidebarFornecedorProdutoEditType {
 interface FornecedorProdutoData {
   id: string
   nome: string
-  codigoUnico: string
-  caracteristicas: string
-  descricao: string
-  valorCusto: string
+  codigoProduto: string
   fornecedorId: string
+  caracteristicas: string
   status: string
 }
 
@@ -57,15 +52,13 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const defaultValues = {
   id: '',
   nome: '',
-  codigoUnico: '',
-  caracteristicas: '',
-  descricao: '',
-  valorCusto: '',
+  codigoProduto: '',
   fornecedorId: '',
+  caracteristicas: '',
   status: ''
 }
 
-const SidebarFornecedorProdutoEdit = (props: SidebarFornecedorProdutoEditType) => {
+const FornecedorProdutoEditDrawer = (props: FornecedorProdutoEditDrawerType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -82,28 +75,18 @@ const SidebarFornecedorProdutoEdit = (props: SidebarFornecedorProdutoEditType) =
   })
 
   useEffect(() => {
+    
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
-    setValue('codigoUnico', props?.row?.codigoUnico || '')
-    setValue('descricao', props?.row?.descricao || '')
-    setValue('valorCusto', props?.row?.valorCusto || '')
-    setValue('caracteristicas', props?.row?.caracteristicas || '')
+    setValue('codigoProduto', props?.row?.codigoProduto || '')
     setValue('fornecedorId', props?.row?.fornecedorId || '')
+    setValue('caracteristicas', props?.row?.caracteristicas || '')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        width: 350,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-      }
-    }
-  }
-
   const onSubmit = (data: FornecedorProdutoData) => {
-    dispatch(editFornecedorProduto({ ...data,  }))
+    dispatch(editFornecedorProduto({ ...data }))
     toggle()
     reset()
   }
@@ -144,46 +127,18 @@ const SidebarFornecedorProdutoEdit = (props: SidebarFornecedorProdutoEditType) =
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='codigoUnico'
+              name='codigoProduto'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Código único'
+                  label='Código produto'
                   onChange={onChange}
                   placeholder='(e.g.: #ABCD1234)'
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='descricao'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Descrição'
-                  onChange={onChange}
-                  placeholder='(e.g.: Descrição do produto)'
-                />
-              )}
-            />
-          </FormControl> 
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='valorCusto'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Valor do produto'
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
-                />
-              )}
-            />
-          </FormControl>  
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='caracteristicas'
@@ -214,9 +169,9 @@ const SidebarFornecedorProdutoEdit = (props: SidebarFornecedorProdutoEditType) =
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarFornecedorProdutoEdit.acl = {
+FornecedorProdutoEditDrawer.acl = {
   action: 'update',
   subject: 'ac-fornecedor-produto-page'
 }
 
-export default SidebarFornecedorProdutoEdit
+export default FornecedorProdutoEditDrawer

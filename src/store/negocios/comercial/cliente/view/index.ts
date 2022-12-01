@@ -47,27 +47,7 @@ export const editCliente = createAsyncThunk(
       }
     }
 
-    const data2 = {
-      id: data.id,
-      nomeFantasia: data.nomeFantasia,
-      razaoSocial: data.razaoSocial,
-      inscricaoEstadual: data.inscricaoEstadual,
-      cnpj: data.cnpj,
-      telefonePrincipal: data.telefonePrincipal,
-      emailPrincipal: data.emailPrincipal,
-      observacao: data.observacao,
-      dataFundacao: data.dataFundacao,
-      codigoMunicipio: data.codigoMunicipio,
-      rua: data.rua,
-      numero: data.numero,
-      complemento: data.complemento,
-      cidade: data.cidade,
-      estado: data.estado,
-      cep: data.cep,
-      status: data.status
-    }
-
-    axios.put(clienteApiService.updateAsync, data2, config).then((resp) => {
+    axios.put(clienteApiService.updateAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().clienteView.data))
       
       if (resp.status === 204) return toast.success("Cliente atualizado com sucesso.")
@@ -109,8 +89,10 @@ const defaultValues: ClienteType = {
   telefonePrincipal: '',
   emailPrincipal: '',
   observacao: '',
+  tipoPessoa:  '',
   dataFundacao: '',
   codigoMunicipio: 0,
+  cpf: '',
   rua: '',
   numero: '',
   complemento: '',

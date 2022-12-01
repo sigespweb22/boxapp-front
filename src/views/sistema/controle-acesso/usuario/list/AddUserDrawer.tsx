@@ -95,7 +95,7 @@ const schema = yup.object().shape({
     .required(),
   confirmNewPassword: yup
     .string()
-    .required()
+    .required("Confirmação de senha é requerida")
     .oneOf([yup.ref('password')], 'As senhas devem ser iguais')
 })
 
@@ -108,10 +108,9 @@ const defaultValues = {
 }
 
 const SidebarAddUser = (props: SidebarAddUserType) => {
-  const storedToken = window.localStorage.getItem(apiGroup.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(apiGroup.storageTokenKeyName)!}` 
     }
   }
 
@@ -121,6 +120,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
       .then(response => {
         groups = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups]);
 
   // ** Hook

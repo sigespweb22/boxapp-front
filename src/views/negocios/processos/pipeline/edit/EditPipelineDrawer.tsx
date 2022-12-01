@@ -97,10 +97,9 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
   const [users, setUsers] = useState<UserDataType[]>(usersDefaultValues)
   const [user, setUser] = useState<UserDataType[]>(usersDefaultValues)
 
-  const storedToken = window.localStorage.getItem(usersApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(usersApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -110,9 +109,11 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
       .then(response => {
         setUsers(response.data)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+
     if(props?.row){
       setValue('id', props?.row?.id ?? '')
       setValue('nome', props?.row?.nome ?? '')
@@ -120,6 +121,8 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
       setValue('pipelineAssinantes', props?.row?.pipelineAssinantes ?? [])
       setUser(props?.row?.pipelineAssinantes ?? [])
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.row])
 
   const onSubmit = (data: PipelineType) => {

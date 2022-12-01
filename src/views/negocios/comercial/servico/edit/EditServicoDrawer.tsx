@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, SyntheticEvent, useState } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -54,11 +54,6 @@ const MenuProps = {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
     }
   }
-}
-
-interface FornecedorServicoType {
-  id: string | null
-  nome: string | null
 }
 
 interface SidebarAddServicoType {
@@ -143,6 +138,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
   })
 
   useEffect(() => {
+
     // ** Set values
     setValue('id', props?.row?.id || '')
     setValue('nome', props?.row?.nome || '')
@@ -152,12 +148,13 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
     setValue('unidadeMedida', props?.row?.unidadeMedida || '')
     setValue('fornecedorServico', props?.row?.fornecedorServico || {id: '', nome: ''})
     setValue('caracteristicas', props?.row?.caracteristicas || '')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const storedToken = window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!
   const config = {
     headers: {
-      Authorization: "Bearer " + storedToken
+      Authorization: `Bearer ${window.localStorage.getItem(fornecedorServicoApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -167,10 +164,11 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
       .then(response => {
         fornecedoresServicos = response.data
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fornecedoresServicos]);
   
   const onSubmit = (data: ServicoData) => {
-    dispatch(editServico({ ...data,  }))
+    dispatch(editServico({ ...data }))
     toggle()
     reset()
   }
