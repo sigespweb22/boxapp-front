@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 // ** Custom Components Imports
 import PageHeader from 'src/@core/components/page-header'
 
-import PipelineKanBan from 'src/@core/components/pipelines/index'
+import PipelineKanBan from 'src/views/negocios/processos/pipeline/manager/PipelineKanBan'
 
 interface Propstype {
   id: string | string[] | undefined

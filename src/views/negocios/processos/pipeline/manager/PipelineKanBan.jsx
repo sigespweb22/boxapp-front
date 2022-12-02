@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import '@atlaskit/css-reset'
 import styled from 'styled-components'
-import { DragDropContext } from 'react-beautiful-dnd'
-import Column from './column'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import PipelineColumn from 'src/views/negocios/processos/pipeline/manager/PipelineColumn'
 
 const Container = styled.div`
     display: flex
@@ -52,6 +52,7 @@ const pipeline = {
         taskIds: []
       }
     },
+    // Facilitador reordenamento das colunas
     columnOrder: ['column-1', 'column-2', 'column-3', 'column-4']
 }
 
@@ -59,7 +60,7 @@ const PipelineKanBan = () => {
     const [state, setState] = useState(pipeline)
 
     const onDragEnd = result => {
-        const { destination, source, draggableId } = result
+        const { destination, source, draggableId, type } = result
 
         if (!destination) {
             return
@@ -69,7 +70,36 @@ const PipelineKanBan = () => {
             destination.droppableId === source.droppableId &&
             destination.index === source.index
         ) {
-            return
+            return;
+        }
+
+        if (type === 'column') {
+            const newColumnOrder = Array.from(state.columnOrder);
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId);
+            
+            const newState = {
+                ...state,
+                columnOrder: newColumnOrder
+            }
+
+            setState(newState)
+            return;
+        }
+
+        if (type === 'column') {
+            const newColumnOrder = Array.from(state.columnOrder);
+
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId);
+            
+            const newState = {
+                ...state,
+                columnOrder: newColumnOrder,
+            };
+
+            setState(newState);
+            return;
         }
 
         const start = state.columns[source.droppableId]
@@ -125,19 +155,25 @@ const PipelineKanBan = () => {
     }
     
     return (
-        <DragDropContext
-            onDragEnd={onDragEnd}
-        >
-            <Container>
-                {
-                    state.columnOrder.map((columnId) => {
-                        const column = state.columns[columnId]
-                        const pipelineTarefas = column.taskIds.map(taskId => state.pipelineTarefas[taskId])
-            
-                        return <Column key={column.id} column={column} pipelineTarefas={pipelineTarefas} />
-                    })
-                }
-            </Container>
+        <DragDropContext onDragEnd={onDragEnd} >
+            <Droppable droppableId='all-columns' direction='horizontal' type='column' >
+                {provided => (
+                    <Container
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        {
+                            state.columnOrder.map((columnId, index) => {
+                                const column = state.columns[columnId]
+                                const pipelineTarefas = column.taskIds.map(taskId => state.pipelineTarefas[taskId])
+
+                                return <PipelineColumn key={column.id} column={column} pipelineTarefas={pipelineTarefas} index={index} />
+                            })
+                        }
+                        {provided.placeholder}
+                    </Container>
+                )}
+            </Droppable>
         </DragDropContext>
     )
 }
