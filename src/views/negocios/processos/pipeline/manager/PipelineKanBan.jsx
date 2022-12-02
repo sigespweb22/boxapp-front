@@ -83,6 +83,7 @@ const PipelineKanBan = () => {
             }
 
             setState(newState)
+
             return;
         }
 
@@ -98,6 +99,7 @@ const PipelineKanBan = () => {
             };
 
             setState(newState);
+            
             return;
         }
 
