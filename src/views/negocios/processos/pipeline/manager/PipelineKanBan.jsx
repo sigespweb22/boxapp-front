@@ -7,7 +7,6 @@ import PipelineColumn from 'src/views/negocios/processos/pipeline/manager/Pipeli
 const Container = styled.div`
     display: flex
 `
-
 // const result = {
 //     draggableId: 'task-1',
 //     type: 'TYPE',
@@ -177,6 +176,7 @@ const PipelineKanBan = () => {
         </DragDropContext>
     )
 }
+
 // https://egghead.io/lessons/react-conditionally-allow-movement-using-react-beautiful-dnd-draggable-and-droppable-props
 
 export default PipelineKanBan

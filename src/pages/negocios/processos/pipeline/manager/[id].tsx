@@ -5,7 +5,7 @@ const PipelineManagerRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <PipelineManagerPage id={id}/>
+  return <PipelineManagerPage id={String(id)}/>
 }
 
 export default PipelineManagerRoute

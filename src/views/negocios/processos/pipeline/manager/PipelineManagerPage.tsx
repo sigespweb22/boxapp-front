@@ -10,11 +10,11 @@ import PageHeader from 'src/@core/components/page-header'
 
 import PipelineKanBan from 'src/views/negocios/processos/pipeline/manager/PipelineKanBan'
 
-interface Propstype {
-  id: string | string[] | undefined
+interface Props {
+  id: string
 }
 
-const PipelineManagerPage = ({id}: Propstype) => {
+const PipelineManagerPage = ({id}: Props) => {
   return (
       <Grid container spacing={6} className='match-height'>
         <PageHeader
