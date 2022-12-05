@@ -10,8 +10,8 @@ import MuiTab, { TabProps } from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 
 // ** Icons Imports
-import CogOutline from 'mdi-material-ui/CogOutline'
-import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
+// import CogOutline from 'mdi-material-ui/CogOutline'
+// import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 
 
