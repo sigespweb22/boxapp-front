@@ -68,3 +68,4 @@ oferecendo uma arquitetura madura e sustentável.
  * Atualização da periodicidade dos contratos a partir do BOM CONTROLE
  * Cadastro de clientes agora atende aos tipos de pessoa (Física e Jurídica)
  
+## Novidades agora podem ser acompanhadas nas releases
