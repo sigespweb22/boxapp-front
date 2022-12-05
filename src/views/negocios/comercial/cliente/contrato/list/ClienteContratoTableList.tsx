@@ -264,16 +264,16 @@ const ClienteContratoTableList = ({ id }: Props) => {
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-cliente-contrato-page') &&
+          {/* {ability?.can('update', 'ac-cliente-contrato-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditClienteContrato(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
-          }
-          {ability?.can('delete', 'ac-cliente-contrato-page') &&
+          } */}
+          {/* {ability?.can('delete', 'ac-cliente-contrato-page') &&
             <RenderButton id={row.id} status={row.status}/>
-          }
+          } */}
         </Box>
       )
     }

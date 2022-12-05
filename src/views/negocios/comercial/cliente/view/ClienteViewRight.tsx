@@ -36,7 +36,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const ClienteViewRight = ({ id }: Props) => {
   // ** State
-  const [value, setValue] = useState<string>('servicos')
+  const [value, setValue] = useState<string>('contratos')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -51,8 +51,8 @@ const ClienteViewRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
-        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} />
+        {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
+        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
         <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />v
       </TabList>
       <Box sx={{ mt: 6 }}>
