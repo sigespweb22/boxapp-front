@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import '@atlaskit/css-reset'
 import styled from 'styled-components'
-import { DragDropContext } from 'react-beautiful-dnd'
-import Column from './column'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import PipelineColumn from 'src/views/negocios/processos/pipeline/manager/PipelineColumn'
 
 const Container = styled.div`
     display: flex
 `
-
 // const result = {
 //     draggableId: 'task-1',
 //     type: 'TYPE',
@@ -33,28 +32,34 @@ const pipeline = {
     columns: {
       'column-1': {
         id: 'column-1',
-        title: '1º Contato',
+        title: 'A fazer',
         taskIds: ['task-1', 'task-2', 'task-3', 'task-7']
       },
       'column-2': {
         id: 'column-2',
-        title: 'Reunião Agendada',
+        title: 'Em andamento',
         taskIds: ['task-4', 'task-8']
       },
       'column-3': {
         id: 'column-3',
-        title: 'Contato pós-reunião',
-        taskIds: ['task-5', 'task-6'],
+        title: 'Concluído',
+        taskIds: ['task-5', 'task-6']
+      },
+      'column-4': {
+        id: 'column-4',
+        title: 'Adicionar nova etapa',
+        taskIds: []
       }
     },
-    columnOrder: ['column-1', 'column-2', 'column-3']
+    // Facilitador reordenamento das colunas
+    columnOrder: ['column-1', 'column-2', 'column-3', 'column-4']
 }
 
 const PipelineKanBan = () => {
     const [state, setState] = useState(pipeline)
 
     const onDragEnd = result => {
-        const { destination, source, draggableId } = result
+        const { destination, source, draggableId, type } = result
 
         if (!destination) {
             return
@@ -64,7 +69,38 @@ const PipelineKanBan = () => {
             destination.droppableId === source.droppableId &&
             destination.index === source.index
         ) {
-            return
+            return;
+        }
+
+        if (type === 'column') {
+            const newColumnOrder = Array.from(state.columnOrder);
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId);
+            
+            const newState = {
+                ...state,
+                columnOrder: newColumnOrder
+            }
+
+            setState(newState)
+
+            return;
+        }
+
+        if (type === 'column') {
+            const newColumnOrder = Array.from(state.columnOrder);
+
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId);
+            
+            const newState = {
+                ...state,
+                columnOrder: newColumnOrder,
+            };
+
+            setState(newState);
+            
+            return;
         }
 
         const start = state.columns[source.droppableId]
@@ -120,22 +156,29 @@ const PipelineKanBan = () => {
     }
     
     return (
-        <DragDropContext
-            onDragEnd={onDragEnd}
-        >
-            <Container>
-                {
-                    state.columnOrder.map((columnId) => {
-                        const column = state.columns[columnId]
-                        const pipelineTarefas = column.taskIds.map(taskId => state.pipelineTarefas[taskId])
-            
-                        return <Column key={column.id} column={column} pipelineTarefas={pipelineTarefas} />
-                    })
-                }
-            </Container>
+        <DragDropContext onDragEnd={onDragEnd} >
+            <Droppable droppableId='all-columns' direction='horizontal' type='column' >
+                {provided => (
+                    <Container
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        {
+                            state.columnOrder.map((columnId, index) => {
+                                const column = state.columns[columnId]
+                                const pipelineTarefas = column.taskIds.map(taskId => state.pipelineTarefas[taskId])
+
+                                return <PipelineColumn key={column.id} column={column} pipelineTarefas={pipelineTarefas} index={index} />
+                            })
+                        }
+                        {provided.placeholder}
+                    </Container>
+                )}
+            </Droppable>
         </DragDropContext>
     )
 }
+
 // https://egghead.io/lessons/react-conditionally-allow-movement-using-react-beautiful-dnd-draggable-and-droppable-props
 
 export default PipelineKanBan
