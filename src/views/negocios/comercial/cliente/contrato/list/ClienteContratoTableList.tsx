@@ -18,11 +18,10 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
-import ElevatorUp from 'mdi-material-ui/ElevatorUp'
-import ElevatorDown from 'mdi-material-ui/ElevatorDown'
+// import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+// import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import PencilOutline from 'mdi-material-ui/PencilOutline'
-import Help from 'mdi-material-ui/Help'
+// import Help from 'mdi-material-ui/Help'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,7 +35,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClienteContrato } from 'src/store/negocios/comercial/cliente/contrato/index'
+import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -204,42 +203,42 @@ const ClienteContratoTableList = ({ id }: Props) => {
     setClienteContratoViewOpen(true)
   }
 
-  const handleEditClienteContrato = (row : ClienteContratoType) => {
-    setRow(row)
-    setClienteContratoEditOpen(true)
-  }
+  // const handleEditClienteContrato = (row : ClienteContratoType) => {
+  //   setRow(row)
+  //   setClienteContratoEditOpen(true)
+  // }
 
-  const handleAlterStatus = (id: string) => {
-    dispatch(alterStatusClienteContrato(id))
-  }
+  // const handleAlterStatus = (id: string) => {
+  //   dispatch(alterStatusClienteContrato(id))
+  // }
 
-  const RenderButton = ({ id, status } : { id: string, status: string }) => {
-    if (status === 'INACTIVE' || status === 'PENDING')
-    {
-      return (
-        <Tooltip title={t("Activate")}>
-          <IconButton onClick={() => handleAlterStatus(id)}>
-            <ElevatorUp fontSize='small' />
-          </IconButton>
-        </Tooltip>        
-      )
-    } else if (status === 'ACTIVE') {
-      return (
-        <Tooltip title={t("Deactivate")}>
-          <IconButton onClick={() => handleAlterStatus(id)}>
-            <ElevatorDown fontSize='small' />
-          </IconButton>
-        </Tooltip>
-      )
-    }
-    else {
-      return (
-        <IconButton onClick={() => handleAlterStatus(id)}>
-          <Help fontSize='small' />
-        </IconButton>
-      )
-    }
-  }
+  // const RenderButton = ({ id, status } : { id: string, status: string }) => {
+  //   if (status === 'INACTIVE' || status === 'PENDING')
+  //   {
+  //     return (
+  //       <Tooltip title={t("Activate")}>
+  //         <IconButton onClick={() => handleAlterStatus(id)}>
+  //           <ElevatorUp fontSize='small' />
+  //         </IconButton>
+  //       </Tooltip>        
+  //     )
+  //   } else if (status === 'ACTIVE') {
+  //     return (
+  //       <Tooltip title={t("Deactivate")}>
+  //         <IconButton onClick={() => handleAlterStatus(id)}>
+  //           <ElevatorDown fontSize='small' />
+  //         </IconButton>
+  //       </Tooltip>
+  //     )
+  //   }
+  //   else {
+  //     return (
+  //       <IconButton onClick={() => handleAlterStatus(id)}>
+  //         <Help fontSize='small' />
+  //       </IconButton>
+  //     )
+  //   }
+  // }
 
   const toggleClienteContratoAddDrawer = () => setClienteContratoAddOpen(!clienteContratoAddOpen)
   const toggleClienteContratoViewDrawer = () => setClienteContratoViewOpen(!clienteContratoViewOpen)
@@ -291,12 +290,12 @@ const ClienteContratoTableList = ({ id }: Props) => {
               </Typography>
             }
           />
-        </Grid> 
+        </Grid>
         {ability?.can('list', 'ac-cliente-contrato-page') ? (
           <Grid item xs={12}>
             <Card>
               {ability?.can('create', 'ac-cliente-contrato-page') &&
-                <TableHeader toggle={toggleClienteContratoAddDrawer} />
+                <TableHeader />
               }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
