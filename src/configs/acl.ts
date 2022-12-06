@@ -18,14 +18,23 @@ export type ACLObj = {
  */
 const defineRulesFor = (role: string[], subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
+  debugger
 
   role.forEach(item => {
     // ** begin - master
     if (item === 'Master') {
       can('manage', 'all')
-      ///
+      // ** end - master
 
-      /// begin - dashboard all
+      // ** Bug geral - cai no primeiro if executa a condição e para
+      // ** não segue atribuindo as demais permissões do usuário
+
+      // begin section title menu
+    // } else if (item === 'CanClienteAll' || item === 'CanClienteList') {
+    //   can(['list'], 'section-title-system')
+      // end
+
+      // begin - dashboard all
     } else if (item === 'CanDashboardAll') {
       can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
       /// end - dashboard all

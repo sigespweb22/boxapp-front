@@ -34,12 +34,13 @@ const ServerSideNavItems = () => {
        */
 
       const finalMenuArray = (items: VerticalNavItemsType) => {
+        debugger
         return items.map((item: any) => {
           if (item.icon) {
             // @ts-ignore
             item.icon = Icons[item.icon]
 
-            if (item.children) {
+            if (item.children) {  
               finalMenuArray(item.children)
             }
 

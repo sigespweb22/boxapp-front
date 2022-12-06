@@ -23,6 +23,7 @@ interface Props {
 }
 
 const resolveNavItemComponent = (item: NavGroup | NavLink | NavSectionTitle) => {
+  debugger
   if ((item as NavSectionTitle).sectionTitle) return VerticalNavSectionTitle
   if ((item as NavGroup).children) return VerticalNavGroup
 
