@@ -273,7 +273,7 @@ const ChaveApiList = () => {
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-user-page') &&
+          {ability?.can('update', 'ac-chave_api_terceiro-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>

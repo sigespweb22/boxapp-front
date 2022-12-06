@@ -27,19 +27,8 @@ const defineRulesFor = (role: string[], subject: string) => {
 
       /// begin - dashboard all
     } else if (item === 'CanDashboardAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-cliente-page')
-      can('read', 'ac-dashboard-controle_acesso-page')
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
       /// end - dashboard all
-
-      /// begin - dashboard cliente
-    } else if (item === 'CanDashboardClienteAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-cliente-page')
-      /// end - dashboard cliente
-
-      /// begin - dashboard controle acesso
-    } else if (item === 'CanDashboardControleAcessoAll') {
-      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-controle_acesso-page')
-      /// end - dashboard controle acesso'
 
       /// begin user
     } else if (item === 'CanUserAll') {

@@ -309,7 +309,7 @@ const UserList = () => {
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-user-page') &&
+          {ability?.can('update', 'ac-user-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>

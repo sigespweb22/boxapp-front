@@ -308,7 +308,7 @@ const ClientList = () => {
               </Link>
             </Tooltip>
           )}
-          {ability?.can('delete', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
+          {ability?.can('update', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }

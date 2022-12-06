@@ -298,7 +298,7 @@ const GrupoList = () => {
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-grupo-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -319,7 +319,7 @@ const GrupoList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-group-page') ? (
+        {ability?.can('list', 'ac-grupo-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
