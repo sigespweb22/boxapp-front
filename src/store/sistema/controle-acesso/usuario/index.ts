@@ -70,7 +70,7 @@ export const addUser = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1])
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);

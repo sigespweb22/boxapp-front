@@ -149,7 +149,6 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
   })
 
   const onSubmit = (data: UsersType) => {
-    debugger
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()
