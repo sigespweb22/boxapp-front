@@ -220,7 +220,7 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
         )
         setValue(
           'telefonePrincipal',
-          response.data.phones.length >= 1 ? response.data.phones[0].number : defaultValues.telefonePrincipal
+          response.data.phones.length >= 1 ? `${response.data.phones[0].area}${response.data.phones[0].number}` : defaultValues.telefonePrincipal
         )
         setValue(
           'emailPrincipal',
