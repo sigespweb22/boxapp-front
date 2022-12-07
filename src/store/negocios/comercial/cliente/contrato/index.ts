@@ -48,7 +48,6 @@ export const addClienteContrato = createAsyncThunk(
       }
     }
 
-    debugger
     axios.post(clienteContratoApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData({clienteId: resp.data.clienteId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})

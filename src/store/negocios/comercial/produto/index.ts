@@ -164,7 +164,6 @@ export const alterStatusProduto = createAsyncThunk(
       
       return resp.data.data
     }).catch((resp) => {
-      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')

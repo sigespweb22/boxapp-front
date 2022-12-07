@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import FornecedorEditPage from 'src/views/negocios/parceiros/fornecedor/edit/FornecedorEditPage'
 
 const FornecedorEditRoute = () => {
-  debugger
   const router = useRouter()
   const { id } = router.query
 

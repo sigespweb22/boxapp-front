@@ -191,7 +191,6 @@ const SidebarFornecedorAdd = (props: SidebarFornecedorAddType) => {
         setValue('estado', response.data.address.state != '' ? response.data.address.state : defaultValues.estado)
         setValue('cep', response.data.address.zip != '' ? response.data.address.zip : defaultValues.cep)
       }).catch((resp) => {
-        debugger
         if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
         
         if (typeof resp.response.data != 'undefined')

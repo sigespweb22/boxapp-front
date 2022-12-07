@@ -223,7 +223,6 @@ const defaultColumns = [
 ]
 
 const FornecedorServicoTableList = ({ id }: Props) => {
-  debugger
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()

@@ -127,7 +127,6 @@ export const editPipeline = createAsyncThunk(
           });
         }
       } else {
-        debugger
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {

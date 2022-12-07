@@ -68,7 +68,6 @@ const FornecedorProdutoAddDrawer = (props: FornecedorProdutoAddType) => {
   })
 
   const onSubmit = (data: FornecedorProdutoData) => {
-    debugger
     data.fornecedorId = props?.fornecedorId || ''
     dispatch(addFornecedorProduto({ ...data }))
     toggle()
