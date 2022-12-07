@@ -437,8 +437,8 @@ const ClienteEditLeft = ({id}: Props) => {
                                 value={props.field.value}
                                 disabled={false}
                                 onChange={(value): void => {
-                                  props.field.onChange(value)
-                                  setValue('cpf', value)
+                                  props.field.onChange(value.target.value)
+                                  setValue('cpf', value.target.value)
                                 }}
                               >
                                 <TextField
@@ -467,8 +467,8 @@ const ClienteEditLeft = ({id}: Props) => {
                                 value={props.field.value}
                                 disabled={false}
                                 onChange={(value): void => {
-                                  props.field.onChange(value)
-                                  setValue('cnpj', value)
+                                  props.field.onChange(value.target.value)
+                                  setValue('cnpj', value.target.value)
                                 }}
                               >
                                 <TextField
@@ -496,7 +496,7 @@ const ClienteEditLeft = ({id}: Props) => {
                               value={props.field.value}
                               disabled={false}
                               onChange={(value): void => {
-                                props.field.onChange(value)
+                                props.field.onChange(value.target.value)
                               }}
                             >
                               <TextField
@@ -557,7 +557,7 @@ const ClienteEditLeft = ({id}: Props) => {
                             value={props.field.value}
                             disabled={false}
                             onChange={(value): void => {
-                              props.field.onChange(value)
+                              props.field.onChange(value.target.value)
                             }}
                           >
                             <TextField
