@@ -46,7 +46,8 @@ import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
 interface UserData {
   id: string
-  roles: Abilities[]
+  roles: string[]
+  rolesClaims: Abilities[]
   applicationUserGroups: []
   email: string
   password: string
@@ -70,6 +71,7 @@ interface GroupData {
 const defaultValues: UserData = {
   id: '',
   roles: [],
+  rolesClaims: [],
   applicationUserGroups: [],
   email: '',
   password: '',
@@ -119,7 +121,6 @@ const formatGroup = (groups: GroupData[]) => {
 const UserDropdown = (props: Props) => {
   // ** Props
   const { settings } = props
-  debugger
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)

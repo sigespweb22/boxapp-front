@@ -12,8 +12,8 @@ export type ACLObj = {
 }
 
 interface Abilities {
-  abilities:string[],
-  subject:string
+  abilities: string,
+  subject: string
 }
 
 /**
@@ -21,36 +21,39 @@ interface Abilities {
  * We have just shown Admin and Client rules for demo purpose where
  * admin can manage everything and client can just visit ACL page
  */
-const defineRulesFor = (roles: Abilities[]) => {
+const defineRulesFor = (rolesClaims: Abilities[]) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
+
+  debugger
   
-  roles.forEach(element => {
-    debugger
+  rolesClaims.forEach(element => {
     // can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
     if (element.subject === "all") {
-      can(element.abilities.toString(), element.subject)
+      debugger
+      can(element.abilities, element.subject)
     }
       
     can(element.abilities, element.subject)
-    debugger
   })
 
   return rules
 }
 
-export const buildAbilityFor = (roles: Abilities[], subject: string): AppAbility => {
-  const newRoles = [
-    { abilities: ['list', 'read', 'create', 'update', 'delete'], subject: 'ac-dashboard-comercial-page' },
-    { abilities: ['list', 'update'], subject: 'ac-cliente-page' },
-    { abilities: ['list'], subject: 'ac-cliente-contrato-page' },
-    { abilities: ['list'], subject: 'section-title-system' }
+export const buildAbilityFor = (rolesClaims: Abilities[], subject: string): AppAbility => {
+  debugger
+  const newRolesClaims = [
+    { abilities: 'list', subject: 'ac-dashboard-comercial-page' },
+    { abilities: 'list', subject: 'ac-cliente-page' },
+    { abilities: 'update', subject: 'ac-cliente-page' },
+    { abilities: 'list', subject: 'ac-cliente-contrato-page' },
+    { abilities: 'list', subject: 'section-title-system' }
   ]
 
-  // const newRoles = [
+  // const rolesClaims = [
   //   { abilities: ['manage'], subject: 'all' },
   // ]
 
-  return new AppAbility(defineRulesFor(newRoles), {
+  return new AppAbility(defineRulesFor(newRolesClaims), {
     // https://casl.js.org/v5/en/guide/subject-type-detection
     // @ts-ignore
     detectSubjectType: object => object!.type

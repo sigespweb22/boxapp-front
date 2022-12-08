@@ -12,13 +12,14 @@ export type RegisterParams = {
 }
 
 export type Abilities = {
-  abilities: []
+  abilities: string
   subject: string
 }
 
 export type UserDataType = {
   id: string
-  roles: Abilities[]
+  roles: string[]
+  rolesClaims: Abilities[]
   applicationUserGroups: string[]
   funcao: string
   setor: string

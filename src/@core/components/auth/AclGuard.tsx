@@ -27,6 +27,7 @@ interface AclGuardProps {
 }
 
 const AclGuard = (props: AclGuardProps) => {
+  debugger
   // ** Props
   const { aclAbilities, children, guestGuard } = props
 
@@ -42,8 +43,9 @@ const AclGuard = (props: AclGuardProps) => {
   }
 
   // User is logged in, build ability for the user based on his role
-  if (auth.user && auth.user.roles && !ability) {
-    setAbility(buildAbilityFor(auth.user.roles, aclAbilities.subject))
+  if (auth.user && !auth.user.rolesClaims && !ability) {
+    // ** TODO Trocar objeto das roles para objeto das abilities
+    setAbility(buildAbilityFor(auth.user.rolesClaims, aclAbilities.subject))
   }
 
   // Check the access of current user and render pages

@@ -79,9 +79,11 @@ const AuthProvider = ({ children }: Props) => {
   }, [])
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
+    debugger
     axios
       .post(accountApiServices.loginEndpoint, params)
       .then(async res => {
+        debugger
         window.localStorage.setItem(accountApiServices.storageTokenKeyName, res.data.userData.accessToken)
         
         const returnUrl = router.query.returnUrl
@@ -101,6 +103,7 @@ const AuthProvider = ({ children }: Props) => {
             }
           })
           .then(async response => {
+            debugger
             const returnUrl = router.query.returnUrl
             setUser({ ...response.data.userData })
 
