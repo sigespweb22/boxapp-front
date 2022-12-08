@@ -39,11 +39,4 @@ const ClienteEditPage = ({ clienteId }: Props) => {
   }
 }
 
-// ** Controle de acesso da página
-// ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteEditPage.acl = {
-  action: 'update',
-  subject: 'ac-cliente-page'
-}
-
 export default ClienteEditPage

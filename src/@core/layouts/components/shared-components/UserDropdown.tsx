@@ -26,6 +26,7 @@ import { useAuth } from 'src/hooks/useAuth'
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
 import { ThemeColor } from 'src/@core/layouts/types'
+import { Abilities } from 'src/context/types'
 
 interface Props {
   settings: Settings
@@ -45,9 +46,8 @@ import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
 interface UserData {
   id: string
-  role: string[]
+  roles: Abilities[]
   applicationUserGroups: []
-  applicationUserGroupsNames: string[]
   email: string
   password: string
   status: string
@@ -69,9 +69,8 @@ interface GroupData {
 
 const defaultValues: UserData = {
   id: '',
-  role: [],
+  roles: [],
   applicationUserGroups: [],
-  applicationUserGroupsNames: [],
   email: '',
   password: '',
   status: '',
@@ -120,6 +119,7 @@ const formatGroup = (groups: GroupData[]) => {
 const UserDropdown = (props: Props) => {
   // ** Props
   const { settings } = props
+  debugger
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)

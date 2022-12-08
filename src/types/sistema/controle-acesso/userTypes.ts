@@ -1,5 +1,6 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
+import { Abilities } from 'src/context/types'
 
 export type UserLayoutType = {
   id: string | undefined
@@ -18,9 +19,8 @@ export type ApplicationUserGroupViewModelType = {
 
 export type UsersType = {
   id: string
-  role: string[]
+  roles: Abilities[]
   applicationUserGroups: ApplicationUserGroupViewModelType[]
-  applicationUserGroupsNames: string[]
   email: string
   password: string
   status: string

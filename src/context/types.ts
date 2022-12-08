@@ -11,11 +11,15 @@ export type RegisterParams = {
   password: string
 }
 
+export type Abilities = {
+  abilities: []
+  subject: string
+}
+
 export type UserDataType = {
   id: string
-  role: string[]
+  roles: Abilities[]
   applicationUserGroups: string[]
-  applicationUserGroupsNames: string[]
   funcao: string
   setor: string
   status: string
