@@ -19,7 +19,8 @@ import Grid from '@mui/material/Grid'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // Import Translate
 import { useTranslation } from 'react-i18next'

@@ -10,7 +10,8 @@ import CardHeader from '@mui/material/CardHeader'
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
 
 // ** Third Party Components
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Custom Components
 import CustomChip from 'src/@core/components/mui/chip'

@@ -33,7 +33,8 @@ import clienteContratoApiService from 'src/@api-center/negocios/comercial/client
 import axios from 'axios'
 
 // ** Import Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -107,21 +108,15 @@ const TableHeader = (props: TableHeaderProps) => {
 
         dispatch(fetchData({q: ''}))
 
-        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} cliente(s).`, {
-          duration: 12000
-        })
-        toast.error(`${response.data.totalIsNotDocumento} cliente(s) não fora(m) sincronizado(s), pois não possui CNPJ/CPF.`, {
-          duration: 12000,
-        })
+        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} cliente(s).`)
+        toast.error(`${response.data.totalIsNotDocumento} cliente(s) não fora(m) sincronizado(s), pois não possui CNPJ/CPF.`)
       }).catch((err) => {
         setSuccess(true);
         setLoading(false);
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err[1], {
-            duration: 12000,
-          })
+          toast.error(err[1].toString())
         });
       })
   }
@@ -139,18 +134,14 @@ const TableHeader = (props: TableHeaderProps) => {
         setSuccess(true);
         setLoading(false);
 
-        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} contrato(s) de cliente(s).`, {
-          duration: 12000
-        })
+        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} contrato(s) de cliente(s).`)
       }).catch((err) => {
         setSuccess(true);
         setLoading(false);
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err[1], {
-            duration: 12000,
-          })
+          toast.error(err[1].toString())
         });
       })
   }
@@ -168,18 +159,14 @@ const TableHeader = (props: TableHeaderProps) => {
         setSuccess(true);
         setLoading(false);
 
-        toast.success(`Fora(m) atualizados(s) com sucesso ${response.data.totalContratosAtualizados} contrato(s) de cliente(s).`, {
-          duration: 12000
-        })
+        toast.success(`Fora(m) atualizados(s) com sucesso ${response.data.totalContratosAtualizados} contrato(s) de cliente(s).`)
       }).catch((err) => {
         setSuccess(true);
         setLoading(false);
 
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err[1], {
-            duration: 12000,
-          })
+          toast.error(err[1].toString())
         });
       })
   }

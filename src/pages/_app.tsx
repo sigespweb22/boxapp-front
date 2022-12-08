@@ -27,7 +27,8 @@ import themeConfig from 'src/configs/themeConfig'
 import 'src/@fake-db'
 
 // ** Third Party Import
-import { Toaster } from 'react-hot-toast'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
@@ -140,9 +141,7 @@ const App = (props: ExtendedAppProps) => {
                         </AclGuard>
                       </Guard>
                     </WindowWrapper>
-                    <ReactHotToast>
-                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                    </ReactHotToast>
+                    <ToastContainer/>
                   </ThemeComponent>
                 )
               }}

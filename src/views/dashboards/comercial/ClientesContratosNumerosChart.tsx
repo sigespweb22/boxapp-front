@@ -29,7 +29,8 @@ import dashboardApiServices from 'src/@api-center/dashboards/comercial/dashboard
 import axios from 'axios'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Context Imports
 import Divider from '@mui/material/Divider'
@@ -96,7 +97,7 @@ const ClientesContratosNumerosChart = () => {
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
-        toast.error(err)
+        toast.error(err[1].toString())
       })
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps

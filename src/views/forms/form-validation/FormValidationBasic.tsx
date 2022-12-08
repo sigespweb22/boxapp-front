@@ -23,7 +23,8 @@ import InputAdornment from '@mui/material/InputAdornment'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
 // ** Third Party Imports
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 

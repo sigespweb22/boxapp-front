@@ -9,7 +9,8 @@ import axios from 'axios'
 import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { ProdutoType } from 'src/types/negocios/comercial/produto/produtoTypes'
 
 interface DataParams {
@@ -48,7 +49,7 @@ export const addProduto = createAsyncThunk(
 
     axios.post(produtoApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().servico.params))
-      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Serviço criado com sucesso.")
     }).catch((resp) => {
       // ** generic connection error admitted for now as 401
@@ -62,7 +63,7 @@ export const addProduto = createAsyncThunk(
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach(function (ie: any) {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       } else if (typeof resp.response.data != 'undefined' && 
@@ -71,7 +72,7 @@ export const addProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       }
     })
@@ -98,13 +99,13 @@ export const editProduto = createAsyncThunk(
           typeof resp.response.data.errors != 'undefined')
       {
         resp.response.data.errors.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach(function(err: any) {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -132,13 +133,13 @@ export const deleteProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -170,13 +171,13 @@ export const alterStatusProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie:any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
