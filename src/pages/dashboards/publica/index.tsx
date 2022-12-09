@@ -6,6 +6,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
 import BoasVindas from 'src/views/dashboards/publica/BoasVindas'
+import UsuariosSistema from 'src/views/dashboards/publica/UsuariosSistema'
 
 const DashboardPublica = () => {
   return (
@@ -15,6 +16,13 @@ const DashboardPublica = () => {
           <BoasVindas />
         </Grid>
       </Grid>
+      <Grid item xs={12} md={12} lg={12} sx={{ order: 0 }} pt={10}>
+          <Grid container spacing={12}>
+            <Grid item xs={12}>
+              <UsuariosSistema />
+            </Grid>
+          </Grid>
+        </Grid>
     </ApexChartWrapper>
   )
 }

@@ -28,7 +28,6 @@ const Img = styled('img')(({ theme }) => ({
 }))
 
 const BoasVindas = () => {
-
   return (
     <Card sx={{ position: 'relative', overflow: 'visible', mt: { xs: 0, sm: 7.5, md: 0 } }}>
       <CardContent sx={{ p: theme => `${theme.spacing(8.25, 7.5, 6.25, 7.5)} !important` }}>
@@ -41,7 +40,7 @@ const BoasVindas = () => {
               </Box>
               📈
             </Typography>
-            <Typography variant='body2'>Total de usuários na plataforma: 11 .</Typography>
+            <Typography variant='body2'>Aqui você confere os usuário ativos na plataforma.</Typography>
           </Grid>
           <StyledGrid item xs={12} sm={6}>
             <Img alt='Congratulations John' src='/images/cards/illustration-john-2.png' />
