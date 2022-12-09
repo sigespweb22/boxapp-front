@@ -45,9 +45,6 @@ import Spinner from 'src/@core/components/spinner'
 import { AuthProvider } from 'src/context/AuthContext'
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
 
-// ** Styled Components
-import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
-
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 
