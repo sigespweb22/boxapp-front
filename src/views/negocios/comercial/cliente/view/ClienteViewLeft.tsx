@@ -238,8 +238,12 @@ const ClienteViewLeft = ({id}: Props) => {
                   <Typography variant='body2'>{store?.data.estado}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cidade:</Typography>
                   <Typography variant='body2'>{store?.data.cidade}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
+                  <Typography variant='body2'>{store?.data.cep}</Typography>
                 </Box>
               </Box>
             </CardContent>

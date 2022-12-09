@@ -40,7 +40,7 @@ const BoasVindas = () => {
               </Box>
               📈
             </Typography>
-            <Typography variant='body2'>Aqui você confere os usuário ativos na plataforma.</Typography>
+            <Typography variant='body2'>Aqui você confere os usuário ativos na plataforma 👤.</Typography>
           </Grid>
           <StyledGrid item xs={12} sm={6}>
             <Img alt='Congratulations John' src='/images/cards/illustration-john-2.png' />
