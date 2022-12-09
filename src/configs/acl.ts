@@ -276,6 +276,12 @@ const defineRulesFor = (role: string[], subject: string) => {
     } else if (item === 'CanFornecedorProdutoDelete') {
       can('delete', 'ac-fornecedor-produto-page')
       /// end - forncedor produto
+
+      /// begin - dashboard publica
+    } else if (item === 'CanDashboardPublicaAll') {
+      can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-publica-page')
+      /// end - dashboard publica
+
     } else {
       /// begin - dynamic subject
       can(['list', 'read', 'create', 'update', 'delete'], subject)
