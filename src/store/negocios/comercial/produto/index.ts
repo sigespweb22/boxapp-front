@@ -72,7 +72,7 @@ export const addProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err[1].toString())
+          toast.error(err.toString())
         });
       }
     })

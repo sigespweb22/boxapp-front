@@ -358,14 +358,14 @@ export const editUsuarioInfo = createAsyncThunk(
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err[1].toString())
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie[1].toString())        
+            toast.error(ie.toString())        
           })
         });
       }
