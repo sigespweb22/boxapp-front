@@ -27,7 +27,6 @@ interface AclGuardProps {
 }
 
 const AclGuard = (props: AclGuardProps) => {
-  debugger
   // ** Props
   const { aclAbilities, children, guestGuard } = props
 
@@ -44,7 +43,6 @@ const AclGuard = (props: AclGuardProps) => {
 
   // User is logged in, build ability for the user based on his role
   if (auth.user && !ability) {
-    // ** TODO Trocar objeto das roles para objeto das abilities
     setAbility(buildAbilityFor(auth.user.applicationUserGroups.flatMap(a => a.applicationGroup.applicationRoleGroups.map(c => c.applicationRole)), aclAbilities.subject))
   }
 

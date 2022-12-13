@@ -75,7 +75,7 @@ const ClienteEditRight = ({ id }: Props) => {
         ) : "Você não tem permissão para ver este recurso."}  
       </Box> */}
       <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-cliente-contrato-page') ? (
+        {ability?.can('list', 'ac-clienteContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
             <ClienteContratoListTable id={id} />
           </TabPanel>

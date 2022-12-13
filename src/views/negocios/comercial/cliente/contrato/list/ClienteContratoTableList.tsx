@@ -256,21 +256,21 @@ const ClienteContratoTableList = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-contrato-page') &&
+          {ability?.can('read', 'ac-clienteContrato-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewClienteContrato(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {/* {ability?.can('update', 'ac-cliente-contrato-page') &&
+          {/* {ability?.can('update', 'ac-clienteContrato-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditClienteContrato(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           } */}
-          {/* {ability?.can('delete', 'ac-cliente-contrato-page') &&
+          {/* {ability?.can('delete', 'ac-clienteContrato-page') &&
             <RenderButton id={row.id} status={row.status}/>
           } */}
         </Box>
@@ -291,10 +291,10 @@ const ClienteContratoTableList = ({ id }: Props) => {
             }
           />
         </Grid>
-        {ability?.can('list', 'ac-cliente-contrato-page') ? (
+        {ability?.can('list', 'ac-clienteContrato-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-cliente-contrato-page') &&
+              {ability?.can('create', 'ac-clienteContrato-page') &&
                 <TableHeader />
               }
               <DataGrid
@@ -323,7 +323,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClienteContratoTableList.acl = {
   action: 'list',
-  subject: 'ac-cliente-contrato-page'
+  subject: 'ac-clienteContrato-page'
 }
 
 export default ClienteContratoTableList

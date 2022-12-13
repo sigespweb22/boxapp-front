@@ -230,7 +230,7 @@ const ClientesContratosNumerosChart = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClientesContratosNumerosChart.acl = {
   action: 'read',
-  subject: 'ac-dashboard-comercial-page'
+  subject: 'ac-dashboardComercial-page'
 }
 
 export default ClientesContratosNumerosChart

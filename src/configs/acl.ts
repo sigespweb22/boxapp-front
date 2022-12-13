@@ -1,4 +1,5 @@
 import { AbilityBuilder, Ability } from '@casl/ability'
+import { ContentSaveOutline } from 'mdi-material-ui'
 
 export type Subjects = string
 export type Actions = 'manage' | 'list' | 'read' | 'create' | 'update' | 'delete'
@@ -12,8 +13,8 @@ export type ACLObj = {
 }
 
 interface Abilities {
-  abilities: string,
   subject: string
+  actions: string[]
 }
 
 /**
@@ -21,38 +22,24 @@ interface Abilities {
  * We have just shown Admin and Client rules for demo purpose where
  * admin can manage everything and client can just visit ACL page
  */
-const defineRulesFor = (rolesClaims: Abilities[]) => {
+const defineRulesFor = (abilities: Abilities[]) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
-  debugger
-  
-  rolesClaims.forEach(element => {
-    // can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
-    if (element.subject === "all") {
-      can(element.abilities, element.subject)
-    }
-      
-    can(element.abilities, element.subject)
+  abilities.forEach(element => {
+
+    const subject = element.subject
+    const actions = element.actions
+
+    can(actions, subject)
+    console.log(actions, subject)
   })
 
   return rules
 }
 
-export const buildAbilityFor = (rolesClaims: Abilities[], subject: string): AppAbility => {
+export const buildAbilityFor = (abilities: Abilities[], subject: string): AppAbility => {
   debugger
-  const newRolesClaims = [
-    { abilities: 'list', subject: 'ac-dashboard-comercial-page' },
-    { abilities: 'list', subject: 'ac-cliente-page' },
-    { abilities: 'update', subject: 'ac-cliente-page' },
-    { abilities: 'list', subject: 'ac-cliente-contrato-page' },
-    { abilities: 'list', subject: 'section-title-system' }
-  ]
-
-  // const rolesClaims = [
-  //   { abilities: ['manage'], subject: 'all' },
-  // ]
-
-  return new AppAbility(defineRulesFor(newRolesClaims), {
+  return new AppAbility(defineRulesFor(abilities), {
     // https://casl.js.org/v5/en/guide/subject-type-detection
     // @ts-ignore
     detectSubjectType: object => object!.type

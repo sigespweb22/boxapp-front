@@ -239,7 +239,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarClienteContratoEdit.acl = {
   action: 'update',
-  subject: 'ac-cliente-contrato-page'
+  subject: 'ac-clienteContrato-page'
 }
 
 export default SidebarClienteContratoEdit
