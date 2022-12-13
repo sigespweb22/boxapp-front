@@ -29,7 +29,6 @@ const defineRulesFor = (rolesClaims: Abilities[]) => {
   rolesClaims.forEach(element => {
     // can(['list', 'read', 'create', 'update', 'delete'], 'ac-dashboard-comercial-page')
     if (element.subject === "all") {
-      debugger
       can(element.abilities, element.subject)
     }
       
