@@ -34,7 +34,7 @@ const BoasVindas = () => {
         <Grid container spacing={6}>
           <Grid item xs={12} sm={12}>
             <Typography variant='h5' sx={{ mb: 6.5 }}>
-              Seja bem vindo aos infográficos e indicadores de performance da{' '}
+              Seja bem vindo aos infográficos e indicadores da{' '}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
                  Área Pública
               </Box>
