@@ -284,21 +284,21 @@ const GrupoList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-grupo-page') &&
+          {ability?.can('read', 'ac-group-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewGrupo(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-group-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditGrupo(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-group-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -319,7 +319,7 @@ const GrupoList = () => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-grupo-page') ? (
+        {ability?.can('list', 'ac-group-page') ? (
           <Grid item xs={12}>
             <Card>
               <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
@@ -349,7 +349,7 @@ const GrupoList = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 GrupoList.acl = {
   action: 'list',
-  subject: 'ac-grupo-page'
+  subject: 'ac-group-page'
 }
 
 export default GrupoList

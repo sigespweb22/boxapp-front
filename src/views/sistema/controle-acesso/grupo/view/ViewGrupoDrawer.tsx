@@ -117,7 +117,7 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarViewGroup.acl = {
   action: 'read',
-  subject: 'ac-grupo-page'
+  subject: 'ac-group-page'
 }
 
 export default SidebarViewGroup
