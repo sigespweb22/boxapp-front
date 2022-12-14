@@ -111,7 +111,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ChaveApiPageView.acl = {
   action: 'read',
-  subject: 'ac-chave_api_terceiro-page'
+  subject: 'ac-chaveApiTerceiro-page'
 }
 
 export default ChaveApiPageView
