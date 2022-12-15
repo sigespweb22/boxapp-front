@@ -147,7 +147,6 @@ const defaultColumns = [
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderGrupo(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -156,12 +155,9 @@ const defaultColumns = [
               >
                 {name}
               </Typography>
-            </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 🔑{name}
               </Typography>
-            </Link>
           </Box>
         </Box>
       )
@@ -284,21 +280,21 @@ const GrupoList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-grupo-page') &&
+          {ability?.can('read', 'ac-group-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewGrupo(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('update', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-group-page') &&
             <Tooltip title={t("Edit")}>
               <IconButton onClick={() => handleEditGrupo(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-grupo-page') &&
+          {ability?.can('update', 'ac-group-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>
@@ -349,7 +345,7 @@ const GrupoList = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 GrupoList.acl = {
   action: 'list',
-  subject: 'ac-grupo-page'
+  subject: 'ac-group-page'
 }
 
 export default GrupoList

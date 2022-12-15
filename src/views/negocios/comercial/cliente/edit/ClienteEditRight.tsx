@@ -60,7 +60,7 @@ const ClienteEditRight = ({ id }: Props) => {
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
         <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
       </TabList>
-      <Box sx={{ mt: 6 }}>
+      {/* <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-cliente-servico-page') ? (
           <TabPanel sx={{ p: 0 }} value='servicos'>
             <ClienteServicoListTable id={id} />
@@ -73,9 +73,9 @@ const ClienteEditRight = ({ id }: Props) => {
             <ClienteProdutoListTable id={id} />
           </TabPanel>
         ) : "Você não tem permissão para ver este recurso."}  
-      </Box>
+      </Box> */}
       <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-cliente-contrato-page') ? (
+        {ability?.can('list', 'ac-clienteContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
             <ClienteContratoListTable id={id} />
           </TabPanel>

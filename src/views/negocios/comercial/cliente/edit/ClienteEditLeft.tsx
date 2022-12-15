@@ -437,8 +437,8 @@ const ClienteEditLeft = ({id}: Props) => {
                                 value={props.field.value}
                                 disabled={false}
                                 onChange={(value): void => {
-                                  props.field.onChange(value)
-                                  setValue('cpf', value)
+                                  props.field.onChange(value.target.value)
+                                  setValue('cpf', value.target.value)
                                 }}
                               >
                                 <TextField
@@ -461,13 +461,25 @@ const ClienteEditLeft = ({id}: Props) => {
                           <Controller
                             name='cnpj'
                             control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TextField
-                                value={value}
-                                label='Cnpj'
-                                onChange={onChange}
-                                placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
-                              />
+                            render={props => (
+                              <InputMask
+                                mask='99.999.999/9999-99'
+                                value={props.field.value}
+                                disabled={false}
+                                onChange={(value): void => {
+                                  props.field.onChange(value.target.value)
+                                  setValue('cnpj', value.target.value)
+                                }}
+                              >
+                                <TextField
+                                  sx={{ width: 'auto' }}
+                                  disabled={false}
+                                  name='cnpj'
+                                  type='text'
+                                  label='Cnpj'
+                                  placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
+                                />
+                              </InputMask>
                             )}
                           />
                         </FormControl>
@@ -478,13 +490,24 @@ const ClienteEditLeft = ({id}: Props) => {
                         <Controller
                           name='telefonePrincipal'
                           control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Telefone principal'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: (48) 3451-6526)'
-                            />
+                          render={props => (
+                            <InputMask
+                              mask='(99) 9.9999-9999'
+                              value={props.field.value}
+                              disabled={false}
+                              onChange={(value): void => {
+                                props.field.onChange(value.target.value)
+                              }}
+                            >
+                              <TextField
+                                sx={{ width: 'auto' }}
+                                disabled={false}
+                                name='telefonePrincipal'
+                                type='text'
+                                label='Telefone principal'
+                                placeholder='e.g.: (48) 9.8896-1111'
+                              />
+                            </InputMask>
                           )}
                         />
                       </FormControl>
@@ -528,13 +551,24 @@ const ClienteEditLeft = ({id}: Props) => {
                       <Controller
                         name='cep'
                         control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <TextField
-                            value={value}
-                            label='Cep'
-                            onChange={onChange}
-                            placeholder='(e.g.: 88801-430'
-                          />
+                        render={props => (
+                          <InputMask
+                            mask='99999-999'
+                            value={props.field.value}
+                            disabled={false}
+                            onChange={(value): void => {
+                              props.field.onChange(value.target.value)
+                            }}
+                          >
+                            <TextField
+                              sx={{ width: 'auto' }}
+                              disabled={false}
+                              name='cep'
+                              type='text'
+                              label='Cep'
+                              placeholder='e.g.: 88801-000'
+                            />
+                          </InputMask>
                         )}
                       />
                     </FormControl>

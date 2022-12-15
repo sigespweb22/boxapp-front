@@ -308,7 +308,7 @@ const ClientList = () => {
               </Link>
             </Tooltip>
           )}
-          {ability?.can('delete', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
+          {ability?.can('update', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }
@@ -343,7 +343,9 @@ const ClientList = () => {
         ) : (
           'Você não tem permissão para ver este recurso.'
         )}
-        <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+        {ability?.can('create', 'ac-cliente-page') ? (
+          <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+        ) : <></>}
       </Grid>
     </Grid>
   )

@@ -8,4 +8,11 @@ const ClienteViewRoute = () => {
   return <ClienteViewPage clienteId={String(id)}/>
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteViewRoute.acl = {
+  action: 'read',
+  subject: 'ac-cliente-page'
+}
+
 export default ClienteViewRoute

@@ -105,7 +105,7 @@ const ClientesContratosTicketMedioAnualChart = () => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClientesContratosTicketMedioAnualChart.acl = {
   action: 'read',
-  subject: 'ac-dashboard-comercial-page'
+  subject: 'ac-dashboardComercial-page'
 }
 
 export default ClientesContratosTicketMedioAnualChart

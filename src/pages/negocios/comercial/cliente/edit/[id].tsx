@@ -8,4 +8,11 @@ const ClienteEditRoute = () => {
   return <ClienteEditPage clienteId={String(id)}/>
 }
 
+// ** Controle de acesso da página
+// ** Usuário deve possuir a habilidade para ter acesso a esta página
+ClienteEditRoute.acl = {
+  action: 'update',
+  subject: 'ac-cliente-page'
+}
+
 export default ClienteEditRoute

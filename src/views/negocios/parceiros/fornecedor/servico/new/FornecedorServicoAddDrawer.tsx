@@ -87,7 +87,6 @@ const SidebarFornecedorServicoAdd = (props: SidebarFornecedorServicoAddType) => 
   }
 
   const onSubmit = (data: FornecedorServicoData) => {
-    debugger
     data.fornecedorId = props?.fornecedorId || ""
     dispatch(addFornecedorServico({ ...data,  }))
     toggle()

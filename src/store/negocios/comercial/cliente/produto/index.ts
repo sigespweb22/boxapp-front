@@ -41,7 +41,6 @@ export const fetchData = createAsyncThunk('appClienteProdutos/fetchData', async 
 export const addClienteProduto = createAsyncThunk(
   'appClienteProdutos/addClienteProduto',
   async (data: ClienteProdutoAddType, { dispatch }: Redux) => {
-    debugger
     const storedToken = window.localStorage.getItem(clienteProdutoApiService.storageTokenKeyName)!
     const config = {
       headers: {

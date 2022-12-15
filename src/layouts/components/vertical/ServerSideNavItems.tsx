@@ -39,7 +39,7 @@ const ServerSideNavItems = () => {
             // @ts-ignore
             item.icon = Icons[item.icon]
 
-            if (item.children) {
+            if (item.children) {  
               finalMenuArray(item.children)
             }
 

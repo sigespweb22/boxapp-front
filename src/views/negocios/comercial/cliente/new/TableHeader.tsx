@@ -145,7 +145,7 @@ const TableHeader = (props: TableHeaderProps) => {
       }).catch((err) => {
         setSuccess(true);
         setLoading(false);
-
+        
         const returnObj = Object.entries(err.response.data.errors);
         returnObj.forEach((err: any) => {
           toast.error(err[1], {
@@ -290,11 +290,13 @@ const TableHeader = (props: TableHeaderProps) => {
               )}
           </Fragment>
         </Box>
-        <Tooltip title={"Adicionar novo cliente"}>
-          <Button sx={{ mb: 2, ml: 2 }} onClick={toggle} variant='contained'>
-            + {t("Add Client")}
-          </Button>
-        </Tooltip>
+        {ability?.can('create', 'ac-cliente-page') ? (
+          <Tooltip title={"Adicionar novo cliente"}>
+            <Button sx={{ mb: 2, ml: 2 }} onClick={toggle} variant='contained'>
+              + {t("Add Client")}
+            </Button>
+          </Tooltip>
+        ) : <></>}
       </Box>
     </Box>
   )

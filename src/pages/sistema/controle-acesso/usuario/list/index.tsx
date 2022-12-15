@@ -143,7 +143,6 @@ const defaultColumns = [
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderUser(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -152,12 +151,9 @@ const defaultColumns = [
               >
                 {fullName}
               </Typography>
-            </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🌟🌟🌟🌟🌟{userName}
+                👤 {userName}
               </Typography>
-            </Link>
           </Box>
         </Box>
       )
@@ -309,7 +305,7 @@ const UserList = () => {
               </IconButton>
             </Tooltip>
           }
-          {ability?.can('delete', 'ac-user-page') &&
+          {ability?.can('update', 'ac-user-page') &&
             <RenderButton id={row.id} status={row.status}/>
           }
         </Box>

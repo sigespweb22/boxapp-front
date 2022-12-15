@@ -1,3 +1,20 @@
+interface applicationRole {
+  subject: string
+  actions: string[]
+}
+
+interface applicationRoleGroups {
+  applicationRole: applicationRole
+}
+
+interface applicationGroup {
+  applicationRoleGroups: applicationRoleGroups[]
+}
+
+interface applicationUserGroups {
+  applicationGroup: applicationGroup
+}
+
 export type ErrCallbackType = (err: { [key: string]: string }) => void
 
 export type LoginParams = {
@@ -11,11 +28,16 @@ export type RegisterParams = {
   password: string
 }
 
+export type Abilities = {
+  abilities: string
+  subject: string
+}
+
 export type UserDataType = {
   id: string
-  role: string[]
-  applicationUserGroups: string[]
-  applicationUserGroupsNames: string[]
+  roles: string[]
+  rolesClaims: Abilities[]
+  applicationUserGroups: applicationUserGroups[]
   funcao: string
   setor: string
   status: string

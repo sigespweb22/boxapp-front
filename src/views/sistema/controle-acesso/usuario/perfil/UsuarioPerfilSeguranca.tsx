@@ -23,4 +23,5 @@ UsuarioPerfilSeguranca.acl = {
   subject: 'ac-user-page'
 }
 
+
 export default UsuarioPerfilSeguranca

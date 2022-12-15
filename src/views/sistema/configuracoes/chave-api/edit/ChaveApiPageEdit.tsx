@@ -214,7 +214,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ChaveApiPageEdit.acl = {
   action: 'update',
-  subject: 'ac-chave_api_terceiro-page'
+  subject: 'ac-chaveApiTerceiro-page'
 }
 
 export default ChaveApiPageEdit

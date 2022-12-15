@@ -16,8 +16,8 @@ import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 
 
 // ** Custom Components Imports
-import ClienteServicoTableListToView from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableListToView'
-import ClienteProdutoTableListToView from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableListToView'
+// import ClienteServicoTableListToView from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableListToView'
+// import ClienteProdutoTableListToView from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableListToView'
 import ClienteContratoTableListToView from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableListToView'
 
 interface Props {
@@ -55,7 +55,7 @@ const ClienteViewRight = ({ id }: Props) => {
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
         <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />v
       </TabList>
-      <Box sx={{ mt: 6 }}>
+      {/* <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='servicos'>
           <ClienteServicoTableListToView id={id} />
         </TabPanel>
@@ -64,7 +64,7 @@ const ClienteViewRight = ({ id }: Props) => {
         <TabPanel sx={{ p: 0 }} value='produtos'>
           <ClienteProdutoTableListToView id={id} />
         </TabPanel>
-      </Box>
+      </Box> */}
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='contratos'>
           <ClienteContratoTableListToView id={id} />
