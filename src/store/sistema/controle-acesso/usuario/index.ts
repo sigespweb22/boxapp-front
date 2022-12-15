@@ -107,7 +107,6 @@ export const editUser = createAsyncThunk(
       dispatch(fetchData(getState().usuario.params))
       if (resp.status === 204) return toast.success("Usuário atualizado com sucesso.")
     }).catch((resp) => {
-      debugger
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
           typeof resp.response.data.errors != 'undefined')

@@ -32,10 +32,18 @@ import axios from 'axios'
 // ** Api Services
 import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 
+// ** Toast
+import { toast } from 'react-toastify'
+
 interface VendedorContratoAddType {
   clienteContratoId: string
   open: boolean
   toggle: () => void
+}
+
+interface Vendedor {
+  vendedorId: string
+  nome: string
 }
 
 interface VendedorContratoType {
@@ -43,7 +51,8 @@ interface VendedorContratoType {
   comissaoReais: number | null
   comissaoPercentual: number | null
   clienteContratoId: string
-  vendedorId: number | null
+  vendedorId: string | null
+  vendedor?: { id: string, nome: string }
   status: string
 }
 
@@ -56,49 +65,56 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  comissaoReais: '',
-  comissaoPercentual: '',
-  vendedor: '',
+  comissaoReais: 0,
+  comissaoPercentual: 0,
+  vendedor: { vendedorId: '', nome: '' }
+}
+
+const isValidComissao = (data: VendedorContratoType) => {
+  if (data.comissaoReais != 0 && data.comissaoPercentual != 0) {
+    toast.warning('Permitido apenas uma das opções de comissionamento.')
+    return false
+  }
+  return true
 }
 
 const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
   // ** Props
   const { open, toggle } = props
-  
+
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const {
-    reset,
-    control,
-    setValue,
-    handleSubmit
-  } = useForm({
-      defaultValues,
-      mode: 'onChange'
+  const { reset, control, handleSubmit } = useForm({
+    defaultValues,
+    mode: 'onChange'
   })
 
   // ** States
-  const [vendedores, setVendedores] = useState([])
+  const [vendedores, setVendedores] = useState<Vendedor[]>([])
 
   const config = {
-    headers: { 
-      Authorization: `Bearer ${window.localStorage.getItem(vendedorApiService.storageTokenKeyName)}` 
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(vendedorApiService.storageTokenKeyName)}`
     }
   }
 
   useEffect(() => {
-    axios
-      .get(`${vendedorApiService.listToSelectAsync}`, config)
-      .then(response => {
-        setVendedores(response.data)
-      })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    axios.get(`${vendedorApiService.listToSelectAsync}`, config).then(response => {
+      setVendedores(response.data)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onSubmit = (data: VendedorContratoType): void => {
-    dispatch(addVendedorContrato({...data}))
-    toggle()
-    reset()
+    if (isValidComissao(data)) {
+      data.clienteContratoId = props.clienteContratoId
+      data.vendedorId = data.vendedor?.id || null
+      delete data.vendedor
+
+      dispatch(addVendedorContrato({...data}))
+      toggle()
+      reset()
+    }
   }
 
   const handleClose = () => {
@@ -127,7 +143,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type="number"
+                  type='number'
                   value={value}
                   label='Comissão percentual (%)'
                   onChange={onChange}
@@ -142,7 +158,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
-                  type="number"
+                  type='number'
                   value={value}
                   label='Comissão em reais (R$)'
                   onChange={onChange}
@@ -153,25 +169,26 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-                name="vendedor"
-                control={control}
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <Autocomplete
-                      value={value}
-                      sx={{ width: 360 }}
-                      options={vendedores}
-                      onChange={(event, newValue) => {
-                        setValue('vendedor', newValue || '')
-                        onChange(newValue)
-                      }}
-                      id='autocomplete-controlled'
-                      getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Vendedor' />}
-                    />
-                  )
-                }}
-              />
+              name='vendedor'
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    multiple={false}
+                    options={vendedores || []}
+                    filterSelectedOptions
+                    value={value}
+                    id='autocomplete-multiple-outlined'
+                    getOptionLabel={option => option.nome}
+                    renderInput={params => <TextField {...params} label='Vendedor' placeholder='(e.g.: Jhon Dare)' />}
+                    onChange={(event, newValue) => {
+                      // setRole(newValue)
+                      onChange(newValue)
+                    }}
+                  />
+                )
+              }}
+            />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>

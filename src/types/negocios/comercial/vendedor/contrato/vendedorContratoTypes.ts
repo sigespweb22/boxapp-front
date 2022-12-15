@@ -7,6 +7,6 @@ export type VendedorContratoType = {
   comissaoReais: number | null
   comissaoPercentual: number | null
   clienteContratoId: string
-  vendedorId: number | null
+  vendedorId: string | null
   status: string
 }

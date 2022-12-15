@@ -37,7 +37,6 @@ const defineRulesFor = (abilities: Abilities[]) => {
 }
 
 export const buildAbilityFor = (abilities: Abilities[], subject: string): AppAbility => {
-  debugger
   return new AppAbility(defineRulesFor(abilities), {
     // https://casl.js.org/v5/en/guide/subject-type-detection
     // @ts-ignore
