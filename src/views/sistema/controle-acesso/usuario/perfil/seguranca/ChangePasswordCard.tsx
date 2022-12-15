@@ -270,4 +270,9 @@ const ChangePasswordCard = (props: Props) => {
   )
 }
 
+ChangePasswordCard.acl = {
+  action: 'update',
+  subject: 'ac-user-page'
+}
+
 export default ChangePasswordCard

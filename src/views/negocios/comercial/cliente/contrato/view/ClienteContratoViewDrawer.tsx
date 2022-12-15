@@ -122,7 +122,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarClienteContratoView.acl = {
   action: 'read',
-  subject: 'ac-cliente-contrato-page'
+  subject: 'ac-clienteContrato-page'
 }
 
 export default SidebarClienteContratoView

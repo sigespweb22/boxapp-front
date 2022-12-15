@@ -208,7 +208,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-contrato-page') &&
+          {ability?.can('read', 'ac-clienteContrato-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleClienteContratoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -233,7 +233,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-cliente-contrato-page') ? (
+        {ability?.can('list', 'ac-clienteContrato-page') ? (
           <Grid item xs={12}>
             <Card>
               <DataGrid
@@ -260,7 +260,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClienteContratoTableListToView.acl = {
   action: 'list',
-  subject: 'ac-cliente-contrato-page'
+  subject: 'ac-clienteContrato-page'
 }
 
 export default ClienteContratoTableListToView

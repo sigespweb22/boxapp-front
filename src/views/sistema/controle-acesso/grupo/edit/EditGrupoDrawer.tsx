@@ -218,7 +218,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 SidebarEditGroup.acl = {
   action: 'update',
-  subject: 'ac-grupo-page'
+  subject: 'ac-group-page'
 }
 
 export default SidebarEditGroup

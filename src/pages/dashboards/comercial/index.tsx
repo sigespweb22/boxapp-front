@@ -61,7 +61,7 @@ const DashboardComercial = () => {
 
 DashboardComercial.acl = {
   action: 'list',
-  subject: 'ac-dashboard-comercial-page'
+  subject: 'ac-dashboardComercial-page'
 }
 
 export default DashboardComercial
