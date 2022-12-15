@@ -1,20 +1,12 @@
-export type ClienteContratoLayoutType = {
+export type VendedorContratoLayoutType = {
   id: string
 }
 
-export type ClienteContratoType = {
+export type VendedorContratoType = {
   id: string
-  valorContrato: number | null
-  periodicidade: string
-  clienteId: string
-  bomControleContratoId: number | null
-  status: string
-}
-
-export type ClienteContratoAddType = {
-  valorContrato: number | null
-  periodicidade: string
-  clienteId: string
-  bomControleContratoId: number | null
+  comissaoReais: number | null
+  comissaoPercentual: number | null
+  clienteContratoId: string
+  vendedorId: number | null
   status: string
 }

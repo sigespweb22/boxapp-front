@@ -21,7 +21,7 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClienteContrato } from 'src/store/negocios/comercial/cliente/contrato'
+import { addVendedorContrato } from 'src/store/negocios/comercial/vendedor/contrato'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -30,8 +30,7 @@ import { AppDispatch } from 'src/store'
 import axios from 'axios'
 
 // ** Api Services
-import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
+import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 
 interface VendedorContratoAddType {
   clienteContratoId: string
@@ -40,9 +39,12 @@ interface VendedorContratoAddType {
 }
 
 interface VendedorContratoType {
-  comissaoPercentual: number
-  comissaoReais: string
-  vendedor: { id: string, nome: string }
+  id: string
+  comissaoReais: number | null
+  comissaoPercentual: number | null
+  clienteContratoId: string
+  vendedorId: number | null
+  status: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -76,25 +78,25 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
   })
 
   // ** States
-  const [periodicidades, setPeriodicidades] = useState([])
+  const [vendedores, setVendedores] = useState([])
 
   const config = {
     headers: { 
-      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)}` 
+      Authorization: `Bearer ${window.localStorage.getItem(vendedorApiService.storageTokenKeyName)}` 
     }
   }
 
   useEffect(() => {
     axios
-      .get(`${enumApiService.periodicidadesListAsync}`, config)
+      .get(`${vendedorApiService.listToSelectAsync}`, config)
       .then(response => {
-        setPeriodicidades(response.data)
+        setVendedores(response.data)
       })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: VendedorContratoType): void => {
-    dispatch(addClienteContrato({...data,  }))
+    dispatch(addVendedorContrato({...data}))
     toggle()
     reset()
   }
@@ -158,14 +160,14 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                     <Autocomplete
                       value={value}
                       sx={{ width: 360 }}
-                      options={periodicidades}
+                      options={vendedores}
                       onChange={(event, newValue) => {
-                        setValue('periodicidade', newValue || '')
+                        setValue('vendedor', newValue || '')
                         onChange(newValue)
                       }}
                       id='autocomplete-controlled'
                       getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Periodicidade' />}
+                      renderInput={params => <TextField {...params} label='Vendedor' />}
                     />
                   )
                 }}

@@ -1,29 +1,14 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
-export type ClienteLayoutType = {
+export type VendedorLayoutType = {
   id: string
 }
 
-export type ClienteType = {
+export type VendedorType = {
   id?: string
-  nomeFantasia: string
-  razaoSocial: string
-  inscricaoEstadual: string
-  tipoPessoa: string
-  cnpj: string
-  cpf: string
-  telefonePrincipal: string
-  emailPrincipal: string
-  observacao: string
-  dataFundacao: string
-  codigoMunicipio: number
-  rua: string
-  numero: string
-  complemento: string
-  cidade: string
-  estado: string
-  cep: string
+  nome: string
+  userId: string
   status: string
   avatarColor?: ThemeColor
 }

@@ -6,17 +6,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // ** Api Services
-import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
+import vendedorContratoApiService from 'src/@api-center/negocios/comercial/vendedor/contrato/vendedorContratoApiService'
 
 // ** Types
-import { ClienteContratoType, ClienteContratoAddType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Toast
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
-  clienteId: string | string[] | undefined
+  vendedorId: string
 }
 
 interface Redux {
@@ -24,11 +24,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Cliente Contratos
+// ** Fetch Vendedor Contratos
 export const fetchData = createAsyncThunk('appClienteContratos/fetchData', async (params: DataParams) => {
-  const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
+  const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
   const response = await axios
-                            .get(clienteContratoApiService.listAsync, {
+                            .get(vendedorContratoApiService.listAsync, {
                                   headers: {
                                     Authorization: `Bearer ${storedToken}`
                                   },
@@ -38,21 +38,21 @@ export const fetchData = createAsyncThunk('appClienteContratos/fetchData', async
   return response.data
 })
 
-// ** Add Cliente Contratos
-export const addClienteContrato = createAsyncThunk(
-  'appClienteContratos/addClienteContrato',
-  async (data: ClienteContratoAddType, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
+// ** Add Vendedor Contratos
+export const addVendedorContrato = createAsyncThunk(
+  'appVendedorContratos/addVendedorContrato',
+  async (data: VendedorContratoType, { dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: `Bearer ${storedToken}` 
       }
     }
 
-    axios.post(clienteContratoApiService.addAsync, data, config).then((resp) => {
-      dispatch(fetchData({clienteId: resp.data.clienteId }))
+    axios.post(vendedorContratoApiService.addAsync, data, config).then((resp) => {
+      dispatch(fetchData({vendedorId: resp.data.vendedorId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
-      if (resp.status === 201) return toast.success("Contrato adicionado com sucesso.")
+      if (resp.status === 201) return toast.success("Contrato vinculado ao vendedor com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -83,20 +83,20 @@ export const addClienteContrato = createAsyncThunk(
   }
 )
 
-// ** Update Cliente Contratos
-export const editClienteContrato = createAsyncThunk(
-  'appClienteContratos/updateClienteContrato',
-  async (data : ClienteContratoType, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
+// ** Update Vendedor Contratos
+export const editVendedorContrato = createAsyncThunk(
+  'appVendedorContratos/updateVendedorContrato',
+  async (data : VendedorContratoType, { dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
     const config = {
       headers: {
         Authorization: `Bearer ${storedToken}`
       }
     }
 
-    axios.put(clienteContratoApiService.updateAsync, data, config).then((resp) => {
-      dispatch(fetchData({clienteId: resp.data.clienteId }))
-      if (resp.status === 200) return toast.success("Contrato atualizado com sucesso.")
+    axios.put(vendedorContratoApiService.updateAsync, data, config).then((resp) => {
+      dispatch(fetchData({vendedorId: resp.data.vendedorId }))
+      if (resp.status === 200) return toast.success("Contrato vendedor atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
       if (typeof resp.response.data != 'undefined' && 
@@ -126,17 +126,17 @@ export const editClienteContrato = createAsyncThunk(
   }
 )
 
-// ** Delete Cliente Contrato
-export const deleteClienteContrato = createAsyncThunk(
-  'appClienteContratos/ClienteContrato',
+// ** Delete Vendedor Contrato
+export const deleteVendedorContrato = createAsyncThunk(
+  'appVendedorContratos/VendedorContrato',
   async (id: number | string, { getState, dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
     
     const headers = {
       Authorization: `Bearer ${storedToken}`
     }
 
-    axios.delete(clienteContratoApiService.deleteAsync+id, { headers }).then((resp) => {
+    axios.delete(vendedorContratoApiService.deleteAsync+id, { headers }).then((resp) => {
       dispatch(fetchData(getState().ClienteContrato.params))
       if (resp.status === 204) return toast.success("Contrato deletado com sucesso.")
     }).catch((resp) => {
@@ -160,11 +160,11 @@ export const deleteClienteContrato = createAsyncThunk(
   }
 )
 
-// ** Alter Status Cliente Contrato
-export const alterStatusClienteContrato = createAsyncThunk(
+// ** Alter Status Vendedor Contrato
+export const alterStatusVendedorContrato = createAsyncThunk(
   'appClienteContratos/alterStatusClienteContrato',
   async (id: number | string, { dispatch }: Redux) => {
-    const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
+    const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
     
     const config = {
       headers: {
@@ -172,8 +172,8 @@ export const alterStatusClienteContrato = createAsyncThunk(
       }
     }
 
-    axios.put(clienteContratoApiService.alterStatusAsync+id, null, config).then((resp) => {
-      dispatch(fetchData({clienteId: resp.data.clienteId }))
+    axios.put(vendedorContratoApiService.alterStatusAsync+id, null, config).then((resp) => {
+      dispatch(fetchData({vendedorId: resp.data.vendedorId }))
       toast.success(resp.data.message)
 
       return resp.data.data
@@ -198,8 +198,8 @@ export const alterStatusClienteContrato = createAsyncThunk(
   }
 )
 
-export const appClienteContratosSlice = createSlice({
-  name: 'appClienteContratos',
+export const appVendedorContratosSlice = createSlice({
+  name: 'appVendedorContratos',
   initialState: {
     data: [],
     total: 0,
@@ -209,7 +209,7 @@ export const appClienteContratosSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload.clienteContratos
+      state.data = action.payload.vendedorContratos
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData
@@ -217,4 +217,4 @@ export const appClienteContratosSlice = createSlice({
   }
 })
   
-export default appClienteContratosSlice.reducer
+export default appVendedorContratosSlice.reducer
