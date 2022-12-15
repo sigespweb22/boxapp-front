@@ -343,7 +343,9 @@ const ClientList = () => {
         ) : (
           'Você não tem permissão para ver este recurso.'
         )}
-        <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+        {ability?.can('create', 'ac-cliente-page') ? (
+          <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+        ) : <></>}
       </Grid>
     </Grid>
   )

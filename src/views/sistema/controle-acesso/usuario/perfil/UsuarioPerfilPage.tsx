@@ -103,4 +103,10 @@ const UsuarioPerfilPage = (props: Props) => {
   )
 }
 
+UsuarioPerfilPage.acl = {
+  action: 'update',
+  subject: 'ac-user-page'
+}
+
+
 export default UsuarioPerfilPage

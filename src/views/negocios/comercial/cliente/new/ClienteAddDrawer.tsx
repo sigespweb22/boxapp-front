@@ -189,6 +189,7 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
   const handleClose = () => {
     toggle()
     reset()
+    onChangeIsTipoPessoa('JURIDICA')
   }
 
   const changeHandler = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
