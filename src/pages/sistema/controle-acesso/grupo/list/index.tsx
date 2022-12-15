@@ -147,7 +147,6 @@ const defaultColumns = [
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderGrupo(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography
                 noWrap
                 component='a'
@@ -156,12 +155,9 @@ const defaultColumns = [
               >
                 {name}
               </Typography>
-            </Link>
-            <Link href={`/apps/client/view/${id}`} passHref>
               <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
                 🔑{name}
               </Typography>
-            </Link>
           </Box>
         </Box>
       )

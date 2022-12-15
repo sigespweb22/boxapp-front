@@ -2,9 +2,13 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
+import { useContext } from 'react'
 
 // ** Third Party Imports
 import { useTranslation } from 'react-i18next'
+
+// ** Context Imports
+import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface TableHeaderProps {
   value: string
@@ -15,6 +19,7 @@ interface TableHeaderProps {
 const TableHeader = (props: TableHeaderProps) => {
   // ** Hook
   const { t } = useTranslation()
+  const ability = useContext(AbilityContext)
 
   // ** Props
   const { handleFilter, toggle, value } = props
@@ -29,9 +34,11 @@ const TableHeader = (props: TableHeaderProps) => {
           placeholder={t("Search Group")}
           onChange={e => handleFilter(e.target.value)}
         />
-        <Button sx={{ mb: 2 }} onClick={toggle} variant='contained'>
-          + {t("Add Group")}
-        </Button>
+        {ability?.can('create', 'ac-group-page') ? (
+          <Button sx={{ mb: 2 }} onClick={toggle} variant='contained'>
+            + {t("Add Group")}
+          </Button>
+        ) : (<></>)}
       </Box>
     </Box>
   )

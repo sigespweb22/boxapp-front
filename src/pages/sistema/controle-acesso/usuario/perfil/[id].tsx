@@ -8,4 +8,9 @@ const UsuarioPerfilRoute = () => {
   return <UsuarioPerfilPage id={String(id)}/>
 }
 
+UsuarioPerfilRoute.acl = {
+  action: 'read',
+  subject: 'ac-user-page'
+}
+
 export default UsuarioPerfilRoute
