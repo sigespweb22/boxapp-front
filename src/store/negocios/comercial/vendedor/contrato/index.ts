@@ -84,6 +84,50 @@ export const addVendedorContrato = createAsyncThunk(
   }
 )
 
+// ** Add without state update Vendedor Contratos
+export const addVendedorContratoWithoutUpdateState = createAsyncThunk(
+  'appVendedorContratos/addVendedorContratoWithoutUpdateState',
+  async (data: VendedorContratoType) => {
+    const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storedToken}` 
+      }
+    }
+
+    axios.post(vendedorContratoApiService.addAsync, data, config).then((resp) => {
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
+      if (resp.status === 201) return toast.success("Contrato vinculado ao vendedor com sucesso.")
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        if (typeof resp.response.data.title != 'undefined' &&
+            resp.response.data.title === "One or more validation errors occurred.")
+        {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err[1].toString())
+          });
+        } else {
+          const returnObj = Object.entries(resp.response.data.errors);
+          returnObj.forEach((err: any) => {
+            toast.error(err.toString())
+          });
+        }
+      } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie.toString())        
+          })
+        });
+      }
+    })
+  }
+)
+
 // ** Update Vendedor Contratos
 export const editVendedorContrato = createAsyncThunk(
   'appVendedorContratos/updateVendedorContrato',

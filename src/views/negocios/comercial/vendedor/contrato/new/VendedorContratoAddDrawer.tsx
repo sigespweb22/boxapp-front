@@ -21,7 +21,7 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addVendedorContrato } from 'src/store/negocios/comercial/vendedor/contrato'
+import { addVendedorContratoWithoutUpdateState } from 'src/store/negocios/comercial/vendedor/contrato'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -71,6 +71,7 @@ const defaultValues = {
 }
 
 const isValidComissao = (data: VendedorContratoType) => {
+  debugger
   if (data.comissaoReais != 0 && data.comissaoPercentual != 0) {
     toast.warning('Permitido apenas uma das opções de comissionamento.')
     return false
@@ -84,7 +85,11 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const { reset, control, handleSubmit } = useForm({
+  const { 
+    reset,
+    control,
+    handleSubmit 
+  } = useForm({
     defaultValues,
     mode: 'onChange'
   })
@@ -111,7 +116,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       data.vendedorId = data.vendedor?.id || null
       delete data.vendedor
 
-      dispatch(addVendedorContrato({...data}))
+      dispatch(addVendedorContratoWithoutUpdateState({...data}))
       toggle()
       reset()
     }
