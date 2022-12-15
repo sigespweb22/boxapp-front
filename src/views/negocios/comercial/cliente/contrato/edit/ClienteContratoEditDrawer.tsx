@@ -156,7 +156,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='ID'
+                  label='Id'
                   onChange={onChange}
                   placeholder='(e.g.: Id)'
                 />
