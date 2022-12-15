@@ -33,18 +33,16 @@ import axios from 'axios'
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 
-interface SidebarClienteContratoAddType {
-  clienteId: string
+interface VendedorContratoAddType {
+  clienteContratoId: string
   open: boolean
   toggle: () => void
 }
 
-interface ClienteContratoType {
-  valorContrato: number
-  periodicidade: string
-  clienteId: string
-  bomControleContratoId: number
-  status: string
+interface VendedorContratoType {
+  comissaoPercentual: number
+  comissaoReais: string
+  vendedor: { id: string, nome: string }
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -56,14 +54,12 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  valorContrato: '',
-  periodicidade: '',
-  clienteId: '',
-  bomControleContratoId: '',
-  status: '',
+  comissaoReais: '',
+  comissaoPercentual: '',
+  vendedor: '',
 }
 
-const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
+const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -97,8 +93,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: ClienteContratoType): void => {
-    data.clienteId = props?.clienteId
+  const onSubmit = (data: VendedorContratoType): void => {
     dispatch(addClienteContrato({...data,  }))
     toggle()
     reset()
@@ -119,29 +114,44 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Cliente Contrato</Typography>
+        <Typography variant='h6'>Vincular vendedor</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorContrato'
+              name='comissaoPercentual'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   type="number"
                   value={value}
-                  label='Valor do contrato'
+                  label='Comissão percentual (%)'
                   onChange={onChange}
-                  placeholder='(e.g.: R$ 1500,00)'
+                  placeholder='(e.g.: 15)'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-                name="periodicidade"
+              name='comissaoReais'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type="number"
+                  value={value}
+                  label='Comissão em reais (R$)'
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+                name="vendedor"
                 control={control}
                 render={({ field: { value, onChange } }) => {
                   return (
@@ -161,20 +171,6 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
                 }}
               />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='bomControleContratoId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Bom controle id'
-                  onChange={onChange}
-                  placeholder='(e.g.: Id do contrato no Bom Controle)'
-                />
-              )}
-            />
-          </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
               Salvar
@@ -191,9 +187,9 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteContratoAdd.acl = {
+VendedorContratoAddDrawer.acl = {
   action: 'create',
-  subject: 'ac-cliente-contrato-page'
+  subject: 'ac-vendedorContrato-page'
 }
 
-export default SidebarClienteContratoAdd
+export default VendedorContratoAddDrawer

@@ -37,10 +37,8 @@
     "Group New": "Novo Grupo",
     "Groups listing": "Listagem dos grupos",
     "In this mode you can only display the data. No changes can be made": "Neste modo você só pode visualizar os dados. Nenhuma alteração poderá ser feita",
-    
-    
-
     "INACTIVE": "INATIVO",
+    
 
     "Permission New": "Nova Permissão",
     "Permission Name": "Nome permissão",
@@ -50,7 +48,7 @@
     "Please enter a valid permission name": "Entre com um nome de permissão válido",
     "Please enter a valid permission description": "Entre com uma descrição de permissão válida",
 
-    
+    "Seller link": "Vincular vendedor",
     "Total users": "Total usuários",
     "Type of Service": "Serviço tipo",
     "Type": "Tipo",

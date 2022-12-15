@@ -21,6 +21,7 @@ import Tooltip from '@mui/material/Tooltip';
 // import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 // import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
+import FileLinkOutline from 'mdi-material-ui/FileLinkOutline'
 // import Help from 'mdi-material-ui/Help'
 
 // ** Store Imports
@@ -46,6 +47,7 @@ import TableHeader from 'src/views/negocios/comercial/cliente/contrato/list/Tabl
 import ClienteContratoAddDrawer from 'src/views/negocios/comercial/cliente/contrato/new/ClienteContratoAddDrawer'
 import ClienteContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/ClienteContratoViewDrawer'
 import ClienteContratoEditDrawer from 'src/views/negocios/comercial/cliente/contrato/edit/ClienteContratoEditDrawer'
+import VendedorContratoAddDrawer from 'src/views/negocios/comercial/vendedor/contrato/new/VendedorContratoAddDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -181,7 +183,9 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const [clienteContratoAddOpen, setClienteContratoAddOpen] = useState<boolean>(false)
   const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
   const [clienteContratoEditOpen, setClienteContratoEditOpen] = useState<boolean>(false)
+  const [vendedorContratoAddOpen, setVendedorContratoAddOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteContratoType | undefined>()
+  const [clienteContratoId, setClienteContratoId] = useState('')
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteContrato)
@@ -201,6 +205,11 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const handleViewClienteContrato = (row : ClienteContratoType) => {
     setRow(row)
     setClienteContratoViewOpen(true)
+  }
+
+  const handleCreateVendedorContrato = (row : ClienteContratoType) => {
+    setClienteContratoId(row.id)
+    setVendedorContratoAddOpen(true)
   }
 
   // const handleEditClienteContrato = (row : ClienteContratoType) => {
@@ -243,6 +252,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const toggleClienteContratoAddDrawer = () => setClienteContratoAddOpen(!clienteContratoAddOpen)
   const toggleClienteContratoViewDrawer = () => setClienteContratoViewOpen(!clienteContratoViewOpen)
   const toggleClienteContratoEditDrawer = () => setClienteContratoEditOpen(!clienteContratoEditOpen)
+  const toggleVendedorContratoAddDrawer = () => setVendedorContratoAddOpen(!vendedorContratoAddOpen)
 
   const columns = [
     ...defaultColumns,
@@ -260,6 +270,13 @@ const ClienteContratoTableList = ({ id }: Props) => {
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewClienteContrato(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('create', 'ac-vendedorContrato-page') &&
+            <Tooltip title={t("Seller link")}>
+              <IconButton onClick={() => handleCreateVendedorContrato(row)}>
+                <FileLinkOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
@@ -314,6 +331,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
         <ClienteContratoAddDrawer open={clienteContratoAddOpen} toggle={toggleClienteContratoAddDrawer} clienteId={id} />
         <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
         <ClienteContratoEditDrawer open={clienteContratoEditOpen} toggle={toggleClienteContratoEditDrawer} row={row}/>
+        <VendedorContratoAddDrawer open={vendedorContratoAddOpen} toggle={toggleVendedorContratoAddDrawer} clienteContratoId={clienteContratoId}/>
       </Grid>
     </Grid>
   )
