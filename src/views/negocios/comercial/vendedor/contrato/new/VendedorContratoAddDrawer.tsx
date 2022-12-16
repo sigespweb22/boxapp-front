@@ -128,7 +128,6 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       data.clienteContratoId = props.clienteContratoId
       data.vendedorId = data.vendedor.id
 
-      debugger
       dispatch(addVendedorContratoWithoutUpdateState({...data}))
       toggle()
       reset()

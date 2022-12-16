@@ -108,19 +108,19 @@ export const addVendedorContratoWithoutUpdateState = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err[1].toString())
+            toast.error(err[1].toString().replace("0,", ""))
           });
         } else {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err.toString())
+            toast.error(err.toString().replace("0,", ""))
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie.toString())        
+            toast.error(ie.toString().replace("0,", ""))
           })
         });
       }
