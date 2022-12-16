@@ -36,7 +36,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusClientes } from 'src/store/negocios/comercial/cliente'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -247,7 +247,7 @@ const ClientList = () => {
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
-    dispatch(alterStatusClient(id))
+    dispatch(alterStatusClientes(id))
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {

@@ -36,16 +36,16 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusVendedores } from 'src/store/negocios/comercial/vendedor'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/new/TableHeader'
-import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAddDrawer'
+import TableHeader from 'src/views/negocios/comercial/vendedor/new/TableHeader'
+import ClienteAddDrawer from 'src/views/negocios/comercial/vendedor/new/VendedorAddDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -55,7 +55,7 @@ interface ClientStatusType {
 }
 
 interface CellType {
-  row: ClienteType
+  row: VendedorType
 }
 
 const clientStatusObj: ClientStatusType = {
@@ -70,7 +70,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders cliente column
-const renderClient = (row: ClienteType) => {
+const renderClient = (row: VendedorType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
@@ -247,7 +247,7 @@ const ClientList = () => {
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
-    dispatch(alterStatusClient(id))
+    dispatch(alterStatusVendedores(id))
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {

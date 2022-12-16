@@ -33,7 +33,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addClient } from 'src/store/negocios/comercial/cliente'
+import { addClientes } from 'src/store/negocios/comercial/cliente'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -182,7 +182,7 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
   })
 
   const onSubmit = (data: ClientData) => {
-    dispatch(addClient({ ...data }))
+    dispatch(addClientes({ ...data }))
     toggle()
     reset()
   }

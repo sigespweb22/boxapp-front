@@ -18,9 +18,7 @@ import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Custom Components Imports
-import ClienteServicoListTable from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableList'
-import ClienteProdutoListTable from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableList'
-import ClienteContratoListTable from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableList'
+import ClienteContratoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableList'
 
 interface Props {
   id: string
@@ -56,24 +54,8 @@ const ClienteEditRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
-        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
         <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
       </TabList>
-      {/* <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-cliente-servico-page') ? (
-          <TabPanel sx={{ p: 0 }} value='servicos'>
-            <ClienteServicoListTable id={id} />
-          </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
-      </Box>
-      <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-cliente-produto-page') ? (
-          <TabPanel sx={{ p: 0 }} value='produtos'>
-            <ClienteProdutoListTable id={id} />
-          </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
-      </Box> */}
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-clienteContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
@@ -89,7 +71,7 @@ const ClienteEditRight = ({ id }: Props) => {
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
 ClienteEditRight.acl = {
   action: 'update',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
 export default ClienteEditRight

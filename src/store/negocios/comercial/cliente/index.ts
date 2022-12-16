@@ -25,7 +25,7 @@ interface Redux {
 }
 
 // ** Fetch Clientes
-export const fetchData = createAsyncThunk('appClients/fetchData', async (params: DataParams) => {
+export const fetchData = createAsyncThunk('appClientes/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const response = await axios
                             .get(clienteApiService.listAsync, {
@@ -39,8 +39,8 @@ export const fetchData = createAsyncThunk('appClients/fetchData', async (params:
 })
 
 // ** Add Client
-export const addClient = createAsyncThunk(
-  'appClients/addClient',
+export const addClientes = createAsyncThunk(
+  'appClientes/addClientes',
   async (data: ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
@@ -85,7 +85,7 @@ export const addClient = createAsyncThunk(
 
 // ** Update Client
 export const editCliente = createAsyncThunk(
-  'appClients/updateClient',
+  'appClientes/updateClientes',
   async (data : ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
@@ -127,8 +127,8 @@ export const editCliente = createAsyncThunk(
 )
 
 // ** Delete Client
-export const deleteClient = createAsyncThunk(
-  'appClients/deleteClient',
+export const deleteClientes = createAsyncThunk(
+  'appClientes/deleteClientes',
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
@@ -161,8 +161,8 @@ export const deleteClient = createAsyncThunk(
 )
 
 // ** Alter Status Client
-export const alterStatusClient = createAsyncThunk(
-  'appClients/alterStatusClient',
+export const alterStatusClientes = createAsyncThunk(
+  'appClientes/alterStatusClientes',
   async (id: number | string | undefined, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
@@ -198,8 +198,8 @@ export const alterStatusClient = createAsyncThunk(
   }
 )
 
-export const appClientsSlice = createSlice({
-  name: 'appClients',
+export const appClientesSlice = createSlice({
+  name: 'appClientes',
   initialState: {
     data: [],
     total: 0,
@@ -217,4 +217,4 @@ export const appClientsSlice = createSlice({
   }
 })
 
-export default appClientsSlice.reducer
+export default appClientesSlice.reducer
