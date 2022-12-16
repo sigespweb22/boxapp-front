@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,9 +9,6 @@ import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import FormHelperText from '@mui/material/FormHelperText'
-import IconButton from '@mui/material/IconButton'
-import StoreSearchOutline from 'mdi-material-ui/StoreSearchOutline'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
 
@@ -19,15 +16,12 @@ import Grid from '@mui/material/Grid'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
-import Tooltip from '@mui/material/Tooltip'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
@@ -41,22 +35,26 @@ import { AppDispatch } from 'src/store'
 // ** Axios Imports
 import axios from 'axios'
 
-// ** InputMask Imports
-import InputMask from 'react-input-mask'
-
 // ** Api Services
 import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 import { Autocomplete } from '@mui/material'
+import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
 
 interface VendedorAddDrawerType {
   open: boolean
   toggle: () => void
 }
 
+interface Usuario {
+  userId: string
+  name: string
+}
+
 interface VendedorData {
   nome: string
   userId: string
   status: string
+  usuario: Usuario
 }
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -86,7 +84,7 @@ const schema = yup.object().shape({
 
 const defaultValues = {
   nome: '',
-  userId: '',
+  usuario: { userId: '', name: '' },
   status: ''
 }
 
@@ -94,8 +92,22 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
   const { t } = useTranslation()
+  const [usuarios, setUsuarios] = useState<Usuario[]>([])
 
   const dispatch = useDispatch<AppDispatch>()
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(usuarioApiService.storageTokenKeyName)}`
+    }
+  }
+
+  useEffect(() => {
+    axios.get(`${usuarioApiService.listToSelectAsync}`, config).then(response => {
+      setUsuarios(response.data)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const {
     reset,
@@ -118,15 +130,6 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   const handleClose = () => {
     toggle()
     reset()
-  }
-
-  const handleClick = () => {
-    const storedToken = window.localStorage.getItem(vendedorApiService.storageTokenKeyName)!
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + storedToken
-      }
-    }
   }
 
   return (
@@ -167,16 +170,25 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='userId'
+              name='usuario'
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  label='Id do usuário'
-                  onChange={onChange}
-                  placeholder='e.g.: #ABC123'
-                />
-              )}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    multiple={false}
+                    options={usuarios || []}
+                    filterSelectedOptions
+                    value={value}
+                    id='autocomplete-multiple-outlined'
+                    getOptionLabel={option => option.name}
+                    renderInput={params => <TextField {...params} label='Usuario' placeholder='(e.g.: Jhon Dare)' />}
+                    onChange={(event, newValue) => {
+                      // setRole(newValue)
+                      onChange(newValue)
+                    }}
+                  />
+                )
+              }}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
