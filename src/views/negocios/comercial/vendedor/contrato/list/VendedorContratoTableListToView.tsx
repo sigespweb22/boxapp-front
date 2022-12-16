@@ -32,14 +32,14 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/index'
+import { fetchData } from 'src/store/negocios/comercial/vendedor/contrato/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Custom Components Imports
-import ClienteContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/ClienteContratoViewDrawer'
+import VendedorContratoViewDrawer from 'src/views/negocios/comercial/vendedor/contrato/view/VendedorContratoViewDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -48,10 +48,10 @@ interface Props {
   id: string | string[] | undefined
 }
 interface CellType {
-  row: ClienteContratoType
+  row: VendedorContratoType
 }
 
-const clienteContratoStatusObj = (status: string) => {
+const vendedorContratoStatusObj = (status: string) => {
   switch (status)
   {
     case "NENHUM":
@@ -76,7 +76,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders group column
-const renderContratoNome = (row: ClienteContratoType) => {
+const renderContratoNome = (row: VendedorContratoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -84,7 +84,7 @@ const renderContratoNome = (row: ClienteContratoType) => {
           color={'primary'}
           sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
         >
-          {getInitials(row.periodicidade ? row.periodicidade : 'SN')}
+          {getInitials(row.vendedorId ? row.vendedorId : 'SN')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -100,7 +100,7 @@ const RenderStatus = ({ status } : { status: string }) => {
         skin='light'
         size='small'
         label={t(status)}
-        color={clienteContratoStatusObj(status)}
+        color={vendedorContratoStatusObj(status)}
         sx={{ textTransform: 'capitalize' }}
     />
   )
@@ -108,46 +108,61 @@ const RenderStatus = ({ status } : { status: string }) => {
 
 const defaultColumns = [
   {
-    flex: 0.08,
-    minWidth: 30,
-    field: 'periodicidade',
-    headerName: 'Periodicidade',
-    headerAlign: 'left' as const,
-    align: 'left' as const,
+    flex: 0.1,
+    minWidth: 100,
+    field: 'comissaoReais',
+    headerName: 'Comissão em reais',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
-      const { periodicidade } = row
-
       return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderContratoNome(row)}
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography
-              noWrap
-              component='a'
-              variant='body2'
-              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-            >
-              {periodicidade}
-            </Typography>
-            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📝{periodicidade}
-            </Typography>
-          </Box>
-        </Box>
+        <Typography noWrap variant='body2'>
+          {formatCurrency(row.comissaoReais)}
+        </Typography>
       )
     }
   },
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorContrato',
-    headerName: 'Valor do contrato',
+    field: 'comissaoPercentual',
+    headerName: 'Comissão em percentual',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCurrency(row.valorContrato)}
+          {row.comissaoPercentual}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'clienteContratoId',
+    headerName: 'Id contrato do cliente',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.clienteContratoId}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'vendedorId',
+    headerName: 'Id do vendedor',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.vendedorId}
         </Typography>
       )
     }
@@ -163,7 +178,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteContratoTableListToView = ({ id }: Props) => {
+const VendedorContratoTableListToView = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -171,11 +186,11 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteContratoType | undefined>()
+  const [vendedorContratoViewOpen, setVendedorContratoViewOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<VendedorContratoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteContrato)
+  const store = useSelector((state: RootState) => state.vendedorContrato)
 
   useEffect(() => {
     setValue(id)
@@ -184,17 +199,17 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   useEffect(() => {
     dispatch(
       fetchData({
-        clienteId: value
+        vendedorId: value
       })
     )
   }, [dispatch, value])
 
-  const handleClienteContratoView = (row : ClienteContratoType) => {
+  const handleVendedorContratoView = (row : VendedorContratoType) => {
     setRow(row)
-    setClienteContratoViewOpen(true)
+    setVendedorContratoViewOpen(true)
   }
 
-  const toggleClienteContratoViewDrawer = () => setClienteContratoViewOpen(!clienteContratoViewOpen)
+  const toggleVendedorContratoViewDrawer = () => setVendedorContratoViewOpen(!vendedorContratoViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -208,9 +223,9 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-clienteContrato-page') &&
+          {ability?.can('read', 'ac-vendedorContrato-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleClienteContratoView(row)}>
+              <IconButton onClick={() => handleVendedorContratoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
@@ -233,7 +248,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             }
           />
         </Grid> 
-        {ability?.can('list', 'ac-clienteContrato-page') ? (
+        {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <Grid item xs={12}>
             <Card>
               <DataGrid
@@ -250,7 +265,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
+        <VendedorContratoViewDrawer open={vendedorContratoViewOpen} toggle={toggleVendedorContratoViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -258,9 +273,9 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteContratoTableListToView.acl = {
+VendedorContratoTableListToView.acl = {
   action: 'list',
-  subject: 'ac-clienteContrato-page'
+  subject: 'ac-vendedorContrato-page'
 }
 
-export default ClienteContratoTableListToView
+export default VendedorContratoTableListToView

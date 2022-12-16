@@ -198,10 +198,17 @@ export const alterStatusVendedor = createAsyncThunk(
   }
 )
 
+const defaultValues: VendedorType = {
+  id: '',
+  nome: '',
+  userId: '',
+  status: '',
+}
+
 export const appVendedoresSlice = createSlice({
   name: 'appVendedores',
   initialState: {
-    data: [],
+    data: defaultValues,
     total: 0,
     params: {},
     allData: []

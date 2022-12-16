@@ -5,31 +5,31 @@ import { useContext } from 'react'
 import Grid from '@mui/material/Grid'
 
 // ** Demo Components Imports
-import ClienteEditLeft from 'src/views/negocios/comercial/cliente/edit/ClienteEditLeft'
-import ClienteEditRight from 'src/views/negocios/comercial/cliente/edit/ClienteEditRight'
+import VendedorEditLeft from 'src/views/negocios/comercial/vendedor/edit/VendedorEditLeft'
+import VendedorEditRight from 'src/views/negocios/comercial/vendedor/edit/VendedorEditRight'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-  clienteId: string
+  vendedorId: string
 }
 
-const ClienteEditPage = ({ clienteId }: Props) => {
+const VendedorEditPage = ({ vendedorId }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
 
-  if (clienteId) {
+  if (vendedorId) {
     return (
         <Grid container spacing={6}>
-          {ability?.can('update', 'ac-cliente-page') ? (
+          {ability?.can('update', 'ac-vendedor-page') ? (
             <Grid item xs={12} md={5} lg={4}>
-                <ClienteEditLeft id={clienteId} />
+                <VendedorEditLeft id={vendedorId} />
             </Grid>
           ) : "Você não tem permissão para ver este recurso."}  
           {ability?.can('update', 'ac-cliente-page') ? (
             <Grid item xs={12} md={7} lg={8}>
-              <ClienteEditRight id={clienteId} />
+              <VendedorEditRight id={vendedorId} />
             </Grid>
           ) : "Você não tem permissão para ver este recurso."}              
         </Grid>
@@ -39,4 +39,4 @@ const ClienteEditPage = ({ clienteId }: Props) => {
   }
 }
 
-export default ClienteEditPage
+export default VendedorEditPage

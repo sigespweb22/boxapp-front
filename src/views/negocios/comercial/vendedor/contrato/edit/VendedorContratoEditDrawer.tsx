@@ -21,34 +21,33 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { editClienteContrato } from 'src/store/negocios/comercial/cliente/contrato'
+import { editVendedorContrato } from 'src/store/negocios/comercial/vendedor/contrato'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Axios Imports
 import axios from 'axios'
 
 // ** Api Services
-import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
-import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
-import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
+import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
+import vendedorContratoApiService from 'src/@api-center/negocios/comercial/vendedor/contrato/vendedorContratoApiService'
 
-interface SidebarClienteContratoEditType {
-  row: ClienteContratoType | undefined
+interface SidebarVendedorContratoEditType {
+  row: VendedorContratoType | undefined
   open: boolean
   toggle: () => void
 }
 
 let contratos: { id: string, nome: string  }[] = [];
 
-interface ClienteContratoData {
+interface VendedorContratoData {
   id: string
-  valorContrato: number
-  periodicidade: string
-  clienteId: string
-  bomControleContratoId: number
+  comissaoReais: number
+  comissaoPercentual: number
+  clienteContratoId: string
+  vendedorId: string
   status: string
 }
 
@@ -62,15 +61,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const defaultValues = {
   id: '',
-  valorContrato: 0,
-  periodicidade: '',
-  clienteId: '',
-  bomControleContratoId: 0,
+  comissaoReais: 0,
+  comissaoPercentual: 0,
+  clienteContratoId: '',
+  vendedorId: '',
   contrato: {id: '', nome: ''},
   status: '',
 }
 
-const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
+const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => {
   // ** Props
   const { open, toggle } = props
   
@@ -86,27 +85,15 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       mode: 'onChange'
   })
 
-  // ** States
-  const [periodicidades, setPeriodicidades] = useState([])
-
   const config = {
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem(clienteApiService.storageTokenKeyName)!}`
+      Authorization: `Bearer ${window.localStorage.getItem(vendedorApiService.storageTokenKeyName)!}`
     }
   }
 
   useEffect(() => {
     axios
-      .get(`${enumApiService.periodicidadesListAsync}`, config)
-      .then(response => {
-        setPeriodicidades(response.data)
-      })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    axios
-      .get(`${clienteContratoApiService.listToSelectAsync}`, config)
+      .get(`${vendedorContratoApiService.listToSelectAsync}`, config)
       .then(response => {
         contratos = response.data
       })
@@ -115,15 +102,15 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
 
   useEffect(() => {
     setValue('id', props?.row?.id || '')
-    setValue('valorContrato', props?.row?.valorContrato || 0)
-    setValue('periodicidade', props?.row?.periodicidade || '')
-    setValue('clienteId', props?.row?.clienteId || '')
-    setValue('bomControleContratoId', props?.row?.bomControleContratoId || 0)
+    setValue('comissaoReais', props?.row?.comissaoReais || 0)
+    setValue('comissaoPercentual', props?.row?.comissaoPercentual || 0)
+    setValue('clienteContratoId', props?.row?.clienteContratoId || '')
+    setValue('vendedorId', props?.row?.vendedorId || '')
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const onSubmit = (data: ClienteContratoData) => {
-    dispatch(editClienteContrato({ ...data,  }))
+  const onSubmit = (data: VendedorContratoData) => {
+    dispatch(editVendedorContrato({ ...data,  }))
     toggle()
     reset()
   }
@@ -143,7 +130,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Cliente Contrato</Typography>
+        <Typography variant='h6'>Editar Vendedor Contrato</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -165,7 +152,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
           </FormControl>  
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='valorContrato'
+              name='comissaoReais'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
@@ -174,7 +161,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                     shrink: true,
                   }}
                   value={value}
-                  label='Valor do contrato'
+                  label='Commisão em reais'
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
@@ -183,29 +170,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-                name="periodicidade"
-                control={control}
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <Autocomplete
-                      value={value}
-                      sx={{ width: 360 }}
-                      options={periodicidades}
-                      onChange={(event, newValue) => {
-                        setValue('periodicidade', newValue || '')
-                        onChange(newValue)
-                      }}
-                      id='autocomplete-controlled'
-                      getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Periodicidade' />}
-                    />
-                  )
-                }}
-              />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='bomControleContratoId'
+              name='comissaoPercentual'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
@@ -214,9 +179,45 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                     shrink: true,
                   }}
                   value={value}
-                  label='Id contrato no Bom Controle'
+                  label='Commisão em percentual'
                   onChange={onChange}
-                  placeholder='(e.g.: 10)'
+                  placeholder='(e.g.: 10%)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='clienteContratoId'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={value}
+                  label='Id contrato do cliente'
+                  onChange={onChange}
+                  placeholder='(e.g.: #ABC123)'
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='vendedorId'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={value}
+                  label='Id do vendedor'
+                  onChange={onChange}
+                  placeholder='(e.g.: #ABC123)'
                 />
               )}
             />
@@ -237,9 +238,9 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteContratoEdit.acl = {
+SidebarVendedorContratoEdit.acl = {
   action: 'update',
-  subject: 'ac-clienteContrato-page'
+  subject: 'ac-vendedorContrato-page'
 }
 
-export default SidebarClienteContratoEdit
+export default SidebarVendedorContratoEdit

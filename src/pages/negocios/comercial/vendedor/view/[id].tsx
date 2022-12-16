@@ -1,18 +1,18 @@
 import { useRouter } from 'next/router'
-import ClienteViewPage from 'src/views/negocios/comercial/cliente/view/ClienteViewPage'
+import VendedorViewPage from 'src/views/negocios/comercial/vendedor/view/VendedorViewPage'
 
-const ClienteViewRoute = () => {
+const VendedorViewRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <ClienteViewPage clienteId={String(id)}/>
+  return <VendedorViewPage vendedorId={String(id)}/>
 }
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteViewRoute.acl = {
+VendedorViewRoute.acl = {
   action: 'read',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
-export default ClienteViewRoute
+export default VendedorViewRoute

@@ -19,9 +19,6 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
 import Alert from '@mui/material/Alert'
 
-// ** InputMask Imports
-import InputMask from 'react-input-mask'
-
 // ** Next Import
 import Link from 'next/link'
 
@@ -34,7 +31,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -46,65 +43,34 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { editCliente, fetchData } from 'src/store/negocios/comercial/cliente/view'
+import { fetchData } from 'src/store/negocios/comercial/vendedor'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
-interface ColorsType {
-  [key: string]: ThemeColor
-}
-
-const statusColors: ColorsType = {
-  ACTIVE: 'success',
-  INACTIVE: 'error'
-}
 
 interface Props {
   id: string | string[] | undefined
 }
 
-const defaultValues: ClienteType = {
+const defaultValues: VendedorType = {
   id: '',
-  tipoPessoa: '',
-  nomeFantasia: '',
-  razaoSocial: '',
-  inscricaoEstadual: '',
-  cnpj: '',
-  telefonePrincipal: '',
-  emailPrincipal: '',
-  cpf: '',
-  observacao: '',
-  dataFundacao: '',
-  codigoMunicipio: 0,
-  rua: '',
-  numero: '',
-  complemento: '',
-  cidade: '',
-  estado: '',
-  cep: '',
+  nome: '',
+  userId: '',
   status: '',
 }
 
-const formatCnpj = (cnpj: string) => {
-  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-}
-
-const formatCpf = (cpf: string) => {
-  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-}
-
-const ClienteEditLeft = ({id}: Props) => {
+const VendedorEditLeft = ({id}: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
-  const [data, setData] = useState<null | ClienteType>(defaultValues)
+  const [data, setData] = useState<null | VendedorType>(defaultValues)
   const { t } = useTranslation()
 
   // ** States
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteView)
+  const store = useSelector((state: RootState) => state.vendedorView)
 
   const {
     reset,
@@ -134,23 +100,8 @@ const ClienteEditLeft = ({id}: Props) => {
     if(store)
     {
       setValue('id', store?.data.id)
-      setValue('tipoPessoa', store?.data.tipoPessoa)
-      setValue('nomeFantasia', store?.data.nomeFantasia)
-      setValue('razaoSocial', store?.data.razaoSocial)
-      setValue('inscricaoEstadual', store?.data.inscricaoEstadual)
-      setValue('cnpj', store?.data.cnpj)
-      setValue('cpf', store?.data.cpf)
-      setValue('telefonePrincipal', store?.data.telefonePrincipal)
-      setValue('emailPrincipal', store?.data.emailPrincipal)
-      setValue('dataFundacao', store?.data.dataFundacao)
-      setValue('cep', store?.data.cep)
-      setValue('rua', store?.data.rua)
-      setValue('numero', store?.data.numero)
-      setValue('complemento', store?.data.complemento)
-      setValue('estado', store?.data.estado)
-      setValue('cidade', store?.data.cidade)
-      setValue('codigoMunicipio', store?.data.codigoMunicipio)
-      setValue('observacao', store?.data.observacao)
+      setValue('nome', store?.data.nome)
+      setValue('userId', store?.data.userId)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
@@ -172,12 +123,6 @@ const ClienteEditLeft = ({id}: Props) => {
     }
   }
 
-  const onSubmit = (data: ClienteType) => {
-    dispatch(editCliente({ ...data  }))
-    handleEditClose()
-    reset()
-  }  
-
   // Handle Edit dialog
   const handleEditClickOpen = () => {
     dispatch(fetchData({id: data?.id}))
@@ -197,12 +142,12 @@ const ClienteEditLeft = ({id}: Props) => {
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderClienteAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
-                {store?.data.nomeFantasia}
+                {store?.data.nome}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.razaoSocial || store?.data.nomeFantasia}
+                label={store?.data.userId || store?.data.nome}
                 color='primary'
                 sx={{
                   height: 20,
@@ -219,108 +164,20 @@ const ClienteEditLeft = ({id}: Props) => {
               <Typography variant='h6'>Detalhes</Typography>
               <Divider />
               <Box sx={{ display: 'flex', mb: 0 }}>
-                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tipo pessoa:</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                  {store?.data.tipoPessoa}
+                  {store?.data.nome}
                 </Typography>
               </Box>
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
-                  <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
-                    <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={`${t(store?.data.status)}`}
-                    color={statusColors[store?.data.status]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box>                
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
-                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                      {store?.data.inscricaoEstadual}
-                    </Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'FISICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cpf:</Typography>
-                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>E-mail Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
-                  <Typography variant='body2'>{store?.data.observacao}</Typography>
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
-                  <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Rua:</Typography>
-                  <Typography variant='body2'>{store?.data.rua}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Número:</Typography>
-                  <Typography variant='body2'>{store?.data.numero}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Complemento:</Typography>
-                  <Typography variant='body2'>{store?.data.complemento}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Estado:</Typography>
-                  <Typography variant='body2'>{store?.data.estado}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cidade:</Typography>
-                  <Typography variant='body2'>{store?.data.cidade}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
-                  <Typography variant='body2'>{store?.data.cep}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Id do usuário:</Typography>
+                  <Typography variant='body2'>{store?.data.userId}</Typography>
                 </Box>
               </Box>
             </CardContent>
 
-            {ability?.can('update', 'ac-cliente-page') &&
+            {ability?.can('update', 'ac-vendedor-page') &&
               <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant='contained' sx={{ mr: 3 }} onClick={handleEditClickOpen}>
                   Editar
@@ -331,47 +188,29 @@ const ClienteEditLeft = ({id}: Props) => {
             <Dialog
               open={openEdit}
               onClose={handleEditClose}
-              aria-labelledby='cliente-view-left'
+              aria-labelledby='vendedor-view-left'
               sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 650, p: [2, 10] } }}
-              aria-describedby='cliente-view-left-description'
+              aria-describedby='vendedor-view-left-description'
             >
               <DialogTitle id='user-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
-                Editar informações do cliente
+                Editar informações do vendedor
               </DialogTitle>
               <DialogContent>
-                <DialogContentText variant='body2' id='cliente-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
-                  A atualização das informações de cliente são passíveis de auditoria.
+                <DialogContentText variant='body2' id='vendedor-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
+                  A atualização das informações de vendedor são passíveis de auditoria.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
-                          name='tipoPessoa'
+                          name='nome'
                           control={control}
                           render={({ field: { value, onChange } }) => (
                             <TextField
-                              disabled
                               value={value}
-                              label='Tipo pessoa'
+                              label='Nome'
                               onChange={onChange}
-                              placeholder='(e.g.: Ex.: JURIDICA)'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='id'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              disabled={true}
-                              value={value}
-                              label='Id'
-                              onChange={onChange}
+                              placeholder='(e.g.: Ex.: John Doe)'
                             />
                           )}
                         />
@@ -380,310 +219,14 @@ const ClienteEditLeft = ({id}: Props) => {
                     <Grid item xs={12} sm={12}>
                       <FormControl fullWidth sx={{ mb: 6 }}>
                         <Controller
-                          name='nomeFantasia'
+                          name='userId'
                           control={control}
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Nome fantasia'
+                              label='Id do usuário'
                               onChange={onChange}
-                              placeholder='(e.g.: Ex.: Empresa de Tecnologia)'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    {store.data.tipoPessoa === 'JURIDICA' &&
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth sx={{ mb: 6 }}>
-                            <Controller
-                              name='razaoSocial'
-                              control={control}
-                              render={({ field: { value, onChange } }) => (
-                                <TextField
-                                  value={value}
-                                  label='Razão social'
-                                  onChange={onChange}
-                                  placeholder='(e.g.: Ex.: Empresa de Tecnologia LTDA)'
-                                />
-                              )}
-                            />
-                          </FormControl>
-                      </Grid>
-                    }
-                    {store.data.tipoPessoa === 'JURIDICA' &&
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='inscricaoEstadual'
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TextField
-                                value={value}
-                                label='Inscrição estadual'
-                                onChange={onChange}
-                                placeholder='(e.g.: Ex.: 123456)'
-                              />
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                    }
-                    {store.data.tipoPessoa === 'FISICA' &&
-                      <Grid item xs={12} sm={12}>
-                        <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='cpf'
-                            control={control}
-                            render={props => (
-                              <InputMask
-                                mask='999.999.999-99'
-                                value={props.field.value}
-                                disabled={false}
-                                onChange={(value): void => {
-                                  props.field.onChange(value.target.value)
-                                  setValue('cpf', value.target.value)
-                                }}
-                              >
-                                <TextField
-                                  sx={{ width: 'auto' }}
-                                  disabled={false}
-                                  name='cpf'
-                                  type='text'
-                                  label='Cpf'
-                                  placeholder='e.g.: 035.753.486-13'
-                                />
-                              </InputMask>
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                    }
-                    {store.data.tipoPessoa === 'JURIDICA' &&
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='cnpj'
-                            control={control}
-                            render={props => (
-                              <InputMask
-                                mask='99.999.999/9999-99'
-                                value={props.field.value}
-                                disabled={false}
-                                onChange={(value): void => {
-                                  props.field.onChange(value.target.value)
-                                  setValue('cnpj', value.target.value)
-                                }}
-                              >
-                                <TextField
-                                  sx={{ width: 'auto' }}
-                                  disabled={false}
-                                  name='cnpj'
-                                  type='text'
-                                  label='Cnpj'
-                                  placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
-                                />
-                              </InputMask>
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                    }
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='telefonePrincipal'
-                          control={control}
-                          render={props => (
-                            <InputMask
-                              mask='(99) 9.9999-9999'
-                              value={props.field.value}
-                              disabled={false}
-                              onChange={(value): void => {
-                                props.field.onChange(value.target.value)
-                              }}
-                            >
-                              <TextField
-                                sx={{ width: 'auto' }}
-                                disabled={false}
-                                name='telefonePrincipal'
-                                type='text'
-                                label='Telefone principal'
-                                placeholder='e.g.: (48) 9.8896-1111'
-                              />
-                            </InputMask>
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='emailPrincipal'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='E-mail principal'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: empresa@empresa.com'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    {store.data.tipoPessoa === 'JURIDICA' &&
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='store?.dataFundacao'
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TextField
-                                value={value}
-                                label='Data fundação'
-                                onChange={onChange}
-                                placeholder='(e.g.: Ex.: 10/01/2000'
-                              />
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                    }
-                    <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth sx={{ mb: 6 }}>
-                      <Controller
-                        name='cep'
-                        control={control}
-                        render={props => (
-                          <InputMask
-                            mask='99999-999'
-                            value={props.field.value}
-                            disabled={false}
-                            onChange={(value): void => {
-                              props.field.onChange(value.target.value)
-                            }}
-                          >
-                            <TextField
-                              sx={{ width: 'auto' }}
-                              disabled={false}
-                              name='cep'
-                              type='text'
-                              label='Cep'
-                              placeholder='e.g.: 88801-000'
-                            />
-                          </InputMask>
-                        )}
-                      />
-                    </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='estado'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Estado'
-                              onChange={onChange}
-                              placeholder='(e.g.: Santa Catarina'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='rua'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Rua'
-                              onChange={onChange}
-                              placeholder='(e.g.: Rua Abílio Diniz'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='numero'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Número'
-                              onChange={onChange}
-                              placeholder='(e.g.: 52'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={12}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='complemento'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Complemento'
-                              onChange={onChange}
-                              placeholder='(e.g.: Próximo ao Banco do Brasil'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>                    
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='cidade'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Cidade'
-                              onChange={onChange}
-                              placeholder='(e.g.: Criciúma'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                          <Controller
-                            name='codigoMunicipio'
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TextField
-                                value={value}
-                                label='Código município'
-                                onChange={onChange}
-                                placeholder='(e.g.: Ex.: 654789'
-                              />
-                            )}
-                          />
-                      </FormControl>
-                    </Grid>                    
-                    <Grid item xs={12} sm={12}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='observacao'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Observacao'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: Esta empresa está em processo de evolução'
+                              placeholder='(e.g.: Ex.: #ABC123)'
                             />
                           )}
                         />
@@ -697,7 +240,6 @@ const ClienteEditLeft = ({id}: Props) => {
                         {t("Discard")}
                       </Button>
                     </DialogActions>
-                  </Grid>
                 </form>
               </DialogContent>
             </Dialog>
@@ -710,8 +252,8 @@ const ClienteEditLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Listagem de clientes</Link>
+            Vendedor com o id: {id} não existe. Por favor verifique a listagem de vendedores:{' '}
+            <Link href='/pages/negocios/comercial/vendedor/list'>Listagem de vendedores</Link>
           </Alert>
         </Grid>
       </Grid>
@@ -721,9 +263,9 @@ const ClienteEditLeft = ({id}: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteEditLeft.acl = {
+VendedorEditLeft.acl = {
   action: 'update',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
-export default ClienteEditLeft
+export default VendedorEditLeft

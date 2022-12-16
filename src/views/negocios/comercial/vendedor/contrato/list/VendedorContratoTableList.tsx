@@ -18,10 +18,11 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
-// import ElevatorUp from 'mdi-material-ui/ElevatorUp'
-// import ElevatorDown from 'mdi-material-ui/ElevatorDown'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-// import Help from 'mdi-material-ui/Help'
+import Help from 'mdi-material-ui/Help'
+import { PencilOutline } from 'mdi-material-ui'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,17 +36,17 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/index'
+import { alterStatusVendedorContrato, fetchData } from 'src/store/negocios/comercial/vendedor/contrato/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/cliente/contrato/list/TableHeader'
-import ClienteContratoAddDrawer from 'src/views/negocios/comercial/cliente/contrato/new/ClienteContratoAddDrawer'
-import ClienteContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/ClienteContratoViewDrawer'
-import ClienteContratoEditDrawer from 'src/views/negocios/comercial/cliente/contrato/edit/ClienteContratoEditDrawer'
+import TableHeader from 'src/views/negocios/comercial/vendedor/contrato/list/TableHeader'
+import VendedorContratoAddDrawer from 'src/views/negocios/comercial/vendedor/contrato/new/VendedorContratoAddDrawer'
+import VendedorContratoViewDrawer from 'src/views/negocios/comercial/vendedor/contrato/view/VendedorContratoViewDrawer'
+import VendedorContratoEditDrawer from 'src/views/negocios/comercial/vendedor/contrato/edit/VendedorContratoEditDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -55,7 +56,7 @@ interface Props {
 }
 
 interface CellType {
-  row: ClienteContratoType
+  row: VendedorContratoType
 }
 
 const clienteContratoStatusObj = (status: string) => {
@@ -83,7 +84,7 @@ const formatCurrency = (currency: number | null) => {
 }
 
 // ** renders group column
-const renderContratoNome = (row: ClienteContratoType) => {
+const renderContratoNome = (row: VendedorContratoType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -115,46 +116,61 @@ const RenderStatus = ({ status } : { status: string }) => {
 
 const defaultColumns = [
   {
-    flex: 0.08,
-    minWidth: 30,
-    field: 'periodicidade',
-    headerName: 'Periodicidade',
-    headerAlign: 'left' as const,
-    align: 'left' as const,
+    flex: 0.1,
+    minWidth: 100,
+    field: 'comissaoReais',
+    headerName: 'Comissão em reais',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
     renderCell: ({ row }: CellType) => {
-      const { periodicidade } = row
-
       return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderContratoNome(row)}
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography
-              noWrap
-              component='a'
-              variant='body2'
-              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-            >
-              {periodicidade}
-            </Typography>
-            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📝{periodicidade}
-            </Typography>
-          </Box>
-        </Box>
+        <Typography noWrap variant='body2'>
+          {formatCurrency(row.comissaoReais)}
+        </Typography>
       )
     }
   },
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'valorContrato',
-    headerName: 'Valor do contrato',
+    field: 'comissaoPercentual',
+    headerName: 'Comissão em percentual',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCurrency(row.valorContrato)}
+          {row.comissaoPercentual}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'clienteContratoId',
+    headerName: 'Id contrato do cliente',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.clienteContratoId}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'vendedorId',
+    headerName: 'Id do vendedor',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.vendedorId}
         </Typography>
       )
     }
@@ -170,7 +186,7 @@ const defaultColumns = [
   }
 ]
 
-const ClienteContratoTableList = ({ id }: Props) => {
+const VendedorContratoTableList = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -178,13 +194,13 @@ const ClienteContratoTableList = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteContratoAddOpen, setClienteContratoAddOpen] = useState<boolean>(false)
-  const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
-  const [clienteContratoEditOpen, setClienteContratoEditOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteContratoType | undefined>()
+  const [vendedorContratoAddOpen, setVendedorContratoAddOpen] = useState<boolean>(false)
+  const [vendedorContratoViewOpen, setVendedorContratoViewOpen] = useState<boolean>(false)
+  const [vendedorContratoEditOpen, setVendedorContratoEditOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<VendedorContratoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteContrato)
+  const store = useSelector((state: RootState) => state.vendedorContrato)
 
   useEffect(() => {
     setValue(id)
@@ -193,56 +209,56 @@ const ClienteContratoTableList = ({ id }: Props) => {
   useEffect(() => {
     dispatch(
       fetchData({
-        clienteId: value
+        vendedorId: value
       })
     )
   }, [dispatch, value])
 
-  const handleViewClienteContrato = (row : ClienteContratoType) => {
+  const handleViewVendedorContrato = (row : VendedorContratoType) => {
     setRow(row)
-    setClienteContratoViewOpen(true)
+    setVendedorContratoViewOpen(true)
   }
 
-  // const handleEditClienteContrato = (row : ClienteContratoType) => {
-  //   setRow(row)
-  //   setClienteContratoEditOpen(true)
-  // }
+  const handleEditVendedorContrato = (row : VendedorContratoType) => {
+    setRow(row)
+    setVendedorContratoEditOpen(true)
+  }
 
-  // const handleAlterStatus = (id: string) => {
-  //   dispatch(alterStatusClienteContrato(id))
-  // }
+  const handleAlterStatus = (id: string) => {
+    dispatch(alterStatusVendedorContrato(id))
+  }
 
-  // const RenderButton = ({ id, status } : { id: string, status: string }) => {
-  //   if (status === 'INACTIVE' || status === 'PENDING')
-  //   {
-  //     return (
-  //       <Tooltip title={t("Activate")}>
-  //         <IconButton onClick={() => handleAlterStatus(id)}>
-  //           <ElevatorUp fontSize='small' />
-  //         </IconButton>
-  //       </Tooltip>        
-  //     )
-  //   } else if (status === 'ACTIVE') {
-  //     return (
-  //       <Tooltip title={t("Deactivate")}>
-  //         <IconButton onClick={() => handleAlterStatus(id)}>
-  //           <ElevatorDown fontSize='small' />
-  //         </IconButton>
-  //       </Tooltip>
-  //     )
-  //   }
-  //   else {
-  //     return (
-  //       <IconButton onClick={() => handleAlterStatus(id)}>
-  //         <Help fontSize='small' />
-  //       </IconButton>
-  //     )
-  //   }
-  // }
+  const RenderButton = ({ id, status } : { id: string, status: string }) => {
+    if (status === 'INACTIVE' || status === 'PENDING')
+    {
+      return (
+        <Tooltip title={t("Activate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorUp fontSize='small' />
+          </IconButton>
+        </Tooltip>        
+      )
+    } else if (status === 'ACTIVE') {
+      return (
+        <Tooltip title={t("Deactivate")}>
+          <IconButton onClick={() => handleAlterStatus(id)}>
+            <ElevatorDown fontSize='small' />
+          </IconButton>
+        </Tooltip>
+      )
+    }
+    else {
+      return (
+        <IconButton onClick={() => handleAlterStatus(id)}>
+          <Help fontSize='small' />
+        </IconButton>
+      )
+    }
+  }
 
-  const toggleClienteContratoAddDrawer = () => setClienteContratoAddOpen(!clienteContratoAddOpen)
-  const toggleClienteContratoViewDrawer = () => setClienteContratoViewOpen(!clienteContratoViewOpen)
-  const toggleClienteContratoEditDrawer = () => setClienteContratoEditOpen(!clienteContratoEditOpen)
+  const toggleVendedorContratoAddDrawer = () => setVendedorContratoAddOpen(!vendedorContratoAddOpen)
+  const toggleVendedorContratoViewDrawer = () => setVendedorContratoViewOpen(!vendedorContratoViewOpen)
+  const toggleVendedorContratoEditDrawer = () => setVendedorContratoEditOpen(!vendedorContratoEditOpen)
 
   const columns = [
     ...defaultColumns,
@@ -256,23 +272,23 @@ const ClienteContratoTableList = ({ id }: Props) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-clienteContrato-page') &&
+          {ability?.can('read', 'ac-vendedorContrato-page') &&
             <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleViewClienteContrato(row)}>
+              <IconButton onClick={() => handleViewVendedorContrato(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
-          {/* {ability?.can('update', 'ac-clienteContrato-page') &&
+          {ability?.can('update', 'ac-vendedorContrato-page') &&
             <Tooltip title={t("Edit")}>
-              <IconButton onClick={() => handleEditClienteContrato(row)}>
+              <IconButton onClick={() => handleEditVendedorContrato(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
-          } */}
-          {/* {ability?.can('delete', 'ac-clienteContrato-page') &&
+          }
+          {ability?.can('delete', 'ac-vendedorContrato-page') &&
             <RenderButton id={row.id} status={row.status}/>
-          } */}
+          }
         </Box>
       )
     }
@@ -291,10 +307,10 @@ const ClienteContratoTableList = ({ id }: Props) => {
             }
           />
         </Grid>
-        {ability?.can('list', 'ac-clienteContrato-page') ? (
+        {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-clienteContrato-page') &&
+              {ability?.can('create', 'ac-vendedorContrato-page') &&
                 <TableHeader />
               }
               <DataGrid
@@ -311,9 +327,9 @@ const ClienteContratoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <ClienteContratoAddDrawer open={clienteContratoAddOpen} toggle={toggleClienteContratoAddDrawer} clienteId={id} />
-        <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
-        <ClienteContratoEditDrawer open={clienteContratoEditOpen} toggle={toggleClienteContratoEditDrawer} row={row}/>
+        <VendedorContratoAddDrawer open={vendedorContratoAddOpen} toggle={toggleVendedorContratoAddDrawer} vendedorId={id} />
+        <VendedorContratoViewDrawer open={vendedorContratoViewOpen} toggle={toggleVendedorContratoViewDrawer} row={row}/>
+        <VendedorContratoEditDrawer open={vendedorContratoEditOpen} toggle={toggleVendedorContratoEditDrawer} row={row}/>
       </Grid>
     </Grid>
   )
@@ -321,9 +337,9 @@ const ClienteContratoTableList = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteContratoTableList.acl = {
+VendedorContratoTableList.acl = {
   action: 'list',
-  subject: 'ac-clienteContrato-page'
+  subject: 'ac-vendedorContrato-page'
 }
 
-export default ClienteContratoTableList
+export default VendedorContratoTableList

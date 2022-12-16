@@ -18,7 +18,7 @@ import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Custom Components Imports
-import ClienteContratoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableList'
+import VendedorContratoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableList'
 
 interface Props {
   id: string
@@ -34,7 +34,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   }
 }))
 
-const ClienteEditRight = ({ id }: Props) => {
+const VendedorEditRight = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
 
@@ -57,9 +57,9 @@ const ClienteEditRight = ({ id }: Props) => {
         <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
-        {ability?.can('list', 'ac-clienteContrato-page') ? (
+        {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
-            <ClienteContratoListTable id={id} />
+            <VendedorContratoListTable id={id} />
           </TabPanel>
         ) : "Você não tem permissão para ver este recurso."}  
       </Box>
@@ -69,9 +69,9 @@ const ClienteEditRight = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClienteEditRight.acl = {
+VendedorEditRight.acl = {
   action: 'update',
   subject: 'ac-vendedor-page'
 }
 
-export default ClienteEditRight
+export default VendedorEditRight
