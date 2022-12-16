@@ -10,15 +10,10 @@ import MuiTab, { TabProps } from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 
 // ** Icons Imports
-// import CogOutline from 'mdi-material-ui/CogOutline'
-// import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 
-
 // ** Custom Components Imports
-// import ClienteServicoTableListToView from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableListToView'
-// import ClienteProdutoTableListToView from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableListToView'
-import ClienteContratoTableListToView from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableListToView'
+import VendedorContratoTableListToView from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableListToView'
 
 interface Props {
   id: string
@@ -34,7 +29,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   }
 }))
 
-const ClienteViewRight = ({ id }: Props) => {
+const VendedorViewRight = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string>('contratos')
 
@@ -51,32 +46,20 @@ const ClienteViewRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
-        <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />v
+        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
       </TabList>
-      {/* <Box sx={{ mt: 6 }}>
-        <TabPanel sx={{ p: 0 }} value='servicos'>
-          <ClienteServicoTableListToView id={id} />
-        </TabPanel>
-      </Box>
-      <Box sx={{ mt: 6 }}>
-        <TabPanel sx={{ p: 0 }} value='produtos'>
-          <ClienteProdutoTableListToView id={id} />
-        </TabPanel>
-      </Box> */}
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='contratos'>
-          <ClienteContratoTableListToView id={id} />
+          <VendedorContratoTableListToView id={id} />
         </TabPanel>
       </Box>
     </TabContext>
   )
 }
 
-ClienteViewRight.acl = {
+VendedorViewRight.acl = {
   action: 'read',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
-export default ClienteViewRight
+export default VendedorViewRight

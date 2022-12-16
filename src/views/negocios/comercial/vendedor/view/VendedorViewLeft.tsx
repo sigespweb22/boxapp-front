@@ -30,7 +30,7 @@ import { getInitials } from 'src/@core/utils/get-initials'
 import { useTranslation } from 'react-i18next'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/view'
+import { fetchData } from 'src/store/negocios/comercial/vendedor'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
@@ -49,21 +49,13 @@ interface Props {
   id: string | string[] | undefined
 }
 
-const formatCnpj = (cnpj: string) => {
-  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-}
-
-const formatCpf = (cpf: string) => {
-  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-}
-
-const ClienteViewLeft = ({id}: Props) => {
+const VendedorViewLeft = ({id}: Props) => {
   // ** Hooks
   const { t } = useTranslation()
 
   // ** States
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.clienteView)
+  const store = useSelector((state: RootState) => state.vendedor)
 
   const {
     setValue
@@ -83,21 +75,8 @@ const ClienteViewLeft = ({id}: Props) => {
     if(store)
     {
       setValue('id', store?.data.id)
-      setValue('nomeFantasia', store?.data.nomeFantasia)
-      setValue('razaoSocial', store?.data.razaoSocial)
-      setValue('inscricaoEstadual', store?.data.inscricaoEstadual)
-      setValue('cnpj', store?.data.cnpj)
-      setValue('telefonePrincipal', store?.data.telefonePrincipal)
-      setValue('emailPrincipal', store?.data.emailPrincipal)
-      setValue('dataFundacao', store?.data.dataFundacao)
-      setValue('cep', store?.data.cep)
-      setValue('rua', store?.data.rua)
-      setValue('numero', store?.data.numero)
-      setValue('complemento', store?.data.complemento)
-      setValue('estado', store?.data.estado)
-      setValue('cidade', store?.data.cidade)
-      setValue('codigoMunicipio', store?.data.codigoMunicipio)
-      setValue('observacao', store?.data.observacao)
+      setValue('nome', store?.data.nome)
+      setValue('userId', store?.data.userId)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
@@ -111,7 +90,7 @@ const ClienteViewLeft = ({id}: Props) => {
           color={'primary' as ThemeColor}
           sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
         >
-          {getInitials(store?.data.nomeFantasia || "CP")}
+          {getInitials(store?.data.nome || "CP")}
         </CustomAvatar>
       )
     } else {
@@ -127,12 +106,12 @@ const ClienteViewLeft = ({id}: Props) => {
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderClienteAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
-                {store?.data.nomeFantasia}
+                {store?.data.nome}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.razaoSocial || store?.data.nomeFantasia}
+                label={store?.data.userId || store?.data.nome}
                 color='primary'
                 sx={{
                   height: 20,
@@ -150,100 +129,12 @@ const ClienteViewLeft = ({id}: Props) => {
               <Divider />
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tipo pessoa:</Typography>
-                  <Typography variant='body2'>{store?.data.tipoPessoa}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome:</Typography>
+                  <Typography variant='body2'>{store?.data.nome}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
-                  <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
-                    <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={`${t(store?.data.status)}`}
-                    color={statusColors[store?.data.status]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
-                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                      {store?.data.inscricaoEstadual}
-                    </Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'FISICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>E-mail Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
-                  <Typography variant='body2'>{store?.data.observacao}</Typography>
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
-                  <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Rua:</Typography>
-                  <Typography variant='body2'>{store?.data.rua}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Número:</Typography>
-                  <Typography variant='body2'>{store?.data.numero}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Complemento:</Typography>
-                  <Typography variant='body2'>{store?.data.complemento}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Estado:</Typography>
-                  <Typography variant='body2'>{store?.data.estado}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cidade:</Typography>
-                  <Typography variant='body2'>{store?.data.cidade}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
-                  <Typography variant='body2'>{store?.data.cep}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Id do usuário:</Typography>
+                  <Typography variant='body2'>{store?.data.userId}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -256,8 +147,8 @@ const ClienteViewLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+            Vendedor com o id: {id} não existe. Por favor verifique a listagem de vendedores:{' '}
+            <Link href='/pages/negocios/comercial/vendedor/list'>Lsitagem de vendedores</Link>
           </Alert>
         </Grid>
       </Grid>
@@ -265,9 +156,9 @@ const ClienteViewLeft = ({id}: Props) => {
   }
 }
 
-ClienteViewLeft.acl = {
+VendedorViewLeft.acl = {
   action: 'read',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
-export default ClienteViewLeft
+export default VendedorViewLeft

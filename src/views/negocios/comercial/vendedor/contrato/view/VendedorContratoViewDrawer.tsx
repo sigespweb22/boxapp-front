@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -17,8 +17,8 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarClienteContratoViewType {
-  row: ClienteContratoType | undefined
+interface SidebarVendedorContratoViewType {
+  row: VendedorContratoType | undefined
   open: boolean
   toggle: () => void
 }
@@ -35,7 +35,7 @@ const formatCurrency = (currency: number) => {
   return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
+const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => {
   // ** Hook
   const {
     reset,
@@ -63,7 +63,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Cliente Contrato</Typography>
+        <Typography variant='h6'>Visualizar Vendedor Contrato</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -77,19 +77,25 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={formatCurrency(props?.row?.valorContrato || 0)}
+              value={formatCurrency(props?.row?.comissaoReais || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.periodicidade}
+              value={props?.row?.comissaoPercentual || null}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.bomControleContratoId || null}
+              value={props?.row?.clienteContratoId}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              value={props?.row?.vendedorId || null}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -120,9 +126,9 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteContratoView.acl = {
+SidebarVendedorContratoView.acl = {
   action: 'read',
-  subject: 'ac-clienteContrato-page'
+  subject: 'ac-vendedorContrato-page'
 }
 
-export default SidebarClienteContratoView
+export default SidebarVendedorContratoView

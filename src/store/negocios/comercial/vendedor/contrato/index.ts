@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
-  vendedorId: string
+  vendedorId: string | string[] | undefined
 }
 
 interface Redux {

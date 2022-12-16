@@ -36,7 +36,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusVendedores } from 'src/store/negocios/comercial/vendedor'
+import { fetchData, alterStatusVendedor } from 'src/store/negocios/comercial/vendedor'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -45,12 +45,12 @@ import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorType
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/vendedor/new/TableHeader'
-import ClienteAddDrawer from 'src/views/negocios/comercial/vendedor/new/VendedorAddDrawer'
+import VendedorAddDrawer from 'src/views/negocios/comercial/vendedor/new/VendedorAddDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ClientStatusType {
+interface VendedorStatusType {
   [key: string]: ThemeColor
 }
 
@@ -58,7 +58,7 @@ interface CellType {
   row: VendedorType
 }
 
-const clientStatusObj: ClientStatusType = {
+const VendedorStatusObj: VendedorStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
 }
@@ -70,11 +70,11 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders cliente column
-const renderClient = (row: VendedorType) => {
+const renderVendedor = (row: VendedorType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
-        {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
+        {getInitials(row.nome ? row.nome : 'NF')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -90,62 +90,24 @@ const RenderStatus = ({ status }: { status: string }) => {
       skin='light'
       size='small'
       label={t(status)}
-      color={clientStatusObj[status]}
+      color={VendedorStatusObj[status]}
       sx={{ textTransform: 'capitalize' }}
     />
   )
 }
 
-const formatCnpj = (cnpj: string) => {
-  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-}
-
-const formatCpf = (cpf: string) => {
-  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-}
-
 const defaultColumns = [
   {
-    flex: 0.2,
-    minWidth: 30,
+    flex: 0.1,
+    minWidth: 100,
     field: 'nome',
     headerName: 'Nome',
-    headerAlign: 'left' as const,
-    align: 'left' as const,
-    renderCell: ({ row }: CellType) => {
-      const { nomeFantasia, emailPrincipal } = row
-
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography
-              noWrap
-              component='a'
-              variant='body2'
-              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-            >
-              {nomeFantasia}
-            </Typography>
-            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📬{emailPrincipal}
-            </Typography>
-          </Box>
-        </Box>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'cnpj',
-    headerName: 'CNPJ',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCnpj(row.cnpj)}
+          {row.nome}
         </Typography>
       )
     }
@@ -153,59 +115,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'cpf',
-    headerName: 'CPF',
+    field: 'userId',
+    headerName: 'Id do usuário',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCpf(row.cpf)}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'telefonePrincipal',
-    headerName: 'Telefone principal',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.telefonePrincipal}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'cidade',
-    headerName: 'Cidade',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.cidade}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'Estado',
-    headerName: 'estado',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.estado}
+          {row.userId}
         </Typography>
       )
     }
@@ -221,7 +138,7 @@ const defaultColumns = [
   }
 ]
 
-const ClientList = () => {
+const VendedorList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -229,7 +146,7 @@ const ClientList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteAddOpen, setClienteAddOpen] = useState<boolean>(false)
+  const [vendedorAddOpen, setVendedorAddOpen] = useState<boolean>(false)
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.cliente)
@@ -247,7 +164,7 @@ const ClientList = () => {
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
-    dispatch(alterStatusVendedores(id))
+    dispatch(alterStatusVendedor(id))
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
@@ -276,7 +193,7 @@ const ClientList = () => {
     }
   }
 
-  const toggleClienteAddDrawer = () => setClienteAddOpen(!clienteAddOpen)
+  const toggleVendedorAddDrawer = () => setVendedorAddOpen(!vendedorAddOpen)
 
   const columns = [
     ...defaultColumns,
@@ -290,8 +207,8 @@ const ClientList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-page') && (
-            <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
+          {ability?.can('read', 'ac-vendedor-page') && (
+            <Link href={`/negocios/comercial/vendedor/view/${row.id}`} passHref>
               <Tooltip title={t('View')}>
                 <IconButton>
                   <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -299,16 +216,16 @@ const ClientList = () => {
               </Tooltip>
             </Link>
           )}
-          {ability?.can('update', 'ac-cliente-page') && (
+          {ability?.can('update', 'ac-vendedor-page') && (
             <Tooltip title={t('Edit')}>
-              <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
+              <Link href={`/negocios/comercial/vendedor/edit/${row.id}`} passHref>
                 <IconButton>
                   <PencilOutline fontSize='small' />
                 </IconButton>
               </Link>
             </Tooltip>
           )}
-          {ability?.can('update', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
+          {ability?.can('update', 'ac-vendedor-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }
@@ -319,14 +236,14 @@ const ClientList = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
-            title={<Typography variant='h5'>{t('Clients')}</Typography>}
-            subtitle={<Typography variant='body2'>{t('Clients listing')}.</Typography>}
+            title={<Typography variant='h5'>{t('Sellers')}</Typography>}
+            subtitle={<Typography variant='body2'>{t('Sellers listing')}.</Typography>}
           />
         </Grid>
-        {ability?.can('list', 'ac-cliente-page') ? (
+        {ability?.can('list', 'ac-vendedor-page') ? (
           <Grid item xs={12}>
             <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleClienteAddDrawer} />
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleVendedorAddDrawer} />
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -343,8 +260,8 @@ const ClientList = () => {
         ) : (
           'Você não tem permissão para ver este recurso.'
         )}
-        {ability?.can('create', 'ac-cliente-page') ? (
-          <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+        {ability?.can('create', 'ac-vendedor-page') ? (
+          <VendedorAddDrawer open={vendedorAddOpen} toggle={toggleVendedorAddDrawer} />
         ) : <></>}
       </Grid>
     </Grid>
@@ -353,9 +270,9 @@ const ClientList = () => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-ClientList.acl = {
+VendedorList.acl = {
   action: 'list',
-  subject: 'ac-cliente-page'
+  subject: 'ac-vendedor-page'
 }
 
-export default ClientList
+export default VendedorList
