@@ -10,8 +10,11 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
+import FormHelperText from '@mui/material/FormHelperText'
 
 // ** Third Party Imports
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports
@@ -64,6 +67,15 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+const schema = yup.object().shape({
+  comissaoPercentual: yup
+    .number()
+    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value),
+  comissaoReais: yup
+    .number()
+    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value)
+})
+
 const defaultValues = {
   comissaoReais: 0,
   comissaoPercentual: 0,
@@ -87,10 +99,12 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
   const { 
     reset,
     control,
-    handleSubmit 
+    handleSubmit,
+    formState: { errors }
   } = useForm({
-    defaultValues,
-    mode: 'onChange'
+    defaultValues: defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema)
   })
 
   // ** States
@@ -114,6 +128,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       data.clienteContratoId = props.clienteContratoId
       data.vendedorId = data.vendedor.id
 
+      debugger
       dispatch(addVendedorContratoWithoutUpdateState({...data}))
       toggle()
       reset()
