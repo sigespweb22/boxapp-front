@@ -25,7 +25,7 @@ interface Redux {
 }
 
 // ** Fetch Vendedor Contratos
-export const fetchData = createAsyncThunk('appClienteContratos/fetchData', async (params: DataParams) => {
+export const fetchData = createAsyncThunk('appVendedorContratos/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(vendedorContratoApiService.storageTokenKeyName)!
   const response = await axios
                             .get(vendedorContratoApiService.listAsync, {
@@ -182,7 +182,7 @@ export const deleteVendedorContrato = createAsyncThunk(
     }
 
     axios.delete(vendedorContratoApiService.deleteAsync+id, { headers }).then((resp) => {
-      dispatch(fetchData(getState().ClienteContrato.params))
+      dispatch(fetchData(getState().VendedorContrato.params))
       if (resp.status === 204) return toast.success("Contrato deletado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
