@@ -70,10 +70,12 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const schema = yup.object().shape({
   comissaoPercentual: yup
     .number()
-    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value),
+    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value)
+    .moreThan(-1),
   comissaoReais: yup
     .number()
     .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value)
+    .moreThan(-1)
 })
 
 const defaultValues = {
