@@ -105,26 +105,25 @@ const defaultColumns = [
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.nome}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'userId',
-    headerName: 'Id do usuário',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.userId}
-        </Typography>
-      )
+      {
+        const { nome } = row
+  
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {renderVendedor(row)}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Typography
+                noWrap
+                component='a'
+                variant='body2'
+                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+              >
+                {nome}
+              </Typography>
+            </Box>
+          </Box>
+        )
+      }
     }
   },
   {
@@ -149,7 +148,7 @@ const VendedorList = () => {
   const [vendedorAddOpen, setVendedorAddOpen] = useState<boolean>(false)
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.cliente)
+  const store = useSelector((state: RootState) => state.vendedor)
 
   useEffect(() => {
     dispatch(
