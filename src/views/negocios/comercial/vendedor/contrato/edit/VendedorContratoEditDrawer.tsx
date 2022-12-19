@@ -13,6 +13,8 @@ import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -59,6 +61,18 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+const schema = yup.object().shape({
+  comissaoPercentual: yup
+    .number()
+    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value)
+    .moreThan(-1),
+  comissaoReais: yup
+    .number()
+    .transform((value) => (isNaN(value) || value === null || value === undefined) ? 0 : value)
+    .moreThan(-1),
+})
+
+
 const defaultValues = {
   id: '',
   comissaoReais: 0,
@@ -81,8 +95,9 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
     setValue,
     handleSubmit
   } = useForm({
-      defaultValues,
-      mode: 'onChange'
+    defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema)
   })
 
   const config = {
@@ -182,42 +197,6 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
                   label='Commisão em percentual'
                   onChange={onChange}
                   placeholder='(e.g.: 10%)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='clienteContratoId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="string"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={value}
-                  label='Id contrato do cliente'
-                  onChange={onChange}
-                  placeholder='(e.g.: #ABC123)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='vendedorId'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type="string"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={value}
-                  label='Id do vendedor'
-                  onChange={onChange}
-                  placeholder='(e.g.: #ABC123)'
                 />
               )}
             />

@@ -140,37 +140,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.comissaoPercentual}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'clienteContratoId',
-    headerName: 'Id contrato do cliente',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.clienteContratoId}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'vendedorId',
-    headerName: 'Id do vendedor',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.vendedorId}
+          {row.comissaoPercentual + ' %'}
         </Typography>
       )
     }
@@ -194,7 +164,6 @@ const VendedorContratoTableList = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [vendedorContratoAddOpen, setVendedorContratoAddOpen] = useState<boolean>(false)
   const [vendedorContratoViewOpen, setVendedorContratoViewOpen] = useState<boolean>(false)
   const [vendedorContratoEditOpen, setVendedorContratoEditOpen] = useState<boolean>(false)
   const [row, setRow] = useState<VendedorContratoType | undefined>()
@@ -256,7 +225,6 @@ const VendedorContratoTableList = ({ id }: Props) => {
     }
   }
 
-  const toggleVendedorContratoAddDrawer = () => setVendedorContratoAddOpen(!vendedorContratoAddOpen)
   const toggleVendedorContratoViewDrawer = () => setVendedorContratoViewOpen(!vendedorContratoViewOpen)
   const toggleVendedorContratoEditDrawer = () => setVendedorContratoEditOpen(!vendedorContratoEditOpen)
 
@@ -310,9 +278,6 @@ const VendedorContratoTableList = ({ id }: Props) => {
         {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-vendedorContrato-page') &&
-                <TableHeader />
-              }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight
@@ -327,7 +292,6 @@ const VendedorContratoTableList = ({ id }: Props) => {
             </Card>
           </Grid>
         ) : "Você não tem permissão para ver este recurso."}
-        <VendedorContratoAddDrawer open={vendedorContratoAddOpen} toggle={toggleVendedorContratoAddDrawer} vendedorId={id} />
         <VendedorContratoViewDrawer open={vendedorContratoViewOpen} toggle={toggleVendedorContratoViewDrawer} row={row}/>
         <VendedorContratoEditDrawer open={vendedorContratoEditOpen} toggle={toggleVendedorContratoEditDrawer} row={row}/>
       </Grid>
