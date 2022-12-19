@@ -30,7 +30,7 @@ import { getInitials } from 'src/@core/utils/get-initials'
 import { useTranslation } from 'react-i18next'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/vendedor'
+import { fetchData } from 'src/store/negocios/comercial/vendedor/view'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
@@ -55,7 +55,7 @@ const VendedorViewLeft = ({id}: Props) => {
 
   // ** States
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.vendedor)
+  const store = useSelector((state: RootState) => state.vendedorView)
 
   const {
     setValue
@@ -133,8 +133,20 @@ const VendedorViewLeft = ({id}: Props) => {
                   <Typography variant='body2'>{store?.data.nome}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Id do usuário:</Typography>
-                  <Typography variant='body2'>{store?.data.userId}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
+                  <CustomChip
+                    skin='light'
+                    size='small'
+                    label={`${t(store?.data.status)}`}
+                    color={statusColors[store?.data.status]}
+                    sx={{
+                      height: 20,
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      borderRadius: '5px',
+                      textTransform: 'capitalize'
+                    }}
+                  />
                 </Box>
               </Box>
             </CardContent>

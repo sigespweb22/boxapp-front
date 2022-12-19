@@ -43,12 +43,20 @@ import { useTranslation } from 'react-i18next'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/vendedor'
+import { editVendedor, fetchData } from 'src/store/negocios/comercial/vendedor/view'
 
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
+interface ColorsType {
+  [key: string]: ThemeColor
+}
+
+const statusColors: ColorsType = {
+  ACTIVE: 'success',
+  INACTIVE: 'error'
+}
 
 interface Props {
   id: string | string[] | undefined
@@ -106,7 +114,7 @@ const VendedorEditLeft = ({id}: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
 
-  const renderClienteAvatar = () => {
+  const renderVendedorAvatar = () => {
     if (store) {
       return (
         <CustomAvatar
@@ -115,13 +123,19 @@ const VendedorEditLeft = ({id}: Props) => {
           color={'primary' as ThemeColor}
           sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
         >
-          {getInitials(store?.data.nomeFantasia || "CP")}
+          {getInitials(store?.data.nome || "CP")}
         </CustomAvatar>
       )
     } else {
       return null
     }
   }
+
+  const onSubmit = (data: VendedorType) => {
+    dispatch(editVendedor({ ...data  }))
+    handleEditClose()
+    reset()
+  }  
 
   // Handle Edit dialog
   const handleEditClickOpen = () => {
@@ -140,7 +154,7 @@ const VendedorEditLeft = ({id}: Props) => {
         <Grid item xs={12}>
           <Card>
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-              {renderClienteAvatar()}
+              {renderVendedorAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
                 {store?.data.nome}
               </Typography>
@@ -163,18 +177,28 @@ const VendedorEditLeft = ({id}: Props) => {
             <CardContent>
               <Typography variant='h6'>Detalhes</Typography>
               <Divider />
-              <Box sx={{ display: 'flex', mb: 0 }}>
+              <Box sx={{ display: 'flex', mb: 0, pt: 2, pb: 3 }}>
                 <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
                   {store?.data.nome}
                 </Typography>
               </Box>
-              <Box sx={{ pt: 2, pb: 2 }}>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Id do usuário:</Typography>
-                  <Typography variant='body2'>{store?.data.userId}</Typography>
-                </Box>
-              </Box>
+              <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
+                  <CustomChip
+                    skin='light'
+                    size='small'
+                    label={`${t(store?.data.status)}`}
+                    color={statusColors[store?.data.status]}
+                    sx={{
+                      height: 20,
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      borderRadius: '5px',
+                      textTransform: 'capitalize'
+                    }}
+                  />
+                </Box> 
             </CardContent>
 
             {ability?.can('update', 'ac-vendedor-page') &&
@@ -211,22 +235,6 @@ const VendedorEditLeft = ({id}: Props) => {
                               label='Nome'
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: John Doe)'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={12}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='userId'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label='Id do usuário'
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: #ABC123)'
                             />
                           )}
                         />
