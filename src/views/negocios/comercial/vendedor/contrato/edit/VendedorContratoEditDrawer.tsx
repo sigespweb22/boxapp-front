@@ -92,6 +92,10 @@ const isValidComissao = (data: VendedorContratoType) => {
   return true
 }
 
+const formatCurrency = (currency: number) => {
+  return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+}
+
 const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => {
   // ** Props
   const { open, toggle } = props
@@ -145,6 +149,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
     toggle()
     reset()
   }
+  debugger
 
   return (
     <Drawer
@@ -210,6 +215,20 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
                   placeholder='(e.g.: 10%)'
                 />
               )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label='Valor total do contrato'
+                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label='Nome do cliente vinculado ao contrato'
+                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

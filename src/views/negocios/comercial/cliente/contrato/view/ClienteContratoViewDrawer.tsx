@@ -77,18 +77,21 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Valor do contrato'
               value={formatCurrency(props?.row?.valorContrato || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              // label='Periodicidade'
               value={props?.row?.periodicidade}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              // label='Id do contrato(Bom Controle)'
               value={props?.row?.bomControleContratoId || null}
             />
           </FormControl>
@@ -101,6 +104,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
                 <TextField
                   disabled={true}
                   type='status'
+                  label='Status'
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
                 />
