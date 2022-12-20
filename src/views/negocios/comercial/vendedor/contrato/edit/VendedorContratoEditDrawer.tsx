@@ -35,6 +35,7 @@ import axios from 'axios'
 // ** Api Services
 import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 import vendedorContratoApiService from 'src/@api-center/negocios/comercial/vendedor/contrato/vendedorContratoApiService'
+import { toast } from 'react-toastify'
 
 interface SidebarVendedorContratoEditType {
   row: VendedorContratoType | undefined
@@ -83,6 +84,14 @@ const defaultValues = {
   status: '',
 }
 
+const isValidComissao = (data: VendedorContratoType) => {
+  if (data.comissaoReais != 0 && data.comissaoPercentual != 0) {
+    toast.warning('Permitido apenas uma das opções de comissionamento.')
+    return false
+  }
+  return true
+}
+
 const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => {
   // ** Props
   const { open, toggle } = props
@@ -124,10 +133,12 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const onSubmit = (data: VendedorContratoData) => {
-    dispatch(editVendedorContrato({ ...data,  }))
-    toggle()
-    reset()
+  const onSubmit = (data: VendedorContratoType): void => {
+    if (isValidComissao(data)) {
+      dispatch(editVendedorContrato({...data}))
+      toggle()
+      reset()
+    }
   }
 
   const handleClose = () => {
