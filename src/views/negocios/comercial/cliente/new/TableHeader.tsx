@@ -28,6 +28,7 @@ import Connection from 'mdi-material-ui/Connection'
 // ** Imports Api Services Imports
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
+import clienteContratoFaturaApiService from 'src/@api-center/negocios/comercial/cliente/contrato/fatura/clienteContratoFaturaApiService'
 
 // ** Import Axios
 import axios from 'axios'
@@ -54,7 +55,7 @@ interface TableHeaderProps {
   handleFilter: (val: string) => void
 }
 
-const options = ['Sincronizar Clientes a partir do Bom Controle', 'Sincronizar Contratos a partir do Bom Controle', 'Atualizar Periodicidade Contratos a partir do Bom Controle']
+const options = ['Sincronizar Clientes a partir do Bom Controle', 'Sincronizar Contratos a partir do Bom Controle', 'Sincronizar Faturas de contratos a partir do Bom Controle', 'Atualizar faturas de contratos a partir do Bom Controle', 'Atualizar Periodicidade Contratos a partir do Bom Controle']
 
 const TableHeader = (props: TableHeaderProps) => {
   // ** Hook
@@ -145,6 +146,56 @@ const TableHeader = (props: TableHeaderProps) => {
         });
       })
   }
+  
+  const sincronizarFaturasThirdPartyAsync = () => {
+    const storageTokenKeyName = window.localStorage.getItem(clienteContratoFaturaApiService.storageTokenKeyName)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storageTokenKeyName}`
+      }
+    }
+    const request = axios.get(clienteContratoFaturaApiService.sincronizarFromThirdPartyAsync, config)
+    request
+      .then((response) => {
+        setSuccess(true);
+        setLoading(false);
+
+        toast.success(`Fora(m) sincronizado(s) com sucesso ${response.data.totalSincronizado} faturas de contrato(s) de cliente(s).`)
+      }).catch((err) => {
+        setSuccess(true);
+        setLoading(false);
+        
+        const returnObj = Object.entries(err.response.data.errors);
+        returnObj.forEach((err: any) => {
+          toast.error(err[1].toString())
+        });
+      })
+  }
+
+  const atualizarFaturasContratos = () => {
+    const storageTokenKeyName = window.localStorage.getItem(clienteContratoFaturaApiService.storageTokenKeyName)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storageTokenKeyName}`
+      }
+    }
+    const request = axios.get(clienteContratoFaturaApiService.updateFromThirdPartyAsync, config)
+    request
+      .then((response) => {
+        setSuccess(true);
+        setLoading(false);
+
+        toast.success(`Fora(m) atualizados(s) com sucesso ${response.data.totalContratosAtualizados} fatura(s) de cliente(s).`)
+      }).catch((err) => {
+        setSuccess(true);
+        setLoading(false);
+
+        const returnObj = Object.entries(err.response.data.errors);
+        returnObj.forEach((err: any) => {
+          toast.error(err[1].toString())
+        });
+      })
+  }
 
   const atualizarPeriodicidadeContratos = () => {
     const storageTokenKeyName = window.localStorage.getItem(clienteApiService.storageTokenKeyName)
@@ -185,7 +236,14 @@ const TableHeader = (props: TableHeaderProps) => {
           sincronizarContratosThirdPartyAsync()
           break
         case "2":
+          sincronizarFaturasThirdPartyAsync()
+          break
+        case "3":
+          atualizarFaturasContratos()
+          break
+        case "4":
           atualizarPeriodicidadeContratos()
+          break
         default:
           return null
       }
@@ -249,7 +307,7 @@ const TableHeader = (props: TableHeaderProps) => {
                           {options.map((option, index) => (
                             <MenuItem
                               key={option}
-                              disabled={index === 3}
+                              disabled={index === 5}
                               selected={index === selectedIndex}
                               onClick={event => handleMenuItemClick(event, index)}
                             >
