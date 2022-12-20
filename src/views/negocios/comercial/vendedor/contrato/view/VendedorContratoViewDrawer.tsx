@@ -52,6 +52,8 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
 
   const { t } = useTranslation()
 
+  const porcentagem = `${props?.row?.comissaoPercentual}${'%'}`
+  
   return (
     <Drawer
       open={open}
@@ -71,31 +73,36 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='ID'
               value={props?.row?.id}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Commisão em reais'
               value={formatCurrency(props?.row?.comissaoReais || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              value={props?.row?.comissaoPercentual || null}
+              label='Commisão em percentual'
+              value={porcentagem || null}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
-              disabled={true}
-              value={props?.row?.clienteContratoId}
+                disabled={true}
+                label='Valor total do contrato'
+                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+          <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
-              disabled={true}
-              value={props?.row?.vendedorId || null}
+                disabled={true}
+                label='Nome do cliente vinculado ao contrato'
+                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -107,6 +114,7 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
                 <TextField
                   disabled={true}
                   type='status'
+                  label='Status'
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
                 />

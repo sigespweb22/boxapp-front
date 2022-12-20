@@ -1,3 +1,6 @@
+import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+
+
 export type VendedorContratoLayoutType = {
   id: string
 }
@@ -8,5 +11,6 @@ export type VendedorContratoType = {
   comissaoPercentual: number | null
   clienteContratoId: string
   vendedorId: string | null
+  clienteContrato: ClienteContratoType
   status: string
 }
