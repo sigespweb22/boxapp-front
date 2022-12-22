@@ -28,9 +28,11 @@ import Help from 'mdi-material-ui/Help'
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Custom Components Imports
+import TableHeader from 'src/views/sistema/rotinas/components/TableHeader'
 import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import PageHeader from 'src/@core/components/page-header'
+import RotinaEditDrawer from 'src/views/sistema/rotinas/edit/RotinaEditDrawer'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -42,9 +44,6 @@ import { fetchData, alterStatusRotina } from 'src/store/sistema/rotina'
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
-
-// ** Custom Components Imports
-import TableHeader from 'src/views/sistema/rotinas/components/TableHeader'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -160,6 +159,9 @@ const RotinaList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
+  const [rotinaEditOpen, setRotinaEditOpen] = useState<boolean>(false)
+  const [rotinaViewOpen, setRotinaViewOpen] = useState<boolean>(false)
+  const [row, setRow] = useState<RotinaType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.rotina)
@@ -178,6 +180,16 @@ const RotinaList = () => {
 
   const handleAlterStatus = (id: string | undefined) => {
     dispatch(alterStatusRotina(id))
+  }
+
+  const handleRotinaEdit = (row : RotinaType) => {
+    setRow(row)
+    setRotinaEditOpen(true)
+  }
+
+  const handleRotinaView = (row : RotinaType) => {
+    setRow(row)
+    setRotinaViewOpen(true)
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
@@ -206,6 +218,8 @@ const RotinaList = () => {
     }
   }
 
+  const toggleRotinaEditDrawer = () => setRotinaEditOpen(!rotinaEditOpen)
+
   const columns = [
     ...defaultColumns,
     {
@@ -218,25 +232,21 @@ const RotinaList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-cliente-page') && (
-            <Link href={`/negocios/comercial/cliente/view/${row.id}`} passHref>
-              <Tooltip title={t('View')}>
-                <IconButton>
-                  <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                </IconButton>
-              </Tooltip>
-            </Link>
-          )}
-          {ability?.can('update', 'ac-cliente-page') && (
-            <Tooltip title={t('Edit')}>
-              <Link href={`/negocios/comercial/cliente/edit/${row.id}`} passHref>
-                <IconButton>
-                  <PencilOutline fontSize='small' />
-                </IconButton>
-              </Link>
+          {ability?.can('read', 'ac-rotina-page') && (
+            <Tooltip title={t('View')}>
+              <IconButton onClick={() => handleRotinaView(row)}>
+                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
             </Tooltip>
           )}
-          {ability?.can('update', 'ac-cliente-page') && <RenderButton id={row.id} status={row.status} />}
+          {ability?.can('update', 'ac-rotina-page') && (
+            <Tooltip title={t('Edit')}>
+              <IconButton onClick={() => handleRotinaEdit(row)}>
+                <PencilOutline fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          )}
+          {ability?.can('update', 'ac-rotina-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }
@@ -271,6 +281,7 @@ const RotinaList = () => {
         ) : (
           'Você não tem permissão para ver este recurso.'
         )}
+        <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
       </Grid>
     </Grid>
   )
