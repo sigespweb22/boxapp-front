@@ -22,7 +22,8 @@ import fornecedorView from 'src/store/negocios/parceiros/fornecedor/view'
 import vendedor from 'src/store/negocios/comercial/vendedor'
 import vendedorView from 'src/store/negocios/comercial/vendedor/view'
 import vendedorContrato from 'src/store/negocios/comercial/vendedor/contrato'
-import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
+import rotina from 'src/store/sistema/rotina'
+import chaveApi from 'src/store/sistema/configuracoes/chave-api'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -48,6 +49,7 @@ export const store = configureStore({
     vendedor,
     vendedorView,
     vendedorContrato,
+    rotina,
     chat,
     email,
     calendar

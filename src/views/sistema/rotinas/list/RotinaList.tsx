@@ -36,12 +36,11 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClientes } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusRotina } from 'src/store/sistema/rotina'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 // ** Custom Components Imports
@@ -50,15 +49,15 @@ import TableHeader from 'src/views/sistema/rotinas/components/TableHeader'
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
-interface ClientStatusType {
+interface RotinaStatusType {
   [key: string]: ThemeColor
 }
 
 interface CellType {
-  row: ClienteType
+  row: RotinaType
 }
 
-const clientStatusObj: ClientStatusType = {
+const rotinaStatusObj: RotinaStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
 }
@@ -70,11 +69,11 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders cliente column
-const renderClient = (row: ClienteType) => {
+const renderRotinaNome = (row: RotinaType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
-        {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
+        {getInitials(row.nome ? row.nome : 'NF')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
@@ -90,18 +89,10 @@ const RenderStatus = ({ status }: { status: string }) => {
       skin='light'
       size='small'
       label={t(status)}
-      color={clientStatusObj[status]}
+      color={rotinaStatusObj[status]}
       sx={{ textTransform: 'capitalize' }}
     />
   )
-}
-
-const formatCnpj = (cnpj: string) => {
-  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-}
-
-const formatCpf = (cpf: string) => {
-  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
 }
 
 const defaultColumns = [
@@ -113,11 +104,11 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { nomeFantasia, emailPrincipal } = row
+      const { nome, chaveSequencial } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
+          {renderRotinaNome(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -125,10 +116,10 @@ const defaultColumns = [
               variant='body2'
               sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
             >
-              {nomeFantasia}
+              {nome}
             </Typography>
             <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📬{emailPrincipal}
+              🔑{chaveSequencial}
             </Typography>
           </Box>
         </Box>
@@ -138,74 +129,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'cnpj',
-    headerName: 'CNPJ',
+    field: 'descricao',
+    headerName: 'Descrição',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCnpj(row.cnpj)}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'cpf',
-    headerName: 'CPF',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {formatCpf(row.cpf)}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'telefonePrincipal',
-    headerName: 'Telefone principal',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.telefonePrincipal}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'cidade',
-    headerName: 'Cidade',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.cidade}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'Estado',
-    headerName: 'estado',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.estado}
+          {row.descricao}
         </Typography>
       )
     }
@@ -229,11 +160,9 @@ const RotinaList = () => {
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [clienteAddOpen, setClienteAddOpen] = useState<boolean>(false)
-  const [rotinas, setRotinas] = useState<RotinaType>('')
 
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.cliente)
+  const store = useSelector((state: RootState) => state.rotina)
 
   useEffect(() => {
     dispatch(
@@ -248,7 +177,7 @@ const RotinaList = () => {
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
-    dispatch(alterStatusClientes(id))
+    dispatch(alterStatusRotina(id))
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
