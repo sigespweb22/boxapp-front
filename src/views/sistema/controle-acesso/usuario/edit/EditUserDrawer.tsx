@@ -157,6 +157,8 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                 <TextField
                   disabled
                   value={value}
+                  defaultValue='.'
+                  label='ID'
                 />
               )}
             />
@@ -172,6 +174,8 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: Loren Ipsun)'
                   error={Boolean(errors.fullName)}
+                  defaultValue='.'
+                  label='Nome completo'
                 />
               )}
             />
@@ -188,6 +192,8 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: loren@dominio.com'
                   error={Boolean(errors.email)}
+                  defaultValue='.'
+                  label='Email'
                 />
               )}
             />

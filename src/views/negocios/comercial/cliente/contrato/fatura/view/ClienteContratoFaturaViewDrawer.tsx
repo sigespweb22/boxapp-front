@@ -1,3 +1,6 @@
+// ** React Imports
+import { useForm } from 'react-hook-form'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -8,8 +11,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
 // ** Third Party Imports
-import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
-import { useForm, Controller } from 'react-hook-form'
+import { ClienteContratoFaturaType } from 'src/types/negocios/comercial/cliente/contrato/fatura/clienteContratoFaturaTypes'
 
 // ** Copmponents Imports
 import { useTranslation } from 'react-i18next'
@@ -17,8 +19,15 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarVendedorContratoViewType {
-  row: VendedorContratoType | undefined
+// ** Types Imports
+import { AppDispatch } from 'src/store'
+
+// ** Store Imports
+import { useDispatch } from 'react-redux'
+
+
+interface SidebarClienteContratoFaturaViewType {
+  row: ClienteContratoFaturaType | undefined
   open: boolean
   toggle: () => void
 }
@@ -31,15 +40,16 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
+
 const formatCurrency = (currency: number) => {
   return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => {
+const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaViewType) => {
   // ** Hook
+  const dispatch = useDispatch<AppDispatch>()
   const {
-    reset,
-    control
+    reset
   } = useForm()
 
   // ** Props
@@ -52,8 +62,6 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
 
   const { t } = useTranslation()
 
-  const porcentagem = `${props?.row?.comissaoPercentual}${'%'}`
-  
   return (
     <Drawer
       open={open}
@@ -65,7 +73,7 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Vendedor Contrato</Typography>
+        <Typography variant='h6'>Visualizar Cliente Contrato</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -75,54 +83,56 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
               disabled={true}
               label='ID'
               value={props?.row?.id}
-              defaultValue='.'
+              defaultValue="."
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Commisão em reais'
-              value={formatCurrency(props?.row?.comissaoReais || 0)}
+              label='Data vencimento'
+              value={props?.row?.dataVencimento}
+              defaultValue="."
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled
+              label='Data competencia'
+              value={props?.row?.dataCompetencia}
+              defaultValue="."
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Commisão em percentual'
-              value={porcentagem || null}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label='Valor total do contrato'
-                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label='Nome do cliente vinculado ao contrato'
-                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
+              label='Valor da fatura'
+              value={formatCurrency(props?.row?.valor || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='status'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange } }) => (
-                <TextField
-                  disabled={true}
-                  type='status'
-                  label='Status'
-                  value={t(props?.row?.status || '')}
-                  onChange={onChange}
-                />
-              )}
+            <TextField
+              disabled={true}
+              label='Desconto'
+              value={formatCurrency(props?.row?.desconto || 0)}
             />
           </FormControl>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              label='Número da parcela'
+              value={props?.row?.numeroParcela}
+              defaultValue="."
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              label='Quitado'
+              value={props?.row?.quitado}
+              defaultValue="."
+            />
+          </FormControl>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
               Cancelar
             </Button>
@@ -135,9 +145,9 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarVendedorContratoView.acl = {
+SidebarClienteContratoFaturaView.acl = {
   action: 'read',
-  subject: 'ac-vendedorContrato-page'
+  subject: 'ac-clienteContratoFatura-page'
 }
 
-export default SidebarVendedorContratoView
+export default SidebarClienteContratoFaturaView

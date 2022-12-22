@@ -69,6 +69,8 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
             <TextField
               disabled={true}
               value={props?.row?.name}
+              label='Nome do grupo'
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -83,6 +85,8 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
                   placeholder='(e.g.: ATIVO)'
+                  defaultValue='.'
+                  label='Status'
                 />
               )}
             />

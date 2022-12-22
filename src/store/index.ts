@@ -22,8 +22,13 @@ import fornecedorView from 'src/store/negocios/parceiros/fornecedor/view'
 import vendedor from 'src/store/negocios/comercial/vendedor'
 import vendedorView from 'src/store/negocios/comercial/vendedor/view'
 import vendedorContrato from 'src/store/negocios/comercial/vendedor/contrato'
+<<<<<<< HEAD
 import rotina from 'src/store/sistema/rotina'
 import chaveApi from 'src/store/sistema/configuracoes/chave-api'
+=======
+import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
+import relatorioVendedores from 'src/store/negocios/relatorios/vendedores/index'
+>>>>>>> 6d1977a2d3a1521e10a016daf271c242e85996ec
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -49,7 +54,11 @@ export const store = configureStore({
     vendedor,
     vendedorView,
     vendedorContrato,
+<<<<<<< HEAD
     rotina,
+=======
+    relatorioVendedores,
+>>>>>>> 6d1977a2d3a1521e10a016daf271c242e85996ec
     chat,
     email,
     calendar
