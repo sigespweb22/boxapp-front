@@ -33,6 +33,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import PageHeader from 'src/@core/components/page-header'
 import RotinaEditDrawer from 'src/views/sistema/rotinas/edit/RotinaEditDrawer'
+import RotinaViewDrawer from 'src/views/sistema/rotinas/view/RotinaViewDrawer'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -219,6 +220,7 @@ const RotinaList = () => {
   }
 
   const toggleRotinaEditDrawer = () => setRotinaEditOpen(!rotinaEditOpen)
+  const toggleRotinaViewDrawer = () => setRotinaViewOpen(!rotinaViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -282,6 +284,7 @@ const RotinaList = () => {
           'Você não tem permissão para ver este recurso.'
         )}
         <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
+        <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )

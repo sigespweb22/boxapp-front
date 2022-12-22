@@ -10,9 +10,6 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 
-// ** InputMask Imports
-import InputMask from 'react-input-mask'
-
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
 
@@ -107,7 +104,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Api key Edit")}</Typography>
+        <Typography variant='h6'>{t("Routine Edit")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -135,7 +132,6 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   onChange={onChange}
                   label='Nome'
                   placeholder='(e.g.: Sincronização de clientes)'
-                  defaultValue='.'
                 />
               )}
             />
