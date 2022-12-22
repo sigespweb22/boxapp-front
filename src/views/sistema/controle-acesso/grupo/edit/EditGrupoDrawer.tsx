@@ -154,7 +154,9 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
                 render={({ field: { value } }) => (
                   <TextField
                     disabled
+                    label='ID'
                     value={value}
+                    defaultValue='.'
                   />
                 )}
               />
@@ -170,6 +172,8 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: Master)'
                   error={Boolean(errors.name)}
+                  label='Nome do grupo'
+                  defaultValue='.'
                 />
               )}
             />

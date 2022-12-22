@@ -125,7 +125,9 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
               render={({ field: { value } }) => (
                 <TextField
                   disabled
+                  label='ID'
                   value={value}
+                  defaultValue='.'
                 />
               )}
             />
@@ -139,7 +141,9 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
                   disabled={true}
                   value={value}
                   onChange={onChange}
+                  label='Api Terceiro'
                   placeholder='(e.g.: Bom controle)'
+                  defaultValue='.'
                 />
               )}
             />

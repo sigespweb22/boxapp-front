@@ -63,36 +63,47 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='ID'
               value={props?.row?.id}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Api Terceiro'
               value={props?.row?.apiTerceiro}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Chave Bom Controle'
               value={props?.row?.key}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Descrição'
               value={props?.row?.descricao}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Data de validade'
               value={props?.row?.dataValidade}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
+              label='Status'
               value={t(`${props?.row?.status}`)}
             />
           </FormControl>

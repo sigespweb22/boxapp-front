@@ -76,6 +76,8 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                   value={props?.row?.fullName}
                   onChange={onChange}
                   placeholder='(e.g.: Alan Rezende)'
+                  defaultValue='.'
+                  label='Nome'
                 />
               )}
             />
@@ -92,6 +94,8 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                   value={props?.row?.email}
                   onChange={onChange}
                   placeholder='(e.g.: alan.rezende@email.com)'
+                  defaultValue='.'
+                  label='Email'
                 />
               )}
             />
@@ -108,6 +112,8 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
                   placeholder='(e.g.: ATIVO)'
+                  defaultValue='.'
+                  label='Status'
                 />
               )}
             />
