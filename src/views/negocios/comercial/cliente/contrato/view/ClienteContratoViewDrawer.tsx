@@ -1,3 +1,6 @@
+// ** React Imports
+import { useContext, useState, useEffect } from 'react'
+
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
@@ -18,6 +21,7 @@ import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
 import { useTranslation } from 'react-i18next'
+import ClienteContratoFaturaViewDrawer from 'src/views/negocios/comercial/cliente/contrato/fatura/view/ClienteContratoFaturaViewDrawer'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -27,9 +31,15 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material'
 import { EyeOutline } from 'mdi-material-ui'
-import { useContext, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from 'src/store'
+
+// ** Actions Imports
+import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/fatura/index'
+
+// ** Types Imports
+import { RootState, AppDispatch } from 'src/store'
+
+// ** Store Imports
+import { useDispatch, useSelector } from 'react-redux'
 
 interface SidebarClienteContratoViewType {
   row: ClienteContratoType | undefined
@@ -40,7 +50,6 @@ interface SidebarClienteContratoViewType {
 interface CellType {
   row: ClienteContratoFaturaType
 }
-
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -98,42 +107,10 @@ const RenderStatus = ({ status } : { status: string }) => {
   )
 }
 
-debugger
-
 const defaultColumns = [
   {
-    flex: 0.08,
-    minWidth: 30,
-    field: 'dataVencimento',
-    headerName: 'Data do vencimento',
-    headerAlign: 'left' as const,
-    align: 'left' as const,
-    renderCell: ({ row }: CellType) => {
-      const { dataVencimento } = row
-
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderContratoNome(row)}
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography
-              noWrap
-              component='a'
-              variant='body2'
-              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-            >
-              {dataVencimento}
-            </Typography>
-            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-              📝{dataVencimento}
-            </Typography>
-          </Box>
-        </Box>
-      )
-    }
-  },
-  {
     flex: 0.1,
-    minWidth: 100,
+    minWidth: 118,
     field: 'dataCompetencia',
     headerName: 'Data competencia',
     headerAlign: 'center' as const,
@@ -147,14 +124,29 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.04,
-    minWidth: 50,
-    field: 'status',
-    headerName: 'Status',
+    flex: 0.1,
+    minWidth: 100,
+    field: 'valor',
+    headerName: 'Valor',
     headerAlign: 'center' as const,
     align: 'center' as const,
-    renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
-  }
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.valor}
+        </Typography>
+      )
+    }
+  },
+  // {
+  //   flex: 0.04,
+  //   minWidth: 50,
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   headerAlign: 'center' as const,
+  //   align: 'center' as const,
+  //   renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
+  // }
 ]
 
 const formatCurrency = (currency: number) => {
@@ -164,6 +156,9 @@ const formatCurrency = (currency: number) => {
 const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
   // ** Hook
   const [pageSize, setPageSize] = useState<number>(10)
+  const [row, setRow] = useState<ClienteContratoFaturaType | undefined>()
+  const [clienteContratoFaturaViewOpen, setClienteContratoFaturaViewOpen] = useState<boolean>(false)
+  const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteContratoFatura)
   const ability = useContext(AbilityContext)
   const {
@@ -171,6 +166,18 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
     control
   } = useForm()
 
+  useEffect(() => {
+    dispatch(
+      fetchData({
+        clienteContratoId: props?.row?.id
+      })
+    )
+  }, [dispatch, props?.row?.id])
+
+  const handleViewClienteContratoFatura = (row : ClienteContratoFaturaType) => {
+    setRow(row)
+    setClienteContratoFaturaViewOpen(true)
+  }
 
   // ** Props
   const { open, toggle } = props
@@ -181,6 +188,8 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
   }
 
   const { t } = useTranslation()
+
+  const toggleClienteContratoFaturaViewDrawer = () => setClienteContratoFaturaViewOpen(!clienteContratoFaturaViewOpen)
 
   const columns = [
     ...defaultColumns,
@@ -194,11 +203,10 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-clienteContrato-page') &&
+          {ability?.can('read', 'ac-clienteContratoFatura-page') &&
             <Tooltip title={t("View")}>
-              <IconButton>
+              <IconButton onClick={() => handleViewClienteContratoFatura(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-                {row.valor}
               </IconButton>
             </Tooltip>
           }
@@ -283,6 +291,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
               onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
               />
           </FormControl>
+          <ClienteContratoFaturaViewDrawer open={clienteContratoFaturaViewOpen} toggle={toggleClienteContratoFaturaViewDrawer} row={row}/>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
               Cancelar

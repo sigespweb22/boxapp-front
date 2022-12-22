@@ -8,7 +8,7 @@ import axios from 'axios'
 import clienteContratoFaturaApiService from 'src/@api-center/negocios/comercial/cliente/contrato/fatura/clienteContratoFaturaApiService'
 
 interface DataParams {
-  clienteId: string | string[] | undefined
+  clienteContratoId: string | undefined
 }
 
 // ** Fetch Cliente Contrato Faturas
