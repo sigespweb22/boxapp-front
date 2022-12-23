@@ -56,17 +56,22 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
   // ** Hooks
   const {
     reset,
+    control,
+    setValue,
   } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange'
   })
 
   // ** States
-  const [values, setValues] = useState<RotinaType>(defaultValues)
-
   useEffect(() => {
     if(props?.row){
-      setValues(props?.row)
+      setValue('id', props?.row?.id || '')
+      setValue('nome', props?.row?.nome || '')
+      setValue('descricao', props?.row?.descricao || '')
+      setValue('observacao', props?.row?.observacao || '')
+      setValue('chaveSequencial', props?.row?.chaveSequencial || '')
+      setValue('status', props?.row?.status || '')
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,45 +98,81 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
       <Box sx={{ p: 5 }}>
         <form>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={values.id}
-              label='Id'
+            <Controller
+              name='id'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Id'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={values.nome}
-              label='Nome'
+            <Controller
+              name='nome'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Nome'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={values.descricao}
-              label='Descrição'
+            <Controller
+              name='descricao'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Descrição'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={values.observacao}
-              label='Observação'
+            <Controller
+              name='observacao'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Observação'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={values.chaveSequencial}
-              label='Chave sequencia'
+            <Controller
+              name='chaveSequencial'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label='Chave sequencial'
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              value={t(values.status)}
-              label='Status'
+            <Controller
+              name='status'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={t(value)}
+                  label='Status'
+                />
+              )}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

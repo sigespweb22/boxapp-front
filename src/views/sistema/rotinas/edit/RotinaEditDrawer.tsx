@@ -47,12 +47,13 @@ const defaultValues = {
   id: '',
   nome: '',
   descricao: '',
-  observacao: '',
+  observacao: '.',
   chaveSequencial: '',
   status: ''
 }
 
 const RotinaEditDrawer = (props: RotinaEditType) => {
+  debugger
   // ** Hook
   const { t } = useTranslation()
 
@@ -79,15 +80,15 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
 
   useEffect(() => {
     if(props?.row){
-      setValue('id', props?.row?.id)
-      setValue('nome', props?.row?.nome)
-      setValue('descricao', props?.row?.descricao)
-      setValue('observacao', props?.row?.observacao)
-      setValue('chaveSequencial', props?.row?.chaveSequencial)
+      setValue('id', props?.row?.id || '')
+      setValue('nome', props?.row?.nome || '')
+      setValue('descricao', props?.row?.descricao || '')
+      setValue('observacao', props?.row?.observacao || '')
+      setValue('chaveSequencial', props?.row?.chaveSequencial || '')
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props?.row])
+  }, [props])
 
   const handleClose = () => {
     toggle()
