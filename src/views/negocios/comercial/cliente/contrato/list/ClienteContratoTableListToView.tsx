@@ -228,7 +228,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de contratos
+                {t('List of contracts')}
               </Typography>
             }
           />
