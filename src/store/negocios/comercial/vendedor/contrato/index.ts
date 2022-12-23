@@ -50,7 +50,6 @@ export const addVendedorContrato = createAsyncThunk(
     }
 
     axios.post(vendedorContratoApiService.addAsync, data, config).then((resp) => {
-      debugger
       dispatch(fetchData({vendedorId: resp.data.vendedorId }))
       if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Contrato vinculado ao vendedor com sucesso.")

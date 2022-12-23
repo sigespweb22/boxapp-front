@@ -1,5 +1,5 @@
 // ** React Imports
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -49,7 +49,8 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
   // ** Hook
   const dispatch = useDispatch<AppDispatch>()
   const {
-    reset
+    reset,
+    control
   } = useForm()
 
   // ** Props
@@ -125,11 +126,19 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              label='Quitado'
-              value={props?.row?.quitado}
-              defaultValue="."
+            <Controller
+              name='quitado'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange } }) => (
+                <TextField
+                  disabled={true}
+                  type='quitado'
+                  label='Quitado'
+                  value={props?.row?.status || ''}
+                  onChange={onChange}
+                />
+              )}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>

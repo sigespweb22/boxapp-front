@@ -190,8 +190,6 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteContrato)
 
-  debugger
-
   useEffect(() => {
     setValue(id)
   }, [id])

@@ -9,7 +9,6 @@ export type ClienteContratoFaturaType = {
   valor: number
   desconto: number | null
   numeroParcela: number | null
-  quitado: boolean
   status: string
 }
 
@@ -19,6 +18,5 @@ export type ClienteContratoFaturaAddType = {
   valor: number
   desconto: number | null
   numeroParcela: number | null
-  quitado: boolean | null
   status: string
 }

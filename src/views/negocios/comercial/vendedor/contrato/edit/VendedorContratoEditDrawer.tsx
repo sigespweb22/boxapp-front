@@ -149,7 +149,6 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
     toggle()
     reset()
   }
-  debugger
 
   return (
     <Drawer
