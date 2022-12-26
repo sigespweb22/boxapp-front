@@ -13,11 +13,11 @@ import GoogleCirclesGroup from 'mdi-material-ui/GoogleCirclesGroup'
 import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 import { useForm, Controller } from 'react-hook-form'
 
-// ** Copmponents Imports
-import { useTranslation } from 'react-i18next'
-
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
+
+// Import Translate
+import { useTranslation } from 'react-i18next'
 
 interface SidebarViewUserType {
   row: UsersType | undefined
@@ -60,7 +60,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Usuário</Typography>
+        <Typography variant='h6'>{t("View User")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -77,7 +77,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
                   onChange={onChange}
                   placeholder='(e.g.: Alan Rezende)'
                   defaultValue='.'
-                  label='Nome'
+                  label={t("Name")}
                 />
               )}
             />
@@ -125,7 +125,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
               render={() => {
                 return (
                   <FormControl fullWidth>
-                    <Box sx={{ fontSize: 16, mb: "10px" }}>Grupos</Box>
+                    <Box sx={{ fontSize: 16, mb: "10px" }}>{t("Groups")}</Box>
                     {props?.row?.applicationUserGroups.map(group =>
                        {
                         return (
@@ -145,7 +145,7 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

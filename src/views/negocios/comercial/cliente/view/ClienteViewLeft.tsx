@@ -146,23 +146,89 @@ const ClienteViewLeft = ({id}: Props) => {
             </CardContent>
 
             <CardContent>
-              <Typography variant='h6'>Detalhes</Typography>
+              <Typography variant='h6'>{t("Details")}</Typography>
               <Divider />
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tipo pessoa:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Person type")}:</Typography>
                   <Typography variant='body2'>{store?.data.tipoPessoa}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome fantasia:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Trading name")}:</Typography>
                   <Typography variant='body2'>{store?.data.nomeFantasia}</Typography>
                 </Box>
                 {store.data.tipoPessoa === 'JURIDICA' &&
                   <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Razão Social:</Typography>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Corporate Name")}:</Typography>
                     <Typography variant='body2'>{store?.data.razaoSocial}</Typography>
                   </Box>
                 }
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("State registration")}:</Typography>
+                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
+                      {store?.data.inscricaoEstadual}
+                    </Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Federal registration")}:</Typography>
+                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
+                  </Box>
+                }
+                {store.data.tipoPessoa === 'FISICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Individual Taxpayer Registration")}:</Typography>
+                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
+                  </Box>
+                }
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Phone number")}:</Typography>
+                  <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("E-mail")}:</Typography>
+                  <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Observation")}:</Typography>
+                  <Typography variant='body2'>{store?.data.observacao}</Typography>
+                </Box>
+                {store.data.tipoPessoa === 'JURIDICA' &&
+                  <Box sx={{ display: 'flex', mb: 2.7 }}>
+                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Foundation date")}:</Typography>
+                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
+                  </Box>
+                }
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("City code")}:</Typography>
+                  <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Street")}:</Typography>
+                  <Typography variant='body2'>{store?.data.rua}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Number")}:</Typography>
+                  <Typography variant='body2'>{store?.data.numero}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Address complement")}:</Typography>
+                  <Typography variant='body2'>{store?.data.complemento}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("State")}:</Typography>
+                  <Typography variant='body2'>{store?.data.estado}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("City")}:</Typography>
+                  <Typography variant='body2'>{store?.data.cidade}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Zip code")}:</Typography>
+                  <Typography variant='body2'>{store?.data.cep}</Typography>
+                </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
@@ -179,72 +245,6 @@ const ClienteViewLeft = ({id}: Props) => {
                     }}
                   />
                 </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Inscrição Estadual:</Typography>
-                    <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                      {store?.data.inscricaoEstadual}
-                    </Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                    <Typography variant='body2'>{formatCnpj(store?.data.cnpj)}</Typography>
-                  </Box>
-                }
-                {store.data.tipoPessoa === 'FISICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cnpj:</Typography>
-                    <Typography variant='body2'>{formatCpf(store?.data.cpf)}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Telefone Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.telefonePrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>E-mail Principal:</Typography>
-                  <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Observação:</Typography>
-                  <Typography variant='body2'>{store?.data.observacao}</Typography>
-                </Box>
-                {store.data.tipoPessoa === 'JURIDICA' &&
-                  <Box sx={{ display: 'flex', mb: 2.7 }}>
-                    <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Data fundação:</Typography>
-                    <Typography variant='body2'>{store?.data.dataFundacao}</Typography>
-                  </Box>
-                }
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Código Município:</Typography>
-                  <Typography variant='body2'>{store?.data.codigoMunicipio}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Rua:</Typography>
-                  <Typography variant='body2'>{store?.data.rua}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Número:</Typography>
-                  <Typography variant='body2'>{store?.data.numero}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Complemento:</Typography>
-                  <Typography variant='body2'>{store?.data.complemento}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Estado:</Typography>
-                  <Typography variant='body2'>{store?.data.estado}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cidade:</Typography>
-                  <Typography variant='body2'>{store?.data.cidade}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Cep:</Typography>
-                  <Typography variant='body2'>{store?.data.cep}</Typography>
-                </Box>
               </Box>
             </CardContent>
           </Card>
@@ -256,8 +256,8 @@ const ClienteViewLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Lsitagem de clientes</Link>
+            {t("Client with id")}: {id} {t("Does not exist. Please check the client listing")}:{' '}
+            <Link href='/pages/negocios/comercial/cliente/list'>{t("Clients listing")}</Link>
           </Alert>
         </Grid>
       </Grid>

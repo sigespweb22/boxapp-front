@@ -28,6 +28,9 @@ import { Settings } from 'src/@core/context/settingsContext'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { Abilities } from 'src/context/types'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   settings: Settings
 }
@@ -120,6 +123,7 @@ const formatGroup = (groups: GroupData[]) => {
 
 const UserDropdown = (props: Props) => {
   // ** Props
+  const { t } = useTranslation()
   const { settings } = props
 
   // ** States
@@ -216,7 +220,7 @@ const UserDropdown = (props: Props) => {
               <Tooltip title={value.fullName}>
                 <Typography sx={{ fontWeight: 600 }}>{capitalizeFullName(value.fullName)}</Typography>
               </Tooltip>
-              <Tooltip title='Grupo(s) com a(s) permissão(ões) de acesso'>
+              <Tooltip title={t("Group(s) with access permission(s)")}>
                 <LockCheckOutline fontSize='small' sx={{ mr: 2,  color: 'success.main' }} />
               </Tooltip>
               <Tooltip title={formatGroupsToTooltip(value.applicationUserGroups.map(x => x.name))}>
@@ -236,13 +240,13 @@ const UserDropdown = (props: Props) => {
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/sistema/controle-acesso/usuario/perfil/${value.id}`, )}>
           <Box sx={styles}>
             <AccountOutline sx={{ mr: 2 }} />
-            Perfil
+            {t("Profile")}
           </Box>
         </MenuItem>
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
           <LogoutVariant sx={{ mr: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-          Sair
+          {t("Log out")}
         </MenuItem>
       </Menu>
     </Fragment>

@@ -172,10 +172,10 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  placeholder='(e.g.: Ex.: Loren Ipsun)'
+                  placeholder='(e.g.: John Doe)'
                   error={Boolean(errors.fullName)}
                   defaultValue='.'
-                  label='Nome completo'
+                  label={t("Full name")}
                 />
               )}
             />
@@ -213,7 +213,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                     id="autocomplete-multiple-outlined"
                     getOptionLabel={option => option.name}
                     renderInput={params => (
-                      <TextField {...params} label="Grupos" placeholder='(e.g.: Master)' />
+                      <TextField {...params} label={t("Groups")} placeholder='(e.g.: Master)' />
                     )}
                     onChange={(event, newValue) => {
                       setGroup(newValue)
@@ -226,10 +226,10 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>
