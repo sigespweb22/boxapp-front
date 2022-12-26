@@ -23,6 +23,7 @@ import ElevatorDown from 'mdi-material-ui/ElevatorDown'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import Help from 'mdi-material-ui/Help'
+import PlayBox from 'mdi-material-ui/PlayBox'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,6 +42,9 @@ import { getInitials } from 'src/@core/utils/get-initials'
 // ** Actions Imports
 import { fetchData, alterStatusRotina } from 'src/store/sistema/rotina'
 
+// ** Api services imports
+import rotinaApiService from 'src/@api-center/sistema/rotinas/rotinaApiService'
+
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
@@ -48,6 +52,7 @@ import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
+import axios from 'axios'
 
 interface RotinaStatusType {
   [key: string]: ThemeColor
@@ -167,6 +172,12 @@ const RotinaList = () => {
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.rotina)
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(rotinaApiService.storageTokenKeyName)!}` 
+    }
+  }
+
   useEffect(() => {
     dispatch(
       fetchData({
@@ -191,6 +202,12 @@ const RotinaList = () => {
   const handleRotinaView = (row : RotinaType) => {
     setRow(row)
     setRotinaViewOpen(true)
+  }
+
+  const handleRotinaPlay = (row: RotinaType) => {
+    debugger
+    axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}`, {}, config)
+    alert(row.dispatcherRoute)
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
@@ -234,6 +251,13 @@ const RotinaList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('create', 'ac-cliente-page') && (
+            <Tooltip title="Rodar rotina">
+              <IconButton onClick={() => handleRotinaPlay(row)}>
+                <PlayBox fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          )}
           {ability?.can('read', 'ac-rotina-page') && (
             <Tooltip title={t('View')}>
               <IconButton onClick={() => handleRotinaView(row)}>
