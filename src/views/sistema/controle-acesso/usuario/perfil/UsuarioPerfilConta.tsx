@@ -34,6 +34,9 @@ import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService
 // ** Axios Imports
 import axios from 'axios'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
   height: 120,
@@ -87,6 +90,7 @@ const defaultValues: UsuarioContaData = {
 
 const UsuarioPerfilConta = (props: Props) => {
   // ** States
+  const { t } = useTranslation()
   const [groups, setGroups] = useState<ApplicationUserGroup[]>([])
 
   // ** Hooks
@@ -177,7 +181,7 @@ const UsuarioPerfilConta = (props: Props) => {
                   />
               <Box>
                 <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Escolher Nova Foto
+                  {t("Choose new photo")}
                   <input
                     hidden
                     type='file'
@@ -187,16 +191,16 @@ const UsuarioPerfilConta = (props: Props) => {
                   />
                 </ButtonStyled>
                 <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgPadrao('MASCULINA')}>
-                  Foto padrão (Masculina)
+                  {t("Standard photo (Male)")}
                 </ResetButtonStyled>
                 <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgPadrao('FEMININA')}>
-                  Foto padrão (Feminina)
+                  {t("Standard photo (Female)")}
                 </ResetButtonStyled>
                 <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgPadrao('OUTRO')}>
-                  Foto padrão (Outro)
+                  {t("Standard photo (Other)")}
                 </ResetButtonStyled>
                 <Typography variant='body2' sx={{ mt: 5 }}>
-                  Apenas PNG ou JPEG. Tamanho máximo de 800K.
+                  {t("Just PNG or JPEG. Maximum size of 800K")}.
                 </Typography>
               </Box>
             </Box>
@@ -225,7 +229,7 @@ const UsuarioPerfilConta = (props: Props) => {
                   control={control}
                   render={({ field: { value, onChange } }) => (
                     <TextField
-                      label='Nome completo'
+                      label={t("Full name")}
                       placeholder='(e.g.: John Doe)'
                       onChange={onChange}
                       value={value}
@@ -242,7 +246,7 @@ const UsuarioPerfilConta = (props: Props) => {
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       disabled={true}
-                      label='Nome usuário'
+                      label={t("Username")}
                       placeholder='(e.g.: john@example.com)'
                       onChange={onChange}
                       value={value}
@@ -278,7 +282,7 @@ const UsuarioPerfilConta = (props: Props) => {
                 render={() => {
                   return (
                     <FormControl fullWidth>
-                      <Box sx={{ fontSize: 20, mb: "10px" }}>Grupos de permissões</Box>
+                      <Box sx={{ fontSize: 20, mb: "10px" }}>{t("Permission groups")}</Box>
                       {
                         groups.map((item) => {
                             return (
@@ -300,10 +304,10 @@ const UsuarioPerfilConta = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Button type='submit' variant='contained' sx={{ mr: 3.5 }}>
-              Salvar alterações
+              {t("Save editions")}
             </Button>
             <Button type='button' onClick={() => handleReset()} variant='outlined' color='secondary'>
-              Limpar
+              {t("Clean")}
             </Button>
           </Grid>
         </Grid>

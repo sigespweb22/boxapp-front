@@ -226,7 +226,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Cliente Contrato</Typography>
+        <Typography variant='h6'>{t("View Client Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -294,7 +294,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
           <ClienteContratoFaturaViewDrawer open={clienteContratoFaturaViewOpen} toggle={toggleClienteContratoFaturaViewDrawer} row={row}/>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

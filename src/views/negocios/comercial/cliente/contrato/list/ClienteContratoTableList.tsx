@@ -303,7 +303,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t('List of contracts')}
+                {t("List of contracts")}
               </Typography>
             }
           />

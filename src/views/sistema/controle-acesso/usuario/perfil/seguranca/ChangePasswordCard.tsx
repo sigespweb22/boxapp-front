@@ -33,6 +33,9 @@ import { AppDispatch } from 'src/store'
 // ** Actions Imports
 import { editUsuarioSeguranca } from 'src/store/sistema/controle-acesso/usuario'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   id: string | undefined
 }
@@ -86,6 +89,7 @@ const schema = yup.object().shape({
 
 const ChangePasswordCard = (props: Props) => {
   // ** States
+  const { t } = useTranslation()
   const [values, setValues] = useState<State>({
     showNewPassword: false,
     showCurrentPassword: false,
@@ -130,14 +134,14 @@ const ChangePasswordCard = (props: Props) => {
 
   return (
     <Card>
-      <CardHeader sx={{ mt: 5 }} title='Mudar minha senha' />
+      <CardHeader sx={{ mt: 5 }} title={t("Change my password")} />
       <CardContent>
         <form onSubmit={handleSubmit(onPasswordFormSubmit)}>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel htmlFor='input-current-password' error={Boolean(errors.currentPassword)}>
-                  Senha Atual
+                  {t("Current password")}
                 </InputLabel>
                 <Controller
                   name='currentPassword'
@@ -175,7 +179,7 @@ const ChangePasswordCard = (props: Props) => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel htmlFor='input-new-password' error={Boolean(errors.newPassword)}>
-                  Nova Senha
+                  {t("New password")}
                 </InputLabel>
                 <Controller
                   name='newPassword'
@@ -211,7 +215,7 @@ const ChangePasswordCard = (props: Props) => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel htmlFor='input-confirm-new-password' error={Boolean(errors.confirmNewPassword)}>
-                Confirma Nova Senha
+                {t("Confirm new password")}
                 </InputLabel>
                 <Controller
                   name='confirmNewPassword'
@@ -245,22 +249,22 @@ const ChangePasswordCard = (props: Props) => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ mt: 1, color: 'text.secondary' }}>Requisitos de Senha:</Typography>
+              <Typography sx={{ mt: 1, color: 'text.secondary' }}>{t("Password requirements")}:</Typography>
               <Box
                 component='ul'
                 sx={{ pl: 4, mb: 0, '& li': { mb: 4, color: 'text.secondary', '&::marker': { fontSize: '1.25rem' } } }}
               >
-                <li>Mínimo de 6 caracteres - quanto mais, melhor.</li>
-                <li>Pelo menos um caractere minúsculo e um maiúsculo.</li>
-                <li>Pelo menos um número, símbolo ou caractere especial.</li>
+                <li>{t("Minimum 6 characters - the more the better")}.</li>
+                <li>{t("At least one lowercase and one uppercase character")}.</li>
+                <li>{t("At least one number, symbol, or special character")}.</li>
               </Box>
             </Grid>
             <Grid item xs={12}>
               <Button variant='contained' type='submit' sx={{ mr: 3 }}>
-                Salvar Alterações
+                {t("Save editions")}
               </Button>
               <Button type='reset' variant='outlined' color='secondary' onClick={() => reset()}>
-                Limpar
+                {t("Clean")}
               </Button>
             </Grid>
           </Grid>
