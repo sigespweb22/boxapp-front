@@ -336,11 +336,11 @@ const ClienteEditLeft = ({id}: Props) => {
               aria-describedby='cliente-view-left-description'
             >
               <DialogTitle id='user-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
-                Editar informações do cliente
+                {t("Edit customer information")}
               </DialogTitle>
               <DialogContent>
                 <DialogContentText variant='body2' id='cliente-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
-                  A atualização das informações de cliente são passíveis de auditoria.
+                  {t("The updating of customer information is auditable")}.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Grid container spacing={4}>
@@ -353,7 +353,7 @@ const ClienteEditLeft = ({id}: Props) => {
                             <TextField
                               disabled
                               value={value}
-                              label='Tipo pessoa'
+                              label={t("Person type")}
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: JURIDICA)'
                             />
@@ -385,7 +385,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Nome fantasia'
+                              label={t("Trading name")}
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: Empresa de Tecnologia)'
                             />
@@ -402,7 +402,7 @@ const ClienteEditLeft = ({id}: Props) => {
                               render={({ field: { value, onChange } }) => (
                                 <TextField
                                   value={value}
-                                  label='Razão social'
+                                  label={t("Corporate Name")}
                                   onChange={onChange}
                                   placeholder='(e.g.: Ex.: Empresa de Tecnologia LTDA)'
                                 />
@@ -420,7 +420,7 @@ const ClienteEditLeft = ({id}: Props) => {
                             render={({ field: { value, onChange } }) => (
                               <TextField
                                 value={value}
-                                label='Inscrição estadual'
+                                label={t("State registration")}
                                 onChange={onChange}
                                 placeholder='(e.g.: Ex.: 123456)'
                               />
@@ -450,7 +450,7 @@ const ClienteEditLeft = ({id}: Props) => {
                                   disabled={false}
                                   name='cpf'
                                   type='text'
-                                  label='Cpf'
+                                  label={t("Individual Taxpayer Registration")}
                                   placeholder='e.g.: 035.753.486-13'
                                 />
                               </InputMask>
@@ -480,7 +480,7 @@ const ClienteEditLeft = ({id}: Props) => {
                                   disabled={false}
                                   name='cnpj'
                                   type='text'
-                                  label='Cnpj'
+                                  label={t("Federal registration")}
                                   placeholder='(e.g.: Ex.: 42.326.712/0001-45)'
                                 />
                               </InputMask>
@@ -508,7 +508,7 @@ const ClienteEditLeft = ({id}: Props) => {
                                 disabled={false}
                                 name='telefonePrincipal'
                                 type='text'
-                                label='Telefone principal'
+                                label={t("Phone number")}
                                 placeholder='e.g.: (48) 9.8896-1111'
                               />
                             </InputMask>
@@ -524,7 +524,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='E-mail principal'
+                              label={t("E-mail")}
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: empresa@empresa.com'
                             />
@@ -541,7 +541,7 @@ const ClienteEditLeft = ({id}: Props) => {
                             render={({ field: { value, onChange } }) => (
                               <TextField
                                 value={value}
-                                label='Data fundação'
+                                label={t("Foundation date")}
                                 onChange={onChange}
                                 placeholder='(e.g.: Ex.: 10/01/2000'
                               />
@@ -569,7 +569,7 @@ const ClienteEditLeft = ({id}: Props) => {
                               disabled={false}
                               name='cep'
                               type='text'
-                              label='Cep'
+                              label={t("Zip code")}
                               placeholder='e.g.: 88801-000'
                             />
                           </InputMask>
@@ -585,7 +585,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Estado'
+                              label={t("State")}
                               onChange={onChange}
                               placeholder='(e.g.: Santa Catarina'
                             />
@@ -601,7 +601,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Rua'
+                              label={t("Street")}
                               onChange={onChange}
                               placeholder='(e.g.: Rua Abílio Diniz'
                             />
@@ -617,7 +617,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Número'
+                              label={t("Number")}
                               onChange={onChange}
                               placeholder='(e.g.: 52'
                             />
@@ -633,7 +633,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Complemento'
+                              label={t("Address complement")}
                               onChange={onChange}
                               placeholder='(e.g.: Próximo ao Banco do Brasil'
                             />
@@ -649,7 +649,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Cidade'
+                              label={t("City")}
                               onChange={onChange}
                               placeholder='(e.g.: Criciúma'
                             />
@@ -665,7 +665,7 @@ const ClienteEditLeft = ({id}: Props) => {
                             render={({ field: { value, onChange } }) => (
                               <TextField
                                 value={value}
-                                label='Código município'
+                                label={t("City code")}
                                 onChange={onChange}
                                 placeholder='(e.g.: Ex.: 654789'
                               />
@@ -681,9 +681,9 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Observacao'
+                              label={t("Observation")}
                               onChange={onChange}
-                              placeholder='(e.g.: Ex.: Esta empresa está em processo de evolução'
+                              placeholder={t("(e.g.: This company is in the process of evolution)")}
                             />
                           )}
                         />
@@ -691,7 +691,7 @@ const ClienteEditLeft = ({id}: Props) => {
                     </Grid>
                     <DialogActions sx={{ justifyContent: 'center' }}>
                       <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-                        Salvar
+                        {t("Save")}
                       </Button>
                       <Button size='large' variant='outlined' color='secondary' onClick={handleEditClose}>
                         {t("Discard")}
@@ -710,8 +710,8 @@ const ClienteEditLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Cliente com o id: {id} não existe. Por favor verifique a listagem de clientes:{' '}
-            <Link href='/pages/negocios/comercial/cliente/list'>Listagem de clientes</Link>
+            {t("Client with id")}: {id} {t("Does not exist. Please check the client listing")}:{' '}
+            <Link href='/pages/negocios/comercial/cliente/list'>{t("Clients listing")}</Link>
           </Alert>
         </Grid>
       </Grid>

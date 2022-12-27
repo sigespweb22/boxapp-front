@@ -4,6 +4,10 @@
     "(e.g.: This routine inserts new customers)": "(e.g.: Esta rotina insere novos clientes)",
     "(e.g.: This routine can change important customer base data)": "(ex.: Esta rotina pode alterar dados importantes da base de clientes)",
     "(e.g.: Generated automatically)": "(e.g.: Gerada automaticamente)",
+    "(e.g.: Contract ID in Bom Controle)": "(e.g.: Id do contrato no Bom Controle)",
+    "(e.g.: This company is in the process of evolution)": "(e.g.: Esta empresa está em processo de evolução)",
+    "(e.g.: Note about the customer)": "(e.g.: Observação sobre o cliente)",
+    "(e.g.: Next to Banco do Brasil)": "(e.g.: Próximo ao Banco do Brasil)",
 
     "Activate": "Ativar",
     "ACTIVE": "ATIVO",
@@ -32,7 +36,6 @@
     "At least one number, symbol, or special character": "Pelo menos um número, símbolo ou caractere especial",
     "At least one lowercase and one uppercase character": "Pelo menos um caractere minúsculo e um maiúsculo",
     "All permissions are created automatically by our team, according to the evolution of the functionalities": "Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades",
-
 
     "By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding": "Ao editar o nome da permissão, você pode quebrar a funcionalidade de permissões do sistema. Certifique-se de ter certeza absoluta antes de continuar",
     "BUSSINESS": "Negócios",
@@ -67,6 +70,9 @@
     "Change my password": "Mudar minha senha",
     "Confirm password": "Confirmar senha",
     "Contract list": "Lista de contratos",
+    "Contract value": "Valor do contrato",
+    "Contract ID in Bom Controle": "Id contrato no Bom Controle",
+    "Contract id(Bom Controle)": "Id do contrato(Bom Controle)",
 
     "Documentation": "Documentação",
     "Deactivate": "Desativar",
@@ -74,17 +80,23 @@
     "Details": "Detalhes",
     "Discard": "Sair",
     "Does not exist. Please check the client listing": "não existe. Por favor verifique a listagem de clientes",
+    "Date of competence": "Data competência",
+    "Discount": "Desconto",
 
     "Edit": "Editar",
     "Edit Permission": "Editar Permissão",
     "Edit permission as per your requirements": "Edite a permissão de acordo com seus requisitos",
     "E-mail": "E-mail principal",
     "Expiration date": "Data de validade",
+    "Edit Client Contract": "Editar Cliente Contrato",
+    "Edit customer information": "Editar informações do cliente",
+    "Edit Customer Product": "Editar Cliente Produto",
 
     "Federal registration": "Cnpj",
     "Foundation date": "Data de fundação",
     "FEMALE": "FEMININO",
     "Full name": "Nome completo",
+    "Frequency": "Periodicidade",
 
     "Groups": "Grupos permissões",
     "Group Edit": "Editar Grupo",
@@ -102,7 +114,9 @@
     "Individual Taxpayer Registration": "CPF",
     "in real": "em real",
     "in relation to the total number of contracts": "em relação ao total dos contratos",
-    
+    "Invoice amount": "Valor da fatura",
+    "Installment number": "Número da parcela",
+
     "Just PNG or JPEG. Maximum size of 800K": "Apenas PNG ou JPEG. Tamanho máximo de 800K",
     
     "Key": "Chave",
@@ -118,11 +132,14 @@
     "No results for": "Nenhum resultado para",
     "Number": "Número",
     "New password": "Nova senha",
+    "NO": "NÃO",
+    "New Client Contract": "Novo Cliente Contrato",
 
     "Observation": "Observação",
     "Overall": "Global",
     "OTHER": "OUTRO",
     
+    "Paid": "Quitado",
     "Password requirements": "Requisitos da senha",
     "Permission New": "Nova Permissão",
     "Permission Name": "Nome permissão",
@@ -194,6 +211,8 @@
     "Ticket value": "Valor do ticket",
     "Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs.": "Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
     "Third party API": "API de terceiro",
+    "The updating of customer information is auditable": "A atualização das informações de cliente são passíveis de auditoria",
+    "To link services, products and contracts to a customer, access its editing area": "Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição",
 
     "User New": "Novo Usuário",
     "Users Per Group": "Usuários por grupo",
@@ -217,6 +236,7 @@
 
     "You do not have permission to view this resource.": "Você não tem permissão para ver este recurso.",
     "You can view the main screen of users and their listing": "Pode visualizar a tela principal de usuários e a listagem deles",
+    "YES": "SIM",
 
     "Zip code": "Código postal"
   }  

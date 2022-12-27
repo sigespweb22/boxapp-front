@@ -74,7 +74,7 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Cliente Contrato</Typography>
+        <Typography variant='h6'>{t("View Client Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -90,7 +90,7 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Data vencimento'
+              label={t("Expiration date")}
               value={props?.row?.dataVencimento}
               defaultValue="."
             />
@@ -98,7 +98,7 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled
-              label='Data competencia'
+              label={t("Date of competence")}
               value={props?.row?.dataCompetencia}
               defaultValue="."
             />
@@ -106,21 +106,21 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Valor da fatura'
+              label={t("Invoice amount")}
               value={formatCurrency(props?.row?.valor || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Desconto'
+              label={t("Discount")}
               value={formatCurrency(props?.row?.desconto || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Número da parcela'
+              label={t("Installment number")}
               value={props?.row?.numeroParcela}
               defaultValue="."
             />
@@ -134,8 +134,8 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
                 <TextField
                   disabled={true}
                   type='quitado'
-                  label='Quitado'
-                  value={props?.row?.status || ''}
+                  label={t("Paid")}
+                  value={t(props?.row?.status || '')}
                   onChange={onChange}
                 />
               )}
@@ -143,7 +143,7 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

@@ -62,7 +62,7 @@ const ClienteEditRight = ({ id }: Props) => {
       >
         {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
+        <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
       </TabList>
       {/* <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-cliente-servico-page') ? (
