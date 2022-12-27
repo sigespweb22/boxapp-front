@@ -10,7 +10,6 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
-import FormHelperText from '@mui/material/FormHelperText'
 
 // ** Third Party Imports
 import * as yup from 'yup'
@@ -37,6 +36,9 @@ import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vend
 
 // ** Toast
 import { toast } from 'react-toastify'
+
+// ** Import language
+import { useTranslation } from 'react-i18next'
 
 interface VendedorContratoAddType {
   clienteContratoId: string
@@ -97,6 +99,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
   const { open, toggle } = props
 
   // ** Hooks
+  const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const { 
     reset,
@@ -130,7 +133,48 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       data.clienteContratoId = props.clienteContratoId
       data.vendedorId = data.vendedor.id
 
-      dispatch(addVendedorContratoWithoutUpdateState({...data}))
+      dispatch(addVendedorContratoWithoutUpdateState({
+        ...data,
+        clienteContrato: {
+          id: '',
+          valorContrato: null,
+          periodicidade: '',
+          clienteId: '',
+          bomControleContratoId: null,
+          cliente: {
+            id: undefined,
+            nomeFantasia: '',
+            razaoSocial: '',
+            inscricaoEstadual: '',
+            tipoPessoa: '',
+            cnpj: '',
+            cpf: '',
+            telefonePrincipal: '',
+            emailPrincipal: '',
+            observacao: '',
+            dataFundacao: '',
+            codigoMunicipio: 0,
+            rua: '',
+            numero: '',
+            complemento: '',
+            cidade: '',
+            estado: '',
+            cep: '',
+            status: '',
+            avatarColor: undefined
+          },
+          fatura: {
+            id: '',
+            dataVencimento: '',
+            dataCompetencia: '',
+            valor: 0,
+            desconto: null,
+            numeroParcela: null,
+            status: ''
+          },
+          status: ''
+        }
+      }))
       toggle()
       reset()
     }
@@ -151,7 +195,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Vincular vendedor</Typography>
+        <Typography variant='h6'>{t("Link seller")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -164,7 +208,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                 <TextField
                   type='number'
                   value={value}
-                  label='Comissão percentual (%)'
+                  label={t("Percentage commission (%)")}
                   onChange={onChange}
                   placeholder='(e.g.: 15)'
                 />
@@ -179,7 +223,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                 <TextField
                   type='number'
                   value={value}
-                  label='Comissão em reais (R$)'
+                  label={t("Commission in reais (R$)")}
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
@@ -199,7 +243,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                     value={value}
                     id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option.nome}
-                    renderInput={params => <TextField {...params} label='Vendedor' placeholder='(e.g.: Jhon Dare)' />}
+                    renderInput={params => <TextField {...params} label={t("Seller")} placeholder='(e.g.: Jhon Dare)' />}
                     onChange={(event, newValue) => {
                       // setRole(newValue)
                       onChange(newValue)
@@ -211,10 +255,10 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

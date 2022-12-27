@@ -73,6 +73,7 @@
     "Contract value": "Valor do contrato",
     "Contract ID in Bom Controle": "Id contrato no Bom Controle",
     "Contract id(Bom Controle)": "Id do contrato(Bom Controle)",
+    "Commission in reais (R$)": "Comissão em reais (R$)",
 
     "Documentation": "Documentação",
     "Deactivate": "Desativar",
@@ -122,6 +123,7 @@
     "Key": "Chave",
 
     "Log out": "Sair",
+    "Link seller": "Vincular vendedor",
 
     "MALE": "MASCULINO",
     "Monthly contracts": "Contratos mensais",
@@ -157,6 +159,7 @@
     "Permission": "Permissão",
     "Product list": "Lista de produtos",
     "Permissions": "Permissões",
+    "Percentage commission (%)": "Comissão percentual (%)",
 
     "Routine View": "Visualizar Rotina",
     "Routine Edit": "Editar Rotina",
@@ -197,6 +200,7 @@
     "Service list": "Lista de serviços", 
     "Sequential key": "Chave sequencial",
     "Search routine": "Procurar rotina",
+    "Seller": "Vendedor",
 
     "Total users": "Total usuários",
     "Total customers without active contract(s)": "Total de clientes sem contrato(s) ativo(s)",
