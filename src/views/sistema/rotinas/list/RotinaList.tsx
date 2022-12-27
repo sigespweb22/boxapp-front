@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -205,9 +207,11 @@ const RotinaList = () => {
   }
 
   const handleRotinaPlay = (row: RotinaType) => {
-    debugger
-    axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}`, {}, config)
-    alert(row.dispatcherRoute)
+    axios
+      .post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
+      .catch((e) => {
+        e.response.data.errors.map((x: any) => toast.error(x));
+      })
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
