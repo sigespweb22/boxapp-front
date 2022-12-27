@@ -55,7 +55,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Chave Api</Typography>
+        <Typography variant='h6'>{t("View API key")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -71,7 +71,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Api Terceiro'
+              label={t("Third party API")}
               value={props?.row?.apiTerceiro}
               defaultValue='.'
             />
@@ -79,7 +79,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Chave Bom Controle'
+              label={t("Bom Controle Key")}
               value={props?.row?.key}
               defaultValue='.'
             />
@@ -87,7 +87,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Descrição'
+              label={t("Description")}
               value={props?.row?.descricao}
               defaultValue='.'
             />
@@ -95,7 +95,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Data de validade'
+              label={t("Expiration date")}
               value={props?.row?.dataValidade}
               defaultValue='.'
             />
@@ -109,7 +109,7 @@ const ChaveApiPageView = (props: ChaveApiPageViewType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

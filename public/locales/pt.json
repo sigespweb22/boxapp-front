@@ -34,6 +34,7 @@
     "BUSSINESS": "Negócios",
     "Biography": "Biografia",
     "Birth date": "Data de nascimento",
+    "Bom Controle Key": "Chave Bom Controle",
 
     "Cancel": "Cancelar",
     "COMMERCIAL": "COMERCIAL",
@@ -74,6 +75,7 @@
     "Edit Permission": "Editar Permissão",
     "Edit permission as per your requirements": "Edite a permissão de acordo com seus requisitos",
     "E-mail": "E-mail principal",
+    "Expiration date": "Data de validade",
 
     "Federal registration": "Cnpj",
     "Foundation date": "Data de fundação",
@@ -99,6 +101,8 @@
     
     "Just PNG or JPEG. Maximum size of 800K": "Apenas PNG ou JPEG. Tamanho máximo de 800K",
     
+    "Key": "Chave",
+
     "Log out": "Sair",
 
     "MALE": "MASCULINO",
@@ -182,6 +186,7 @@
     "Trading name": "Nome fantasia",
     "Ticket value": "Valor do ticket",
     "Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs.": "Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
+    "Third party API": "API de terceiro",
 
     "User New": "Novo Usuário",
     "Users Per Group": "Usuários por grupo",
@@ -197,6 +202,7 @@
     "View User": "Visualizar usuário",
     "View Client Contract": "Visualizar Cliente Contrato",
     "View Group": "Visualizar grupo",
+    "View API key": "Visualizar Chave Api",
 
     "Welcome to the infographics and indicators of": "Bem-vindo aos infográficos e indicadores de",
     "Welcome to the infographics and performance indicators of": "Seja bem vindo aos infográficos e indicadores de performance da",
