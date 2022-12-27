@@ -131,8 +131,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label='Nome'
-                  placeholder='(e.g.: Sincronização de clientes)'
+                  label={t("Name")}
+                  placeholder={t("(e.g.: Client synchronization)")}
                 />
               )}
             />
@@ -145,8 +145,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={"Descricao"}
-                  placeholder='(e.g.: Esta rotina insere novos clientes'
+                  label={t("Description")}
+                  placeholder={t("(e.g.: This routine inserts new customers)")}
                 />
               )}
             />
@@ -159,8 +159,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={"Observação"}
-                  placeholder='(e.g.: Esta rotina pode alterar dados importantes da base de clientes'
+                  label={t("Observation")}
+                  placeholder={t("(e.g.: This routine can change important customer base data)")}
                 />
               )}
             />
@@ -174,18 +174,18 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   disabled={false}
                   value={value}
                   onChange={onChange}
-                  label={"Chave sequencial"}
-                  placeholder='(e.g.: Gerada automaticamente'
+                  label={t("Sequencial key")}
+                  placeholder={t("(e.g.: Generated automatically)")}
                 />
               )}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

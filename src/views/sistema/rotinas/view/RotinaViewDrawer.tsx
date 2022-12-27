@@ -118,7 +118,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='Nome'
+                  label={t("Name")}
                 />
               )}
             />
@@ -131,7 +131,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='Descrição'
+                  label={t("Description")}
                 />
               )}
             />
@@ -144,7 +144,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='Observação'
+                  label={t("Observation")}
                 />
               )}
             />
@@ -157,7 +157,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='Chave sequencial'
+                  label={t("Sequential key")}
                 />
               )}
             />
@@ -177,7 +177,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

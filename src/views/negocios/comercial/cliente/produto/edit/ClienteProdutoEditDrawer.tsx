@@ -33,6 +33,7 @@ import axios from 'axios'
 // ** Api Services
 import clienteApiService from 'src/@api-center/negocios/comercial/cliente/clienteApiService'
 import produtoApiService from 'src/@api-center/negocios/comercial/produto/produtoApiService'
+import { useTranslation } from 'react-i18next'
 
 interface SidebarClienteProdutoEditType {
   row: ClienteProdutoType | undefined
@@ -73,6 +74,8 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
   const { open, toggle } = props
   
   // ** Hooks
+  const { t } = useTranslation()
+
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -132,7 +135,7 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Cliente Produto</Typography>
+        <Typography variant='h6'>{t("Edit Customer Product")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -203,10 +206,10 @@ const SidebarClienteProdutoEdit = (props: SidebarClienteProdutoEditType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

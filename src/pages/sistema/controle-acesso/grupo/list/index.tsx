@@ -332,7 +332,7 @@ const GrupoList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <AddGrupoDrawer open={addGrupoOpen} toggle={toggleAddGrupoDrawer} />
         <ViewGrupoDrawer open={viewGrupoOpen} toggle={toggleViewGrupoDrawer} row={row}/>
         <EditGrupoDrawer open={editGrupoOpen} toggle={toggleEditGrupoDrawer} row={row}/>

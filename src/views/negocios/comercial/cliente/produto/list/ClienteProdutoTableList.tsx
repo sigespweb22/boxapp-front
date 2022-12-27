@@ -283,7 +283,7 @@ const ClienteProdutoTableList = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de produtos
+                {t("Product list")}
               </Typography>
             }
           />
@@ -307,7 +307,7 @@ const ClienteProdutoTableList = ({ id }: Props) => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ClienteProdutoAddDrawer open={clienteProdutoAddOpen} toggle={toggleClienteProdutoAddDrawer} clienteId={id} />
         <ClienteProdutoViewDrawer open={clienteProdutoViewOpen} toggle={toggleClienteProdutoViewDrawer} row={row}/>
         <ClienteProdutoEditDrawer open={clienteProdutoEditOpen} toggle={toggleClienteProdutoEditDrawer} row={row}/>

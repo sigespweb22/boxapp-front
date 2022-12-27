@@ -55,7 +55,7 @@ const VendedorViewLeft = ({id}: Props) => {
 
   // ** States
   const dispatch = useDispatch<AppDispatch>()
-  const store = useSelector((state: RootState) => state.vendedorView)
+  const store: any = useSelector((state: RootState) => state.vendedorView)
 
   const {
     setValue
@@ -125,11 +125,11 @@ const VendedorViewLeft = ({id}: Props) => {
             </CardContent>
 
             <CardContent>
-              <Typography variant='h6'>Detalhes</Typography>
+              <Typography variant='h6'>{t("Details")}</Typography>
               <Divider />
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Name")}:</Typography>
                   <Typography variant='body2'>{store?.data.nome}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
@@ -159,8 +159,8 @@ const VendedorViewLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Vendedor com o id: {id} não existe. Por favor verifique a listagem de vendedores:{' '}
-            <Link href='/pages/negocios/comercial/vendedor/list'>Lsitagem de vendedores</Link>
+            {t("Seller with id")}: {id} {t("does not exist. Please check the sellers listing")}:{' '}
+            <Link href='/pages/negocios/comercial/vendedor/list'>{t("Sellers listing")}</Link>
           </Alert>
         </Grid>
       </Grid>

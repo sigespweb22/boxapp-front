@@ -20,6 +20,10 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 // ** Custom Components Imports
 import VendedorContratoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableList'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
+
 interface Props {
   id: string
 }
@@ -36,6 +40,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const VendedorEditRight = ({ id }: Props) => {
   // ** Hooks
+  const { t } = useTranslation()
   const ability = useContext(AbilityContext)
 
   // ** State
@@ -54,14 +59,14 @@ const VendedorEditRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
+        <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
             <VendedorContratoListTable id={id} />
           </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
+        ) : <>{t("You do not have permission to view this resource.")}</>}  
       </Box>
     </TabContext>
   )

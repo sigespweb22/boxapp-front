@@ -175,10 +175,10 @@ const VendedorEditLeft = ({id}: Props) => {
             </CardContent>
 
             <CardContent>
-              <Typography variant='h6'>Detalhes</Typography>
+              <Typography variant='h6'>{t("Details")}</Typography>
               <Divider />
               <Box sx={{ display: 'flex', mb: 0, pt: 2, pb: 3 }}>
-                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Nome:</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Name")}:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
                   {store?.data.nome}
                 </Typography>
@@ -204,7 +204,7 @@ const VendedorEditLeft = ({id}: Props) => {
             {ability?.can('update', 'ac-vendedor-page') &&
               <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant='contained' sx={{ mr: 3 }} onClick={handleEditClickOpen}>
-                  Editar
+                  {t("Edit")}
                 </Button>
               </CardActions>
             }
@@ -217,11 +217,11 @@ const VendedorEditLeft = ({id}: Props) => {
               aria-describedby='vendedor-view-left-description'
             >
               <DialogTitle id='user-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
-                Editar informações do vendedor
+                {t("Edit seller information")}
               </DialogTitle>
               <DialogContent>
                 <DialogContentText variant='body2' id='vendedor-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
-                  A atualização das informações de vendedor são passíveis de auditoria.
+                  {t("Updating seller information is auditable")}.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid item xs={12} sm={12}>
@@ -232,7 +232,7 @@ const VendedorEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label='Nome'
+                              label={t("Name")}
                               onChange={onChange}
                               placeholder='(e.g.: Ex.: John Doe)'
                             />
@@ -242,7 +242,7 @@ const VendedorEditLeft = ({id}: Props) => {
                     </Grid>
                     <DialogActions sx={{ justifyContent: 'center' }}>
                       <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-                        Salvar
+                        {t("Save")}
                       </Button>
                       <Button size='large' variant='outlined' color='secondary' onClick={handleEditClose}>
                         {t("Discard")}
@@ -260,8 +260,8 @@ const VendedorEditLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Vendedor com o id: {id} não existe. Por favor verifique a listagem de vendedores:{' '}
-            <Link href='/pages/negocios/comercial/vendedor/list'>Listagem de vendedores</Link>
+            {t("Seller with id")}: {id} {t("does not exist. Please check the sellers listing")}:{' '}
+            <Link href='/pages/negocios/comercial/vendedor/list'>{t("Sellers listing")}</Link>
           </Alert>
         </Grid>
       </Grid>

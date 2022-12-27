@@ -15,6 +15,9 @@ import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 // ** Custom Components Imports
 import VendedorContratoTableListToView from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableListToView'
 
+// ** Language & Translation Utilities
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   id: string
 }
@@ -31,6 +34,8 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const VendedorViewRight = ({ id }: Props) => {
   // ** State
+  const { t } = useTranslation()
+
   const [value, setValue] = useState<string>('contratos')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -46,7 +51,7 @@ const VendedorViewRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
+        <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='contratos'>

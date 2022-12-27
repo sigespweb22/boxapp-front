@@ -65,7 +65,7 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Vendedor Contrato</Typography>
+        <Typography variant='h6'>{t("View Seller Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -81,28 +81,28 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Commisão em reais'
+              label={t("Commission in reais (R$)")}
               value={formatCurrency(props?.row?.comissaoReais || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='Commisão em percentual'
+              label={t("Percentage commission (%)")}
               value={porcentagem || null}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
-                label='Valor total do contrato'
+                label={t("Total value of the contract")}
                 value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
-                label='Nome do cliente vinculado ao contrato'
+                label={t("Customer name linked to the contract")}
                 value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
@@ -124,7 +124,7 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

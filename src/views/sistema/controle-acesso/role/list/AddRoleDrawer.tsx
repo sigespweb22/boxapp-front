@@ -142,7 +142,7 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
                   value={value}
                   label='Descrição'
                   onChange={onChange}
-                  placeholder='Pode visualizar a tela principal de usuários e a listagem deles'
+                  placeholder={t("You can view the main screen of users and their listing")}
                   error={Boolean(errors.description)}
                 />
               )}
@@ -151,10 +151,10 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

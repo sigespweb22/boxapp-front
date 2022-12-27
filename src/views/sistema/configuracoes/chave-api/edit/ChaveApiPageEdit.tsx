@@ -141,7 +141,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
                   disabled={true}
                   value={value}
                   onChange={onChange}
-                  label='Api Terceiro'
+                  label={t("Third party API")}
                   placeholder='(e.g.: Bom controle)'
                   defaultValue='.'
                 />
@@ -156,7 +156,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={"Chave"}
+                  label={t("Key")}
                   placeholder='(e.g.: d00d77c7-253a-406f-b8b1-a8a7af23e614'
                 />
               )}
@@ -170,7 +170,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={"Descrição"}
+                  label={t("Description")}
                   placeholder='(e.g.: Esta chave de api oferece permissão para atualizar dados do módulo financeiro'
                 />
               )}
@@ -191,7 +191,7 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
                 >
                   <TextField
                     disabled={false}
-                    label={"Data validade"}
+                    label={t("Expiration date")}
                     name="dataValidade"
                     type="text"
                     placeholder='(e.g.: 01/04/1985)'
@@ -202,10 +202,10 @@ const ChaveApiPageEdit = (props: ChaveApiPageEditType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

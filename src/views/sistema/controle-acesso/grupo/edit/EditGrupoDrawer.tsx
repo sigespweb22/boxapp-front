@@ -172,7 +172,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
                   onChange={onChange}
                   placeholder='(e.g.: Ex.: Master)'
                   error={Boolean(errors.name)}
-                  label='Nome do grupo'
+                  label={t("Group name")}
                   defaultValue='.'
                 />
               )}
@@ -193,7 +193,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
                     id="autocomplete-multiple-outlined"
                     getOptionLabel={option => option.name}
                     renderInput={params => (
-                      <TextField {...params} label="Permissões" placeholder='(e.g.: Master)' />
+                      <TextField {...params} label={t("Permissions")} placeholder='(e.g.: Master)' />
                     )}
                     onChange={(event, newValue) => {
                       setRole(newValue)
@@ -206,10 +206,10 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

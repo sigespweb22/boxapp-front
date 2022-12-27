@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
-import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -36,6 +35,7 @@ import axios from 'axios'
 import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 import vendedorContratoApiService from 'src/@api-center/negocios/comercial/vendedor/contrato/vendedorContratoApiService'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 interface SidebarVendedorContratoEditType {
   row: VendedorContratoType | undefined
@@ -44,15 +44,6 @@ interface SidebarVendedorContratoEditType {
 }
 
 let contratos: { id: string, nome: string  }[] = [];
-
-interface VendedorContratoData {
-  id: string
-  comissaoReais: number
-  comissaoPercentual: number
-  clienteContratoId: string
-  vendedorId: string
-  status: string
-}
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -101,6 +92,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
   const { open, toggle } = props
   
   // ** Hooks
+  const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -160,7 +152,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Vendedor Contrato</Typography>
+        <Typography variant='h6'>{t("Edit Seller Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -191,7 +183,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
                     shrink: true,
                   }}
                   value={value}
-                  label='Commisão em reais'
+                  label={t("Commission in reais (R$)")}
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
@@ -209,7 +201,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
                     shrink: true,
                   }}
                   value={value}
-                  label='Commisão em percentual'
+                  label={t("Percentage commission (%)")}
                   onChange={onChange}
                   placeholder='(e.g.: 10%)'
                 />
@@ -219,23 +211,23 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
           <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
-                label='Valor total do contrato'
+                label={t("Total value of the contract")}
                 value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
-                label='Nome do cliente vinculado ao contrato'
+                label={t("Customer name linked to the contract")}
                 value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

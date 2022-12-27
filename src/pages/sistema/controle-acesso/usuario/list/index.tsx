@@ -343,7 +343,7 @@ const UserList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
         <ViewUserDrawer open={viewUserOpen} toggle={toggleViewUserDrawer} row={row}/>
         <EditUserDrawer open={editUserOpen} toggle={toggleEditUserDrawer} row={row}/>

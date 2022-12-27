@@ -256,7 +256,7 @@ const RotinaList = () => {
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('create', 'ac-cliente-page') && (
-            <Tooltip title="Rodar rotina">
+            <Tooltip title={t("Run routine")}>
               <IconButton onClick={() => handleRotinaPlay(row)}>
                 <PlayBox fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
@@ -309,7 +309,7 @@ const RotinaList = () => {
             </Card>
           </Grid>
         ) : (
-          'Você não tem permissão para ver este recurso.'
+          <>{t("You do not have permission to view this resource.")}</>
         )}
         <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
         <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>

@@ -3,12 +3,18 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 interface TableHeaderProps {
   value: string
   handleFilter: (val: string) => void
 }
 
 const TableHeader = (props: TableHeaderProps) => {
+  // ** Hooks
+  const { t } = useTranslation()
+
   // ** Props
   const { handleFilter, value } = props
 
@@ -19,7 +25,7 @@ const TableHeader = (props: TableHeaderProps) => {
           size='small'
           value={value}
           sx={{ mr: 4, mb: 2 }}
-          placeholder={"Buscar rotina"}
+          placeholder={t("Search routine")}
           onChange={e => handleFilter(e.target.value)}
         />
       </Box>
