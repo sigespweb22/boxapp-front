@@ -59,7 +59,7 @@ const VendedorEditRight = ({ id }: Props) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
+        <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-vendedorContrato-page') ? (

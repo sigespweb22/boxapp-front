@@ -36,7 +36,6 @@ import { AppDispatch } from 'src/store'
 import axios from 'axios'
 
 // ** Api Services
-import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 import { Autocomplete } from '@mui/material'
 import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
 
@@ -149,7 +148,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid item xs={12} md={12} lg={12}>
             <Alert sx={{ mb: '20px' }} severity='warning'>
-              Para vincular contratos a um vendedor, acesse a sua área de edição.
+              {t("To link contracts to a seller, access its editing area")}.
             </Alert>
           </Grid>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -160,7 +159,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
               render={({ field: { value, onChange } }) => (
                   <TextField
                   value={value}
-                  label='Nome'
+                  label={t("Name")}
                   onChange={onChange}
                   placeholder='e.g.: John Doe'
                   error={Boolean(errors.nome)}
@@ -181,7 +180,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
                     value={value}
                     id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option.name}
-                    renderInput={params => <TextField {...params} label='Usuario' placeholder='(e.g.: Jhon Dare)' />}
+                    renderInput={params => <TextField {...params} label={t("User")} placeholder='(e.g.: Jhon Dare)' />}
                     onChange={(event, newValue) => {
                       // setRole(newValue)
                       onChange(newValue)
@@ -193,10 +192,10 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>
