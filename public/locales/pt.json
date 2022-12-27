@@ -1,5 +1,9 @@
 {
     "(e.g.: My name is John Doe, I'm 37 years old, I'm married and I love technology...)": "(e.g.: Meu nome é John Doe, tenho 37 anos, sou casado e amo tecnologia...)",
+    "(e.g.: Client synchronization)": "(e.g.: Sincronização de clientes)",
+    "(e.g.: This routine inserts new customers)": "(e.g.: Esta rotina insere novos clientes)",
+    "(e.g.: This routine can change important customer base data)": "(ex.: Esta rotina pode alterar dados importantes da base de clientes)",
+    "(e.g.: Generated automatically)": "(e.g.: Gerada automaticamente)",
 
     "Activate": "Ativar",
     "ACTIVE": "ATIVO",
@@ -142,6 +146,7 @@
     "Routine": "Rotinas",
     "Routine listing": "Lista de rotinas",
     "Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!": "Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá!",
+    "Run routine": "Rodar rotina",
 
     "Save": "Salvar",
     "Save editions": "Salvar alterações",
@@ -173,6 +178,8 @@
     "SYSTEM": "SISTEMA",
     "Security": "Segurança",
     "Service list": "Lista de serviços", 
+    "Sequential key": "Chave sequencial",
+    "Search routine": "Procurar rotina",
 
     "Total users": "Total usuários",
     "Total customers without active contract(s)": "Total de clientes sem contrato(s) ativo(s)",
