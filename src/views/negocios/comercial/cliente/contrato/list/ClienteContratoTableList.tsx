@@ -303,7 +303,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                {t("List of contracts")}
+                {t("Contract list")}
               </Typography>
             }
           />
@@ -327,7 +327,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ClienteContratoAddDrawer open={clienteContratoAddOpen} toggle={toggleClienteContratoAddDrawer} clienteId={id} />
         <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
         <ClienteContratoEditDrawer open={clienteContratoEditOpen} toggle={toggleClienteContratoEditDrawer} row={row}/>

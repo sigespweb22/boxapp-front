@@ -329,7 +329,7 @@ const FornecedorList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <FornecedorAddDrawer open={fornecedorAddOpen} toggle={toggleFornecedorAddDrawer} />
       </Grid>
     </Grid>

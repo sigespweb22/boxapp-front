@@ -305,7 +305,7 @@ const RotinaList = () => {
             </Card>
           </Grid>
         ) : (
-          'Você não tem permissão para ver este recurso.'
+          <>{t("You do not have permission to view this resource.")}</>
         )}
         <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
         <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>

@@ -257,7 +257,7 @@ const VendedorList = () => {
             </Card>
           </Grid>
         ) : (
-          'Você não tem permissão para ver este recurso.'
+          <>{t("You do not have permission to view this resource.")}</>
         )}
         {ability?.can('create', 'ac-vendedor-page') ? (
           <VendedorAddDrawer open={vendedorAddOpen} toggle={toggleVendedorAddDrawer} />

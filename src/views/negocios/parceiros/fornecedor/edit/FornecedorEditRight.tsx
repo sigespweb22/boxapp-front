@@ -21,6 +21,9 @@ import { AbilityContext } from 'src/layouts/components/acl/Can'
 import FornecedorServicoTableList from 'src/views/negocios/parceiros/fornecedor/servico/list/FornecedorServicoTableList'
 import FornecedorProdutoTableList from 'src/views/negocios/parceiros/fornecedor/produto/list/FornecedorProdutoTableList'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   id: string | undefined
 }
@@ -37,6 +40,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const FornecedorEditRight = ({ id }: Props) => {
   // ** Hooks
+  const { t } = useTranslation()
   const ability = useContext(AbilityContext)
 
   // ** State
@@ -63,14 +67,14 @@ const FornecedorEditRight = ({ id }: Props) => {
           <TabPanel sx={{ p: 0 }} value='servicos'>
             <FornecedorServicoTableList id={id} />
           </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
+        ) : <>{t("You do not have permission to view this resource.")}</>}  
       </Box>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-fornecedor-produto-page') ? (
           <TabPanel sx={{ p: 0 }} value='produtos'>
             <FornecedorProdutoTableList id={id} />
           </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
+        ) : <>{t("You do not have permission to view this resource.")}</>}  
       </Box>
     </TabContext>
   )

@@ -145,7 +145,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome do grupo'
+                  label={t("Group name")}
                   onChange={onChange}
                   placeholder='(e.g.: Suporte N1)'
                   error={Boolean(errors.name)}
@@ -181,10 +181,10 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

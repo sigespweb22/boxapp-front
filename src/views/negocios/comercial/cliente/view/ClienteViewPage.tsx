@@ -11,12 +11,16 @@ import ClienteViewRight from 'src/views/negocios/comercial/cliente/view/ClienteV
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 interface Props {
     clienteId: string
 }
 
 const ClienteViewPage = ({ clienteId }: Props) => {
   // ** Hooks
+  const { t } = useTranslation()
   const ability = useContext(AbilityContext)
   
   if (clienteId) {
@@ -26,13 +30,13 @@ const ClienteViewPage = ({ clienteId }: Props) => {
           <Grid item xs={12} md={5} lg={4}>
             <ClienteViewLeft id={clienteId} />
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
 
         {ability?.can('read', 'ac-cliente-page') ? (
           <Grid item xs={12} md={7} lg={8}>
             <ClienteViewRight id={clienteId} />
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
       </Grid>
     )
   } else {

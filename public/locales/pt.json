@@ -27,6 +27,8 @@
     "Annual": "Anual",
     "At least one number, symbol, or special character": "Pelo menos um número, símbolo ou caractere especial",
     "At least one lowercase and one uppercase character": "Pelo menos um caractere minúsculo e um maiúsculo",
+    "All permissions are created automatically by our team, according to the evolution of the functionalities": "Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades",
+
 
     "By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding": "Ao editar o nome da permissão, você pode quebrar a funcionalidade de permissões do sistema. Certifique-se de ter certeza absoluta antes de continuar",
     "BUSSINESS": "Negócios",
@@ -59,6 +61,7 @@
     "Choose new photo": "Escolher nova foto",
     "Change my password": "Mudar minha senha",
     "Confirm password": "Confirmar senha",
+    "Contract list": "Lista de contratos",
 
     "Documentation": "Documentação",
     "Deactivate": "Desativar",
@@ -83,6 +86,7 @@
     "Groups listing": "Listagem dos grupos",
     "Gender": "Gênero",
     "Group(s) with access permission(s)": "Grupo(s) com a(s) permissão(ões) de acesso",
+    "Group Name": "Nome do grupo",
 
     "Here you can check the active users on the platform": "Aqui você confere os usuário ativos na plataforma",
     "Here you can check the main numbers of the Commercial Sector": "Aqui você confere os principais números do Setor Comercial",
@@ -95,7 +99,6 @@
     
     "Just PNG or JPEG. Maximum size of 800K": "Apenas PNG ou JPEG. Tamanho máximo de 800K",
     
-    "List of contracts": "Lista de contratos",
     "Log out": "Sair",
 
     "MALE": "MASCULINO",
@@ -126,11 +129,15 @@
     "Public Area": "Área pública",
     "Personal information": "Informações pessoais",
     "Profile": "Perfil",
+    "Permission": "Permissão",
+    "Product list": "Lista de produtos",
+    "Permissions": "Permissões",
 
     "Routine View": "Visualizar Rotina",
     "Routine Edit": "Editar Rotina",
     "Routine": "Rotinas",
     "Routine listing": "Lista de rotinas",
+    "Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!": "Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá!",
 
     "Save": "Salvar",
     "Save editions": "Salvar alterações",
@@ -161,6 +168,7 @@
     "State": "Estado",
     "SYSTEM": "SISTEMA",
     "Security": "Segurança",
+    "Service list": "Lista de serviços", 
 
     "Total users": "Total usuários",
     "Total customers without active contract(s)": "Total de clientes sem contrato(s) ativo(s)",
@@ -173,6 +181,7 @@
     "Try searching for": "Tente procurar por",
     "Trading name": "Nome fantasia",
     "Ticket value": "Valor do ticket",
+    "Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs.": "Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
 
     "User New": "Novo Usuário",
     "Users Per Group": "Usuários por grupo",
@@ -187,9 +196,14 @@
     "View Permission": "Visualizar Permissão",
     "View User": "Visualizar usuário",
     "View Client Contract": "Visualizar Cliente Contrato",
+    "View Group": "Visualizar grupo",
 
     "Welcome to the infographics and indicators of": "Bem-vindo aos infográficos e indicadores de",
     "Welcome to the infographics and performance indicators of": "Seja bem vindo aos infográficos e indicadores de performance da",
+    "Warning": "Aviso",
+
+    "You do not have permission to view this resource.": "Você não tem permissão para ver este recurso.",
+    "You can view the main screen of users and their listing": "Pode visualizar a tela principal de usuários e a listagem deles",
 
     "Zip code": "Código postal"
   }  
