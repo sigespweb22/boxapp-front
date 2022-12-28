@@ -144,7 +144,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                 <TextField
                   disabled
                   value={value}
-                  label={t("Observation")}
+                  label={t("Note")}
                 />
               )}
             />

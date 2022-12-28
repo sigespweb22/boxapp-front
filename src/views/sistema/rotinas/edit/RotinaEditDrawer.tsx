@@ -159,7 +159,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={t("Observation")}
+                  label={t("Note")}
                   placeholder={t("(e.g.: This routine can change important customer base data)")}
                 />
               )}

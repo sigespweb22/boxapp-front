@@ -264,7 +264,7 @@ const ClienteEditLeft = ({id}: Props) => {
                   <Typography variant='body2'>{store?.data.emailPrincipal}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Observation")}:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Note")}:</Typography>
                   <Typography variant='body2'>{store?.data.observacao}</Typography>
                 </Box>
                 {store.data.tipoPessoa === 'JURIDICA' &&
@@ -681,7 +681,7 @@ const ClienteEditLeft = ({id}: Props) => {
                           render={({ field: { value, onChange } }) => (
                             <TextField
                               value={value}
-                              label={t("Observation")}
+                              label={t("Note")}
                               onChange={onChange}
                               placeholder={t("(e.g.: This company is in the process of evolution)")}
                             />

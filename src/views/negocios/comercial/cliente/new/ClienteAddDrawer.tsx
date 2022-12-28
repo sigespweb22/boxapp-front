@@ -485,7 +485,7 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label={t("Observation")}
+                  label={t("Note")}
                   onChange={onChange}
                   placeholder={t("(e.g.: Note about the customer)")}
                 />
