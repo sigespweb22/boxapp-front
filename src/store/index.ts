@@ -24,7 +24,6 @@ import vendedorView from 'src/store/negocios/comercial/vendedor/view'
 import vendedorContrato from 'src/store/negocios/comercial/vendedor/contrato'
 import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
 import rotina from 'src/store/sistema/rotina/index'
-import relatorioVendedores from 'src/store/negocios/relatorios/vendedores/index'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -51,7 +50,6 @@ export const store = configureStore({
     vendedorView,
     vendedorContrato,
     rotina,
-    relatorioVendedores,
     chat,
     email,
     calendar
