@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import BoasVindas from 'src/views/dashboards/comercial/BoasVindas'
+import BoasVindas from 'src/views/relatorios/comercial/BoasVindas'
+import ComissaoVendedor from 'src/views/relatorios/comercial/ComissaoVendedoresTab'
 
 const RelatorioComercial = () => {
   return (
@@ -13,6 +14,9 @@ const RelatorioComercial = () => {
       <Grid container spacing={6}>
         <Grid item xs={12} md={12} sx={{ order: 0, alignSelf: 'flex-end' }}>
           <BoasVindas />
+        </Grid>
+        <Grid item xs={12} md={12} sx={{ order: 1, alignSelf: 'flex-end' }}>
+          <ComissaoVendedor />
         </Grid>
       </Grid>
     </ApexChartWrapper>

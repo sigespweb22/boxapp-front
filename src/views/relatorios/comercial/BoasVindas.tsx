@@ -41,7 +41,7 @@ const BoasVindas = () => {
             <Typography variant='h5' sx={{ mb: 6.5 }}>
               {t("Welcome to reports of")}{' '}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-                 {t("Commercial")}
+                 {t("Commercial area")}
               </Box>
               📈
             </Typography>
