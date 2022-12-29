@@ -110,6 +110,7 @@
     "Gender": "Gênero",
     "Group(s) with access permission(s)": "Grupo(s) com a(s) permissão(ões) de acesso",
     "Group Name": "Nome do grupo",
+    "GENERATE": "GERAR",
 
     "Here you can check the active users on the platform": "Aqui você confere os usuário ativos na plataforma",
     "Here you can check the main numbers of the Commercial Sector": "Aqui você confere os principais números do Setor Comercial",
@@ -122,6 +123,7 @@
     "Invoice amount": "Valor da fatura",
     "Installment number": "Número da parcela",
     "in relation to total active customers": "em relação ao total dos clientes ativos",
+    "Invoice Date": "Data da fatura",
 
     "Just PNG or JPEG. Maximum size of 800K": "Apenas PNG ou JPEG. Tamanho máximo de 800K",
     
@@ -147,6 +149,7 @@
     "Observation": "Observação",
     "Overall": "Global",
     "OTHER": "OUTRO",
+    "Open": "Abrir",
     
     "Paid": "Quitado",
     "Password requirements": "Requisitos da senha",
@@ -252,6 +255,7 @@
     "Welcome to the infographics and performance indicators of": "Seja bem vindo aos infográficos e indicadores de performance da",
     "Warning": "Aviso",
     "Welcome to reports of": "Bem-vindo aos relatórios da",
+    "When omitting any information, all data will be returned.": "Ao omitir qualquer informação será retornado todos os dados.",
 
     "You do not have permission to view this resource.": "Você não tem permissão para ver este recurso.",
     "You can view the main screen of users and their listing": "Pode visualizar a tela principal de usuários e a listagem deles",
