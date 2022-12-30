@@ -8,6 +8,9 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 // ** Util Import
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
+// ** Styles
+import 'react-datepicker/dist/react-datepicker.css'
+
 const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
   // ** Hook
   const { settings } = useSettings()
