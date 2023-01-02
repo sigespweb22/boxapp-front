@@ -9,7 +9,8 @@ import axios from 'axios'
 import grupoApiService from 'src/@api-center/sistema/grupo/grupoApiService'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Types
 import { GrupoType, GrupoEditType } from 'src/types/sistema/controle-acesso/grupoTypes'
@@ -55,7 +56,7 @@ export const addGroup = createAsyncThunk(
 
     axios.post(grupoApiService.addAsync, data2, config).then((resp) => {
       dispatch(fetchData(getState().grupo.params))
-      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Grupo permissões criado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -64,13 +65,13 @@ export const addGroup = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);        
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -108,18 +109,18 @@ export const editGroup = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -147,13 +148,13 @@ export const deleteGroup = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -185,13 +186,13 @@ export const alterStatusGrupo = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }

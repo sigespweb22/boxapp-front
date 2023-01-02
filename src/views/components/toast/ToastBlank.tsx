@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography'
 import CheckboxBlankOutline from 'mdi-material-ui/CheckboxBlankOutline'
 
 // ** Third Party Components
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ToastSimple = () => {
   return (

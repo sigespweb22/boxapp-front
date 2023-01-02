@@ -23,7 +23,8 @@ import LanguageTypescript from 'mdi-material-ui/LanguageTypescript'
 
 // ** Third Party Components
 import Prism from 'prismjs'
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Types
 import { CardSnippetProps } from './types'
@@ -60,9 +61,7 @@ const CardSnippet = (props: CardSnippetProps) => {
 
   const handleClick = () => {
     clipboard.copy(codeToCopy())
-    toast.success('The source code has been copied to your clipboard.', {
-      duration: 2000
-    })
+    toast.success('The source code has been copied to your clipboard.')
   }
 
   const renderCode = () => {

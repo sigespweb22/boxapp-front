@@ -20,10 +20,14 @@ import dashboardApiServices from 'src/@api-center/dashboards/comercial/dashboard
 import axios from 'axios'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Context Imports
 import Divider from '@mui/material/Divider'
+
+// Import Translate
+import { useTranslation } from 'react-i18next'
 
 interface ClienteContratoTicketMedio {
   valorTicketMedioMensal: number
@@ -41,6 +45,7 @@ const formatToCurrency = (value: number) => {
 
 const ClientesContratosTicketMedioAnualChart = () => {
   // ** State
+  const { t } = useTranslation()
   const [clientesContratosTicketMedio, setClientesContratosTicketMedio] = useState<ClienteContratoTicketMedio>(clientesContratosTicketMedioDefaultValues)
 
   const config = {
@@ -57,7 +62,7 @@ const ClientesContratosTicketMedioAnualChart = () => {
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
-        toast.error(err)
+        toast.error(err[1].toString())
       })
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,14 +81,14 @@ const ClientesContratosTicketMedioAnualChart = () => {
                     <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'error.main' }} />
                   </CustomAvatar>
                   <Box sx={{ display: 'flex', flexDirection: 'column', mr: 4 }}>
-                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ticket Médio (R$) | Anual</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 600 }}>{t("Average ticket")} (R$) | {t("Annual")}</Typography>
                   </Box>
                   <CustomAvatar skin='light' sx={{ mr: 4, width: 42, height: 42 }} variant='rounded' color='error'>
                     <FormatAlignMiddle sx={{ fontSize: '1.875rem', color: 'error.main' }} />
                   </CustomAvatar>
                 </Box>
                 <Typography component='p' variant='caption' sx={{ mt: 12 }}>
-                  Valor do ticket médio | Contratos Periodicidade Anual |
+                  {t("Average ticket value")} | {t("Contracts Annual Periodicity")} |
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant='h6'>

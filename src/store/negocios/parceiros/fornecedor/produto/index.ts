@@ -12,7 +12,8 @@ import fornecedorProdutoApiService from 'src/@api-center/negocios/parceiros/forn
 import { FornecedorProdutoType, FornecedorProdutoAddType } from 'src/types/negocios/parceiros/fornecedor/produto/fornecedorProdutoTypes'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
   fornecedorId: string | string[] | undefined
@@ -50,7 +51,7 @@ export const addFornecedorProduto = createAsyncThunk(
 
     axios.post(fornecedorProdutoApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData({fornecedorId: resp.data.fornecedorId }))
-      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Produto adicionado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -62,19 +63,19 @@ export const addFornecedorProduto = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -106,18 +107,18 @@ export const editFornecedorProduto = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -145,13 +146,13 @@ export const deleteFornecedorProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -183,13 +184,13 @@ export const alterStatusFornecedorProduto = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }

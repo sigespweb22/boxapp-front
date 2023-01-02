@@ -12,7 +12,8 @@ import pipelineApiService from 'src/@api-center/negocios/processos/pipeline/pipe
 import { PipelineType } from 'src/types/negocios/processos/pipeline/pipelineTypes'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
   q: string
@@ -56,7 +57,7 @@ export const addPipeline = createAsyncThunk(
 
     axios.post(pipelineApiService.addAsync, data2, config).then((resp) => {
       dispatch(fetchData(getState().pipeline.params))
-      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Pipeline criado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -68,19 +69,19 @@ export const addPipeline = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -119,18 +120,18 @@ export const editPipeline = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -158,13 +159,13 @@ export const deletePipeline = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }

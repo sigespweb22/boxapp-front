@@ -5,7 +5,8 @@ import { useState } from 'react'
 import Box from '@mui/material/Box'
 
 // ** Third Party Imports
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from 'react-datepicker'
 
 // ** Types
@@ -19,7 +20,7 @@ const PickersCallbacks = () => {
   const [date, setDate] = useState<DateType>(new Date())
 
   const handlePickerCallback = (msg: string) => {
-    toast(msg, { duration: 2000 })
+    toast(msg)
   }
 
   return (

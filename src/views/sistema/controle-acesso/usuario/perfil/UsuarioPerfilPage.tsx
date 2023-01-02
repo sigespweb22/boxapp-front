@@ -23,6 +23,9 @@ import UsuarioPerfilInfo from 'src/views/sistema/controle-acesso/usuario/perfil/
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -32,7 +35,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   }
 }))
 
-const TabName = styled('span')(({ theme }) => ({
+const TabName: any = styled('span')(({ theme }) => ({
   lineHeight: 1.71,
   fontSize: '0.875rem',
   marginLeft: theme.spacing(2.4),
@@ -47,6 +50,7 @@ interface Props {
 
 const UsuarioPerfilPage = (props: Props) => {
   // ** State
+  const { t } = useTranslation()
   const [value, setValue] = useState<string>('conta')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -66,7 +70,7 @@ const UsuarioPerfilPage = (props: Props) => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>Conta</TabName>
+                <TabName>{t("Account")}</TabName>
               </Box>
             }
           />
@@ -75,7 +79,7 @@ const UsuarioPerfilPage = (props: Props) => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Segurança</TabName>
+                <TabName>{t("Security")}</TabName>
               </Box>
             }
           />
@@ -84,7 +88,7 @@ const UsuarioPerfilPage = (props: Props) => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
-                <TabName>Informações Pessoais</TabName>
+                <TabName>{t("Personal information")}</TabName>
               </Box>
             }
           />

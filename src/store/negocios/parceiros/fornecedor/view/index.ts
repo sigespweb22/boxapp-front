@@ -12,7 +12,8 @@ import fornecedorApiService from 'src/@api-center/negocios/parceiros/fornecedor/
 import { FornecedorType } from 'src/types/negocios/parceiros/fornecedor/fornecedorTypes'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
   id: string | string[] | undefined
@@ -80,18 +81,18 @@ export const editFornecedor = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }

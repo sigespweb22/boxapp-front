@@ -1,8 +1,10 @@
-const endpointAccountPrefix = 'http://localhost:5000/api/v1/account'
+import env from '../environment';
+
+const apiUsers = `${env.API_URL}/account`
 
 export default {
   meEndpoint: '/auth/me',
-  loginEndpoint: endpointAccountPrefix + '/authenticate',
+  loginEndpoint: apiUsers + '/authenticate',
   registerEndpoint: '/jwt/register',
   storageTokenKeyName: 'accessToken'
 }

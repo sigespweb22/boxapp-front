@@ -22,6 +22,9 @@ import ClienteServicoListTable from 'src/views/negocios/comercial/cliente/servic
 import ClienteProdutoListTable from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableList'
 import ClienteContratoListTable from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableList'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   id: string
 }
@@ -38,6 +41,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const ClienteEditRight = ({ id }: Props) => {
   // ** Hooks
+  const { t } = useTranslation()
   const ability = useContext(AbilityContext)
 
   // ** State
@@ -58,7 +62,7 @@ const ClienteEditRight = ({ id }: Props) => {
       >
         {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />
+        <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
       </TabList>
       {/* <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-cliente-servico-page') ? (
@@ -79,7 +83,7 @@ const ClienteEditRight = ({ id }: Props) => {
           <TabPanel sx={{ p: 0 }} value='contratos'>
             <ClienteContratoListTable id={id} />
           </TabPanel>
-        ) : "Você não tem permissão para ver este recurso."}  
+        ) : <>{t("You do not have permission to view this resource.")}</>}  
       </Box>
     </TabContext>
   )

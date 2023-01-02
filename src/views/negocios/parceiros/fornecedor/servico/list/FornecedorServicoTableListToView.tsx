@@ -280,7 +280,7 @@ const FornecedorServicoTableListToView = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de serviços
+                {t("Contract list")}
               </Typography>
             }
           />
@@ -301,7 +301,7 @@ const FornecedorServicoTableListToView = ({ id }: Props) => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <FornecedorServicoViewDrawer open={fornecedorServicoViewOpen} toggle={toggleFornecedorServicoViewDrawer} row={row}/>
       </Grid>
     </Grid>

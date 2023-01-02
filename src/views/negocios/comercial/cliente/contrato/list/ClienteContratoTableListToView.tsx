@@ -228,7 +228,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de contratos
+                {t('Contract list')}
               </Typography>
             }
           />
@@ -249,7 +249,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
       </Grid>
     </Grid>

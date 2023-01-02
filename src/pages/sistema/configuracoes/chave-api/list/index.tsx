@@ -311,7 +311,7 @@ const ChaveApiList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ChaveApiPageEdit open={chaveApiPageEditOpen} toggle={toggleChaveApiPageEdit} row={row}/>
         <ChaveApiPageView open={chaveApiPageViewOpen} toggle={toggleChaveApiPageView} row={row}/>
       </Grid>

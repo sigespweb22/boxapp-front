@@ -27,7 +27,8 @@ import themeConfig from 'src/configs/themeConfig'
 import 'src/@fake-db'
 
 // ** Third Party Import
-import { Toaster } from 'react-hot-toast'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
@@ -43,9 +44,6 @@ import Spinner from 'src/@core/components/spinner'
 // ** Contexts
 import { AuthProvider } from 'src/context/AuthContext'
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
-
-// ** Styled Components
-import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
@@ -140,9 +138,7 @@ const App = (props: ExtendedAppProps) => {
                         </AclGuard>
                       </Guard>
                     </WindowWrapper>
-                    <ReactHotToast>
-                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                    </ReactHotToast>
+                    <ToastContainer/>
                   </ThemeComponent>
                 )
               }}

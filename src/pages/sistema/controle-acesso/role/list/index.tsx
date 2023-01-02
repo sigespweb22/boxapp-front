@@ -241,14 +241,14 @@ const RoleList = () => {
         <Grid container spacing={0}>
           <Grid item xs={12} md={9.45}>
             <Typography variant='h4' sx={{ mb: 3, color: 'primary.main' }}>
-              Permissões
+              {t("Permission")}
             </Typography>
             <Typography variant='h6' sx={{ mb: 3, color: 'primary.main' }}>
-              Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá! 🚀
+              {t("Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!")} 🚀
             </Typography>
             <Typography sx={{ mb: 9.5, color: 'text.secondary' }}>
-              Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades.
-              Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso.
+              {t("All permissions are created automatically by our team, according to the evolution of the functionalities")}.
+              {t("Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs")}.
             </Typography>
           </Grid>
           <GridStyled item xs={12} md={4}>
@@ -275,7 +275,7 @@ const RoleList = () => {
                 />
               </Card>
             </Grid>
-          ) : "Você não tem permissão para ver este recurso."}
+          ) : <>{t("You do not have permission to view this resource.")}</>}
           <AddRoleDrawer open={addRoleOpen} toggle={toggleAddRoleDrawer} />
         </Grid>
       </Grid>

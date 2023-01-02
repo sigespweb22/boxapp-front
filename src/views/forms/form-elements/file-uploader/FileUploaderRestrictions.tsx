@@ -15,7 +15,8 @@ import Close from 'mdi-material-ui/Close'
 import FileDocumentOutline from 'mdi-material-ui/FileDocumentOutline'
 
 // ** Third Party Components
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone'
 
 interface FileProp {
@@ -60,9 +61,7 @@ const FileUploaderRestrictions = () => {
       setFiles(acceptedFiles.map((file: File) => Object.assign(file)))
     },
     onDropRejected: () => {
-      toast.error('You can only upload 2 files & maximum size of 2 MB.', {
-        duration: 2000
-      })
+      toast.error('You can only upload 2 files & maximum size of 2 MB.')
     }
   })
 

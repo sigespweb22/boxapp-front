@@ -12,7 +12,8 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DataParams {
   q: string
@@ -24,7 +25,7 @@ interface Redux {
 }
 
 // ** Fetch Clientes
-export const fetchData = createAsyncThunk('appClients/fetchData', async (params: DataParams) => {
+export const fetchData = createAsyncThunk('appClientes/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
   const response = await axios
                             .get(clienteApiService.listAsync, {
@@ -38,8 +39,8 @@ export const fetchData = createAsyncThunk('appClients/fetchData', async (params:
 })
 
 // ** Add Client
-export const addClient = createAsyncThunk(
-  'appClients/addClient',
+export const addClientes = createAsyncThunk(
+  'appClientes/addClientes',
   async (data: ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
@@ -50,7 +51,7 @@ export const addClient = createAsyncThunk(
 
     axios.post(clienteApiService.addAsync, data, config).then((resp) => {
       dispatch(fetchData(getState().cliente.params))
-      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message, { duration: 12000, icon: '⚠️',})
+      if (resp.status === 201 && resp.data.message) return toast.success(resp.data.message)
       if (resp.status === 201) return toast.success("Cliente criado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
@@ -62,19 +63,19 @@ export const addClient = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -84,7 +85,7 @@ export const addClient = createAsyncThunk(
 
 // ** Update Client
 export const editCliente = createAsyncThunk(
-  'appClients/updateClient',
+  'appClientes/updateClientes',
   async (data : ClienteType, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     const config = {
@@ -106,18 +107,18 @@ export const editCliente = createAsyncThunk(
         {
           const returnObj = Object.entries(resp.response.data.errors);
           returnObj.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err[1].toString())
           });
         } else {
           resp.response.data.errors.forEach((err: any) => {
-            toast.error(err)
+            toast.error(err.toString())
           });
         }
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -126,8 +127,8 @@ export const editCliente = createAsyncThunk(
 )
 
 // ** Delete Client
-export const deleteClient = createAsyncThunk(
-  'appClients/deleteClient',
+export const deleteClientes = createAsyncThunk(
+  'appClientes/deleteClientes',
   async (id: number | string, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
@@ -145,13 +146,13 @@ export const deleteClient = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -160,8 +161,8 @@ export const deleteClient = createAsyncThunk(
 )
 
 // ** Alter Status Client
-export const alterStatusClient = createAsyncThunk(
-  'appClients/alterStatusClient',
+export const alterStatusClientes = createAsyncThunk(
+  'appClientes/alterStatusClientes',
   async (id: number | string | undefined, { getState, dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteApiService.storageTokenKeyName)!
     
@@ -183,13 +184,13 @@ export const alterStatusClient = createAsyncThunk(
       {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
-          toast.error(err)
+          toast.error(err[1].toString())
         });
       } else {
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie)        
+            toast.error(ie.toString())        
           })
         });
       }
@@ -197,8 +198,8 @@ export const alterStatusClient = createAsyncThunk(
   }
 )
 
-export const appClientsSlice = createSlice({
-  name: 'appClients',
+export const appClientesSlice = createSlice({
+  name: 'appClientes',
   initialState: {
     data: [],
     total: 0,
@@ -216,4 +217,4 @@ export const appClientsSlice = createSlice({
   }
 })
 
-export default appClientsSlice.reducer
+export default appClientesSlice.reducer

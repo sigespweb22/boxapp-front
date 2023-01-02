@@ -19,6 +19,7 @@ import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
 // import ClienteServicoTableListToView from 'src/views/negocios/comercial/cliente/servico/list/ClienteServicoTableListToView'
 // import ClienteProdutoTableListToView from 'src/views/negocios/comercial/cliente/produto/list/ClienteProdutoTableListToView'
 import ClienteContratoTableListToView from 'src/views/negocios/comercial/cliente/contrato/list/ClienteContratoTableListToView'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   id: string
@@ -37,6 +38,7 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 const ClienteViewRight = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string>('contratos')
+  const { t } = useTranslation()
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -53,7 +55,7 @@ const ClienteViewRight = ({ id }: Props) => {
       >
         {/* <Tab value='servicos' label='SERVIÇOS' icon={<CogOutline />} />
         <Tab value='produtos' label='PRODUTOS' icon={<PackageVariantClosed />} /> */}
-        <Tab value='contratos' label='CONTRATOS' icon={<FileDocumentEditOutline />} />v
+        <Tab value='contratos' label={t('CONTRACTS')} icon={<FileDocumentEditOutline />} />v
       </TabList>
       {/* <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='servicos'>

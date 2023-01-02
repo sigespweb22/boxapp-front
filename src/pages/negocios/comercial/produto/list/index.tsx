@@ -294,7 +294,7 @@ const ProdutoList = () => {
             title={<Typography variant='h5'>{t("Produtos")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                Listagem dos produtos.
+                {t("Product list")}.
               </Typography>
             }
           />
@@ -316,7 +316,7 @@ const ProdutoList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ProdutoAddDrawer open={addProdutoOpen} toggle={toggleAddProdutoDrawer} />
         <ProdutoViewDrawer open={viewProdutoOpen} toggle={handleProdutoViewToggle} row={row}/>
         <ProdutoEditDrawer open={editProdutoOpen} toggle={handleProdutoEditToggle} row={row}/>
