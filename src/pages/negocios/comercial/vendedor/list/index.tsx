@@ -102,7 +102,7 @@ const defaultColumns = [
     minWidth: 100,
     field: 'nome',
     headerName: 'Nome',
-    headerAlign: 'center' as const,
+    headerAlign: 'left' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       {
