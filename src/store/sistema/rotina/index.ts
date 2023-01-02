@@ -8,9 +8,11 @@ import axios from 'axios'
 // ** Api Services
 import rotinaApiServices from 'src/@api-center/sistema/rotinas/rotinaApiService'
 
-// ** Toast
+// ** Toast Imports
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+
+// ** Types Imports
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 interface DataParams {

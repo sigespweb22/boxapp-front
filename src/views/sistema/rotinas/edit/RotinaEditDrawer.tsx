@@ -53,7 +53,6 @@ const defaultValues = {
 }
 
 const RotinaEditDrawer = (props: RotinaEditType) => {
-  debugger
   // ** Hook
   const { t } = useTranslation()
 

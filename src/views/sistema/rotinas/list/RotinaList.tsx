@@ -1,13 +1,12 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback } from 'react'
+import { useContext, useState, useEffect, useCallback, useRef } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -56,6 +55,10 @@ import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 import axios from 'axios'
 
+// ** Toast
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 interface RotinaStatusType {
   [key: string]: ThemeColor
 }
@@ -67,6 +70,12 @@ interface CellType {
 const rotinaStatusObj: RotinaStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
+}
+
+const rotinaEventHistoryStatusObj: RotinaStatusType = {
+  EM_EXECUCAO: 'info',
+  CONCLUIDA: 'success',
+  FALHA_EXECUCAO: 'error'
 }
 
 // ** Styled component for the link for the avatar without image
@@ -102,9 +111,24 @@ const RenderStatus = ({ status }: { status: string }) => {
   )
 }
 
+const RenderRotinaEventHistoryStatus = ({ status }: { status: string }) => {
+  // ** Hooks
+  const { t } = useTranslation()
+
+  return (
+    <CustomChip
+      skin='light'
+      size='small'
+      label={t(status)}
+      color={rotinaEventHistoryStatusObj[status]}
+      sx={{ textTransform: 'capitalize' }}
+    />
+  )
+}
+
 const defaultColumns = [
   {
-    flex: 0.2,
+    flex: 0.45,
     minWidth: 30,
     field: 'nome',
     headerName: 'Nome',
@@ -134,21 +158,6 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
-    minWidth: 100,
-    field: 'descricao',
-    headerName: 'Descrição',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.descricao}
-        </Typography>
-      )
-    }
-  },
-  {
     flex: 0.09,
     minWidth: 50,
     field: 'status',
@@ -156,6 +165,60 @@ const defaultColumns = [
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status} />
+  },
+  {
+    flex: 0.15,
+    minWidth: 100,
+    field: 'dataCriacaoUltimoEvento',
+    headerName: 'Última rotina - Data',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.dataCriacaoUltimoEvento}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.09,
+    minWidth: 50,
+    field: 'statusUltimoEvento',
+    headerName: 'Última rotina - Status',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => <RenderRotinaEventHistoryStatus status={row.statusUltimoEvento} />
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'totalItensSucessoUltimoEvento',
+    headerName: 'Última rotina - Total Sucessos',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.totalItensSucessoUltimoEvento}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'totalItensInsucessoUltimoEvento',
+    headerName: 'Última rotina - Total Insucessos',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.totalItensInsucessoUltimoEvento}
+        </Typography>
+      )
+    }
   }
 ]
 
@@ -170,9 +233,55 @@ const RotinaList = () => {
   const [rotinaEditOpen, setRotinaEditOpen] = useState<boolean>(false)
   const [rotinaViewOpen, setRotinaViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<RotinaType | undefined>()
+  const [mess, setMess] = useState<any | null>('')
+  const [connection, setConnection] = useState<any | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.rotina)
+
+  useEffect(() => {
+    const newConnection = new HubConnectionBuilder()
+        .withUrl("https://localhost:5001/notificacaoHub")
+        .withAutomaticReconnect()
+        .build();
+
+    setConnection(newConnection);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+        connection.start()
+                  .then(() => {
+                      console.log('Connected!');
+
+                      connection.on('ReceiveMessage', (message: string) => {
+                        debugger
+                          setMess(message)
+                          console.log(message)
+                      });
+                  })
+                  .catch((e: any) => console.log('Connection failed: ', e));
+    }
+  }, [connection]);
+
+  const sendMessage = async (user: string, message: string) => {
+    const chatMessage = {
+        user: user,
+        message: message
+    };
+
+    if (connection.connectionStarted) {
+        try {
+            await connection.send('SendMessage', chatMessage);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+    else {
+        alert('No connection to server yet.');
+    }
+  }
 
   const config = {
     headers: {
@@ -207,11 +316,12 @@ const RotinaList = () => {
   }
 
   const handleRotinaPlay = (row: RotinaType) => {
-    axios
-      .post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
-      .catch((e) => {
-        e.response.data.errors.map((x: any) => toast.error(x));
-      })
+    axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
+    toast.success(`Rotina disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação, e quando quiser retorne a esta tela para verificar o STATUS de EXECUÇÃO da rotina.`)
+
+    setTimeout(function () {
+      dispatch(fetchData({q: ''}))
+    }, 500)
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
@@ -246,7 +356,7 @@ const RotinaList = () => {
   const columns = [
     ...defaultColumns,
     {
-      flex: 0.1,
+      flex: 0.2,
       minWidth: 90,
       sortable: false,
       field: 'actions',
