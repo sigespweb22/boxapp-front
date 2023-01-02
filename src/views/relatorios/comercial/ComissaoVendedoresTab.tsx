@@ -131,6 +131,7 @@ const ComissaoVendedor = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <DatePicker
+                    required={true}
                     isClearable
                     selectsRange
                     monthsShown={2}
@@ -152,7 +153,7 @@ const ComissaoVendedor = () => {
                   />
                 </Grid>
               </Grid>
-              <Div sx={{ mb: 2, mt: 8 }}>{t("When omitting any information, all data will be returned.")}</Div>
+              <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
             <Button sx={{ mt: 3 }} variant='contained'>
               {t('GENERATE')}
             </Button>
