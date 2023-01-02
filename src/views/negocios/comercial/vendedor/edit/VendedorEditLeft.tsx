@@ -48,6 +48,9 @@ import { editVendedor, fetchData } from 'src/store/negocios/comercial/vendedor/v
 // ** Store Imports
 import { AppDispatch, RootState } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
+import { Autocomplete } from '@mui/material'
+import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
+import axios from 'axios'
 
 interface ColorsType {
   [key: string]: ThemeColor
@@ -60,6 +63,11 @@ const statusColors: ColorsType = {
 
 interface Props {
   id: string | string[] | undefined
+}
+
+interface Usuario {
+  userId: string
+  name: string
 }
 
 const defaultValues: VendedorType = {
@@ -79,6 +87,7 @@ const VendedorEditLeft = ({id}: Props) => {
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.vendedorView)
+  const [usuarios, setUsuarios] = useState<Usuario[]>([])
 
   const {
     reset,
@@ -88,6 +97,19 @@ const VendedorEditLeft = ({id}: Props) => {
   } = useForm({
     mode: 'onChange'
   })
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(usuarioApiService.storageTokenKeyName)}`
+    }
+  }
+
+  useEffect(() => {
+    axios.get(`${usuarioApiService.listToSelectAsync}`, config).then(response => {
+      setUsuarios(response.data)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     dispatch(
@@ -183,6 +205,12 @@ const VendedorEditLeft = ({id}: Props) => {
                   {store?.data.nome}
                 </Typography>
               </Box>
+              <Box sx={{ display: 'flex', mb: 0, pt: 0, pb: 3 }}>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("User")}:</Typography>
+                <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
+                  {store?.data.userId}
+                </Typography>
+              </Box>
               <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
@@ -239,6 +267,31 @@ const VendedorEditLeft = ({id}: Props) => {
                           )}
                         />
                       </FormControl>
+                      <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='usuario'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <FormControl fullWidth>
+                    <Autocomplete
+                      multiple={false}
+                      options={usuarios}
+                      filterSelectedOptions
+                      id='usuario.userId'
+                      value={value}
+                      getOptionLabel={option => option.name}
+                      onChange={(event, newValue): void => {
+                        onChange(newValue)
+                      }}
+                      renderInput={params => <TextField {...params} label={t("User")} placeholder='(e.g.: John Doe)' />}
+                    />
+                  </FormControl>
+                )
+              }}
+            />
+          </FormControl>
                     </Grid>
                     <DialogActions sx={{ justifyContent: 'center' }}>
                       <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>

@@ -50,10 +50,10 @@ interface Usuario {
 }
 
 interface VendedorData {
+  [x: string]: any
   nome: string
   userId: string
   status: string
-  usuario: Usuario
 }
 
 const showErrors = (field: string, valueLen: number, min: number) => {
@@ -111,7 +111,6 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   const {
     reset,
     control,
-    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -121,6 +120,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   })
 
   const onSubmit = (data: VendedorData) => {
+    data.userId = data.usuario.userId
     dispatch(addVendedor({ ...data }))
     toggle()
     reset()
@@ -141,7 +141,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t('Seller New')}</Typography>
+        <Typography variant='h6'>{t('New Seller')}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Grid container spacing={0} sx={{ pl: 2, pt: 2, pr: 2, pb: 2 }}>
@@ -171,20 +171,20 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
             <Controller
               name='usuario'
               control={control}
+              rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     multiple={false}
-                    options={usuarios || []}
+                    options={usuarios}
                     filterSelectedOptions
+                    id='usuario'
                     value={value}
-                    id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option.name}
-                    renderInput={params => <TextField {...params} label={t("User")} placeholder='(e.g.: Jhon Dare)' />}
-                    onChange={(event, newValue) => {
-                      // setRole(newValue)
+                    onChange={(event, newValue): void => {
                       onChange(newValue)
                     }}
+                    renderInput={params => <TextField {...params} label={t("User")} placeholder='(e.g.: John Doe)' />}
                   />
                 )
               }}

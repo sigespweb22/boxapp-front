@@ -159,6 +159,21 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       </Header>
       <Box sx={{ p: 5 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='comissaoReais'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type='number'
+                  value={value}
+                  label={t("Commission in reais (R$)")}
+                  onChange={onChange}
+                  placeholder='(e.g.: R$ 150,00)'
+                />
+              )}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='comissaoPercentual'
@@ -170,21 +185,6 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                   label={t("Percentage commission (%)")}
                   onChange={onChange}
                   placeholder='(e.g.: 15)'
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='comissaoReais'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <TextField
-                  type='number'
-                  value={value}
-                  label={t("Commission in reais (R$)")}
-                  onChange={onChange}
-                  placeholder='(e.g.: R$ 150,00)'
                 />
               )}
             />
