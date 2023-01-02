@@ -233,7 +233,6 @@ const RotinaList = () => {
   const [rotinaEditOpen, setRotinaEditOpen] = useState<boolean>(false)
   const [rotinaViewOpen, setRotinaViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<RotinaType | undefined>()
-  const [mess, setMess] = useState<any | null>('')
   const [connection, setConnection] = useState<any | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
@@ -241,7 +240,7 @@ const RotinaList = () => {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-        .withUrl("https://localhost:5001/notificacaoHub")
+        .withUrl("http://localhost:5000/notificacaoHub")
         .withAutomaticReconnect()
         .build();
 
@@ -255,33 +254,19 @@ const RotinaList = () => {
                       console.log('Connected!');
 
                       connection.on('ReceiveMessage', (message: string) => {
-                        debugger
-                          setMess(message)
-                          console.log(message)
+                        switch (message) {
+                          case 'ROTINA_EVENT_HISTORY_CREATED_SUCCESS':
+                            dispatch(fetchData({q: ''}))
+                            break;
+                          case 'ROTINA_EVENT_HISTORY_UPDATED_SUCCESS':
+                            dispatch(fetchData({q: ''}))
+                            break;
+                        }
                       });
                   })
                   .catch((e: any) => console.log('Connection failed: ', e));
     }
   }, [connection]);
-
-  const sendMessage = async (user: string, message: string) => {
-    const chatMessage = {
-        user: user,
-        message: message
-    };
-
-    if (connection.connectionStarted) {
-        try {
-            await connection.send('SendMessage', chatMessage);
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
-    else {
-        alert('No connection to server yet.');
-    }
-  }
 
   const config = {
     headers: {
@@ -318,10 +303,6 @@ const RotinaList = () => {
   const handleRotinaPlay = (row: RotinaType) => {
     axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
     toast.success(`Rotina disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação, e quando quiser retorne a esta tela para verificar o STATUS de EXECUÇÃO da rotina.`)
-
-    setTimeout(function () {
-      dispatch(fetchData({q: ''}))
-    }, 500)
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
