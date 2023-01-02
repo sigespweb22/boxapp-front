@@ -23,7 +23,7 @@ import Close from 'mdi-material-ui/Close'
 import { useDispatch } from 'react-redux'
 
 // ** Actions Imports
-import { addVendedorContratoWithoutUpdateState } from 'src/store/negocios/comercial/vendedor/contrato'
+import { addVendedorContrato } from 'src/store/negocios/comercial/vendedor/contrato'
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
@@ -133,48 +133,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
       data.clienteContratoId = props.clienteContratoId
       data.vendedorId = data.vendedor.id
 
-      dispatch(addVendedorContratoWithoutUpdateState({
-        ...data,
-        clienteContrato: {
-          id: '',
-          valorContrato: null,
-          periodicidade: '',
-          clienteId: '',
-          bomControleContratoId: null,
-          cliente: {
-            id: undefined,
-            nomeFantasia: '',
-            razaoSocial: '',
-            inscricaoEstadual: '',
-            tipoPessoa: '',
-            cnpj: '',
-            cpf: '',
-            telefonePrincipal: '',
-            emailPrincipal: '',
-            observacao: '',
-            dataFundacao: '',
-            codigoMunicipio: 0,
-            rua: '',
-            numero: '',
-            complemento: '',
-            cidade: '',
-            estado: '',
-            cep: '',
-            status: '',
-            avatarColor: undefined
-          },
-          fatura: {
-            id: '',
-            dataVencimento: '',
-            dataCompetencia: '',
-            valor: 0,
-            desconto: null,
-            numeroParcela: null,
-            status: ''
-          },
-          status: ''
-        }
-      }))
+      dispatch(addVendedorContrato(data))
       toggle()
       reset()
     }

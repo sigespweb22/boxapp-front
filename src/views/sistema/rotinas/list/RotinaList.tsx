@@ -241,7 +241,7 @@ const RotinaList = () => {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-        .withUrl("http://localhost:5000/notificacaoHub")
+        .withUrl("https://localhost:5001/notificacaoHub")
         .withAutomaticReconnect()
         .build();
 
@@ -255,8 +255,9 @@ const RotinaList = () => {
                       console.log('Connected!');
 
                       connection.on('ReceiveMessage', (message: string) => {
+                        debugger
                           setMess(message)
-                          console.log(mess)
+                          console.log(message)
                       });
                   })
                   .catch((e: any) => console.log('Connection failed: ', e));
