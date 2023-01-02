@@ -73,7 +73,7 @@
     "react-chartjs-2": "4.1.0",
     "react-contenteditable": "^3.3.6",
     "react-credit-cards": "0.8.3",
-    "react-datepicker": "4.5.0",
+    "react-datepicker": "^4.8.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.1.0",

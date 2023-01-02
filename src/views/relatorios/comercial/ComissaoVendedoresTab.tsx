@@ -33,6 +33,7 @@ import axios from 'axios'
 
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import { StringLocale } from 'yup/lib/locale'
 
 interface Vendedor {
   vendedorId: string
@@ -95,6 +96,26 @@ const ComissaoVendedor = () => {
     setEndDateRange(end)
   }
 
+  const days: string[] = [
+    'Su', 'Mo', 'Tu', 'We', 'Th', 'Fri', 'Sa'
+  ]
+  const months: string[] = ['January','February','March','April','May','June',
+  'July','August','September','October','November','December']
+
+  const locale = {
+    localize: {
+      day: (n: number) => {
+        return (`${t(days[n])}`)
+      },
+      month: (n: number) => {
+        return (`${t(months[n])}`)
+      }
+    },
+    formatLong: {
+      date: () => 'dd/mm/yyyy'
+    }
+  }
+
   return (
     <DatePickerWrapper>
       <Grid>
@@ -131,6 +152,7 @@ const ComissaoVendedor = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <DatePicker
+                    locale={locale}
                     required={true}
                     isClearable
                     selectsRange
