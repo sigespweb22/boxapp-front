@@ -137,7 +137,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.userId}
+          {/* {row.usuario.fullName} */}
         </Typography>
       )
     }

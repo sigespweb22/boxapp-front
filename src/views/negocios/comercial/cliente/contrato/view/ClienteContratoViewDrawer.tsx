@@ -125,7 +125,7 @@ const defaultColumns = [
   },
   {
     flex: 0.1,
-    minWidth: 100,
+    minWidth: 70,
     field: 'valor',
     headerName: 'Valor',
     headerAlign: 'center' as const,
@@ -194,8 +194,8 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
   const columns = [
     ...defaultColumns,
     {
-      flex: 0.05,
-      minWidth: 90,
+      flex: 0.03,
+      minWidth: 70,
       sortable: false,
       field: 'actions', 
       headerName: 'Ações',
@@ -278,6 +278,9 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
               )}
             />
           </FormControl>
+          <Typography variant='h6' sx={{ml: 1,mb: 5}}>
+            {t("Contract invoices")}:
+          </Typography>
           <FormControl>
             <DataGrid 
               localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
