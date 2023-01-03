@@ -65,21 +65,18 @@ interface Props {
   id: string | string[] | undefined
 }
 
-interface Usuario {
-  userId: string
-  name: string
+interface ApplicationUser {
+  id: string
+  fullName: string
 }
 
 const defaultValues: VendedorType = {
   id: '',
   nome: '',
   userId: '',
+  applicationUser: null,
   status: '',
-  usuario: {
-    userId: '',
-    groupId: '',
-    name: ''
-  }
+  avatarColor: 'primary'
 }
 
 const VendedorEditLeft = ({ id }: Props) => {
@@ -92,7 +89,7 @@ const VendedorEditLeft = ({ id }: Props) => {
   const [openEdit, setOpenEdit] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.vendedorView)
-  const [usuarios, setUsuarios] = useState<Usuario[]>([])
+  const [usuarios, setUsuarios] = useState<ApplicationUser[]>([])
 
   const { reset, setValue, control, handleSubmit } = useForm({
     mode: 'onChange'
@@ -129,7 +126,7 @@ const VendedorEditLeft = ({ id }: Props) => {
     if (store) {
       setValue('id', store?.data.id)
       setValue('nome', store?.data.nome)
-      setValue('userId', store?.data.userId)
+      setValue('applicationUser', store?.data.applicationUser)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
@@ -152,6 +149,9 @@ const VendedorEditLeft = ({ id }: Props) => {
   }
 
   const onSubmit = (data: VendedorType) => {
+    data.userId = data.applicationUser?.userId
+    data.applicationUser = null
+
     dispatch(editVendedor({ ...data }))
     handleEditClose()
     reset()
@@ -165,10 +165,7 @@ const VendedorEditLeft = ({ id }: Props) => {
 
   const handleEditClose = () => {
     setOpenEdit(false)
-    reset()
   }
-
-  debugger
 
   if (store) {
     return (
@@ -183,7 +180,7 @@ const VendedorEditLeft = ({ id }: Props) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.userId || store?.data.nome}
+                label={store?.data.applicationUser?.fullName || store?.data.nome}
                 color='primary'
                 sx={{
                   height: 20,
@@ -208,7 +205,7 @@ const VendedorEditLeft = ({ id }: Props) => {
               <Box sx={{ display: 'flex', mb: 0, pt: 0, pb: 3 }}>
                 <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t('User')}:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
-                  {store?.data.userId}
+                  {store?.data.applicationUser?.fullName}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', mb: 2.7 }}>
@@ -273,7 +270,7 @@ const VendedorEditLeft = ({ id }: Props) => {
                     </FormControl>
                     <FormControl fullWidth sx={{ mb: 6 }}>
                       <Controller
-                        name='usuario'
+                        name='applicationUser'
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => {
@@ -283,9 +280,8 @@ const VendedorEditLeft = ({ id }: Props) => {
                                 multiple={false}
                                 options={usuarios}
                                 filterSelectedOptions
-                                id='usuario.userId'
                                 value={value}
-                                getOptionLabel={option => option.name}
+                                getOptionLabel={option => option.fullName}
                                 onChange={(event, newValue): void => {
                                   onChange(newValue)
                                 }}

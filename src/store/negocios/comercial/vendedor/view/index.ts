@@ -50,6 +50,7 @@ export const editVendedor = createAsyncThunk(
     }
 
     axios.put(vendedorApiService.updateAsync, data, config).then((resp) => {
+      debugger
       dispatch(fetchData(getState().vendedorView.data))
       
       if (resp.status === 204) return toast.success("Vendedor atualizado com sucesso.")

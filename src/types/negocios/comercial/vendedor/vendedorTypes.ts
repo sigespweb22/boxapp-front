@@ -10,7 +10,7 @@ export type VendedorLayoutType = {
 export type VendedorType = {
   id?: string
   nome: string
-  userId: string
+  userId?: string
   applicationUser: UsersType | null
   status: string
   avatarColor?: ThemeColor
