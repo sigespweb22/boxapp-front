@@ -43,8 +43,6 @@ import { RootState, AppDispatch } from 'src/store'
 import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/vendedor/contrato/list/TableHeader'
-import VendedorContratoAddDrawer from 'src/views/negocios/comercial/vendedor/contrato/new/VendedorContratoAddDrawer'
 import VendedorContratoViewDrawer from 'src/views/negocios/comercial/vendedor/contrato/view/VendedorContratoViewDrawer'
 import VendedorContratoEditDrawer from 'src/views/negocios/comercial/vendedor/contrato/edit/VendedorContratoEditDrawer'
 
