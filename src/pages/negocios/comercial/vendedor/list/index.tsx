@@ -58,7 +58,6 @@ interface CellType {
   row: VendedorType
 }
 
-
 const VendedorStatusObj: VendedorStatusType = {
   ACTIVE: 'success',
   RECORRENTE: 'secondary'
@@ -137,7 +136,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {/* {row.usuario.fullName} */}
+          {row.applicationUser?.fullName}
         </Typography>
       )
     }

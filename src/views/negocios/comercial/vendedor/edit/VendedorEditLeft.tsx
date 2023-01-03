@@ -75,9 +75,14 @@ const defaultValues: VendedorType = {
   nome: '',
   userId: '',
   status: '',
+  usuario: {
+    userId: '',
+    groupId: '',
+    name: ''
+  }
 }
 
-const VendedorEditLeft = ({id}: Props) => {
+const VendedorEditLeft = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const [data, setData] = useState<null | VendedorType>(defaultValues)
@@ -89,12 +94,7 @@ const VendedorEditLeft = ({id}: Props) => {
   const store = useSelector((state: RootState) => state.vendedorView)
   const [usuarios, setUsuarios] = useState<Usuario[]>([])
 
-  const {
-    reset,
-    setValue,
-    control,
-    handleSubmit
-  } = useForm({
+  const { reset, setValue, control, handleSubmit } = useForm({
     mode: 'onChange'
   })
 
@@ -120,20 +120,18 @@ const VendedorEditLeft = ({id}: Props) => {
   }, [dispatch, id])
 
   useEffect(() => {
-    if(store?.data)
-    {
+    if (store?.data) {
       setData(store.data)
     }
   }, [store])
 
   useEffect(() => {
-    if(store)
-    {
+    if (store) {
       setValue('id', store?.data.id)
       setValue('nome', store?.data.nome)
       setValue('userId', store?.data.userId)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
 
   const renderVendedorAvatar = () => {
@@ -145,7 +143,7 @@ const VendedorEditLeft = ({id}: Props) => {
           color={'primary' as ThemeColor}
           sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
         >
-          {getInitials(store?.data.nome || "CP")}
+          {getInitials(store?.data.nome || 'CP')}
         </CustomAvatar>
       )
     } else {
@@ -154,21 +152,23 @@ const VendedorEditLeft = ({id}: Props) => {
   }
 
   const onSubmit = (data: VendedorType) => {
-    dispatch(editVendedor({ ...data  }))
+    dispatch(editVendedor({ ...data }))
     handleEditClose()
     reset()
-  }  
+  }
 
   // Handle Edit dialog
   const handleEditClickOpen = () => {
-    dispatch(fetchData({id: data?.id}))
+    dispatch(fetchData({ id: data?.id }))
     setOpenEdit(true)
   }
-  
+
   const handleEditClose = () => {
     setOpenEdit(false)
     reset()
   }
+
+  debugger
 
   if (store) {
     return (
@@ -197,45 +197,45 @@ const VendedorEditLeft = ({id}: Props) => {
             </CardContent>
 
             <CardContent>
-              <Typography variant='h6'>{t("Details")}</Typography>
+              <Typography variant='h6'>{t('Details')}</Typography>
               <Divider />
               <Box sx={{ display: 'flex', mb: 0, pt: 2, pb: 3 }}>
-                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Name")}:</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t('Name')}:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
                   {store?.data.nome}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', mb: 0, pt: 0, pb: 3 }}>
-                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("User")}:</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t('User')}:</Typography>
                 <Typography variant='body2' sx={{ textTransform: 'capitalize' }}>
                   {store?.data.userId}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={`${t(store?.data.status)}`}
-                    color={statusColors[store?.data.status]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box> 
+                <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
+                <CustomChip
+                  skin='light'
+                  size='small'
+                  label={`${t(store?.data.status)}`}
+                  color={statusColors[store?.data.status]}
+                  sx={{
+                    height: 20,
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    borderRadius: '5px',
+                    textTransform: 'capitalize'
+                  }}
+                />
+              </Box>
             </CardContent>
 
-            {ability?.can('update', 'ac-vendedor-page') &&
+            {ability?.can('update', 'ac-vendedor-page') && (
               <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant='contained' sx={{ mr: 3 }} onClick={handleEditClickOpen}>
-                  {t("Edit")}
+                  {t('Edit')}
                 </Button>
               </CardActions>
-            }
+            )}
 
             <Dialog
               open={openEdit}
@@ -245,62 +245,68 @@ const VendedorEditLeft = ({id}: Props) => {
               aria-describedby='vendedor-view-left-description'
             >
               <DialogTitle id='user-view-edit' sx={{ textAlign: 'center', fontSize: '1.5rem !important' }}>
-                {t("Edit seller information")}
+                {t('Edit seller information')}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText variant='body2' id='vendedor-view-left-description' sx={{ textAlign: 'center', mb: 7 }}>
-                  {t("Updating seller information is auditable")}.
+                <DialogContentText
+                  variant='body2'
+                  id='vendedor-view-left-description'
+                  sx={{ textAlign: 'center', mb: 7 }}
+                >
+                  {t('Updating seller information is auditable')}.
                 </DialogContentText>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Grid item xs={12} sm={12}>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-                        <Controller
-                          name='nome'
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TextField
-                              value={value}
-                              label={t("Name")}
-                              onChange={onChange}
-                              placeholder='(e.g.: Ex.: John Doe)'
-                            />
-                          )}
-                        />
-                      </FormControl>
-                      <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='usuario'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      multiple={false}
-                      options={usuarios}
-                      filterSelectedOptions
-                      id='usuario.userId'
-                      value={value}
-                      getOptionLabel={option => option.name}
-                      onChange={(event, newValue): void => {
-                        onChange(newValue)
-                      }}
-                      renderInput={params => <TextField {...params} label={t("User")} placeholder='(e.g.: John Doe)' />}
-                    />
-                  </FormControl>
-                )
-              }}
-            />
-          </FormControl>
-                    </Grid>
-                    <DialogActions sx={{ justifyContent: 'center' }}>
-                      <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-                        {t("Save")}
-                      </Button>
-                      <Button size='large' variant='outlined' color='secondary' onClick={handleEditClose}>
-                        {t("Discard")}
-                      </Button>
-                    </DialogActions>
+                  <Grid item xs={12} sm={12}>
+                    <FormControl fullWidth sx={{ mb: 6 }}>
+                      <Controller
+                        name='nome'
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <TextField
+                            value={value}
+                            label={t('Name')}
+                            onChange={onChange}
+                            placeholder='(e.g.: Ex.: John Doe)'
+                          />
+                        )}
+                      />
+                    </FormControl>
+                    <FormControl fullWidth sx={{ mb: 6 }}>
+                      <Controller
+                        name='usuario'
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { value, onChange } }) => {
+                          return (
+                            <FormControl fullWidth>
+                              <Autocomplete
+                                multiple={false}
+                                options={usuarios}
+                                filterSelectedOptions
+                                id='usuario.userId'
+                                value={value}
+                                getOptionLabel={option => option.name}
+                                onChange={(event, newValue): void => {
+                                  onChange(newValue)
+                                }}
+                                renderInput={params => (
+                                  <TextField {...params} label={t('User')} placeholder='(e.g.: John Doe)' />
+                                )}
+                              />
+                            </FormControl>
+                          )
+                        }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <DialogActions sx={{ justifyContent: 'center' }}>
+                    <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
+                      {t('Save')}
+                    </Button>
+                    <Button size='large' variant='outlined' color='secondary' onClick={handleEditClose}>
+                      {t('Discard')}
+                    </Button>
+                  </DialogActions>
                 </form>
               </DialogContent>
             </Dialog>
@@ -313,8 +319,8 @@ const VendedorEditLeft = ({id}: Props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            {t("Seller with id")}: {id} {t("does not exist. Please check the sellers listing")}:{' '}
-            <Link href='/pages/negocios/comercial/vendedor/list'>{t("Sellers listing")}</Link>
+            {t('Seller with id')}: {id} {t('does not exist. Please check the sellers listing')}:{' '}
+            <Link href='/pages/negocios/comercial/vendedor/list'>{t('Sellers listing')}</Link>
           </Alert>
         </Grid>
       </Grid>

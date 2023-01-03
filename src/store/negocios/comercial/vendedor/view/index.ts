@@ -26,6 +26,7 @@ interface Redux {
 
 // ** Fetch Vendedor
 export const fetchData = createAsyncThunk('appVendedor/fetchData', async (params: DataParams) => {
+  debugger
   const storedToken = window.localStorage.getItem(vendedorApiService.storageTokenKeyName)!
   const response = await axios
                             .get(`${vendedorApiService.listOneAsync}${params.id}`, {
@@ -85,6 +86,7 @@ const defaultValues: VendedorType = {
   id: '',
   nome: '',
   userId: '',
+  applicationUser: null,
   status: '',
   avatarColor: 'primary'
 }

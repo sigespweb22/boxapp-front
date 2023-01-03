@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -22,6 +22,8 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
+import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
+
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -49,13 +51,23 @@ interface Props {
   id: string | string[] | undefined
 }
 
+const defaultValues: VendedorType = {
+  id: '',
+  nome: '',
+  userId: '',
+  applicationUser: null,
+  status: '',
+  avatarColor: 'primary'
+}
+
 const VendedorViewLeft = ({id}: Props) => {
   // ** Hooks
   const { t } = useTranslation()
 
   // ** States
   const dispatch = useDispatch<AppDispatch>()
-  const store: any = useSelector((state: RootState) => state.vendedorView)
+  const store = useSelector((state: RootState) => state.vendedorView)
+  const [vendedorView, setVendedorView] = useState<VendedorType>(defaultValues)
 
   const {
     setValue
@@ -74,9 +86,7 @@ const VendedorViewLeft = ({id}: Props) => {
   useEffect(() => {
     if(store)
     {
-      setValue('id', store?.data.id)
-      setValue('nome', store?.data.nome)
-      setValue('userId', store?.data.userId)
+      setVendedorView(store.data)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store])
@@ -90,7 +100,7 @@ const VendedorViewLeft = ({id}: Props) => {
           color={'primary' as ThemeColor}
           sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
         >
-          {getInitials(store?.data.nome || "CP")}
+          {getInitials(vendedorView.nome || "CP")}
         </CustomAvatar>
       )
     } else {
@@ -106,12 +116,12 @@ const VendedorViewLeft = ({id}: Props) => {
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderClienteAvatar()}
               <Typography variant='h6' sx={{ mb: 2 }}>
-                {store?.data.nome}
+                {vendedorView.nome}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={store?.data.userId || store?.data.nome}
+                label={vendedorView.applicationUser?.fullName || vendedorView.nome}
                 color='primary'
                 sx={{
                   height: 20,
@@ -130,15 +140,19 @@ const VendedorViewLeft = ({id}: Props) => {
               <Box sx={{ pt: 2, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("Name")}:</Typography>
-                  <Typography variant='body2'>{store?.data.nome}</Typography>
+                  <Typography variant='body2'>{vendedorView.nome}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>{t("User")}:</Typography>
+                  <Typography variant='body2'>{vendedorView.applicationUser?.fullName}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Status:</Typography>
                   <CustomChip
                     skin='light'
                     size='small'
-                    label={`${t(store?.data.status)}`}
-                    color={statusColors[store?.data.status]}
+                    label={`${t(vendedorView.status)}`}
+                    color={statusColors[vendedorView.status]}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',
