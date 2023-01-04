@@ -26,6 +26,7 @@ interface Redux {
 
 // ** Fetch Vendedor
 export const fetchData = createAsyncThunk('appVendedor/fetchData', async (params: DataParams) => {
+  debugger
   const storedToken = window.localStorage.getItem(vendedorApiService.storageTokenKeyName)!
   const response = await axios
                             .get(`${vendedorApiService.listOneAsync}${params.id}`, {
@@ -49,6 +50,7 @@ export const editVendedor = createAsyncThunk(
     }
 
     axios.put(vendedorApiService.updateAsync, data, config).then((resp) => {
+      debugger
       dispatch(fetchData(getState().vendedorView.data))
       
       if (resp.status === 204) return toast.success("Vendedor atualizado com sucesso.")
@@ -85,6 +87,7 @@ const defaultValues: VendedorType = {
   id: '',
   nome: '',
   userId: '',
+  applicationUser: null,
   status: '',
   avatarColor: 'primary'
 }

@@ -18,6 +18,7 @@ export type ApplicationUserGroupViewModelType = {
 }
 
 export type UsersType = {
+  userId: string
   id: string
   roles: string[]
   rolesClaims: Abilities[]

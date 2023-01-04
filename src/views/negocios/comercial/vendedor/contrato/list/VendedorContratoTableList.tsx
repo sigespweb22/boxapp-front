@@ -43,8 +43,6 @@ import { RootState, AppDispatch } from 'src/store'
 import { VendedorContratoType } from 'src/types/negocios/comercial/vendedor/contrato/vendedorContratoTypes'
 
 // ** Custom Components Imports
-import TableHeader from 'src/views/negocios/comercial/vendedor/contrato/list/TableHeader'
-import VendedorContratoAddDrawer from 'src/views/negocios/comercial/vendedor/contrato/new/VendedorContratoAddDrawer'
 import VendedorContratoViewDrawer from 'src/views/negocios/comercial/vendedor/contrato/view/VendedorContratoViewDrawer'
 import VendedorContratoEditDrawer from 'src/views/negocios/comercial/vendedor/contrato/edit/VendedorContratoEditDrawer'
 
@@ -118,8 +116,23 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
+    field: 'NomeClienteContrato',
+    headerName: 'Nome do cliente',
+    headerAlign: 'left' as const,
+    align: 'left' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row?.clienteContrato.cliente.nomeFantasia || 0}
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.05,
+    minWidth: 100,
     field: 'comissaoReais',
-    headerName: 'Comissão em reais',
+    headerName: 'Comissão (BRL)',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
@@ -131,10 +144,10 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.1,
+    flex: 0.05,
     minWidth: 100,
     field: 'comissaoPercentual',
-    headerName: 'Comissão em percentual',
+    headerName: 'Comissão (%)',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {

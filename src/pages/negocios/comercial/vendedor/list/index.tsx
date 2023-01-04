@@ -103,7 +103,7 @@ const defaultColumns = [
     field: 'nome',
     headerName: 'Nome',
     headerAlign: 'left' as const,
-    align: 'center' as const,
+    align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       {
         const { nome } = row
@@ -124,6 +124,21 @@ const defaultColumns = [
           </Box>
         )
       }
+    }
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    field: 'Usuario',
+    headerName: 'Nome do usuário',
+    headerAlign: 'center' as const,
+    align: 'center' as const,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.applicationUser?.fullName}
+        </Typography>
+      )
     }
   },
   {

@@ -311,9 +311,6 @@ const ClienteContratoTableList = ({ id }: Props) => {
         {ability?.can('list', 'ac-clienteContrato-page') ? (
           <Grid item xs={12}>
             <Card>
-              {ability?.can('create', 'ac-clienteContrato-page') &&
-                <TableHeader />
-              }
               <DataGrid
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight

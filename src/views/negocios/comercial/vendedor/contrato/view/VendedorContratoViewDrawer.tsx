@@ -78,6 +78,20 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
               defaultValue='.'
             />
           </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Customer name linked to the contract")}
+                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Total value of the contract")}
+                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
@@ -90,20 +104,6 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
               disabled={true}
               label={t("Percentage commission (%)")}
               value={porcentagem || null}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label={t("Total value of the contract")}
-                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label={t("Customer name linked to the contract")}
-                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>

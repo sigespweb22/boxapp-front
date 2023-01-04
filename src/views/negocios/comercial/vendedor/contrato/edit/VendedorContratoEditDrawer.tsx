@@ -172,6 +172,20 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
               )}
             />
           </FormControl>  
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Customer name linked to the contract")}
+                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Total value of the contract")}
+                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='comissaoReais'
@@ -206,20 +220,6 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
                   placeholder='(e.g.: 10%)'
                 />
               )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label={t("Total value of the contract")}
-                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
-            <TextField
-                disabled={true}
-                label={t("Customer name linked to the contract")}
-                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
