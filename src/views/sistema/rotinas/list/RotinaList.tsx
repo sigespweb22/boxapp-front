@@ -106,6 +106,7 @@ const RenderStatus = ({ status }: { status: string }) => {
       size='small'
       label={t(status)}
       color={rotinaStatusObj[status]}
+      
       sx={{ textTransform: 'capitalize' }}
     />
   )

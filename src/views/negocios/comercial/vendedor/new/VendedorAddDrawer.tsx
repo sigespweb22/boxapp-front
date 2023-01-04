@@ -174,7 +174,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='usuario'
+              name='applicationUser'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => {
