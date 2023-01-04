@@ -68,7 +68,7 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
             <TextField
               disabled={true}
               value={props?.row?.name}
-              label={t("Group Name")}
+              label={t("Group name")}
               defaultValue='.'
             />
           </FormControl>

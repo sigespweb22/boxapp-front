@@ -15,6 +15,7 @@ import clienteContrato from 'src/store/negocios/comercial/cliente/contrato'
 import clienteContratoFatura from 'src/store/negocios/comercial/cliente/contrato/fatura'
 import clienteView from 'src/store/negocios/comercial/cliente/view'
 import pipeline from 'src/store/negocios/processos/pipeline'
+import rotinaEventHistory from 'src/store/sistema/rotina/rotinaEventHistory'
 import fornecedor from 'src/store/negocios/parceiros/fornecedor'
 import fornecedorServico from 'src/store/negocios/parceiros/fornecedor/servico'
 import fornecedorProduto from 'src/store/negocios/parceiros/fornecedor/produto'
@@ -47,6 +48,7 @@ export const store = configureStore({
     fornecedorView,
     chaveApi,
     vendedor,
+    rotinaEventHistory,
     vendedorView,
     vendedorContrato,
     rotina,

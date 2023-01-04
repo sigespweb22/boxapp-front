@@ -159,6 +159,7 @@
     "November": "Novembro",
     "New group": "Novo Grupo",
     "New Seller": "Novo vendedor",
+    "New user": "Novo Usuário",
 
     "Observation": "Observação",
     "Overall": "Global",
@@ -167,6 +168,7 @@
     "October": "Outubro",
 
     "Paid": "Quitado",
+    "Password": "Senha",
     "Password requirements": "Requisitos da senha",
     "Permission New": "Nova Permissão",
     "Permission Name": "Nome permissão",
@@ -243,14 +245,13 @@
     "Ticket value": "Valor do ticket",
     "Tu": "Ter",
     "Th": "Qui",
-    "Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs.": "Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
+    " Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs": " Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
     "Third party API": "API de terceiro",
     "The updating of customer information is auditable": "A atualização das informações de cliente são passíveis de auditoria",
     "To link services, products and contracts to a customer, access its editing area": "Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição",
     "Total value of the contract": "Valor total do contrato",
     "To link contracts to a seller, access its editing area": "Para vincular contratos a um vendedor, acesse a sua área de edição",
 
-    "User New": "Novo Usuário",
     "User": "Usuário",
     "Users Per Group": "Usuários por grupo",
     "Users listing": "Listagem dos usuários",

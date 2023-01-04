@@ -287,7 +287,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
               autoHeight
               rows={store.data}
               columns={columns}
-              checkboxSelection
+              checkboxSelection={false}
               pageSize={pageSize}
               disableSelectionOnClick
               rowsPerPageOptions={[10, 25, 50]}
