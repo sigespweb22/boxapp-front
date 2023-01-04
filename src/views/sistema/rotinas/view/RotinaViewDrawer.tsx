@@ -181,7 +181,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-clienteContratoFatura-page') &&
+          {ability?.can('read', 'ac-rotinaEventHistory-page') &&
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleViewRotinaEventHistory(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -288,6 +288,9 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
               )}
             />
           </FormControl>
+          <Typography variant='h6' sx={{ml: 1,mb: 5}}>
+            {t("Event routine history")}:
+          </Typography>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <DataGrid
               localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
