@@ -44,9 +44,9 @@ interface VendedorAddDrawerType {
   toggle: () => void
 }
 
-interface Usuario {
-  userId: string
-  name: string
+interface ApplicationUser {
+  id: string
+  fullName: string
 }
 
 interface VendedorData {
@@ -84,14 +84,15 @@ const schema = yup.object().shape({
 const defaultValues = {
   nome: '',
   usuario: { userId: '', name: '' },
-  status: ''
+  status: '',
+  applicationUser: null,
 }
 
 const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   // ** Props
   const { open, toggle } = props
   const { t } = useTranslation()
-  const [usuarios, setUsuarios] = useState<Usuario[]>([])
+  const [usuarios, setUsuarios] = useState<ApplicationUser[]>([])
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -120,8 +121,12 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
   })
 
   const onSubmit = (data: VendedorData) => {
-    data.userId = data.usuario.userId
-    dispatch(addVendedor({ ...data }))
+    data.userId = data.applicationUser?.userId
+    data.applicationUser = null
+    dispatch(addVendedor({
+      ...data,
+      applicationUser: null
+    }))
     toggle()
     reset()
   }
@@ -155,7 +160,7 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
             <Controller
               name='nome'
               control={control}
-              rules={{ required: true }}           
+              rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                   <TextField
                   value={value}
@@ -178,9 +183,8 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
                     multiple={false}
                     options={usuarios}
                     filterSelectedOptions
-                    id='usuario'
                     value={value}
-                    getOptionLabel={option => option.name}
+                    getOptionLabel={option => option.fullName}
                     onChange={(event, newValue): void => {
                       onChange(newValue)
                     }}

@@ -111,11 +111,10 @@
 
     "Groups": "Grupos permissões",
     "Group Edit": "Editar Grupo",
-    "Group New": "Novo Grupo",
     "Groups listing": "Listagem dos grupos",
     "Gender": "Gênero",
     "Group(s) with access permission(s)": "Grupo(s) com a(s) permissão(ões) de acesso",
-    "Group Name": "Nome do grupo",
+    "Group name": "Nome do grupo",
     "GENERATE": "GERAR",
 
     "Here you can check the active users on the platform": "Aqui você confere os usuário ativos na plataforma",
@@ -158,6 +157,7 @@
     "New": "Novo",
     "Note": "Observação",
     "November": "Novembro",
+    "New group": "Novo Grupo",
     "New Seller": "Novo vendedor",
 
     "Observation": "Observação",
@@ -165,7 +165,7 @@
     "OTHER": "OUTRO",
     "Open": "Abrir",
     "October": "Outubro",
-    
+
     "Paid": "Quitado",
     "Password requirements": "Requisitos da senha",
     "Permission New": "Nova Permissão",
@@ -222,7 +222,7 @@
     "State": "Estado",
     "SYSTEM": "SISTEMA",
     "Security": "Segurança",
-    "Service list": "Lista de serviços", 
+    "Service list": "Lista de serviços",
     "Sequential key": "Chave sequencial",
     "Search routine": "Procurar rotina",
     "Seller": "Vendedor",
@@ -282,4 +282,4 @@
     "YES": "SIM",
 
     "Zip code": "Código postal"
-  }  
+  }

@@ -26,7 +26,6 @@ interface Redux {
 
 // ** Fetch Vendedor
 export const fetchData = createAsyncThunk('appVendedor/fetchData', async (params: DataParams) => {
-  debugger
   const storedToken = window.localStorage.getItem(vendedorApiService.storageTokenKeyName)!
   const response = await axios
                             .get(`${vendedorApiService.listOneAsync}${params.id}`, {
@@ -50,13 +49,12 @@ export const editVendedor = createAsyncThunk(
     }
 
     axios.put(vendedorApiService.updateAsync, data, config).then((resp) => {
-      debugger
       dispatch(fetchData(getState().vendedorView.data))
-      
+
       if (resp.status === 204) return toast.success("Vendedor atualizado com sucesso.")
     }).catch((resp) => {
       if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
-      if (typeof resp.response.data != 'undefined' && 
+      if (typeof resp.response.data != 'undefined' &&
           typeof resp.response.data.errors != 'undefined')
       {
         if (typeof resp.response.data.title != 'undefined' &&
@@ -75,7 +73,7 @@ export const editVendedor = createAsyncThunk(
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {
-            toast.error(ie.toString())        
+            toast.error(ie.toString())
           })
         });
       }

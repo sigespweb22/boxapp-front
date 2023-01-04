@@ -47,7 +47,6 @@ const SidebarViewUser = (props: SidebarViewUserType) => {
     toggle()
     reset()
   }
-  debugger
 
   const { t } = useTranslation()
 

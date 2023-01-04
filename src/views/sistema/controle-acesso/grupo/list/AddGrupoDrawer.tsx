@@ -72,14 +72,14 @@ const schema = yup.object().shape({
 })
 
 const defaultValues = {
-  name: '',  
+  name: '',
   applicationRoleGroups: []
 }
 
 const SidebarAddGroup = (props: SidebarAddGroupType) => {
   const config = {
-    headers: { 
-      Authorization: `Bearer ${window.localStorage.getItem(roleApiService.storageTokenKeyName)!}` 
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(roleApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -132,7 +132,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Group New")}</Typography>
+        <Typography variant='h6'>{t("New group")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
