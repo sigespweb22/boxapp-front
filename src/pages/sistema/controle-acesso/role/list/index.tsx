@@ -248,7 +248,7 @@ const RoleList = () => {
             </Typography>
             <Typography sx={{ mb: 9.5, color: 'text.secondary' }}>
               {t("All permissions are created automatically by our team, according to the evolution of the functionalities")}.
-              {t("Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs")}.
+              {t(" Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs")}.
             </Typography>
           </Grid>
           <GridStyled item xs={12} md={4}>

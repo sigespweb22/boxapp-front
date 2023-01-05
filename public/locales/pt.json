@@ -88,6 +88,7 @@
     "Date of competence": "Data competência",
     "Discount": "Desconto",
     "December": "Dezembro",
+    "Date of the conclusion": "Data de conclusão",
     "does not exist. Please check the sellers listing": "não existe. Por favor verifique a listagem de vendedores",
 
     "Edit": "Editar",
@@ -100,7 +101,12 @@
     "Edit Customer Product": "Editar Cliente Produto",
     "Edit Seller Contract": "Editar Vendedor Contrato",
     "Edit seller information": "Editar informações do vendedor",
+<<<<<<< HEAD
     "End date period": "Data fim período",
+=======
+    "Event routine history": "Histórico da rotina de eventos",
+    "Error message": "Mensagem de erro",
+>>>>>>> 8d5a0f94aa95901ceabe782cba6f5e1846e69bfb
 
     "Federal registration": "Cnpj",
     "Foundation date": "Data de fundação",
@@ -160,6 +166,7 @@
     "November": "Novembro",
     "New group": "Novo Grupo",
     "New Seller": "Novo vendedor",
+    "New user": "Novo Usuário",
 
     "Observation": "Observação",
     "Overall": "Global",
@@ -168,6 +175,8 @@
     "October": "Outubro",
 
     "Paid": "Quitado",
+    "Progress status": "Status do progresso",
+    "Password": "Senha",
     "Password requirements": "Requisitos da senha",
     "Period": "Período",
     "Permission New": "Nova Permissão",
@@ -190,6 +199,7 @@
 
     "Routine View": "Visualizar Rotina",
     "Routine Edit": "Editar Rotina",
+    "Routine event data": "Dados do evento da rotina",
     "Routine": "Rotinas",
     "Routine listing": "Lista de rotinas",
     "Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!": "Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá!",
@@ -233,8 +243,11 @@
     "Seller commission": "Comissão de vendedor",
     "Su": "Dom",
     "September": "Setembro",
+    "Start date": "Data de início",
 
     "Total users": "Total usuários",
+    "Total failed items": "Total de itens com falha",
+    "Total successful items": "Total de itens com sucesso",
     "Total customers without active contract(s)": "Total de clientes sem contrato(s) ativo(s)",
     "Total customers with active contract(s)": "Total de clientes que possui contrato(s) ativo(s)",
     "Total value of active annual contracts": "Valor total dos contratos anuais ativos",
@@ -246,14 +259,13 @@
     "Ticket value": "Valor do ticket",
     "Tu": "Ter",
     "Th": "Qui",
-    "Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs.": "Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
+    " Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs": " Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
     "Third party API": "API de terceiro",
     "The updating of customer information is auditable": "A atualização das informações de cliente são passíveis de auditoria",
     "To link services, products and contracts to a customer, access its editing area": "Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição",
     "Total value of the contract": "Valor total do contrato",
     "To link contracts to a seller, access its editing area": "Para vincular contratos a um vendedor, acesse a sua área de edição",
 
-    "User New": "Novo Usuário",
     "User": "Usuário",
     "Users Per Group": "Usuários por grupo",
     "Users listing": "Listagem dos usuários",

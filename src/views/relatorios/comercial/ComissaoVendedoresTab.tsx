@@ -33,7 +33,7 @@ import axios from 'axios'
 
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-import { StringLocale } from 'yup/lib/locale'
+import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAddDrawer'
 
 interface Vendedor {
   vendedorId: string
@@ -48,8 +48,8 @@ interface CustomInputProps {
 }
 
 const CustomInput = forwardRef((props: CustomInputProps, ref) => {
-  const startDate = props.start !== null ? format(props.start, 'MM/dd/yyyy') : ''
-  const endDate = props.end !== null ? ` - ${format(props.end, 'MM/dd/yyyy')}` : null
+  const startDate = props.start !== null ? format(props.start, 'dd/MM/yyyy') : ''
+  const endDate = props.end !== null ? ` - ${format(props.end, 'dd/MM/yyyy')}` : null
 
   const value = `${startDate}${endDate !== null ? endDate : ''}`
   props.start === null && props.dates.length && props.setDates ? props.setDates([]) : null
@@ -116,6 +116,10 @@ const ComissaoVendedor = () => {
     }
   }
 
+  const vendedor = ( newValue: any ) => {
+    return (newValue.vendedorId)
+  }
+
   return (
     <DatePickerWrapper>
       <Grid>
@@ -144,6 +148,7 @@ const ComissaoVendedor = () => {
                           )}
                           onChange={(event, newValue) => {
                             onChange(newValue)
+                            vendedor(newValue)
                           }}
                         />
                       )
@@ -152,7 +157,7 @@ const ComissaoVendedor = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <DatePicker
-                    locale={locale}
+                    // locale={locale}
                     required={true}
                     isClearable
                     selectsRange
@@ -176,7 +181,7 @@ const ComissaoVendedor = () => {
                 </Grid>
               </Grid>
               <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
-            <Button sx={{ mt: 3 }} variant='contained'>
+            <Button sx={{ mt: 3 }} variant='contained' href={`/negocios/relatorios/comercial/relatorioComissao/${vendedor}${dates}`}>
               {t('GENERATE')}
             </Button>
             </CardContent>

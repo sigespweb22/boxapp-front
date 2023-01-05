@@ -78,35 +78,6 @@ const clienteContratoFaturaStatusObj = (status: string) => {
   }
 }
 
-const renderContratoNome = (row: ClienteContratoFaturaType) => {
-  return (
-    <AvatarWithoutImageLink href="#">
-      <CustomAvatar
-          skin='light'
-          color={'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.id ? row.id : 'CC')}
-      </CustomAvatar>
-    </AvatarWithoutImageLink>
-  )
-}
-
-const RenderStatus = ({ status } : { status: string }) => {
-  // ** Hooks
-  const { t } = useTranslation()
-
-  return (
-    <CustomChip
-        skin='light'
-        size='small'
-        label={t(status)}
-        color={clienteContratoFaturaStatusObj(status)}
-        sx={{ textTransform: 'capitalize' }}
-    />
-  )
-}
-
 const defaultColumns = [
   {
     flex: 0.1,
@@ -287,7 +258,7 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
               autoHeight
               rows={store.data}
               columns={columns}
-              checkboxSelection
+              checkboxSelection={false}
               pageSize={pageSize}
               disableSelectionOnClick
               rowsPerPageOptions={[10, 25, 50]}
