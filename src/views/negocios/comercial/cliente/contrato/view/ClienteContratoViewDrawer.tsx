@@ -186,8 +186,6 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
     }
   ]
 
-  debugger
-
   return (
     <Drawer
       open={open}

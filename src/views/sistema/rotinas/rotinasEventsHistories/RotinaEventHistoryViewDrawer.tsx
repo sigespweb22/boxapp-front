@@ -24,7 +24,7 @@ import { AppDispatch } from 'src/store'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
-
+import { useEffect, useState } from 'react'
 
 interface SidebarClienteContratoFaturaViewType {
   row: RotinaEventHistoryType | undefined
@@ -40,18 +40,11 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default
 }))
 
-
-const formatCurrency = (currency: number) => {
-  return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-}
-
 const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaViewType) => {
   // ** Hook
   const dispatch = useDispatch<AppDispatch>()
-  const {
-    reset,
-    control
-  } = useForm()
+  const [isError, setIsError] = useState(false)
+  const { reset, control } = useForm()
 
   // ** Props
   const { open, toggle } = props
@@ -59,9 +52,16 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
   const handleClose = () => {
     toggle()
     reset()
+    setIsError(false)
   }
 
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (props.row?.statusProgresso === 'FALHA_EXECUCAO') {
+      setIsError(true)
+    }
+  }, [props.row?.statusProgresso])
 
   return (
     <Drawer
@@ -74,76 +74,56 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("View Client Contract")}</Typography>
+        <Typography variant='h6'>{t('Routine event data')}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
         <form>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              label='ID'
-              value={props?.row?.id}
-              defaultValue="."
-            />
-          </FormControl>
-          {/* <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled={true}
-              label={t("Expiration date")}
-              value={props?.row?.dataVencimento}
-              defaultValue="."
-            />
+            <TextField disabled={true} label='ID' value={props?.row?.id} defaultValue='.' />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <TextField
-              disabled
-              label={t("Date of competence")}
-              value={props?.row?.dataCompetencia}
-              defaultValue="."
-            />
+            <TextField disabled={true} label={t('Start date')} value={props?.row?.dataInicio} defaultValue='.' />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField disabled label={t('Date of the conclusion')} value={props?.row?.dataFim} defaultValue='.' />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label={t("Invoice amount")}
-              value={formatCurrency(props?.row?.valor || 0)}
+              label={t('Progress status')}
+              value={props?.row?.statusProgresso}
+              defaultValue='.'
             />
           </FormControl>
+          {isError &&
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <TextField
+                disabled={true}
+                label={t('Error message')}
+                value={props?.row?.exceptionMensagem}
+              />
+            </FormControl>
+          }
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label={t("Discount")}
-              value={formatCurrency(props?.row?.desconto || 0)}
+              label={t('Total failed items')}
+              value={props?.row?.totalItensInsucesso}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label={t("Installment number")}
-              value={props?.row?.numeroParcela}
-              defaultValue="."
+              label={t('Total successful items')}
+              value={props?.row?.totalItensSucesso}
+              defaultValue='.'
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
-            <Controller
-              name='quitado'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange } }) => (
-                <TextField
-                  disabled={true}
-                  type='quitado'
-                  label={t("Paid")}
-                  value={t(props?.row?.status || '')}
-                  onChange={onChange}
-                />
-              )}
-            />
-          </FormControl> */}
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              {t("Cancel")}
+              {t('Cancel')}
             </Button>
           </Box>
         </form>

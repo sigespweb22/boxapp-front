@@ -81,21 +81,6 @@ const defaultColumns = [
   },
   {
     flex: 0.1,
-    minWidth: 80,
-    field: 'dataFim',
-    headerName: 'Data fim',
-    headerAlign: 'center' as const,
-    align: 'center' as const,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.dataFim}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.1,
     minWidth: 100,
     field: 'statusProgresso',
     headerName: 'Status do progresso',
@@ -192,8 +177,6 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
       )
     }
   ]
-
-  debugger
 
   return (
     <Drawer

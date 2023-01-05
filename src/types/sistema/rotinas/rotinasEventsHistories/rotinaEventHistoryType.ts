@@ -8,8 +8,7 @@ export type RotinaEventHistoryLayoutType = {
     exceptionMensagem: string | null
     id: string
     rotinaId: string
-    rotinaViewModel: string | null
     statusProgresso: string
-    totalItensInsucessoUltimoEvento: number
-    totalItensSucessoUltimoEvento: number
+    totalItensInsucesso: number
+    totalItensSucesso: number
   }
