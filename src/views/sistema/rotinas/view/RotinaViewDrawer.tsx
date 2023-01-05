@@ -43,6 +43,8 @@ const defaultValues = {
   descricao: '',
   observacao: '',
   chaveSequencial: '',
+  dataCompetenciaInicio: '',
+  dataCompetenciaFim: '',
   status: ''
 }
 
@@ -71,6 +73,8 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
       setValue('descricao', props?.row?.descricao || '')
       setValue('observacao', props?.row?.observacao || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
+      setValue('dataCompetenciaInicio', props?.row?.dataCompetenciaInicio || '')
+      setValue('dataCompetenciaFim', props?.row?.dataCompetenciaFim || '')
       setValue('status', props?.row?.status || '')
     }
     
@@ -119,6 +123,32 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
                   disabled
                   value={value}
                   label={t("Name")}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='dataCompetenciaInicio'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label={t("Start date period")}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='dataCompetenciaFim'
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  disabled
+                  value={value}
+                  label={t("End date period")}
                 />
               )}
             />

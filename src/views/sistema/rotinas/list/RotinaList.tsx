@@ -376,36 +376,34 @@ const RotinaList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <PageHeader
-            title={<Typography variant='h5'>{t('Routine')}</Typography>}
-            subtitle={<Typography variant='body2'>{t('Routine listing')}.</Typography>}
-          />
-        </Grid>
-        {ability?.can('list', 'ac-rotina-page') ? (
-          <Grid item xs={12}>
-            <Card>
-              <TableHeader value={value} handleFilter={handleFilter} />
-              <DataGrid
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                autoHeight
-                rows={store.data}
-                columns={columns}
-                checkboxSelection
-                pageSize={pageSize}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10, 25, 50]}
-                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-              />
-            </Card>
-          </Grid>
-        ) : (
-          <>{t("You do not have permission to view this resource.")}</>
-        )}
-        <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
-        <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>
+      <Grid item xs={12}>
+        <PageHeader
+          title={<Typography variant='h5'>{t('Routine')}</Typography>}
+          subtitle={<Typography variant='body2'>{t('Routine listing')}.</Typography>}
+        />
       </Grid>
+      {ability?.can('list', 'ac-rotina-page') ? (
+        <Grid item xs={12}>
+          <Card>
+            <TableHeader value={value} handleFilter={handleFilter} />
+            <DataGrid
+              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+              autoHeight
+              rows={store.data}
+              columns={columns}
+              checkboxSelection
+              pageSize={pageSize}
+              disableSelectionOnClick
+              rowsPerPageOptions={[10, 25, 50]}
+              onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+            />
+          </Card>
+        </Grid>
+      ) : (
+        <>{t("You do not have permission to view this resource.")}</>
+      )}
+      <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
+      <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>
     </Grid>
   )
 }

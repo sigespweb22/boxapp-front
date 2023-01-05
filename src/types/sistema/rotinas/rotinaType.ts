@@ -11,6 +11,8 @@ export type RotinaType = {
   descricao: string
   observacao: string
   chaveSequencial: string
+  dataCompetenciaInicio: string | undefined
+  dataCompetenciaFim: string | null
   status: string
   dispatcherRoute: string
   avatarColor?: ThemeColor

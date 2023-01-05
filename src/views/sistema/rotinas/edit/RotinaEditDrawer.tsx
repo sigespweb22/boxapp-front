@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -28,6 +28,7 @@ import { updateRotina } from 'src/store/sistema/rotina/index'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
+import { SliderValueLabel } from '@mui/material'
 
 interface RotinaEditType {
   row: RotinaType | undefined
@@ -49,6 +50,8 @@ const defaultValues = {
   descricao: '',
   observacao: '.',
   chaveSequencial: '',
+  dataCompetenciaInicio: '',
+  dataCompetenciaFim: '',
   status: ''
 }
 
@@ -58,7 +61,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
 
   // ** Props
   const { open, toggle } = props
-  
+
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
   const {
@@ -72,6 +75,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   })
 
   const onSubmit = (data: RotinaType) => {
+    debugger
     dispatch(updateRotina({...data}))
     toggle()
     reset()
@@ -83,6 +87,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('nome', props?.row?.nome || '')
       setValue('descricao', props?.row?.descricao || '')
       setValue('observacao', props?.row?.observacao || '')
+      setValue('dataCompetenciaInicio', props?.row?.dataCompetenciaInicio || '')
+      setValue('dataCompetenciaFim', props?.row?.dataCompetenciaFim || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
     }
     
@@ -92,6 +98,32 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   const handleClose = () => {
     toggle()
     reset()
+  }
+
+  const handleMaskDataCompetenciaInicio = (newValue: any) => {
+    if (newValue)
+    {
+      if (newValue.currentTarget.value.length === 2) {
+        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value}/`)
+      } else if (newValue.currentTarget.value.length === 5) {
+        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value}/`)
+      } else {
+        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value.substring(0, 10)}`)
+      }
+    }
+  }
+
+  const handleMaskDataCompetenciaFim = (newValue: any) => {
+    if (newValue)
+    {
+      if (newValue.currentTarget.value.length === 2) {
+        setValue('dataCompetenciaFim', `${newValue.currentTarget.value}/`)
+      } else if (newValue.currentTarget.value.length === 5) {
+        setValue('dataCompetenciaFim', `${newValue.currentTarget.value}/`)
+      } else {
+        setValue('dataCompetenciaFim', `${newValue.currentTarget.value.substring(0, 10)}`)
+      }
+    }
   }
 
   return (
@@ -132,6 +164,40 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   onChange={onChange}
                   label={t("Name")}
                   placeholder={t("(e.g.: Client synchronization)")}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='dataCompetenciaInicio'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  onChange={(newValue) => {
+                    onChange(newValue)
+                    handleMaskDataCompetenciaInicio(newValue)
+                  }}  
+                  label={t("Start date period")}
+                  placeholder={t("(e.g.: Data início período)")}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+            <Controller
+              name='dataCompetenciaFim'
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  value={value}
+                  onChange={(newValue) => {
+                    onChange(newValue)
+                    handleMaskDataCompetenciaFim(newValue)
+                  }}  
+                  label={t("End date period")}
+                  placeholder={t("(e.g.: Data fim período)")}
                 />
               )}
             />
