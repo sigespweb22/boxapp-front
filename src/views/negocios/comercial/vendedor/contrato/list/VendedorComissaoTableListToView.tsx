@@ -171,7 +171,7 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
   // ** State
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
-  const [vendedorContratoViewOpen, setVendedorContratoViewOpen] = useState<boolean>(false)
+  const [vendedorComissaoViewOpen, setVendedorComissaoViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<VendedorComissaoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()

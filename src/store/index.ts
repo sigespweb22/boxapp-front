@@ -23,6 +23,7 @@ import fornecedorView from 'src/store/negocios/parceiros/fornecedor/view'
 import vendedor from 'src/store/negocios/comercial/vendedor'
 import vendedorView from 'src/store/negocios/comercial/vendedor/view'
 import vendedorContrato from 'src/store/negocios/comercial/vendedor/contrato'
+import vendedorComissao from 'src/store/negocios/comercial/vendedor/comissao'
 import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
 import rotina from 'src/store/sistema/rotina/index'
 import email from 'src/store/apps/email'
@@ -51,6 +52,7 @@ export const store = configureStore({
     rotinaEventHistory,
     vendedorView,
     vendedorContrato,
+    vendedorComissao,
     rotina,
     chat,
     email,
