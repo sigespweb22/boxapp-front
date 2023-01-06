@@ -35,6 +35,19 @@ export const fetchData = createAsyncThunk('appVendedoresComissoes/fetchData', as
   return response.data
 })
 
+// ** Fetch Comissões Vendedor
+export const fetchDataByVendedor = createAsyncThunk('appVendedoresComissoes/fetchDataByVendedor', async (params: DataParams) => {
+  const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
+  const response = await axios
+                            .get(`${vendedorComissaoApiService.listByVendedorAsync}${params.vendedorId}`, {
+                                  headers: {
+                                    Authorization: `Bearer ${storedToken}`
+                                  }
+                            })
+
+  return response.data
+})
+
 // ** Alter Status Vendedor Contrato
 export const alterStatusVendedorComissao = createAsyncThunk(
   'appVendedoresComissoes/alterStatusVendedorComissao',
@@ -84,6 +97,12 @@ export const appVendedoresComissoesSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
+      state.data = action.payload.vendedoresComissoes
+      state.total = action.payload.total
+      state.params = action.payload.params
+      state.allData = action.payload.allData
+    }),
+    builder.addCase(fetchDataByVendedor.fulfilled, (state, action) => {
       state.data = action.payload.vendedoresComissoes
       state.total = action.payload.total
       state.params = action.payload.params

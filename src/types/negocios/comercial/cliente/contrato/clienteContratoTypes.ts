@@ -5,7 +5,7 @@ export type ClienteContratoLayoutType = {
   id: string
 }
 
-export type ClienteContratoType = {
+export type ClienteContratoViewModelType = {
   id: string
   valorContrato: number | null
   periodicidade: string

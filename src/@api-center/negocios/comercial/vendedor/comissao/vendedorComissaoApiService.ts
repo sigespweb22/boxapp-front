@@ -4,11 +4,8 @@ const apiVendedoresComissoes = `${env.API_URL}/vendedores-comissoes`
 
 export default {
   listAsync: `${apiVendedoresComissoes}/list/`,
+  listByVendedorAsync: `${apiVendedoresComissoes}/list-by-vendedor/`,
   listOneAsync: `${apiVendedoresComissoes}/list-one/`,
-  listToSelectAsync: `${apiVendedoresComissoes}/list-to-select/`,
-  addAsync: `${apiVendedoresComissoes}/create`,
-  deleteAsync: `${apiVendedoresComissoes}/delete/`,
   alterStatusAsync: `${apiVendedoresComissoes}/alter-status/`,
-  updateAsync: `${apiVendedoresComissoes}/update`,
   storageTokenKeyName: 'accessToken'
 }

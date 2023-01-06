@@ -32,7 +32,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/vendedor/comissao/index'
+import { fetchDataByVendedor } from 'src/store/negocios/comercial/vendedor/comissao/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -45,7 +45,7 @@ import VendedorComissaoViewDrawer from 'src/views/negocios/comercial/vendedor/co
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 interface Props {
-  id: string | string[] | undefined
+  id: string | null
 }
 interface CellType {
   row: VendedorComissaoType
@@ -110,14 +110,14 @@ const defaultColumns = [
   {
     flex: 0.1,
     minWidth: 100,
-    field: 'clienteContrato.NomeFantasia',
-    headerName: 'Nome do cliente',
+    field: 'clienteContratoViewModel.NomeFantasia',
+    headerName: 'Cliente',
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row?.clienteContrato.cliente.nomeFantasia || 0}
+          {row?.clienteContratoViewModel.cliente.nomeFantasia || 0}
         </Typography>
       )
     }
@@ -125,14 +125,14 @@ const defaultColumns = [
   {
     flex: 0.05,
     minWidth: 100,
-    field: 'clienteContrato.valorContrato',
-    headerName: 'Comissão (BRL)',
+    field: 'clienteContratoViewModel.valorContrato',
+    headerName: 'Valor contrato (BRL)',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {formatCurrency(row?.clienteContrato.valorContrato)}
+          {formatCurrency(row?.clienteContratoViewModel.valorContrato)}
         </Typography>
       )
     }
@@ -141,7 +141,7 @@ const defaultColumns = [
     flex: 0.05,
     minWidth: 100,
     field: 'valorComissao',
-    headerName: 'Comissão (BRL)',
+    headerName: 'Valor comissão (BRL)',
     headerAlign: 'center' as const,
     align: 'center' as const,
     renderCell: ({ row }: CellType) => {
@@ -169,21 +169,22 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
   const { t } = useTranslation()
    
   // ** State
-  const [value, setValue] = useState<string | string[] | undefined>('')
+  const [value, setValue] = useState<string | null>(null)
   const [pageSize, setPageSize] = useState<number>(10)
   const [vendedorComissaoViewOpen, setVendedorComissaoViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<VendedorComissaoType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.vendedorComissao)
+  debugger
 
   useEffect(() => {
     setValue(id)
-  }, [id])
+  }, [])
 
   useEffect(() => {
     dispatch(
-      fetchData({
+      fetchDataByVendedor({
         vendedorId: value
       })
     )
@@ -197,27 +198,7 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
   const toggleVendedorComissaoViewDrawer = () => setVendedorComissaoViewOpen(!vendedorComissaoViewOpen)
 
   const columns = [
-    ...defaultColumns,
-    {
-      flex: 0.05,
-      minWidth: 90,
-      sortable: false,
-      field: 'actions', 
-      headerName: 'Ações',
-      headerAlign: 'center' as const,
-      align: 'center' as const,
-      renderCell: ({ row }: CellType) => (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-vendedorContrato-page') &&
-            <Tooltip title={t("View")}>
-              <IconButton onClick={() => handleVendedorComissaoView(row)}>
-                <EyeOutline fontSize='small' sx={{ mr: 2 }} />
-              </IconButton>
-            </Tooltip>
-          }
-        </Box>
-      )
-    }
+    ...defaultColumns
   ]
 
   return (
