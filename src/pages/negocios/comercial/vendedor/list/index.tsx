@@ -276,7 +276,7 @@ const VendedorList = () => {
         )}
         {ability?.can('create', 'ac-vendedor-page') ? (
           <VendedorAddDrawer open={vendedorAddOpen} toggle={toggleVendedorAddDrawer} />
-        ) : <></>}
+        ): <>{t("You do not have permission to view this resource.")}</>}
       </Grid>
     </Grid>
   )

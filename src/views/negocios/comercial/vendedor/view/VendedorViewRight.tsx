@@ -11,9 +11,11 @@ import TabContext from '@mui/lab/TabContext'
 
 // ** Icons Imports
 import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
+import PointOfSale from 'mdi-material-ui/PointOfSale'
 
 // ** Custom Components Imports
 import VendedorContratoTableListToView from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableListToView'
+import VendedorComissaoTableListToView from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorComissaoTableListToView'
 
 // ** Language & Translation Utilities
 import { useTranslation } from 'react-i18next'
@@ -52,10 +54,14 @@ const VendedorViewRight = ({ id }: Props) => {
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
         <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
+        <Tab value='comissoes' label={t("COMMISSIONS")} icon={<PointOfSale />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         <TabPanel sx={{ p: 0 }} value='contratos'>
           <VendedorContratoTableListToView id={id} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='comissoes'>
+          <VendedorComissaoTableListToView id={id} />
         </TabPanel>
       </Box>
     </TabContext>
