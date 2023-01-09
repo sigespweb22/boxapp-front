@@ -33,7 +33,6 @@ import axios from 'axios'
 
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-import ClienteAddDrawer from 'src/views/negocios/comercial/cliente/new/ClienteAddDrawer'
 
 interface Vendedor {
   vendedorId: string
@@ -120,6 +119,8 @@ const ComissaoVendedor = () => {
     return (newValue.vendedorId)
   }
 
+  debugger
+
   return (
     <DatePickerWrapper>
       <Grid>
@@ -143,13 +144,12 @@ const ComissaoVendedor = () => {
                           value={value}
                           id='autocomplete-multiple-outlined'
                           getOptionLabel={option => option.nome}
+                          onChange={(event, newValue) => {
+                            onChange(newValue)
+                          }}
                           renderInput={params => (
                             <TextField {...params} label={t('Seller')} placeholder='(e.g.: Jhon Dare)' />
                           )}
-                          onChange={(event, newValue) => {
-                            onChange(newValue)
-                            vendedor(newValue)
-                          }}
                         />
                       )
                     }}
@@ -181,7 +181,7 @@ const ComissaoVendedor = () => {
                 </Grid>
               </Grid>
               <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
-            <Button sx={{ mt: 3 }} variant='contained' href={`/negocios/relatorios/comercial/relatorioComissao/${vendedor}${dates}`}>
+            <Button sx={{ mt: 3 }} variant='contained' href={`/src/pages/relatorios/comercial/relatorioVendedor/invoice/`}>
               {t('GENERATE')}
             </Button>
             </CardContent>

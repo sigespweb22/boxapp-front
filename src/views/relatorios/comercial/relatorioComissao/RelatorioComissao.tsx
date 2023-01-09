@@ -23,7 +23,7 @@ const OptionsWrapper = styled(Box)<BoxProps>(() => ({
   justifyContent: 'space-between'
 }))
 
-const AddActions = () => {
+const RelatorioComissao = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -90,4 +90,4 @@ const AddActions = () => {
   )
 }
 
-export default AddActions
+export default RelatorioComissao
