@@ -6,7 +6,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
 import BoasVindas from 'src/views/relatorios/comercial/BoasVindas'
-import ComissaoVendedor from 'src/views/relatorios/comercial/ComissaoVendedoresTab'
+import ComissaoVendedoresGenerator from 'src/views/relatorios/comercial/comissao-vendedor/ComissaoVendedoresGenerator'
 
 const RelatorioComercial = () => {
   return (
@@ -16,7 +16,7 @@ const RelatorioComercial = () => {
           <BoasVindas />
         </Grid>
         <Grid item xs={12} md={12} sx={{ order: 1, alignSelf: 'flex-end' }}>
-          <ComissaoVendedor />
+          <ComissaoVendedoresGenerator />
         </Grid>
       </Grid>
     </ApexChartWrapper>

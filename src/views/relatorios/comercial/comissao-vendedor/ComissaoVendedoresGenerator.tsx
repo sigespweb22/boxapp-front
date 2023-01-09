@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import Div from '@mui/material/Grid'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
 import {
   Accordion,
   AccordionDetails,
@@ -25,19 +26,26 @@ import vendedorApiService from 'src/@api-center/negocios/comercial/vendedor/vend
 // ** Types Imports
 import { DateType } from 'src/types/forms/reactDatepickerTypes'
 
+// ** Next Import
+import Link from 'next/link'
+
 // ** Context Imports
 import format from 'date-fns/format'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 import axios from 'axios'
 
+// ** Icons Imports
+import Help from 'mdi-material-ui/Help'
+
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
 interface Vendedor {
-  vendedorId: string
+  id: string
   nome: string
 }
+
 interface CustomInputProps {
   dates: Date[]
   label: string
@@ -59,15 +67,17 @@ const CustomInput = forwardRef((props: CustomInputProps, ref) => {
 })
 
 const defaultValues = {
-  vendedor: { vendedorId: '', nome: '' }
+  vendedor: { id: '', nome: '' }
 }
 
-const ComissaoVendedor = () => {
+const ComissaoVendedoresGenerator = () => {
   const { t } = useTranslation()
   const [dates, setDates] = useState<Date[]>([])
   const [endDateRange, setEndDateRange] = useState<DateType>(null)
   const [startDateRange, setStartDateRange] = useState<DateType>(null)
   const [vendedores, setVendedores] = useState<Vendedor[]>([])
+  const [id, setId] = useState('');
+  
   const { control } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange'
@@ -115,11 +125,12 @@ const ComissaoVendedor = () => {
     }
   }
 
-  const vendedor = ( newValue: any ) => {
-    return (newValue.vendedorId)
+  const handleVendedor = ( newValue: Vendedor | null) => {
+    if (newValue)
+    {
+      setId(newValue.id)
+    }
   }
-
-  debugger
 
   return (
     <DatePickerWrapper>
@@ -146,6 +157,7 @@ const ComissaoVendedor = () => {
                           getOptionLabel={option => option.nome}
                           onChange={(event, newValue) => {
                             onChange(newValue)
+                            handleVendedor(newValue)
                           }}
                           renderInput={params => (
                             <TextField {...params} label={t('Seller')} placeholder='(e.g.: Jhon Dare)' />
@@ -181,9 +193,11 @@ const ComissaoVendedor = () => {
                 </Grid>
               </Grid>
               <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
-            <Button sx={{ mt: 3 }} variant='contained' href={`/src/pages/relatorios/comercial/relatorioVendedor/invoice/`}>
-              {t('GENERATE')}
-            </Button>
+              <Link href={`/relatorios/comercial/comissao-vendedor/${id}`} passHref>
+                <IconButton>
+                <Help fontSize='small' />
+                </IconButton>
+              </Link>
             </CardContent>
           </AccordionDetails>
         </Accordion>
@@ -192,4 +206,4 @@ const ComissaoVendedor = () => {
   )
 }
 
-export default ComissaoVendedor
+export default ComissaoVendedoresGenerator

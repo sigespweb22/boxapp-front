@@ -220,7 +220,6 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status} />
   }
 ]
-
 const ClientList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
