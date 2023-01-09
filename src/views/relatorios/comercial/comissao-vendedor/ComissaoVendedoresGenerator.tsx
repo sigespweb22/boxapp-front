@@ -132,6 +132,8 @@ const ComissaoVendedoresGenerator = () => {
     }
   }
 
+  debugger
+
   return (
     <DatePickerWrapper>
       <Grid>
@@ -193,7 +195,7 @@ const ComissaoVendedoresGenerator = () => {
                 </Grid>
               </Grid>
               <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
-              <Link href={`/relatorios/comercial/comissao-vendedor/${id}`} passHref>
+              <Link href={`/relatorios/comercial/comissao-vendedor/${id}&dataInicio=${startDateRange}&dataFim=${endDateRange}`} passHref>
                 <IconButton>
                 <Help fontSize='small' />
                 </IconButton>
