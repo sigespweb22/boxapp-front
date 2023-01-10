@@ -42,8 +42,8 @@ const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) => {
   // ** Hook
-  const { t } = useTranslation()
   const theme = useTheme()
+  const { t } = useTranslation()
 
   let relatorioNumero = 1
 
@@ -167,7 +167,6 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t("Seller")}</TableCell>
                 <TableCell>{t("Client name")}</TableCell>
                 <TableCell align='center'>{t("Contract value")}</TableCell>
                 <TableCell align='center'>{t("Commission amount")}</TableCell>
@@ -175,25 +174,21 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
             </TableHead>
             <TableBody>
               <TableRow>
-                <TableCell>Premium Branding Package</TableCell>
                 <TableCell>Branding & Promotion</TableCell>
                 <TableCell align='center'>48</TableCell>
                 <TableCell align='center'>$32</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Social Media</TableCell>
                 <TableCell>Social media templates</TableCell>
                 <TableCell align='center'>42</TableCell>
                 <TableCell align='center'>$28</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Web Design</TableCell>
                 <TableCell>Web designing package</TableCell>
                 <TableCell align='center'>46</TableCell>
                 <TableCell align='center'>$24</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>SEO</TableCell>
                 <TableCell>Search engine optimization</TableCell>
                 <TableCell align='center'>40</TableCell>
                 <TableCell align='center'>$22</TableCell>
@@ -205,6 +200,13 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
         <CardContent>
           <Grid container>
             <Grid item xs={12} sm={7} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
+              <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
+                  {t("Salesperson")}:
+                </Typography>
+                <Typography variant='body2'>Tommy Shelby</Typography>
+              </Box>
+
               <Typography variant='body2'>{t("Thanks for your business")}</Typography>
             </Grid>
             <Grid item xs={12} sm={5} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
@@ -222,7 +224,7 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
 
         <CardContent>
           <Typography variant='body2'>
-            <strong>{t("Note")}:</strong> {t("It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!")}
+          <strong>{t("Note")}:</strong> {t("It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!")}
           </Typography>
         </CardContent>
       </Card>

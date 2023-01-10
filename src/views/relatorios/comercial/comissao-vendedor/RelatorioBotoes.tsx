@@ -1,6 +1,9 @@
 // ** Next Import
 import Link from 'next/link'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
@@ -12,19 +15,33 @@ interface Props {
 }
 
 const PreviewActions = ({ id }: Props) => {
+  const { t } = useTranslation()
+  const imprimir = () => {
+    window.print()
+  }
+
   return (
     <Card>
       <CardContent>
         <Button
           fullWidth
-        //   target='_blank'
-          sx={{ mb: 0 }}
-        //   component={Link}
+          sx={{ mb: 3.5 }}
           color='primary'
-          variant='outlined'
-        //   href={`/apps/invoice/print/${id}`}
+          variant='contained'
+          onClick={imprimir}
         >
-          Print
+          {t("Print")}
+        </Button>
+        <Button
+          fullWidth
+          color='secondary'
+          variant='outlined'
+          href='../../'
+          // component={Link}
+          // href='/src/views/relatorios/comercial'
+          // passHref
+        >
+          {t("Back")}
         </Button>
       </CardContent>
     </Card>

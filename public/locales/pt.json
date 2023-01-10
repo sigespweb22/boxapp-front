@@ -44,6 +44,7 @@
     "Biography": "Biografia",
     "Birth date": "Data de nascimento",
     "Bom Controle Key": "Chave Bom Controle",
+    "Back": "Voltar",
 
     "Cancel": "Cancelar",
     "COMMERCIAL": "COMERCIAL",
@@ -80,6 +81,8 @@
     "Contract invoices": "Faturas do contrato",
     "COMMISSIONS": "Comissões",
     "Customer name linked to the contract": "Nome do cliente vinculado ao contrato",
+    "Commission amount": "Valor da comissão",
+    "Client name": "Nome do cliente",
 
     "Documentation": "Documentação",
     "Deactivate": "Desativar",
@@ -91,6 +94,7 @@
     "Discount": "Desconto",
     "December": "Dezembro",
     "Date of the conclusion": "Data de conclusão",
+    "Date Issued": "Data de Emissão",
     "does not exist. Please check the sellers listing": "não existe. Por favor verifique a listagem de vendedores",
 
     "Edit": "Editar",
@@ -135,6 +139,7 @@
     "Installment number": "Número da parcela",
     "in relation to total active customers": "em relação ao total dos clientes ativos",
     "Invoice Date": "Data da fatura",
+    "It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!": "Foi um prazer trabalhar com você e sua equipe. Esperamos que você nos mantenha em mente para projetos futuros. Obrigada!",
 
     "Just PNG or JPEG. Maximum size of 800K": "Apenas PNG ou JPEG. Tamanho máximo de 800K",
     "January": "Janeiro",
@@ -196,6 +201,7 @@
     "Product list": "Lista de produtos",
     "Permissions": "Permissões",
     "Percentage commission (%)": "Comissão percentual (%)",
+    "Print": "Imprimir",
 
     "Routine View": "Visualizar Rotina",
     "Routine Edit": "Editar Rotina",
@@ -204,6 +210,7 @@
     "Routine listing": "Lista de rotinas",
     "Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!": "Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá!",
     "Run routine": "Rodar rotina",
+    "Report": "Relatório",
 
     "Start date period": "Data início período",
     "Save": "Salvar",
@@ -244,6 +251,7 @@
     "Su": "Dom",
     "September": "Setembro",
     "Start date": "Data de início",
+    "Salesperson": "Vendedor(a)",
 
     "Total users": "Total usuários",
     "Total failed items": "Total de itens com falha",
@@ -260,6 +268,7 @@
     "There are no invoices on this date with this list of sellers. Consult the list of sellers": "Não há faturas nesta data com esta lista de vendedores. Consulte a lista de vendedores",
     "Tu": "Ter",
     "Th": "Qui",
+    "Thanks for your business": "Grato por sua oportunidade de negócios",
     " Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs": " Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso",
     "Third party API": "API de terceiro",
     "The updating of customer information is auditable": "A atualização das informações de cliente são passíveis de auditoria",

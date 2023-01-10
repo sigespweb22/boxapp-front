@@ -5,7 +5,7 @@ const RelatorioComissaoRoute = () => {
   const router = useRouter()
   const { id } = router.query
 
-  return <RelatorioComissao id={(id)}/>
+  return <RelatorioComissao id={String(id)}/>
 }
 
 // ** Controle de acesso da página

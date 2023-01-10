@@ -73,7 +73,7 @@ const ComissaoVendedoresGenerator = () => {
   const [endDateRange, setEndDateRange] = useState<DateType>(null)
   const [startDateRange, setStartDateRange] = useState<DateType>(null)
   const [vendedores, setVendedores] = useState<Vendedor[]>([])
-  const [id, setId] = useState('')
+  const [id, setId] = useState<string | undefined>('')
 
   const { control } = useForm({
     defaultValues: defaultValues,
@@ -102,42 +102,6 @@ const ComissaoVendedoresGenerator = () => {
     setEndDateRange(end)
   }
 
-  const days: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fri', 'Sa']
-  const months: string[] = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
-
-  const locale = {
-    localize: {
-      day: (n: number) => {
-        return `${t(days[n])}`
-      },
-      month: (n: number) => {
-        return `${t(months[n])}`
-      }
-    },
-    formatLong: {
-      date: () => 'dd/mm/yyyy'
-    }
-  }
-
-  const handleVendedor = (newValue: Vendedor | null) => {
-    if (newValue) {
-      setId(newValue.id)
-    }
-  }
-
   return (
     <DatePickerWrapper>
       <Grid>
@@ -163,7 +127,7 @@ const ComissaoVendedoresGenerator = () => {
                           getOptionLabel={option => option.nome}
                           onChange={(event, newValue) => {
                             onChange(newValue)
-                            handleVendedor(newValue)
+                            setId(newValue?.id || undefined)
                           }}
                           renderInput={params => (
                             <TextField {...params} label={t('Seller')} placeholder='(e.g.: Jhon Dare)' />
@@ -202,7 +166,7 @@ const ComissaoVendedoresGenerator = () => {
                 {t('When omitting any information, all data will be returned.')}
               </Alert>
               <Link
-                href={`/relatorios/comercial/comissao-vendedor/${id}&dataInicio=${startDateRange}&dataFim=${endDateRange}`}
+                href={`/relatorios/comercial/comissao-vendedor/${id}&${startDateRange}&${endDateRange}`}
                 passHref
               >
                 <Button sx={{ mt: 3 }} variant='contained'>
