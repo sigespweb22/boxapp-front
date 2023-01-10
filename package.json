@@ -52,7 +52,7 @@
     "cleave.js": "1.6.0",
     "clipboard-copy": "4.0.1",
     "clsx": "1.1.1",
-    "date-fns": "2.27.0",
+    "date-fns": "^2.29.3",
     "draft-js": "0.11.7",
     "firebase": "9.7.0",
     "i18next": "21.7.1",

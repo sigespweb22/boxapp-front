@@ -75,7 +75,6 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   })
 
   const onSubmit = (data: RotinaType) => {
-    debugger
     dispatch(updateRotina({...data}))
     toggle()
     reset()
@@ -91,7 +90,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('dataCompetenciaFim', props?.row?.dataCompetenciaFim || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
     }
-    
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
@@ -178,7 +177,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   onChange={(newValue) => {
                     onChange(newValue)
                     handleMaskDataCompetenciaInicio(newValue)
-                  }}  
+                  }}
                   label={t("Start date period")}
                   placeholder={t("(e.g.: Data início período)")}
                 />
@@ -195,7 +194,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   onChange={(newValue) => {
                     onChange(newValue)
                     handleMaskDataCompetenciaFim(newValue)
-                  }}  
+                  }}
                   label={t("End date period")}
                   placeholder={t("(e.g.: Data fim período)")}
                 />

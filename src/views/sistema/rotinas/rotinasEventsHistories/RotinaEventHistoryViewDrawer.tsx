@@ -52,7 +52,6 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
   const handleClose = () => {
     toggle()
     reset()
-    setIsError(false)
   }
 
   const { t } = useTranslation()
@@ -60,6 +59,12 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
   useEffect(() => {
     if (props.row?.statusProgresso === 'FALHA_EXECUCAO') {
       setIsError(true)
+    }
+    if (props.row?.statusProgresso === 'CONCLUIDA') {
+      setIsError(false)
+    }
+    if (props.row?.statusProgresso === 'EM_EXECUCAO') {
+      setIsError(false)
     }
   }, [props.row?.statusProgresso])
 

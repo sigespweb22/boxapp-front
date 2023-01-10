@@ -4,53 +4,60 @@ import { useState, useEffect } from 'react'
 // ** Next Import
 import Link from 'next/link'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
+import Alert from '@mui/material/Alert'
 
 // ** Third Party Components
 import axios from 'axios'
 
 // ** Demo Components Imports
-import RelatorioComissaoVendedor from '../comissao-vendedor/RelatorioComissao'
+import RelatorioComissaoVendedor from '../comissao-vendedor/RelatorioComissaoVendedores'
 import RelatorioComissaoVendedores from '../comissao-vendedor/RelatorioComissao'
 import RelatorioBotoes from '../comissao-vendedor/RelatorioBotoes'
-import { Alert } from 'mdi-material-ui'
 
 interface RelatorioComissaoType {
   id: string
 }
 
-const RelatorioComissao = (id: RelatorioComissaoType) => {
-  const [vendedorId, setVendedorId] = useState<string | null>(null)
-  const [isMultiple, setIsMultiple] = useState<boolean>(false)
+const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
+  // ** State
+  const { t } = useTranslation()
+  const [vendedorId, setVendedorId] = useState<string>('')
+  const [isMultiple, setIsMultiple] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
-  const [data, setData] = useState<null | RelatorioComissaoType>(null)
+  // const [data, setData] = useState<RelatorioComissaoType>('')
 
   useEffect(() => {
     // ** call to data report
     // ** set data report
     // ** type report
     // isMultiple
-    setVendedorId(id.id)
+    setVendedorId(id)
   }, [])
 
-  useEffect(() => {
-    axios
-      .get('/apps/invoice/single-invoice', { params: { id } })
-      .then(res => {
-        setData(res.data)
-        setError(false)
-      })
-      .catch(() => {
-        setData(null)
-        setError(true)
-      })
-  }, [id])
+  // useEffect(() => {
+  //   axios
+  //     .get('../comissao-vendedor/RelatorioComissaoVendedores.tsx', { params: { id } })
+  //     .then((res: { data: any }) => {
+  //       setData(res.data)
+  //       setError(false)
+  //     })
+  //     .catch(() => {
+  //       setData(null)
+  //       setError(true)
+  //     })
+  // }, [id])
 
-  if (data) {
+  debugger
+
+  if (vendedorId) {
     return (
       <>
-        <Grid container spacing={6}>
+       <Grid container spacing={6}>
           <Grid item xl={9} md={8} xs={12}>
             {isMultiple ? <RelatorioComissaoVendedores id={''} /> : <RelatorioComissaoVendedor id={''} />}
           </Grid>
@@ -65,8 +72,8 @@ const RelatorioComissao = (id: RelatorioComissaoType) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
-            Invoice with the id: {id} does not exist. Please check the list of invoices:{' '}
-            <Link href={''}>Invoice List</Link>
+            {t("There are no invoices on this date with this list of sellers. Consult the list of sellers")}:{' '}
+            <Link href='/negocios/comercial/vendedor/list'>{t("List of Sellers")}</Link>
           </Alert>
         </Grid>
       </Grid>

@@ -167,7 +167,7 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
-   
+
   // ** State
   const [value, setValue] = useState<string | null>(null)
   const [pageSize, setPageSize] = useState<number>(10)
@@ -176,7 +176,6 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.vendedorComissao)
-  debugger
 
   useEffect(() => {
     setValue(id)
@@ -213,7 +212,7 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
               </Typography>
             }
           />
-        </Grid> 
+        </Grid>
         {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <Grid item xs={12}>
             <Card>

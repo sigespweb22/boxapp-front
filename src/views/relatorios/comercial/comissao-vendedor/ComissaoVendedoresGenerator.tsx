@@ -3,16 +3,16 @@ import { useState, useEffect, forwardRef } from 'react'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
+import { ptBR } from 'date-fns/locale'
 
 // ** MUI Imports
-import Div from '@mui/material/Grid'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Autocomplete,
   Button,
   CardContent,
@@ -34,9 +34,6 @@ import format from 'date-fns/format'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 import axios from 'axios'
-
-// ** Icons Imports
-import Help from 'mdi-material-ui/Help'
 
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -76,8 +73,8 @@ const ComissaoVendedoresGenerator = () => {
   const [endDateRange, setEndDateRange] = useState<DateType>(null)
   const [startDateRange, setStartDateRange] = useState<DateType>(null)
   const [vendedores, setVendedores] = useState<Vendedor[]>([])
-  const [id, setId] = useState('');
-  
+  const [id, setId] = useState('')
+
   const { control } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange'
@@ -105,19 +102,29 @@ const ComissaoVendedoresGenerator = () => {
     setEndDateRange(end)
   }
 
-  const days: string[] = [
-    'Su', 'Mo', 'Tu', 'We', 'Th', 'Fri', 'Sa'
+  const days: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fri', 'Sa']
+  const months: string[] = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ]
-  const months: string[] = ['January','February','March','April','May','June',
-  'July','August','September','October','November','December']
 
   const locale = {
     localize: {
       day: (n: number) => {
-        return (`${t(days[n])}`)
+        return `${t(days[n])}`
       },
       month: (n: number) => {
-        return (`${t(months[n])}`)
+        return `${t(months[n])}`
       }
     },
     formatLong: {
@@ -125,14 +132,11 @@ const ComissaoVendedoresGenerator = () => {
     }
   }
 
-  const handleVendedor = ( newValue: Vendedor | null) => {
-    if (newValue)
-    {
+  const handleVendedor = (newValue: Vendedor | null) => {
+    if (newValue) {
       setId(newValue.id)
     }
   }
-
-  debugger
 
   return (
     <DatePickerWrapper>
@@ -171,7 +175,7 @@ const ComissaoVendedoresGenerator = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <DatePicker
-                    // locale={locale}
+                    locale={ptBR}
                     required={true}
                     isClearable
                     selectsRange
@@ -194,11 +198,16 @@ const ComissaoVendedoresGenerator = () => {
                   />
                 </Grid>
               </Grid>
-              <Div sx={{ mb: 2, mt: 6 }}>{t("When omitting any information, all data will be returned.")}</Div>
-              <Link href={`/relatorios/comercial/comissao-vendedor/${id}&dataInicio=${startDateRange}&dataFim=${endDateRange}`} passHref>
-                <IconButton>
-                <Help fontSize='small' />
-                </IconButton>
+              <Alert severity='info' sx={{ mb: 2, mt: 6 }}>
+                {t('When omitting any information, all data will be returned.')}
+              </Alert>
+              <Link
+                href={`/relatorios/comercial/comissao-vendedor/${id}&dataInicio=${startDateRange}&dataFim=${endDateRange}`}
+                passHref
+              >
+                <Button sx={{ mt: 3 }} variant='contained'>
+                  {t('GENERATE')}
+                </Button>
               </Link>
             </CardContent>
           </AccordionDetails>
