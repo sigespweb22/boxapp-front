@@ -80,8 +80,6 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
     )
   }, [dispatch, value])
 
-  debugger
-
   if (id) {
     return (
       <Card>
@@ -169,6 +167,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             </Grid>
             <Grid item sm={6} xs={12}>
               <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+                {}
                 <Table sx={{ maxWidth: '200px' }}>
                   <TableBody>
                     <TableRow>

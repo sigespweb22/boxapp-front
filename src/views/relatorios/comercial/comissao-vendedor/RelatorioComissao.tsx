@@ -45,8 +45,6 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
     handleIsMultiplo(split[0])
   }, [])
 
-  debugger
-
   return (
     <Grid container spacing={6}>
       <Grid item xl={9} md={8} xs={12}>
