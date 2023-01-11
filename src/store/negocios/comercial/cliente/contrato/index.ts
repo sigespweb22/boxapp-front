@@ -9,7 +9,7 @@ import axios from 'axios'
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
 
 // ** Types
-import { ClienteContratoType, ClienteContratoAddType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType, ClienteContratoAddType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 
 // ** Toast
 import { toast } from "react-toastify";
@@ -86,7 +86,7 @@ export const addClienteContrato = createAsyncThunk(
 // ** Update Cliente Contratos
 export const editClienteContrato = createAsyncThunk(
   'appClienteContratos/updateClienteContrato',
-  async (data : ClienteContratoType, { dispatch }: Redux) => {
+  async (data : ClienteContratoViewModelType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(clienteContratoApiService.storageTokenKeyName)!
     const config = {
       headers: {

@@ -8,9 +8,10 @@ import { useTranslation } from 'react-i18next'
 import Grid from '@mui/material/Grid'
 
 // ** Demo Components Imports
-import RelatorioComissaoVendedor from '../comissao-vendedor/RelatorioComissaoVendedor'
-import RelatorioComissaoVendedores from '../comissao-vendedor/RelatorioComissaoVendedores'
-import RelatorioBotoes from '../comissao-vendedor/RelatorioBotoes'
+import RelatorioComissaoVendedor from '../comissao-vendedor/relatorio-comissao-vendedor/RelatorioComissaoVendedor'
+import RelatorioComissaoVendedores from '../comissao-vendedor/relatorio-comissao-vendedores/RelatorioComissaoVendedores'
+import RelatorioBotoesVendedores from './relatorio-comissao-vendedores/RelatorioBotoesVendedores'
+import RelatorioBotoesVendedor from './relatorio-comissao-vendedor/RelatorioBotoesVendedor'
 
 interface RelatorioComissaoType {
   id: string
@@ -26,7 +27,7 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
 
   const handleIsMultiplo = (split: any) => {
     switch (split) {
-      case '' :
+      case "" :
         setIsMultiple(true)
         break;
       case "undefined" :
@@ -49,10 +50,10 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
   return (
     <Grid container spacing={6}>
       <Grid item xl={9} md={8} xs={12}>
-        {isMultiple ? <RelatorioComissaoVendedores id={`${split[0]}${split[1]}`} /> : <RelatorioComissaoVendedor id={id} />}
+        {isMultiple ? <RelatorioComissaoVendedores dataInicio={split[1]} dataFim={split[2]} /> : <RelatorioComissaoVendedor id={split[0]} dataInicio={split[1]} dataFim={split[2]} />}
       </Grid>
       <Grid item xl={3} md={4} xs={12}>
-        <RelatorioBotoes id={id} />
+        {isMultiple ? <RelatorioBotoesVendedores dataInicio={split[1]} dataFim={split[2]} /> : <RelatorioBotoesVendedor id={split[0]} dataInicio={split[1]} dataFim={split[2]} />}
       </Grid>
     </Grid>
   )

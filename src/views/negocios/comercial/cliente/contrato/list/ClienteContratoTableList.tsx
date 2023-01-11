@@ -40,7 +40,7 @@ import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/cliente/contrato/list/TableHeader'
@@ -57,7 +57,7 @@ interface Props {
 }
 
 interface CellType {
-  row: ClienteContratoType
+  row: ClienteContratoViewModelType
 }
 
 const clienteContratoStatusObj = (status: string) => {
@@ -85,7 +85,7 @@ const formatCurrency = (currency: number | null) => {
 }
 
 // ** renders group column
-const renderContratoNome = (row: ClienteContratoType) => {
+const renderContratoNome = (row: ClienteContratoViewModelType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -184,7 +184,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
   const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
   const [clienteContratoEditOpen, setClienteContratoEditOpen] = useState<boolean>(false)
   const [vendedorContratoAddOpen, setVendedorContratoAddOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteContratoType | undefined>()
+  const [row, setRow] = useState<ClienteContratoViewModelType | undefined>()
   const [clienteContratoId, setClienteContratoId] = useState('')
 
   const dispatch = useDispatch<AppDispatch>()
@@ -194,6 +194,8 @@ const ClienteContratoTableList = ({ id }: Props) => {
     setValue(id)
   }, [id])
 
+  debugger
+
   useEffect(() => {
     dispatch(
       fetchData({
@@ -202,17 +204,17 @@ const ClienteContratoTableList = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleViewClienteContrato = (row : ClienteContratoType) => {
+  const handleViewClienteContrato = (row : ClienteContratoViewModelType) => {
     setRow(row)
     setClienteContratoViewOpen(true)
   }
 
-  const handleCreateVendedorContrato = (row : ClienteContratoType) => {
+  const handleCreateVendedorContrato = (row : ClienteContratoViewModelType) => {
     setClienteContratoId(row.id)
     setVendedorContratoAddOpen(true)
   }
 
-  // const handleEditClienteContrato = (row : ClienteContratoType) => {
+  // const handleEditClienteContrato = (row : ClienteContratoViewModelType) => {
   //   setRow(row)
   //   setClienteContratoEditOpen(true)
   // }

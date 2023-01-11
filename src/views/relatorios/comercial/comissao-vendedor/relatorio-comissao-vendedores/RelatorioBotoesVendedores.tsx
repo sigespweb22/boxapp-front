@@ -11,10 +11,11 @@ import CardContent from '@mui/material/CardContent'
 
 
 interface Props {
-  id: string | undefined
+  dataInicio: string
+  dataFim: string
 }
 
-const PreviewActions = ({ id }: Props) => {
+const PreviewActions = ({ dataInicio, dataFim }: Props) => {
   const { t } = useTranslation()
   const imprimir = () => {
     window.print()
@@ -29,6 +30,9 @@ const PreviewActions = ({ id }: Props) => {
           color='primary'
           variant='contained'
           onClick={imprimir}
+          // target='_blank'
+          // component={Link}
+          // href={`/views/relatorios/comercial/comissao-vendedor/relatorio-comissao-vendedores/RelatorioComissaoVendedoresImprimir`}
         >
           {t("Print")}
         </Button>

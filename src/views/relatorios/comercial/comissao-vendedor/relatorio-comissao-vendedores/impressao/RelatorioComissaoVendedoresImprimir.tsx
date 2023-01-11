@@ -20,7 +20,8 @@ import themeConfig from 'src/configs/themeConfig'
 import { useTranslation } from 'react-i18next'
 
 interface RelatorioComissaoVendedoresType {
-  id: string
+  dataInicio: string
+  dataFim: string
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -40,14 +41,19 @@ const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) => {
+debugger
+
+const RelatorioComissaoVendedoresImprimir = ({ dataInicio, dataFim }: RelatorioComissaoVendedoresType) => {
   // ** Hook
   const { t } = useTranslation()
   const theme = useTheme()
 
   let relatorioNumero = 1
 
-  if (id) {
+  var inicioData = dataInicio.slice(0, 16)
+  var fimData = dataFim.slice(0, 16)
+
+  if (dataInicio) {
     return (
       <Card>
         <CardContent>
@@ -146,11 +152,21 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
                     </TableRow>
                     <TableRow>
                       <MUITableCell>
-                        <Typography variant='body2'>{t("Date Issued")}:</Typography>
+                        <Typography variant='body2'>Date Issued:</Typography>
                       </MUITableCell>
                       <MUITableCell>
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          13 jan. 2023
+                          {inicioData}
+                        </Typography>
+                      </MUITableCell>
+                    </TableRow>
+                    <TableRow>
+                      <MUITableCell>
+                        <Typography variant='body2'>Date Due:</Typography>
+                      </MUITableCell>
+                      <MUITableCell>
+                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                          {fimData}
                         </Typography>
                       </MUITableCell>
                     </TableRow>
@@ -232,4 +248,4 @@ const RelatorioComissaoVendedores = ({ id }: RelatorioComissaoVendedoresType) =>
   }
 }
 
-export default RelatorioComissaoVendedores
+export default RelatorioComissaoVendedoresImprimir

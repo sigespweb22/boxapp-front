@@ -25,7 +25,7 @@ import { editClienteContrato } from 'src/store/negocios/comercial/cliente/contra
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -39,7 +39,7 @@ import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 import { useTranslation } from 'react-i18next'
 
 interface SidebarClienteContratoEditType {
-  row: ClienteContratoType | undefined
+  row: ClienteContratoViewModelType | undefined
   open: boolean
   toggle: () => void
 }

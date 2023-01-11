@@ -16,7 +16,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import Link from 'next/link'
 
 // ** Third Party Imports
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Copmponents Imports
@@ -42,7 +42,7 @@ import { RootState, AppDispatch } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
 interface SidebarClienteContratoViewType {
-  row: ClienteContratoType | undefined
+  row: ClienteContratoViewModelType | undefined
   open: boolean
   toggle: () => void
 }
