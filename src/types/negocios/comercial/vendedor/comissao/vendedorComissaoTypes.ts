@@ -7,6 +7,7 @@ export type VendedorComissaoLayoutType = {
 }
 
 export type VendedorComissaoType = {
+  map(arg0: (row: any) => void): import("react").ReactNode
   id: string
   valorComissao: number | null
   clienteContratoId: string

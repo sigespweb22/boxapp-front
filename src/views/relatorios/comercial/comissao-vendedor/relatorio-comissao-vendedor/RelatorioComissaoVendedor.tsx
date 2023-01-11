@@ -17,16 +17,20 @@ import TableCell, { TableCellBaseProps } from '@mui/material/TableCell'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/vendedor/comissao/index'
+import relatorioComercialApiService from 'src/@api-center/relatorios/comercial/relatorioComercialApiService'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
 
 // ** Type imports
-import { VendedorComissaoType }  from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
-import { RootState, AppDispatch } from 'src/store'
+import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
+import { RootState, AppDispatch, store } from 'src/store'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
+
+import axios from 'axios'
 
 interface RelatorioComissaoVendedorType {
   id: string
@@ -55,32 +59,98 @@ const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
+const formatCurrency = (currency: number | null) => {
+  return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+}
+
+const defaultValues = {
+  id: '',
+  valorComissao: 0,
+  clienteContratoId: '',
+  vendedorId: '',
+  status: ''
+}
+
 const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType, props: CellType) => {
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
-  const [value, setValue] = useState<string>('')
-  const dispatch = useDispatch<AppDispatch>()
+  const [data, setData] = useState<VendedorComissaoType>(defaultValues)
 
   var inicioData = dataInicio.slice(0, 16)
   var fimData = dataFim.slice(0, 16)
-  var teste = id
 
-  let relatorioNumero = 1 
+  let relatorioNumero = 1
+
+  const storageToken = window.localStorage.getItem(relatorioComercialApiService.storageTokenKeyName)
+  const config = {
+    headers: {
+      Authorization: `Bearer ${storageToken}`
+    }
+  }
 
   useEffect(() => {
-    setValue(teste)
-  }, [teste])
-
-  useEffect(() => {
-    dispatch(
-      fetchData({
-        vendedorId: value
+    axios
+      .post(
+        `${relatorioComercialApiService.listComissaoAsync}/${id}`,
+        { dataInicio: inicioData, dataFim: fimData },
+        config
+      )
+      .then(response => {
+        setData(response.data.allData)
       })
-    )
-  }, [dispatch, value])
+      .catch(error => {})
+  }, [])
 
-  debugger
+  const defaultColumns = [
+    {
+      flex: 0.1,
+      minWidth: 100,
+      field: 'clienteContratoViewModel.NomeFantasia',
+      headerName: 'Cliente',
+      headerAlign: 'left' as const,
+      align: 'left' as const,
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Typography noWrap variant='body2'>
+            {row?.clienteContratoViewModel.cliente.nomeFantasia || 0}
+          </Typography>
+        )
+      }
+    },
+    {
+      flex: 0.05,
+      minWidth: 100,
+      field: 'clienteContratoViewModel.valorContrato',
+      headerName: 'Valor contrato (BRL)',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Typography noWrap variant='body2'>
+            {formatCurrency(row?.clienteContratoViewModel.valorContrato)}
+          </Typography>
+        )
+      }
+    },
+    {
+      flex: 0.05,
+      minWidth: 100,
+      field: 'valorComissao',
+      headerName: 'Valor comissão (BRL)',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Typography noWrap variant='body2'>
+            {formatCurrency(row?.valorComissao)}
+          </Typography>
+        )
+      }
+    }
+  ]
+
+  const rows = data
 
   if (id) {
     return (
@@ -158,10 +228,10 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                 </Box>
                 <div>
                   <Typography variant='body2' sx={{ mb: 1 }}>
-                  Rua Lauro Muller, 52 - Salas 201-202-203
+                    Rua Lauro Muller, 52 - Salas 201-202-203
                   </Typography>
                   <Typography variant='body2' sx={{ mb: 1 }}>
-                  Centro, Criciúma - SC, 88801-430
+                    Centro, Criciúma - SC, 88801-430
                   </Typography>
                   <Typography variant='body2'>(48) 3045-1888</Typography>
                 </div>
@@ -208,36 +278,36 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
 
         <Divider />
 
+        {/* <DataGrid
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          autoHeight
+          rows={data}
+          columns={defaultColumns}s
+          checkboxSelection = {false}
+          pageSize={5}
+        /> */}
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t("Client name")}</TableCell>
-                <TableCell align='center'>{t("Contract value")}</TableCell>
-                <TableCell align='center'>{t("Commission amount")}</TableCell>
+                <TableCell>{t('Seller')}</TableCell>
+                <TableCell>{t('Client name')}</TableCell>
+                <TableCell align='center'>{t('Contract value')}</TableCell>
+                <TableCell align='center'>{t('Commission amount')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>{props?.row?.vendedor?.nome}</TableCell>
-                <TableCell align='center'>48</TableCell>
-                <TableCell align='center'>$32</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Social media templates</TableCell>
-                <TableCell align='center'>42</TableCell>
-                <TableCell align='center'>$28</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Web designing package</TableCell>
-                <TableCell align='center'>46</TableCell>
-                <TableCell align='center'>$24</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Search engine optimization</TableCell>
-                <TableCell align='center'>40</TableCell>
-                <TableCell align='center'>$22</TableCell>
-              </TableRow>
+              {rows.map(row => (
+                <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component='th' scope='row'>
+                    {row.name}
+                  </TableCell>
+                  <TableCell align='right'>{row.calories}</TableCell>
+                  <TableCell align='right'>{row.fat}</TableCell>
+                  <TableCell align='right'>{row.carbs}</TableCell>
+                  <TableCell align='right'>{row.protein}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -247,12 +317,12 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             <Grid item xs={12} sm={7} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
               <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
                 <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
-                  {t("Salesperson")}:
+                  {t('Salesperson')}:
                 </Typography>
                 <Typography variant='body2'>Tommy Shelby</Typography>
               </Box>
 
-              <Typography variant='body2'>{t("Thanks for your business")}</Typography>
+              <Typography variant='body2'>{t('Thanks for your business')}</Typography>
             </Grid>
             <Grid item xs={12} sm={5} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
               <CalcWrapper>
@@ -269,7 +339,10 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
 
         <CardContent>
           <Typography variant='body2'>
-          <strong>{t("Note")}:</strong> {t("It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!")}
+            <strong>{t('Note')}:</strong>{' '}
+            {t(
+              'It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!'
+            )}
           </Typography>
         </CardContent>
       </Card>
