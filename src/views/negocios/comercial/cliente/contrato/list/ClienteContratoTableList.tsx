@@ -176,7 +176,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
-   
+
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
@@ -193,8 +193,6 @@ const ClienteContratoTableList = ({ id }: Props) => {
   useEffect(() => {
     setValue(id)
   }, [id])
-
-  debugger
 
   useEffect(() => {
     dispatch(
@@ -231,7 +229,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
   //         <IconButton onClick={() => handleAlterStatus(id)}>
   //           <ElevatorUp fontSize='small' />
   //         </IconButton>
-  //       </Tooltip>        
+  //       </Tooltip>
   //     )
   //   } else if (status === 'ACTIVE') {
   //     return (
@@ -262,7 +260,7 @@ const ClienteContratoTableList = ({ id }: Props) => {
       flex: 0.05,
       minWidth: 90,
       sortable: false,
-      field: 'actions', 
+      field: 'actions',
       headerName: 'Ações',
       headerAlign: 'center' as const,
       align: 'center' as const,

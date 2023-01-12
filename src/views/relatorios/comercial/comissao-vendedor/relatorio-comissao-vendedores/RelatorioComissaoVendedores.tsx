@@ -41,7 +41,7 @@ const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-debugger
+
 
 const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoVendedoresType) => {
   // ** Hook

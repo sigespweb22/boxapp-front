@@ -66,7 +66,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   var fimData = dataFim.slice(0, 16)
   var teste = id
 
-  let relatorioNumero = 1 
+  let relatorioNumero = 1
 
   useEffect(() => {
     setValue(teste)
@@ -79,8 +79,6 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
       })
     )
   }, [dispatch, value])
-
-  debugger
 
   if (id) {
     return (

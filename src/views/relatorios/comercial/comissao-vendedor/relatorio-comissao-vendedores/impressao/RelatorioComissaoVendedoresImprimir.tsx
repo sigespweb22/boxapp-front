@@ -41,8 +41,6 @@ const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-debugger
-
 const RelatorioComissaoVendedoresImprimir = ({ dataInicio, dataFim }: RelatorioComissaoVendedoresType) => {
   // ** Hook
   const { t } = useTranslation()
