@@ -9,13 +9,8 @@ import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
 
-// ** react-to-print
-import { useReactToPrint } from 'react-to-print'
-
 // ** react
-import React, { useRef } from 'react'
-
-import RelatorioComissaoVendedorImprimir from '../relatorio-comissao-vendedor/impressao/RelatorioComissaoVendedorImprimir'
+import React from 'react'
 
 interface Props {
   id: string
@@ -23,27 +18,18 @@ interface Props {
   dataFim: string
 }
 
-const PreviewActions = ({ id, dataInicio, dataFim }: Props) => {
+const PreviewActions = ({id, dataInicio, dataFim }:Props) => {
   const { t } = useTranslation()
   const imprimir = () => {
     window.print()
   }
 
-  const componentRef = useRef(null)
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current
-  })
-
-  debugger
-
   return (
     <Card>
       <CardContent>
-        <RelatorioComissaoVendedorImprimir ref={componentRef} />
-        <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained' onClick={handlePrint}>
+        <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained' onClick={imprimir}>
           {t('Print')}
         </Button>
-
         <Link href='../'>
           <Button fullWidth color='secondary' variant='outlined'>
             {t('Back')}
