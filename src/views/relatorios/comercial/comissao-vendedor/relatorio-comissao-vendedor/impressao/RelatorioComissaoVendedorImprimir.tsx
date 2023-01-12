@@ -34,8 +34,8 @@ import moment from "moment";
 
 interface RelatorioComissaoVendedorType {
   id: string
-  dataInicio: Date
-  dataFim: Date
+  dataInicio: Date | string
+  dataFim: Date | string
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -77,7 +77,7 @@ const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
   return sum;
 }
 
-const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {  
+const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {  
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
@@ -96,6 +96,12 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      window.print()
+    }, 100)
+  }, [])
+
+  useEffect(() => {
     axios
       .post(
         `${relatorioComercialApiService.listComissoesAsyns}/${id}`,
@@ -109,7 +115,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   }, [])
 
   return (
-    <Card>
+    <Card className='print'>
       <CardContent>
         <Grid container>
           <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 } }}>
@@ -293,4 +299,4 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   )
 }
 
-export default RelatorioComissaoVendedor
+export default RelatorioComissaoVendedorImprimir
