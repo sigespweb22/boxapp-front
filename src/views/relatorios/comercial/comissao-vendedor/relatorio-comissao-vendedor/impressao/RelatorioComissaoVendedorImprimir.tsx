@@ -26,16 +26,16 @@ import { useTranslation } from 'react-i18next'
 import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
 import { useEffect, useState } from 'react'
 
+// ** Axios Imports
 import axios from 'axios'
+
+// ** Date Components Imports
+import moment from "moment";
 
 interface RelatorioComissaoVendedorType {
   id: string
-  dataInicio: string
-  dataFim: string
-}
-
-interface CellType {
-  row: VendedorComissaoType
+  dataInicio: Date | string
+  dataFim: Date | string
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -59,32 +59,34 @@ const formatCurrency = (currency: number | null | undefined) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const defaultValues = {
-  id: '',
-  valorComissao: 0,
-  clienteContratoId: '',
-  clienteContratoViewModel: null,
-  vendedorViewModel: null,
-  vendedorId: '',
-  status: ''
+const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
+  let initialValue = 0;
+  const sum = data?.reduce(
+    (accumulator, currentValue) => 
+      {
+        if (currentValue.valorComissao != null)
+        {
+          return accumulator + currentValue.valorComissao
+        } else {
+          return 0;
+        }
+        
+      }, initialValue
+  );
+    
+  return sum;
 }
 
-const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType, props: CellType) => {
+const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {  
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
-  const [data, setData] = useState<VendedorComissaoType>(defaultValues)
+  const [data, setData] = useState<VendedorComissaoType[]>()
 
-  var inicioData = dataInicio.slice(0, 16)
-  var fimData = dataFim.slice(0, 16)
+  var inicioData = dataInicio.toString().slice(0, 16)
+  var fimData = dataFim.toString().slice(0, 16)
 
   let relatorioNumero = 1
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     window.print()
-  //   }, 100)
-  // }, [])
 
   const storageToken = window.localStorage.getItem(relatorioComercialApiService.storageTokenKeyName)
   const config = {
@@ -94,20 +96,26 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      window.print()
+    }, 100)
+  }, [])
+
+  useEffect(() => {
     axios
       .post(
         `${relatorioComercialApiService.listComissoesAsyns}/${id}`,
-        { dataInicio: inicioData, dataFim: fimData },
+        { dataInicio: moment(new Date(inicioData)).format("YYYY-MM-DD"), dataFim: moment(new Date(fimData)).format("YYYY-MM-DD") },
         config
       )
       .then(response => {
-        setData(response.data.allData[0])
+        setData(response.data.allData)
       })
       .catch(error => {})
   }, [])
 
   return (
-    <Card>
+    <Card className='print'>
       <CardContent>
         <Grid container>
           <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 } }}>
@@ -193,19 +201,16 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
           <Grid item sm={6} xs={12}>
             <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
               {}
-              <Table sx={{ maxWidth: '200px' }}>
+              <Table sx={{ maxWidth: '400px' }}>
                 <TableBody>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='h6'>Invoice</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      <Typography variant='h6'>{relatorioNumero++}</Typography>
+                      <Typography variant='h6'>Relatório de Comissão</Typography>
                     </MUITableCell>
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Date Issued:</Typography>
+                      <Typography variant='body2'>Data início:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -215,7 +220,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Date Due:</Typography>
+                      <Typography variant='body2'>Data fim:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -232,14 +237,6 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
 
       <Divider />
 
-      {/* <DataGrid
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          autoHeight
-          rows={data}
-          columns={defaultColumns}
-          checkboxSelection = {false}
-          pageSize={5}
-        /> */}
       <TableContainer>
         <Table>
           <TableHead>
@@ -249,13 +246,19 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
               <TableCell align='center'>{t('Commission amount')}</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{data?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-              <TableCell align='center'>{formatCurrency(data?.clienteContratoViewModel?.valorContrato)}</TableCell>
-              <TableCell align='center'>{formatCurrency(data?.valorComissao)}</TableCell>
-            </TableRow>
-          </TableBody>
+          {
+            data?.map((x) => {
+              return (
+                <TableBody>
+                  <TableRow>
+                    <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
+                    <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
+                    <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
+                  </TableRow>
+                </TableBody>
+              )
+            })
+          }
         </Table>
       </TableContainer>
 
@@ -266,7 +269,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
               <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
                 {t('Salesperson')}:
               </Typography>
-              <Typography variant='body2'>{data?.vendedorViewModel?.nome}</Typography>
+              <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
             </Box>
 
             <Typography variant='body2'>{t('Thanks for your business')}</Typography>
@@ -275,7 +278,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
             <CalcWrapper>
               <Typography variant='body2'>Total:</Typography>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
-              {formatCurrency(data?.valorComissao)}
+              {formatCurrency(calcularTotal(data))}
               </Typography>
             </CalcWrapper>
           </Grid>
@@ -284,14 +287,14 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
 
       <Divider />
 
-      <CardContent>
+      {/* <CardContent>
         <Typography variant='body2'>
-          <strong>{t('Note')}:</strong>{' '}
+          <strong>Relatório de comissão:</strong>{' '}
           {t(
             'It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!'
           )}
         </Typography>
-      </CardContent>
+      </CardContent> */}
     </Card>
   )
 }

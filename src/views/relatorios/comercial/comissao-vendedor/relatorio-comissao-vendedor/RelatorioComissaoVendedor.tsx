@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 
 // ** Type imports
 import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
-import { JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** Axios Imports
 import axios from 'axios'
