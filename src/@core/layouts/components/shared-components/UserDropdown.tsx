@@ -25,8 +25,6 @@ import { useAuth } from 'src/hooks/useAuth'
 
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
-import { ThemeColor } from 'src/@core/layouts/types'
-import { Abilities } from 'src/context/types'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -47,31 +45,14 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 // ** Api Services
 import { UsersType } from 'src/types/sistema/controle-acesso/userTypes'
 
-interface UserData {
-  id: string
-  roles: string[]
-  rolesClaims: Abilities[]
-  applicationUserGroups: []
-  email: string
-  password: string
-  status: string
-  avatar: string
-  company: string
-  country: string
-  contact: string
-  fullName: string
-  userName: string
-  currentPlan: string
-  avatarColor?: ThemeColor
-}
-
 interface GroupData {
   userId: string
   name: string
   groupId: string
 }
 
-const defaultValues: UserData = {
+const defaultValues: UsersType = {
+  userId: '',
   id: '',
   roles: [],
   rolesClaims: [],

@@ -1,9 +1,6 @@
 // ** React Imports
 import { useContext, useState, useEffect } from 'react'
 
-// ** Next Import
-import Link from 'next/link'
-
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
 
@@ -12,7 +9,6 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip';
@@ -29,11 +25,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
-import CustomAvatar from 'src/@core/components/mui/avatar'
 import PageHeader from 'src/@core/components/page-header'
-
-// ** Utils Import
-import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
 import { alterStatusVendedorContrato, fetchData } from 'src/store/negocios/comercial/vendedor/contrato/index'
@@ -71,29 +63,8 @@ const clienteContratoStatusObj = (status: string) => {
   }
 }
 
-// ** Styled component for the link for the avatar without image
-const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  marginRight: theme.spacing(3)
-}))
-
 const formatCurrency = (currency: number | null) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-}
-
-// ** renders group column
-const renderContratoNome = (row: VendedorContratoType) => {
-  return (
-    <AvatarWithoutImageLink href="#">
-      <CustomAvatar
-          skin='light'
-          color={'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.id ? row.id : 'CC')}
-      </CustomAvatar>
-    </AvatarWithoutImageLink>
-  )
 }
 
 // ** renders status column
@@ -123,7 +94,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row?.clienteContrato.cliente.nomeFantasia || 0}
+          {row?.clienteContrato?.cliente.nomeFantasia || 0}
         </Typography>
       )
     }

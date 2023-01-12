@@ -87,7 +87,7 @@ const defaultColumns = [
     field: 'name',
     headerName: 'Nome',
     renderCell: ({ row }: CellType) => {
-      const { id, name } = row
+      const { name } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

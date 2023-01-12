@@ -10,25 +10,18 @@ import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
 
 // ** react
-import React, { useRef } from 'react'
+import React from 'react'
 
-import ReactToPrint from 'react-to-print'
+// import ReactToPrint from 'react-to-print'
 
-import RelatorioComissaoVendedorImprimir from 'src/pages/relatorios/comercial/comissao-vendedor/print'
-
-interface Props {
-  id: string
-  dataInicio: string
-  dataFim: string
-}
+// import RelatorioComissaoVendedorImprimir from 'src/pages/relatorios/comercial/comissao-vendedor/print'
 
 const imprimir = () => {
   window.print()
 }
 
-const PreviewActions = ({ id, dataInicio, dataFim }: Props) => {
+const PreviewActions = () => {
   const { t } = useTranslation()
-  let componentRef = useRef()
 
   return (
     <Card>

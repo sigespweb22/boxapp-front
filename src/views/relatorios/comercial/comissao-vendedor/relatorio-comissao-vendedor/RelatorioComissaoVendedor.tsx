@@ -31,6 +31,7 @@ import axios from 'axios'
 
 // ** Date Components Imports
 import moment from "moment";
+import { toast } from 'react-toastify'
 
 interface RelatorioComissaoVendedorType {
   id: string
@@ -60,7 +61,7 @@ const formatCurrency = (currency: number | null | undefined) => {
 }
 
 const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
-  let initialValue = 0;
+  const initialValue = 0;
   const sum = data?.reduce(
     (accumulator, currentValue) => 
       {
@@ -89,8 +90,6 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   const dataInicioChecked = isNaN(dataInicio as any) ? null : moment(dataInicio!).format("YYYY-MM-DD")
   const dataFimChecked = isNaN(dataFim as any) ? null : moment(new Date(dataFim!)).format("YYYY-MM-DD")
 
-  let relatorioNumero = 1
-
   const storageToken = window.localStorage.getItem(relatorioComercialApiService.storageTokenKeyName)
   const config = {
     headers: {
@@ -108,7 +107,10 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       .then(response => {
         setData(response.data.allData)
       })
-      .catch(error => {})
+      .catch(error => {
+        toast.error(error.message)
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -244,9 +246,9 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             </TableRow>
           </TableHead>
           {
-            data?.map((x) => {
+            data?.map((x, i) => {
               return (
-                <TableBody>
+                <TableBody key={i}>
                   <TableRow>
                     <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
                     <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>

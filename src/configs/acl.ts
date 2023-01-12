@@ -1,5 +1,4 @@
 import { AbilityBuilder, Ability } from '@casl/ability'
-import { ContentSaveOutline } from 'mdi-material-ui'
 
 export type Subjects = string
 export type Actions = 'manage' | 'list' | 'read' | 'create' | 'update' | 'delete'
@@ -36,7 +35,7 @@ const defineRulesFor = (abilities: Abilities[]) => {
   return rules
 }
 
-export const buildAbilityFor = (abilities: Abilities[], subject: string): AppAbility => {
+export const buildAbilityFor = (abilities: Abilities[]): AppAbility => {
   return new AppAbility(defineRulesFor(abilities), {
     // https://casl.js.org/v5/en/guide/subject-type-detection
     // @ts-ignore

@@ -1,5 +1,5 @@
 // ** React Imports
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -19,11 +19,7 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-// ** Types Imports
-import { AppDispatch } from 'src/store'
-
 // ** Store Imports
-import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 
 interface SidebarClienteContratoFaturaViewType {
@@ -42,9 +38,8 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaViewType) => {
   // ** Hook
-  const dispatch = useDispatch<AppDispatch>()
   const [isError, setIsError] = useState(false)
-  const { reset, control } = useForm()
+  const { reset } = useForm()
 
   // ** Props
   const { open, toggle } = props

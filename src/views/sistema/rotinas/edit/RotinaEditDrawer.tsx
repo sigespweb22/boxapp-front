@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, forwardRef } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -28,7 +28,6 @@ import { updateRotina } from 'src/store/sistema/rotina/index'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
-import { SliderValueLabel } from '@mui/material'
 
 interface RotinaEditType {
   row: RotinaType | undefined

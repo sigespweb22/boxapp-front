@@ -9,11 +9,6 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import CustomAvatar from 'src/@core/components/mui/avatar'
-import { getInitials } from 'src/@core/utils/get-initials'
-import CustomChip from 'src/@core/components/mui/chip'
-
-import Link from 'next/link'
 
 // ** Third Party Imports
 import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
@@ -58,25 +53,6 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-between',
   backgroundColor: theme.palette.background.default
 }))
-
-const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  marginRight: theme.spacing(3)
-}))
-
-const clienteContratoFaturaStatusObj = (status: string) => {
-  switch (status)
-  {
-    case "NENHUM":
-      return 'primary'
-    case "ACTIVE":
-      return 'success'
-    case "INACTIVE":
-      return 'secondary'
-    default:
-      return 'secondary'
-  }
-}
 
 const defaultColumns = [
   {

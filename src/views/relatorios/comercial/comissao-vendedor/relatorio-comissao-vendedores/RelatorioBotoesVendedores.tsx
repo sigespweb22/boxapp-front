@@ -1,6 +1,3 @@
-// ** Next Import
-import Link from 'next/link'
-
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
 
@@ -9,13 +6,7 @@ import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
 
-
-interface Props {
-  dataInicio: string
-  dataFim: string
-}
-
-const PreviewActions = ({ dataInicio, dataFim }: Props) => {
+const PreviewActions = () => {
   const { t } = useTranslation()
   const imprimir = () => {
     window.print()

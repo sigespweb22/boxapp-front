@@ -31,6 +31,7 @@ import axios from 'axios'
 
 // ** Date Components Imports
 import moment from "moment";
+import { toast } from 'react-toastify'
 
 interface RelatorioComissaoVendedorType {
   id: string
@@ -60,7 +61,7 @@ const formatCurrency = (currency: number | null | undefined) => {
 }
 
 const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
-  let initialValue = 0;
+  const initialValue = 0;
   const sum = data?.reduce(
     (accumulator, currentValue) => 
       {
@@ -83,10 +84,8 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType[]>()
 
-  var inicioData = dataInicio.toString().slice(0, 16)
-  var fimData = dataFim.toString().slice(0, 16)
-
-  let relatorioNumero = 1
+  const inicioData = dataInicio.toString().slice(0, 16)
+  const fimData = dataFim.toString().slice(0, 16)
 
   const storageToken = window.localStorage.getItem(relatorioComercialApiService.storageTokenKeyName)
   const config = {
@@ -111,7 +110,9 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
       .then(response => {
         setData(response.data.allData)
       })
-      .catch(error => {})
+      .catch(error => { toast.error(error)})
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -247,9 +248,9 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
             </TableRow>
           </TableHead>
           {
-            data?.map((x) => {
+            data?.map((x, i) => {
               return (
-                <TableBody>
+                <TableBody key={i}>
                   <TableRow>
                     <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
                     <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>

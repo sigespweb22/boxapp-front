@@ -69,9 +69,7 @@ const VendedorViewLeft = ({id}: Props) => {
   const store = useSelector((state: RootState) => state.vendedorView)
   const [vendedorView, setVendedorView] = useState<VendedorType>(defaultValues)
 
-  const {
-    setValue
-  } = useForm({
+  const {} = useForm({
     mode: 'onChange'
   })
 

@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactElement, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'

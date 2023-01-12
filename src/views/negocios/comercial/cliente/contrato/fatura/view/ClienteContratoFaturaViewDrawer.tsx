@@ -19,13 +19,6 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-// ** Types Imports
-import { AppDispatch } from 'src/store'
-
-// ** Store Imports
-import { useDispatch } from 'react-redux'
-
-
 interface SidebarClienteContratoFaturaViewType {
   row: ClienteContratoFaturaType | undefined
   open: boolean
@@ -47,7 +40,6 @@ const formatCurrency = (currency: number) => {
 
 const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaViewType) => {
   // ** Hook
-  const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
     control

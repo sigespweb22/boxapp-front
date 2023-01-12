@@ -43,7 +43,7 @@ const AclGuard = (props: AclGuardProps) => {
 
   // User is logged in, build ability for the user based on his role
   if (auth.user && !ability) {
-    setAbility(buildAbilityFor(auth.user.applicationUserGroups.flatMap(a => a.applicationGroup.applicationRoleGroups.map(c => c.applicationRole)), aclAbilities.subject))
+    setAbility(buildAbilityFor(auth.user.applicationUserGroups.flatMap(a => a.applicationGroup.applicationRoleGroups.map(c => c.applicationRole))))
   }
 
   // Check the access of current user and render pages

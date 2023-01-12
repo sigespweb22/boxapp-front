@@ -82,14 +82,14 @@ const SidebarVendedorContratoView = (props: SidebarVendedorContratoViewType) => 
             <TextField
                 disabled={true}
                 label={t("Customer name linked to the contract")}
-                value={props?.row?.clienteContrato.cliente.nomeFantasia || 0}
+                value={props?.row?.clienteContrato?.cliente.nomeFantasia || 0}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
                 label={t("Total value of the contract")}
-                value={formatCurrency(props?.row?.clienteContrato.valorContrato || 0)}
+                value={formatCurrency(props?.row?.clienteContrato?.valorContrato || 0)}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>

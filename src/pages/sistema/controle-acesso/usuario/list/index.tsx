@@ -137,7 +137,7 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, fullName, userName } = row
+      const { fullName, userName } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

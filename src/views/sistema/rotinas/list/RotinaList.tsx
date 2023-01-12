@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, useState, useEffect, useCallback, useRef } from 'react'
+import { useContext, useState, useEffect, useCallback } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -45,6 +45,7 @@ import { fetchData, alterStatusRotina } from 'src/store/sistema/rotina'
 
 // ** Api services imports
 import rotinaApiService from 'src/@api-center/sistema/rotinas/rotinaApiService'
+import notificacaoHubApiService from 'src/@api-center/hubs/notificacaoHubApiService'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -241,11 +242,13 @@ const RotinaList = () => {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-        .withUrl("http://localhost:5000/notificacaoHub")
+        .withUrl(notificacaoHubApiService.notificacaoHub)
         .withAutomaticReconnect()
         .build();
 
     setConnection(newConnection);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -267,6 +270,7 @@ const RotinaList = () => {
                   })
                   .catch((e: any) => console.log('Connection failed: ', e));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection]);
 
   const config = {

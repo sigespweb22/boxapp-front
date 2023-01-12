@@ -48,8 +48,8 @@ const RelatorioComissaoVendedoresImprimir = ({ dataInicio, dataFim }: RelatorioC
 
   let relatorioNumero = 1
 
-  var inicioData = dataInicio.slice(0, 16)
-  var fimData = dataFim.slice(0, 16)
+  const inicioData = dataInicio.slice(0, 16)
+  const fimData = dataFim.slice(0, 16)
 
   if (dataInicio) {
     return (

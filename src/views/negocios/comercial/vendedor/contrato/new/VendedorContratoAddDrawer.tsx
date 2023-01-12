@@ -55,6 +55,7 @@ interface VendedorContratoType {
   id: string
   comissaoReais: number
   comissaoPercentual: number
+  clienteContrato: null
   clienteContratoId: string
   vendedorId: string
   vendedor: { id: string, nome: string }
@@ -89,8 +90,10 @@ const defaultValues = {
 const isValidComissao = (data: VendedorContratoType) => {
   if (data.comissaoReais != 0 && data.comissaoPercentual != 0) {
     toast.warning('Permitido apenas uma das opções de comissionamento.')
+
     return false
   }
+
   return true
 }
 
@@ -105,7 +108,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
     reset,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { }
   } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange',
