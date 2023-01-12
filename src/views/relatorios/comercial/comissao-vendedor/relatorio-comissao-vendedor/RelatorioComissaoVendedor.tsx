@@ -34,8 +34,8 @@ import moment from "moment";
 
 interface RelatorioComissaoVendedorType {
   id: string
-  dataInicio: Date
-  dataFim: Date
+  dataInicio: Date | number | null
+  dataFim: Date | number | null 
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -83,8 +83,11 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType[]>()
 
-  var inicioData = dataInicio.toString().slice(0, 16)
-  var fimData = dataFim.toString().slice(0, 16)
+  const inicioData = dataInicio?.toString().slice(0, 16)
+  const fimData = dataFim?.toString().slice(0, 16)
+
+  const dataInicioChecked = isNaN(dataInicio as any) ? null : moment(dataInicio!).format("YYYY-MM-DD")
+  const dataFimChecked = isNaN(dataFim as any) ? null : moment(new Date(dataFim!)).format("YYYY-MM-DD")
 
   let relatorioNumero = 1
 
@@ -99,7 +102,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
     axios
       .post(
         `${relatorioComercialApiService.listComissoesAsyns}/${id}`,
-        { dataInicio: moment(new Date(inicioData)).format("YYYY-MM-DD"), dataFim: moment(new Date(fimData)).format("YYYY-MM-DD") },
+        { dataInicio: dataInicioChecked, dataFim: dataFimChecked },
         config
       )
       .then(response => {

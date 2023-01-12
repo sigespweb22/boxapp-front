@@ -70,8 +70,8 @@ const defaultValues = {
 const ComissaoVendedoresGenerator = () => {
   const { t } = useTranslation()
   const [dates, setDates] = useState<Date[]>([])
-  const [endDateRange, setEndDateRange] = useState<DateType>(null)
   const [startDateRange, setStartDateRange] = useState<DateType>(null)
+  const [endDateRange, setEndDateRange] = useState<DateType>(null)
   const [vendedores, setVendedores] = useState<Vendedor[]>([])
   const [id, setId] = useState<string | undefined>('')
 
