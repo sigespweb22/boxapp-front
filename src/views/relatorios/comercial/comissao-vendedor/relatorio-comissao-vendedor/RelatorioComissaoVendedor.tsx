@@ -78,7 +78,6 @@ const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
 }
 
 const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
-  debugger
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
