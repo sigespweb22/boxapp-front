@@ -141,7 +141,7 @@ const ComissaoVendedoresGenerator = () => {
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     locale={ptBR}
-                    required={true}
+                    required={false}
                     isClearable
                     selectsRange
                     monthsShown={2}
@@ -155,7 +155,7 @@ const ComissaoVendedoresGenerator = () => {
                       <CustomInput
                         dates={dates}
                         setDates={setDates}
-                        label={t('Invoice Date')}
+                        label={t('Competence invoice period')}
                         start={startDateRange as number | Date}
                         end={endDateRange as number | Date}
                       />

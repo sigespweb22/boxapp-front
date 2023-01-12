@@ -258,21 +258,20 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
 
       <CardContent>
         <Grid container>
-          <Grid item xs={12} sm={7} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
+          <Grid item xs={12} sm={5} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
               <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
                 {t('Salesperson')}:
               </Typography>
               <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
             </Box>
-
             <Typography variant='body2'>{t('Thanks for your business')}</Typography>
           </Grid>
-          <Grid item xs={12} sm={5} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
+          <Grid item xs={12} sm={7} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
             <CalcWrapper>
-              <Typography variant='body2'>Total:</Typography>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
-              {formatCurrency(calcularTotal(data))}
+              <Typography variant='h6'>Total:</Typography>
+              <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
+                {formatCurrency(calcularTotal(data))}
               </Typography>
             </CalcWrapper>
           </Grid>

@@ -152,7 +152,7 @@ const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoV
                     </TableRow>
                     <TableRow>
                       <MUITableCell>
-                        <Typography variant='body2'>Date Issued:</Typography>
+                        <Typography variant='body2'>Data início:</Typography>
                       </MUITableCell>
                       <MUITableCell>
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -162,7 +162,7 @@ const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoV
                     </TableRow>
                     <TableRow>
                       <MUITableCell>
-                        <Typography variant='body2'>Date Due:</Typography>
+                        <Typography variant='body2'>Data fim:</Typography>
                       </MUITableCell>
                       <MUITableCell>
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
