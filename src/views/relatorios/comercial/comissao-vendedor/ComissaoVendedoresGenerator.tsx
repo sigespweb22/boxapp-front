@@ -98,6 +98,7 @@ const ComissaoVendedoresGenerator = () => {
     if (start !== null && end !== null) {
       setDates(dates)
     }
+    
     setStartDateRange(start)
     setEndDateRange(end)
   }
@@ -144,9 +145,9 @@ const ComissaoVendedoresGenerator = () => {
                     isClearable
                     selectsRange
                     monthsShown={2}
-                    endDate={endDateRange}
                     selected={startDateRange}
                     startDate={startDateRange}
+                    endDate={endDateRange}
                     shouldCloseOnSelect={true}
                     id='date-range-picker-months'
                     onChange={handleOnChangeRange}
@@ -155,8 +156,8 @@ const ComissaoVendedoresGenerator = () => {
                         dates={dates}
                         setDates={setDates}
                         label={t('Invoice Date')}
-                        end={endDateRange as number | Date}
                         start={startDateRange as number | Date}
+                        end={endDateRange as number | Date}
                       />
                     }
                   />
