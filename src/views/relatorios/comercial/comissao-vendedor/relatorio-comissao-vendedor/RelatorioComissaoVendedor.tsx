@@ -26,16 +26,16 @@ import { useTranslation } from 'react-i18next'
 import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
 import { useEffect, useState } from 'react'
 
+// ** Axios Imports
 import axios from 'axios'
+
+// ** Date Components Imports
+import moment from "moment";
 
 interface RelatorioComissaoVendedorType {
   id: string
-  dataInicio: string
-  dataFim: string
-}
-
-interface CellType {
-  row: VendedorComissaoType
+  dataInicio: Date
+  dataFim: Date
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -59,24 +59,15 @@ const formatCurrency = (currency: number | null | undefined) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const defaultValues = {
-  id: '',
-  valorComissao: 0,
-  clienteContratoId: '',
-  clienteContratoViewModel: null,
-  vendedorViewModel: null,
-  vendedorId: '',
-  status: ''
-}
-
-const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType, props: CellType) => {
+const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
+  debugger
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType>()
 
-  var inicioData = dataInicio.slice(0, 16)
-  var fimData = dataFim.slice(0, 16)
+  var inicioData = dataInicio.toString().slice(0, 16)
+  var fimData = dataFim.toString().slice(0, 16)
 
   let relatorioNumero = 1
 
@@ -91,7 +82,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
     axios
       .post(
         `${relatorioComercialApiService.listComissoesAsyns}/${id}`,
-        { dataInicio: inicioData, dataFim: fimData },
+        { dataInicio: moment(new Date(inicioData)).format("YYYY-MM-DD"), dataFim: moment(new Date(fimData)).format("YYYY-MM-DD") },
         config
       )
       .then(response => {
@@ -187,19 +178,16 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           <Grid item sm={6} xs={12}>
             <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
               {}
-              <Table sx={{ maxWidth: '200px' }}>
+              <Table sx={{ maxWidth: '400px' }}>
                 <TableBody>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='h6'>Invoice</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      <Typography variant='h6'>{relatorioNumero++}</Typography>
+                      <Typography variant='h6'>Relatório de Comissão</Typography>
                     </MUITableCell>
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Date Issued:</Typography>
+                      <Typography variant='body2'>Data início:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -209,7 +197,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Date Due:</Typography>
+                      <Typography variant='body2'>Data fim:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -278,14 +266,14 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
 
       <Divider />
 
-      <CardContent>
+      {/* <CardContent>
         <Typography variant='body2'>
-          <strong>{t('Note')}:</strong>{' '}
+          <strong>Relatório de comissão:</strong>{' '}
           {t(
             'It was a pleasure working with you and your team. We hope you will keep us in mind for future projects. Thank You!'
           )}
         </Typography>
-      </CardContent>
+      </CardContent> */}
     </Card>
   )
 }
