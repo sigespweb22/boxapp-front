@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 
 // ** Type imports
 import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
-import { useEffect, useState } from 'react'
+import { JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from 'react'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -59,12 +59,30 @@ const formatCurrency = (currency: number | null | undefined) => {
   return currency?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
+const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
+  let initialValue = 0;
+  const sum = data?.reduce(
+    (accumulator, currentValue) => 
+      {
+        if (currentValue.valorComissao != null)
+        {
+          return accumulator + currentValue.valorComissao
+        } else {
+          return 0;
+        }
+        
+      }, initialValue
+  );
+    
+  return sum;
+}
+
 const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
   debugger
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
-  const [data, setData] = useState<VendedorComissaoType>()
+  const [data, setData] = useState<VendedorComissaoType[]>()
 
   var inicioData = dataInicio.toString().slice(0, 16)
   var fimData = dataFim.toString().slice(0, 16)
@@ -86,7 +104,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
         config
       )
       .then(response => {
-        setData(response.data.allData[0])
+        setData(response.data.allData)
       })
       .catch(error => {})
   }, [])
@@ -214,14 +232,6 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
 
       <Divider />
 
-      {/* <DataGrid
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          autoHeight
-          rows={data}
-          columns={defaultColumns}
-          checkboxSelection = {false}
-          pageSize={5}
-        /> */}
       <TableContainer>
         <Table>
           <TableHead>
@@ -231,13 +241,19 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <TableCell align='center'>{t('Commission amount')}</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{data?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-              <TableCell align='center'>{formatCurrency(data?.clienteContratoViewModel?.valorContrato)}</TableCell>
-              <TableCell align='center'>{formatCurrency(data?.valorComissao)}</TableCell>
-            </TableRow>
-          </TableBody>
+          {
+            data?.map((x) => {
+              return (
+                <TableBody>
+                  <TableRow>
+                    <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
+                    <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
+                    <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
+                  </TableRow>
+                </TableBody>
+              )
+            })
+          }
         </Table>
       </TableContainer>
 
@@ -248,7 +264,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
                 {t('Salesperson')}:
               </Typography>
-              <Typography variant='body2'>{data?.vendedorViewModel?.nome}</Typography>
+              <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
             </Box>
 
             <Typography variant='body2'>{t('Thanks for your business')}</Typography>
@@ -257,7 +273,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             <CalcWrapper>
               <Typography variant='body2'>Total:</Typography>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
-              {formatCurrency(data?.valorComissao)}
+              {formatCurrency(calcularTotal(data))}
               </Typography>
             </CalcWrapper>
           </Grid>
