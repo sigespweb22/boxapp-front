@@ -131,7 +131,7 @@ const ComissaoVendedoresGenerator = () => {
                             setId(newValue?.id || undefined)
                           }}
                           renderInput={params => (
-                            <TextField {...params} label={t('Seller')} placeholder='(e.g.: Jhon Dare)' />
+                            <TextField required={true} {...params} label={t('Seller')} placeholder='(e.g.: Jhon Dare)' />
                           )}
                         />
                       )
@@ -141,7 +141,7 @@ const ComissaoVendedoresGenerator = () => {
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     locale={ptBR}
-                    required={false}
+                    required={true}
                     isClearable
                     selectsRange
                     monthsShown={2}
@@ -164,7 +164,7 @@ const ComissaoVendedoresGenerator = () => {
                 </Grid>
               </Grid>
               <Alert severity='info' sx={{ mb: 2, mt: 6 }}>
-                {t('When omitting any information, all data will be returned.')}
+                {t('A escolha.')}
               </Alert>
               <Link
                 href={`/relatorios/comercial/comissao-vendedor/${id}&${startDateRange}&${endDateRange}`}
