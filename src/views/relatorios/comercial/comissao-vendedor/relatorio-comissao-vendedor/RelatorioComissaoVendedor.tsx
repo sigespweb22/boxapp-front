@@ -257,7 +257,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       {is404 ? (
         <>
           <Alert severity='error' sx={{ mb: 2, mt: 2 }}>
-            {'Nenhum registro encontrado para apresentar no relatório.'}
+            {'Nenhum registro encontrado nessa data de competência para apresentar no relatório.'}
           </Alert>
           <Divider />
         </>
@@ -302,7 +302,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           {is404 ? (
             <></>
           ) : (
-            <Grid item xs={12} sm={3} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
+            <Grid sx={{ order: { sm: 2, xs: 1 }, display:'flex', alignItems:'flex-end' }}>
               <CalcWrapper>
                 <Typography variant='h6'>Total:</Typography>
                 <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
