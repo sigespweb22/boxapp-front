@@ -21,10 +21,10 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
 
   const handleIsMultiplo = (split: any) => {
     switch (split) {
-      case "" :
+      case "":
         setIsMultiple(true)
         break;
-      case "undefined" :
+      case "undefined":
         setIsMultiple(true)
         break;
     }

@@ -17,6 +17,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import TableCell, { TableCellBaseProps } from '@mui/material/TableCell'
 import { Alert } from '@mui/material'
+import Button from '@mui/material/Button'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
