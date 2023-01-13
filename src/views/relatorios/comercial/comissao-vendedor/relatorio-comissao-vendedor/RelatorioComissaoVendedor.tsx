@@ -24,19 +24,19 @@ import { useTranslation } from 'react-i18next'
 
 // ** Type imports
 import { VendedorComissaoType } from 'src/types/negocios/comercial/vendedor/comissao/vendedorComissaoTypes'
-import { useEffect, useState } from 'react'
+import { JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from 'react'
 
 // ** Axios Imports
 import axios from 'axios'
 
 // ** Date Components Imports
-import moment from "moment";
+import moment from 'moment'
 import { toast } from 'react-toastify'
 
 interface RelatorioComissaoVendedorType {
   id: string
   dataInicio: Date | number | null
-  dataFim: Date | number | null 
+  dataFim: Date | number | null
 }
 
 const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
@@ -61,21 +61,16 @@ const formatCurrency = (currency: number | null | undefined) => {
 }
 
 const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
-  const initialValue = 0;
-  const sum = data?.reduce(
-    (accumulator, currentValue) => 
-      {
-        if (currentValue.valorComissao != null)
-        {
-          return accumulator + currentValue.valorComissao
-        } else {
-          return 0;
-        }
-        
-      }, initialValue
-  );
-    
-  return sum;
+  const initialValue = 0
+  const sum = data?.reduce((accumulator, currentValue) => {
+    if (currentValue.valorComissao != null) {
+      return accumulator + currentValue.valorComissao
+    } else {
+      return 0
+    }
+  }, initialValue)
+
+  return sum
 }
 
 const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
@@ -83,12 +78,20 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   const theme = useTheme()
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType[]>()
+  const [isValidDate, setIsValidDate] = useState(true)
 
   const inicioData = dataInicio?.toString().slice(0, 16)
   const fimData = dataFim?.toString().slice(0, 16)
 
-  const dataInicioChecked = isNaN(dataInicio as any) ? null : moment(dataInicio!).format("YYYY-MM-DD")
-  const dataFimChecked = isNaN(dataFim as any) ? null : moment(new Date(dataFim!)).format("YYYY-MM-DD")
+  const isInvalidDate = (inicioData: any) => {
+    switch (inicioData) {
+      case "Invalid Date":
+        setIsValidDate(false)
+    }
+  }
+
+  const dataInicioChecked = isNaN(dataInicio as any) ? null : moment(dataInicio!).format('YYYY-MM-DD')
+  const dataFimChecked = isNaN(dataFim as any) ? null : moment(new Date(dataFim!)).format('YYYY-MM-DD')
 
   const storageToken = window.localStorage.getItem(relatorioComercialApiService.storageTokenKeyName)
   const config = {
@@ -106,6 +109,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       )
       .then(response => {
         setData(response.data.allData)
+        isInvalidDate(inicioData)
       })
       .catch(error => {
         toast.error(error.message)
@@ -117,7 +121,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
     <Card>
       <CardContent>
         <Grid container>
-          <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 } }}>
+          <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 }, mr: 0 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
                 <svg
@@ -198,7 +202,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             </Box>
           </Grid>
           <Grid item sm={6} xs={12}>
-            <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+          <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
               {}
               <Table sx={{ maxWidth: '400px' }}>
                 <TableBody>
@@ -207,26 +211,33 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                       <Typography variant='h6'>Relatório de Comissão</Typography>
                     </MUITableCell>
                   </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>Data início:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        {inicioData}
-                      </Typography>
-                    </MUITableCell>
-                  </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>Data fim:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        {fimData}
-                      </Typography>
-                    </MUITableCell>
-                  </TableRow>
+                  
+                  {isValidDate ? (
+                    <>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant='body2'>Data início:</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                            {inicioData}
+                          </Typography>
+                        </MUITableCell>
+                      </TableRow>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant='body2'>Data fim:</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                            {fimData}
+                          </Typography>
+                        </MUITableCell>
+                      </TableRow>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </TableBody>
               </Table>
             </Box>
@@ -245,19 +256,17 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <TableCell align='center'>{t('Commission amount')}</TableCell>
             </TableRow>
           </TableHead>
-          {
-            data?.map((x, i) => {
-              return (
-                <TableBody key={i}>
-                  <TableRow>
-                    <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-                    <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
-                    <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
-                  </TableRow>
-                </TableBody>
-              )
-            })
-          }
+          {data?.map((x, i) => {
+            return (
+              <TableBody key={i}>
+                <TableRow>
+                  <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
+                  <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
+                  <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
+                </TableRow>
+              </TableBody>
+            )
+          })}
         </Table>
       </TableContainer>
 
