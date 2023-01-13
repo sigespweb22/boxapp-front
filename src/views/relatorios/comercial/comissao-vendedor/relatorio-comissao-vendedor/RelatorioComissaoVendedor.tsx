@@ -1,3 +1,7 @@
+// ** React Import
+import { useRef } from "react";
+
+
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -32,6 +36,8 @@ import axios from 'axios'
 
 // ** Date Components Imports
 import moment from 'moment'
+
+import ReactToPdf from "react-to-pdf"
 
 interface RelatorioComissaoVendedorType {
   id: string
@@ -74,6 +80,12 @@ const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
 }
 
 const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
+  const ref = useRef();
+  const options = {
+      orientation: 'portret',
+      unit: 'in'
+  };
+
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
@@ -119,8 +131,13 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   }, [])
 
   return (
-    <Card>
+    <Card ref={ref as any}>
       <CardContent>
+        <ReactToPdf targetRef={ref} filename="div-blue.pdf" options={options} x={.2} y={.2} scale={0.93}>
+            {({toPdf}: any) => (
+                <button onClick={toPdf}>Generate pdf</button>
+            )}
+        </ReactToPdf>
         <Grid container>
           <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 }, mr: 0 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -312,7 +329,6 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           )}
         </Grid>
       </CardContent>
-
       {/* <CardContent>
         <Typography variant='body2'>
           <strong>Relatório de comissão:</strong>{' '}

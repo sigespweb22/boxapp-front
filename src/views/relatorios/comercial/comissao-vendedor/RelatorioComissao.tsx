@@ -36,12 +36,9 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
   }, [])
 
   return (
-    <Grid container spacing={6}>
-      <Grid item xl={9} md={8} xs={12}>
+    <Grid container spacing={1}>
+      <Grid item xl={6} md={12} xs={12}>
         {isMultiple ? <RelatorioComissaoVendedores dataInicio={split[1]} dataFim={split[2]} /> : <RelatorioComissaoVendedor id={split[0]} dataInicio={new Date(split[1]) || null} dataFim={new Date(split[2]) || null} />}
-      </Grid>
-      <Grid item xl={3} md={4} xs={12}>
-        <RelatorioBotoesVendedor />
       </Grid>
     </Grid>
   )
