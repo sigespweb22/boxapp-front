@@ -50,8 +50,8 @@ const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoV
 
   let relatorioNumero = 1
 
-  const inicioData = dataInicio.slice(0, 16)
-  const fimData = dataFim.slice(0, 16)
+  // const inicioData = dataInicio.slice(0, 16)
+  // const fimData = dataFim.slice(0, 16)
 
   if (dataInicio) {
     return (
@@ -150,7 +150,7 @@ const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoV
                         <Typography variant='h6'>#{relatorioNumero++}</Typography>
                       </MUITableCell>
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                       <MUITableCell>
                         <Typography variant='body2'>Data início:</Typography>
                       </MUITableCell>
@@ -169,7 +169,7 @@ const RelatorioComissaoVendedores = ({ dataInicio, dataFim }: RelatorioComissaoV
                           {fimData}
                         </Typography>
                       </MUITableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </Box>
