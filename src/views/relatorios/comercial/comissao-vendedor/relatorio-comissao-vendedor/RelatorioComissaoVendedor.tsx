@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent'
 import { styled, useTheme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import TableCell, { TableCellBaseProps } from '@mui/material/TableCell'
+import { Alert } from '@mui/material'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -79,13 +80,14 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType[]>()
   const [isValidDate, setIsValidDate] = useState(true)
+  const [is404, setIs404] = useState(false)
 
   const inicioData = dataInicio?.toString().slice(0, 16)
   const fimData = dataFim?.toString().slice(0, 16)
 
   const isInvalidDate = (inicioData: any) => {
     switch (inicioData) {
-      case "Invalid Date":
+      case 'Invalid Date':
         setIsValidDate(false)
     }
   }
@@ -112,7 +114,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
         isInvalidDate(inicioData)
       })
       .catch(error => {
-        toast.error(error.message)
+        if (error.status === 404) setIs404(true)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -202,7 +204,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
             </Box>
           </Grid>
           <Grid item sm={6} xs={12}>
-          <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+            <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
               {}
               <Table sx={{ maxWidth: '400px' }}>
                 <TableBody>
@@ -211,33 +213,38 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                       <Typography variant='h6'>Relatório de Comissão</Typography>
                     </MUITableCell>
                   </TableRow>
-                  
-                  {isValidDate ? (
-                    <>
-                      <TableRow>
-                        <MUITableCell>
-                          <Typography variant='body2'>Data início:</Typography>
-                        </MUITableCell>
-                        <MUITableCell>
-                          <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                            {inicioData}
-                          </Typography>
-                        </MUITableCell>
-                      </TableRow>
-                      <TableRow>
-                        <MUITableCell>
-                          <Typography variant='body2'>Data fim:</Typography>
-                        </MUITableCell>
-                        <MUITableCell>
-                          <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                            {fimData}
-                          </Typography>
-                        </MUITableCell>
-                      </TableRow>
-                    </>
-                  ) : (
-                    <></>
-                  )}
+                  <TableRow>
+                    <MUITableCell>
+                      <Typography variant='body2'>Data início:</Typography>
+                    </MUITableCell>
+                    <MUITableCell>
+                      {isValidDate ? (
+                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                          {inicioData}
+                        </Typography>
+                      ) : (
+                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                          Sem data informada
+                        </Typography>
+                      )}
+                    </MUITableCell>
+                  </TableRow>
+                  <TableRow>
+                    <MUITableCell>
+                      <Typography variant='body2'>Data fim:</Typography>
+                    </MUITableCell>
+                    <MUITableCell>
+                      {isValidDate ? (
+                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                          {fimData}
+                        </Typography>
+                      ) : (
+                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                          Sem data informada
+                        </Typography>
+                      )}
+                    </MUITableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -246,7 +253,10 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       </CardContent>
 
       <Divider />
+      
+      {
 
+      }
       <TableContainer>
         <Table>
           <TableHead>
@@ -269,6 +279,9 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           })}
         </Table>
       </TableContainer>
+      <Alert severity='error' sx={{ mb: 2, mt: 6 }}>
+        {"Nenhum registro encontrado para apresentar no relatório"}
+      </Alert>
 
       <CardContent>
         <Grid container>
