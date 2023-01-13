@@ -1,3 +1,6 @@
+// ** React Import
+import { useRef } from "react";
+
 // ** Next Import
 import Link from 'next/link'
 
@@ -9,37 +12,29 @@ import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
 
+// ** React to print Imports
+import ReactToPrint from "react-to-print";
+
+import RelatorioComissaoVendedor from 'src/views/relatorios/comercial/comissao-vendedor/relatorio-comissao-vendedor/RelatorioComissaoVendedor'
+
 // ** react
 import React from 'react'
 
-// import ReactToPrint from 'react-to-print'
-
-// import RelatorioComissaoVendedorImprimir from 'src/pages/relatorios/comercial/comissao-vendedor/print'
-
-const imprimir = () => {
-  window.print()
-}
-
-const PreviewActions = () => {
+const RelatorioBotoesVendedor = () => {
   const { t } = useTranslation()
+  let componentRef = useRef();
 
   return (
     <Card>
       <CardContent>
-        {/* <Link target='_blank' href={`/src/pages/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
-        <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
+        <RelatorioComissaoVendedor ref={(el: React.MutableRefObject<undefined>) => (componentRef = el)} />
+        <ReactToPrint
+          trigger={() => <Button>Print this out!</Button>}
+          content={() => componentRef}
+        />
+        {/* <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained' onClick={imprimir}>
           {t('Print')}
-        </Button>
-        </Link> */}
-
-        {/* <ReactToPrint trigger={() => <Button>Print this out!</Button>} content={() => componentRef} />
-        {/* <div style={{ display: 'none' }}>
-          <RelatorioComissaoVendedorImprimir ref={(el: React.MutableRefObject<undefined>) => (componentRef = el)} />
-        </div> */} 
-
-        <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained' onClick={imprimir}>
-          {t('Print')}
-        </Button>
+        </Button> */}
 
         <Link href='../'>
           <Button fullWidth color='secondary' variant='outlined'>
@@ -51,4 +46,4 @@ const PreviewActions = () => {
   )
 }
 
-export default PreviewActions
+export default RelatorioBotoesVendedor
