@@ -114,7 +114,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
         isInvalidDate(inicioData)
       })
       .catch(error => {
-        if (error.status === 404) setIs404(true)
+        if (error.message === 'Request failed with status code 404') setIs404(true)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -224,7 +224,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                         </Typography>
                       ) : (
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Sem data informada
+                          Todo período
                         </Typography>
                       )}
                     </MUITableCell>
@@ -240,7 +240,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                         </Typography>
                       ) : (
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Sem data informada
+                          Todo período
                         </Typography>
                       )}
                     </MUITableCell>
@@ -253,59 +253,66 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       </CardContent>
 
       <Divider />
-      
-      {
 
-      }
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('Client name')}</TableCell>
-              <TableCell align='center'>{t('Contract value')}</TableCell>
-              <TableCell align='center'>{t('Commission amount')}</TableCell>
-            </TableRow>
-          </TableHead>
-          {data?.map((x, i) => {
-            return (
-              <TableBody key={i}>
+      {is404 ? (
+        <>
+          <Alert severity='error' sx={{ mb: 2, mt: 2 }}>
+            {'Nenhum registro encontrado para apresentar no relatório.'}
+          </Alert>
+          <Divider />
+        </>
+      ) : (
+        <>
+          <TableContainer>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-                  <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
-                  <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
+                  <TableCell>{t('Client name')}</TableCell>
+                  <TableCell align='center'>{t('Contract value')}</TableCell>
+                  <TableCell align='center'>{t('Commission amount')}</TableCell>
                 </TableRow>
-              </TableBody>
-            )
-          })}
-        </Table>
-      </TableContainer>
-      <Alert severity='error' sx={{ mb: 2, mt: 6 }}>
-        {"Nenhum registro encontrado para apresentar no relatório"}
-      </Alert>
+              </TableHead>
+              {data?.map((x, i) => {
+                return (
+                  <TableBody key={i}>
+                    <TableRow>
+                      <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
+                      <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
+                      <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                )
+              })}
+            </Table>
+          </TableContainer>
+        </>
+      )}
 
       <CardContent>
         <Grid container>
           <Grid item xs={12} sm={5} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2' sx={{ mr: 2, fontWeight: 600 }}>
+              <Typography variant='body2' sx={{ fontWeight: 600 }}>
                 {t('Salesperson')}:
               </Typography>
               <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
             </Box>
             <Typography variant='body2'>{t('Thanks for your business')}</Typography>
           </Grid>
-          <Grid item xs={12} sm={7} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
-            <CalcWrapper>
-              <Typography variant='h6'>Total:</Typography>
-              <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
-                {formatCurrency(calcularTotal(data))}
-              </Typography>
-            </CalcWrapper>
-          </Grid>
+          {is404 ? (
+            <></>
+          ) : (
+            <Grid item xs={12} sm={3} lg={3} sx={{ order: { sm: 2, xs: 1 } }}>
+              <CalcWrapper>
+                <Typography variant='h6'>Total:</Typography>
+                <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
+                  {formatCurrency(calcularTotal(data))}
+                </Typography>
+              </CalcWrapper>
+            </Grid>
+          )}
         </Grid>
       </CardContent>
-
-      <Divider />
 
       {/* <CardContent>
         <Typography variant='body2'>

@@ -141,7 +141,7 @@ const ComissaoVendedoresGenerator = () => {
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     locale={ptBR}
-                    required={true}
+                    required={false}
                     isClearable
                     selectsRange
                     monthsShown={2}
@@ -164,7 +164,7 @@ const ComissaoVendedoresGenerator = () => {
                 </Grid>
               </Grid>
               <Alert severity='info' sx={{ mb: 2, mt: 6 }}>
-                {t('A escolha.')}
+                {t('Nome do vendedor obrigatório.')}
               </Alert>
               <Link
                 href={`/relatorios/comercial/comissao-vendedor/${id}&${startDateRange}&${endDateRange}`}
