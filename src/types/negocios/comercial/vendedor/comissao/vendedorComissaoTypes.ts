@@ -1,6 +1,6 @@
 import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
-
+import { ClienteContratoFaturaType } from '../../cliente/contrato/fatura/clienteContratoFaturaTypes'
 
 export type VendedorComissaoLayoutType = {
   id: string
@@ -13,5 +13,6 @@ export type VendedorComissaoType = {
   clienteContratoViewModel: ClienteContratoViewModelType | null
   vendedorId: string | null
   vendedorViewModel: VendedorType | null
+  clienteContratoFaturaId: ClienteContratoFaturaType | null
   status: string
 }

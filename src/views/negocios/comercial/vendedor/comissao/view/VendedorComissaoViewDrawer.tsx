@@ -52,6 +52,8 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
 
   const { t } = useTranslation()
 
+  debugger
+
   return (
     <Drawer
       open={open}
@@ -95,6 +97,13 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
                 disabled={true}
                 label={t("Total value of the contract")}
                 value={formatCurrency(props?.row?.valorComissao || 0)}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Date of competence")}
+                value={props?.row?.clienteContratoFaturaId?.dataCompetencia || 0}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>

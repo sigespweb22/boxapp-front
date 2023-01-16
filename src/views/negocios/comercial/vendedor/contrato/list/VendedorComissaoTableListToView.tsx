@@ -9,7 +9,15 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 
+// ** Icons Imports
+import EyeOutline from 'mdi-material-ui/EyeOutline'
+
+// ** Next Import
+import Link from 'next/link'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -138,9 +146,9 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
   const [value, setValue] = useState<string | null>(null)
   const [pageSize, setPageSize] = useState<number>(10)
   const [vendedorComissaoViewOpen, setVendedorComissaoViewOpen] = useState<boolean>(false)
-  const [row] = useState<VendedorComissaoType | undefined>()
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.vendedorComissao)
+  const [row, setRow] = useState<VendedorComissaoType | undefined>()
 
   useEffect(() => {
     setValue(id)
@@ -155,10 +163,35 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
+  const handleVendedorComissaoView = (row : VendedorComissaoType) => {
+    setRow(row)
+    setVendedorComissaoViewOpen(true)
+  }
+
   const toggleVendedorComissaoViewDrawer = () => setVendedorComissaoViewOpen(!vendedorComissaoViewOpen)
 
   const columns = [
-    ...defaultColumns
+    ...defaultColumns,
+    {
+      flex: 0.03,
+      minWidth: 25,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Ações',
+      headerAlign: 'center' as const,
+      align: 'center' as const,
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('read', 'ac-vendedorComissao-page') && (
+              <Tooltip title={t('View')}>
+                <IconButton onClick={() => handleVendedorComissaoView(row)}>
+                  <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+                </IconButton>
+              </Tooltip>
+          )}
+        </Box>
+      )
+    }
   ]
 
   return (
