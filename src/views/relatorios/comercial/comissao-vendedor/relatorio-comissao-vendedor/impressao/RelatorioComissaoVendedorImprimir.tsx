@@ -33,9 +33,6 @@ import axios from 'axios'
 // ** Date Components Imports
 import moment from 'moment'
 
-// ** import React-PDF
-import { Page, View, Document } from '@react-pdf/renderer'
-
 interface RelatorioComissaoVendedorType {
   id: string | string [] | undefined
   dataInicio: Date | number | null
