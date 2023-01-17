@@ -36,7 +36,7 @@ import { RootState, AppDispatch } from 'src/store'
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
 
-interface SidebarClienteContratoViewType {
+interface ClienteContratoViewDrawerType {
   row: ClienteContratoViewModelType | undefined
   open: boolean
   toggle: () => void
@@ -100,7 +100,7 @@ const formatCurrency = (currency: number) => {
   return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
+const ClienteContratoViewDrawer = (props: ClienteContratoViewDrawerType) => {
   // ** Hook
   const [pageSize, setPageSize] = useState<number>(10)
   const [row, setRow] = useState<ClienteContratoFaturaType | undefined>()
@@ -255,9 +255,9 @@ const SidebarClienteContratoView = (props: SidebarClienteContratoViewType) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteContratoView.acl = {
+ClienteContratoViewDrawer.acl = {
   action: 'read',
   subject: 'ac-clienteContrato-page'
 }
 
-export default SidebarClienteContratoView
+export default ClienteContratoViewDrawer
