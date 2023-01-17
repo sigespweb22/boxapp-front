@@ -9,6 +9,7 @@ import clienteContratoFaturaApiService from 'src/@api-center/negocios/comercial/
 
 interface DataParams {
   clienteContratoId: string | undefined
+  quitadas: boolean | undefined
 }
 
 // ** Fetch Cliente Contrato Faturas

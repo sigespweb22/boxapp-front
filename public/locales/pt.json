@@ -77,8 +77,7 @@
     "Contract value": "Valor do contrato",
     "Contract ID in Bom Controle": "Id contrato no Bom Controle",
     "Contract id(Bom Controle)": "Id do contrato(Bom Controle)",
-    "Commission in reais (R$)": "Comissão em reais (R$)",
-    "Contract invoices": "Faturas do contrato",
+    "Commission in reais (R$)": "Comissão em reais (R$)",    
     "COMMISSIONS": "Comissões",
     "Customer name linked to the contract": "Nome do cliente vinculado ao contrato",
     "Commission amount": "Valor da comissão",
@@ -129,7 +128,7 @@
 
     "Here you can check the active users on the platform": "Aqui você confere os usuário ativos na plataforma",
     "Here you can check the main numbers of the Commercial Sector": "Aqui você confere os principais números do Setor Comercial",
-
+    "Invoices": "Faturas",
     "In this mode you can only display the data. No changes can be made": "Neste modo você só pode visualizar os dados. Nenhuma alteração poderá ser feita",
     "INACTIVE": "INATIVO",
     "Individual Taxpayer Registration": "CPF",
@@ -173,7 +172,7 @@
     "New group": "Novo Grupo",
     "New Seller": "Novo vendedor",
     "New user": "Novo Usuário",
-
+    "Only paid": "Apenas quitadas",
     "Observation": "Observação",
     "Overall": "Global",
     "OTHER": "OUTRO",

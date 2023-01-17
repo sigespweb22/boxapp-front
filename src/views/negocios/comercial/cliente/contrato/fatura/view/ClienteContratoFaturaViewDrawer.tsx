@@ -74,7 +74,7 @@ const ClienteContratoFaturaViewDrawer = (props: ClienteContratoFaturaViewDrawerT
           <FormControl fullWidth sx={{ mb: 6 }}>
             <TextField
               disabled={true}
-              label='ID'
+              label='Id'
               value={props?.row?.id}
               defaultValue="."
             />
