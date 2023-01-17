@@ -8,7 +8,6 @@ import Grid from '@mui/material/Grid'
 import RelatorioComissaoVendedor from '../comissao-vendedor/relatorio-comissao-vendedor/RelatorioComissaoVendedor'
 import RelatorioComissaoVendedores from '../comissao-vendedor/relatorio-comissao-vendedores/RelatorioComissaoVendedores'
 import RelatorioBotoesVendedor from '../comissao-vendedor/relatorio-comissao-vendedor/RelatorioBotoesVendedor'
-import RelatorioComissaoVendedorImprimir from './relatorio-comissao-vendedor/impressao/RelatorioComissaoVendedorImprimir'
 
 interface RelatorioComissaoType {
   id: string

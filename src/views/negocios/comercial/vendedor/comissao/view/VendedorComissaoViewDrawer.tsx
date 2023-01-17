@@ -99,13 +99,13 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
                 value={formatCurrency(props?.row?.valorComissao || 0)}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
+          {/* <FormControl fullWidth sx={{ mb: 6 }} >
             <TextField
                 disabled={true}
                 label={t("Date of competence")}
                 value={props?.row?.clienteContratoFaturaId?.dataCompetencia || 0}
             />
-          </FormControl>
+          </FormControl> */}
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='status'

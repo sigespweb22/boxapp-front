@@ -37,7 +37,7 @@ import moment from 'moment'
 import { Page, View, Document } from '@react-pdf/renderer'
 
 interface RelatorioComissaoVendedorType {
-  id: string
+  id: string | string [] | undefined
   dataInicio: Date | number | null
   dataFim: Date | number | null
 }
@@ -103,6 +103,12 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
       Authorization: `Bearer ${storageToken}`
     }
   }
+  
+  useEffect(() => {
+    setTimeout(() => {
+      window.print()
+    }, 100)
+  }, [])
 
   useEffect(() => {
     axios

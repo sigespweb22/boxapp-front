@@ -13,6 +13,6 @@ export type VendedorComissaoType = {
   clienteContratoViewModel: ClienteContratoViewModelType | null
   vendedorId: string | null
   vendedorViewModel: VendedorType | null
-  clienteContratoFaturaId: ClienteContratoFaturaType | null
+  // clienteContratoFaturaId: ClienteContratoFaturaType | null
   status: string
 }

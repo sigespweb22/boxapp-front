@@ -12,10 +12,6 @@ import CardContent from '@mui/material/CardContent'
 // ** react
 import React from 'react'
 
-// ** import
-import RelatorioComissaoVendedor from './RelatorioComissaoVendedor'
-import { PDFDownloadLink } from '@react-pdf/renderer'
-
 interface RelatorioComissaoVendedorType {
   id: string
   dataInicio: Date | number | null
@@ -30,22 +26,13 @@ const RelatorioBotoesVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoV
   return (
     <Card>
       <CardContent>
-        <PDFDownloadLink
-          document={<RelatorioComissaoVendedor id={id} dataInicio={dataInicio} dataFim={dataFim} />}
-          fileName='Relatório'
-        >
-          {({ loading }) =>
-            loading ? (
-              <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
-                {t('Loading Document...')}
-              </Button>
-            ) : (
-              <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
-                {t('Print')}
-              </Button>
-            )
-          }
-        </PDFDownloadLink>
+        <Link href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
+          <a target='_blank'>
+          <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
+            {t('Print')}
+          </Button>
+          </a>
+        </Link>
 
         <Link href='../'>
           <Button fullWidth color='secondary' variant='outlined'>
