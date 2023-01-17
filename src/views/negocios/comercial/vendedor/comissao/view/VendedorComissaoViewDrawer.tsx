@@ -103,7 +103,14 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
             <TextField
                 disabled={true}
                 label={t("Date of competence")}
-                value={props?.row?.clienteContratoFaturaId?.dataCompetencia || 0}
+                value={props?.row?.clienteContratoFaturaViewModel?.dataCompetencia || ''}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }} >
+            <TextField
+                disabled={true}
+                label={t("Date of payment")}
+                value={props?.row?.clienteContratoFaturaViewModel?.dataPagamento || ''}
             />
           </FormControl> */}
           <FormControl fullWidth sx={{ mb: 6 }}>
