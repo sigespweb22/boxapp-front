@@ -6,6 +6,7 @@ export type ClienteContratoFaturaType = {
   id: string
   dataVencimento: string 
   dataCompetencia: string
+  dataPagamento: string
   valor: number
   desconto: number | null
   numeroParcela: number | null
