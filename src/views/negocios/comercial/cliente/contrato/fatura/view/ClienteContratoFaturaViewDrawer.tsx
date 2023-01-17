@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-interface SidebarClienteContratoFaturaViewType {
+interface ClienteContratoFaturaViewDrawerType {
   row: ClienteContratoFaturaType | undefined
   open: boolean
   toggle: () => void
@@ -38,7 +38,7 @@ const formatCurrency = (currency: number) => {
   return currency.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
-const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaViewType) => {
+const ClienteContratoFaturaViewDrawer = (props: ClienteContratoFaturaViewDrawerType) => {
   // ** Hook
   const {
     reset,
@@ -146,9 +146,9 @@ const SidebarClienteContratoFaturaView = (props: SidebarClienteContratoFaturaVie
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-SidebarClienteContratoFaturaView.acl = {
+ClienteContratoFaturaViewDrawer.acl = {
   action: 'read',
   subject: 'ac-clienteContratoFatura-page'
 }
 
-export default SidebarClienteContratoFaturaView
+export default ClienteContratoFaturaViewDrawer
