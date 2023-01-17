@@ -26,13 +26,17 @@ const RelatorioBotoesVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoV
   return (
     <Card>
       <CardContent>
-        <Link href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
-          <a target='_blank'>
-          <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
-            {t('Print')}
-          </Button>
-          </a>
-        </Link>
+        <Button
+          fullWidth
+          target='_blank'
+          sx={{ mb: 3.5 }}
+          // component={Link}
+          color='primary'
+          variant='contained'
+          href={`/relatorios/comercial/comissao-vendedor/print/${id}${dataInicio}${dataFim}`}
+        >
+          {t("Print")}
+        </Button>
 
         <Link href='../'>
           <Button fullWidth color='secondary' variant='outlined'>

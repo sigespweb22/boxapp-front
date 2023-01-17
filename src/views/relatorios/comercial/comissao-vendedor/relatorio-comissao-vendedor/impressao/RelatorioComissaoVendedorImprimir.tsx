@@ -80,7 +80,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   const [data, setData] = useState<VendedorComissaoType[]>()
   const [isValidDate, setIsValidDate] = useState(true)
   const [is404, setIs404] = useState(false)
-
+debugger
   const inicioData = dataInicio?.toString().slice(0, 16)
   const fimData = dataFim?.toString().slice(0, 16)
 
