@@ -12,7 +12,7 @@ export type ClienteContratoViewModelType = {
   clienteId: string
   bomControleContratoId: number | null
   cliente: ClienteType
-  fatura: ClienteContratoFaturaType
+  clienteContratoFaturaViewModel: ClienteContratoFaturaType
   status: string
 }
 

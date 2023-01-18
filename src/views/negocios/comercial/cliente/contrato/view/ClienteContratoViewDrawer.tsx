@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
+import Alert from '@mui/material/Alert'
 
 // ** Third Party Imports
 import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
@@ -101,13 +102,16 @@ const formatCurrency = (currency: number) => {
 }
 
 const ClienteContratoViewDrawer = (props: ClienteContratoViewDrawerType) => {
-  // ** Hook
+  // ** States
   const [pageSize, setPageSize] = useState<number>(10)
   const [row, setRow] = useState<ClienteContratoFaturaType | undefined>()
   const [clienteContratoFaturaViewOpen, setClienteContratoFaturaViewOpen] = useState<boolean>(false)
+
+  // ** Hook
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteContratoFatura)
   const ability = useContext(AbilityContext)
+
   const {
     reset,
     control
@@ -116,7 +120,8 @@ const ClienteContratoViewDrawer = (props: ClienteContratoViewDrawerType) => {
   useEffect(() => {
     dispatch(
       fetchData({
-        clienteContratoId: props?.row?.id
+        clienteContratoId: props?.row?.id,
+        quitadas: true
       })
     )
   }, [dispatch, props?.row?.id])
@@ -225,9 +230,10 @@ const ClienteContratoViewDrawer = (props: ClienteContratoViewDrawerType) => {
               )}
             />
           </FormControl>
-          <Typography variant='h6' sx={{ml: 1,mb: 5}}>
-            {t("Contract invoices")}:
+          <Typography variant='h6' sx={{ ml: 1 }}>
+            {t("Invoices")}
           </Typography>
+          <Alert sx={{ mb:'20px', mt: 1 }} severity= "warning">{t("Only paid")}</Alert>
           <FormControl>
             <DataGrid 
               localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}

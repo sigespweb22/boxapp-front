@@ -109,6 +109,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
         config
       )
       .then(response => {
+        debugger
         setData(response.data.allData)
         isInvalidDate(inicioData)
       })
@@ -267,6 +268,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <TableHead>
                 <TableRow>
                   <TableCell>{t('Client name')}</TableCell>
+                  <TableCell align='center'>{t('Date of competence')}</TableCell>
                   <TableCell align='center'>{t('Contract value')}</TableCell>
                   <TableCell align='center'>{t('Commission amount')}</TableCell>
                 </TableRow>
@@ -276,6 +278,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                   <TableBody key={i}>
                     <TableRow>
                       <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
+                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell> 
                       <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
                     </TableRow>

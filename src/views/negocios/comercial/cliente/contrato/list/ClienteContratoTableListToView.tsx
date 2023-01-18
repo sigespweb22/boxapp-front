@@ -164,6 +164,8 @@ const defaultColumns = [
 ]
 
 const ClienteContratoTableListToView = ({ id }: Props) => {
+  debugger 
+  
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -190,6 +192,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   }, [dispatch, value])
 
   const handleClienteContratoView = (row : ClienteContratoViewModelType) => {
+    // filter faturas - apenas as quitadas conforme solicitação do cliente
     setRow(row)
     setClienteContratoViewOpen(true)
   }
