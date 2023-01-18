@@ -268,18 +268,17 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <TableHead>
                 <TableRow>
                   <TableCell>{t('Client name')}</TableCell>
-                  <TableCell>{t('Date of competence')}</TableCell>
+                  <TableCell align='center'>{t('Date of competence')}</TableCell>
                   <TableCell align='center'>{t('Contract value')}</TableCell>
                   <TableCell align='center'>{t('Commission amount')}</TableCell>
                 </TableRow>
               </TableHead>
               {data?.map((x, i) => {
-                debugger
                 return (
                   <TableBody key={i}>
                     <TableRow>
                       <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-                      <TableCell>{x?.clienteContratoViewModel?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell> 
+                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell> 
                       <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
                     </TableRow>
