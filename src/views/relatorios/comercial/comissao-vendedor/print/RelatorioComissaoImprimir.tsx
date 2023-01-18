@@ -11,7 +11,7 @@ interface RelatorioComissaoType {
   id: string
 }
 
-const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
+const RelatorioComissaoImprimir = ({ id }: RelatorioComissaoType) => {
   // ** State
   const [isMultiple, setIsMultiple] = useState<boolean>(false)
 
@@ -33,6 +33,8 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  debugger
+
   return (
     <Grid>
       <RelatorioComissaoVendedorImprimir
@@ -44,4 +46,4 @@ const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
   )
 }
 
-export default RelatorioComissao
+export default RelatorioComissaoImprimir

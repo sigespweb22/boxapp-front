@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 const InvoicePrint = () => {
   const router = useRouter()
   const { id } = router.query
+  debugger
 
   return <RelatorioComissaoImprimir id={String(id)}/>
 }

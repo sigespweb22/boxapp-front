@@ -74,13 +74,13 @@ const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
 }
 
 const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
+  debugger
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
   const [data, setData] = useState<VendedorComissaoType[]>()
   const [isValidDate, setIsValidDate] = useState(true)
   const [is404, setIs404] = useState(false)
-debugger
   const inicioData = dataInicio?.toString().slice(0, 16)
   const fimData = dataFim?.toString().slice(0, 16)
 
@@ -123,6 +123,8 @@ debugger
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  debugger
 
   return (
     <Card>

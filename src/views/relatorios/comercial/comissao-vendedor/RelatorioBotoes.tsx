@@ -21,23 +21,24 @@ interface RelatorioComissaoVendedorType {
 const RelatorioBotoesVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
   const { t } = useTranslation()
 
-  debugger
-
   return (
     <Card>
       <CardContent>
-        <Button
+        {/* <Button
           fullWidth
-          target='_blank'
           sx={{ mb: 3.5 }}
-          // component={Link}
+          component={Link}
           color='primary'
           variant='contained'
-          href={`/relatorios/comercial/comissao-vendedor/print/${id}${dataInicio}${dataFim}`}
+          href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`}
         >
-          {t("Print")}
-        </Button>
-
+           {t('Print')}
+        </Button> */}
+        <Link href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
+          <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
+            {t('Print')}
+          </Button> 
+        </Link>
         <Link href='../'>
           <Button fullWidth color='secondary' variant='outlined'>
             {t('Back')}
