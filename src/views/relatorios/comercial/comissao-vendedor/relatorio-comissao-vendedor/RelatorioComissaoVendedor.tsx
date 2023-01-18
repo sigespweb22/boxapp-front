@@ -109,7 +109,6 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
         config
       )
       .then(response => {
-        debugger
         setData(response.data.allData)
         isInvalidDate(inicioData)
       })
@@ -278,7 +277,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                   <TableBody key={i}>
                     <TableRow>
                       <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
-                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell> 
+                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
                     </TableRow>
@@ -291,28 +290,34 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       )}
 
       <CardContent>
-        <Grid container>
-          <Grid item xs={12} sm={5} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
+        <Grid container sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%'}}>
+              <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '15px', mt: 2 }}>
                 {t('Salesperson')}:
               </Typography>
-              <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
-            </Box>
-            <Typography variant='body2'>{t('Thanks for your business')}</Typography>
-          </Grid>
-          {is404 ? (
-            <></>
-          ) : (
-            <Grid sx={{ order: { sm: 2, xs: 1 }, display:'flex', alignItems:'flex-end' }}>
-              <CalcWrapper>
-                <Typography variant='h6'>Total:</Typography>
-                <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
-                  {formatCurrency(calcularTotal(data))}
-                </Typography>
-              </CalcWrapper>
+              <Typography variant='body2' sx={{ marginLeft: '7px', fontSize: '15px', mt: 2 }}>
+                {data?.map(x => x.vendedorViewModel?.nome)[0]}
+              </Typography>
             </Grid>
-          )}
+            {is404 ? (
+              <></>
+            ) : (
+              <Grid
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  maxWidth: '40%',
+                  mr: '3%',
+                }}
+              >
+                <CalcWrapper>
+                  <Typography sx={{ fontSize: '20px' }}>Total:</Typography>
+                  <Typography sx={{ ml: 2, fontSize: '20px'}}>{formatCurrency(calcularTotal(data))}</Typography>
+                </CalcWrapper>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
       </CardContent>
     </Card>

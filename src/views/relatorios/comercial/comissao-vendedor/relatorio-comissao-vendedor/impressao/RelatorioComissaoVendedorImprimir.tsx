@@ -74,7 +74,6 @@ const calcularTotal = (data: VendedorComissaoType[] | undefined) => {
 }
 
 const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: RelatorioComissaoVendedorType) => {
-  debugger
   // ** Hook
   const theme = useTheme()
   const { t } = useTranslation()
@@ -124,13 +123,11 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  debugger
-
   return (
     <Card>
       <CardContent>
-        <Grid container>
-          <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 }, mr: 0 }}>
+        <Grid container sx={{ display: 'flex', justifyContent: 'space-between'}}>
+          <Grid>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
                 <svg
@@ -210,9 +207,8 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
               </div>
             </Box>
           </Grid>
-          <Grid item sm={6} xs={12}>
-            <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
-              {}
+          <Grid sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+            <Box>
               <Table sx={{ maxWidth: '400px' }}>
                 <TableBody>
                   <TableRow>
@@ -296,29 +292,35 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
           </TableContainer>
         </>
       )}
-      <CardContent>
-        <Grid container>
-          <Grid item xs={12} sm={5} lg={9} sx={{ order: { sm: 1, xs: 2 } }}>
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
+     <CardContent>
+        <Grid container sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%'}}>
+              <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '15px', mt: 2 }}>
                 {t('Salesperson')}:
               </Typography>
-              <Typography variant='body2'>{data?.map(x => x.vendedorViewModel?.nome)[0]}</Typography>
-            </Box>
-            <Typography variant='body2'>{t('Thanks for your business')}</Typography>
-          </Grid>
-          {is404 ? (
-            <></>
-          ) : (
-            <Grid sx={{ order: { sm: 2, xs: 1 }, display: 'flex', alignItems: 'flex-end' }}>
-              <CalcWrapper>
-                <Typography variant='h6'>Total:</Typography>
-                <Typography variant='body2' sx={{ fontWeight: 600, mr: 20 }}>
-                  {formatCurrency(calcularTotal(data))}
-                </Typography>
-              </CalcWrapper>
+              <Typography variant='body2' sx={{ marginLeft: '7px', fontSize: '15px', mt: 2 }}>
+                {data?.map(x => x.vendedorViewModel?.nome)[0]}
+              </Typography>
             </Grid>
-          )}
+            {is404 ? (
+              <></>
+            ) : (
+              <Grid
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  maxWidth: '40%',
+                  mr: '15px',
+                }}
+              >
+                <CalcWrapper>
+                  <Typography sx={{ fontSize: '20px' }}>Total:</Typography>
+                  <Typography sx={{ ml: 2, mt: 1 }}>{formatCurrency(calcularTotal(data))}</Typography>
+                </CalcWrapper>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
       </CardContent>
     </Card>
