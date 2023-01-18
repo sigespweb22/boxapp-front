@@ -164,8 +164,6 @@ const defaultColumns = [
 ]
 
 const ClienteContratoTableListToView = ({ id }: Props) => {
-  debugger 
-  
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()

@@ -50,9 +50,7 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
     reset()
   }
 
-  const { t } = useTranslation()
-
-  debugger
+  const { t } = useTranslation()  
 
   return (
     <Drawer
