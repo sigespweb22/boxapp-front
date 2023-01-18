@@ -7,5 +7,6 @@ export default {
   listByVendedorAsync: `${apiVendedoresComissoes}/list-by-vendedor/`,
   listOneAsync: `${apiVendedoresComissoes}/list-one/`,
   alterStatusAsync: `${apiVendedoresComissoes}/alter-status/`,
+  deletePermanentlyAsync: `${apiVendedoresComissoes}/delete-permanently/`,
   storageTokenKeyName: 'accessToken'
 }

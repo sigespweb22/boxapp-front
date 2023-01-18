@@ -21,7 +21,7 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
-// ** Fetch Vendedores Comissoes
+// ** Fetch Vendedores Comissões
 export const fetchData = createAsyncThunk('appVendedoresComissoes/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
   const response = await axios
@@ -35,7 +35,7 @@ export const fetchData = createAsyncThunk('appVendedoresComissoes/fetchData', as
   return response.data
 })
 
-// ** Fetch Comissões Vendedor
+// ** Fetch Comissões Comissões
 export const fetchDataByVendedor = createAsyncThunk('appVendedoresComissoes/fetchDataByVendedor', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
   const response = await axios
@@ -48,7 +48,7 @@ export const fetchDataByVendedor = createAsyncThunk('appVendedoresComissoes/fetc
   return response.data
 })
 
-// ** Alter Status Vendedor Contrato
+// ** Alter Status Vendedor Comissões
 export const alterStatusVendedorComissao = createAsyncThunk(
   'appVendedoresComissoes/alterStatusVendedorComissao',
   async (id: number | string, { dispatch }: Redux) => {
@@ -75,6 +75,49 @@ export const alterStatusVendedorComissao = createAsyncThunk(
           toast.error(err[1].toString())
         });
       } else {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          err[1].forEach((ie: any) => {
+            toast.error(ie.toString())        
+          })
+        });
+      }
+    })
+  }
+)
+
+// ** Delete permanently
+export const deletePermanentlyVendedorComissao = createAsyncThunk(
+  'appVendedoresComissoes/deletePermanentlyVendedorComissao',
+  async (id: string | null, { dispatch }: Redux) => {
+    const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
+    
+    const config = {
+      headers: {
+        Authorization: `Bearer ${storedToken}`
+      }
+    }
+
+    axios.put(`${vendedorComissaoApiService.deletePermanentlyAsync}${id}`, null, config).then((resp) => {
+      dispatch(fetchData({vendedorId: resp.data.vendedorId }))
+      toast.success(resp.data.message)
+
+      return resp.data.data
+    }).catch((resp) => {
+      if (resp.message == 'Network Error') return toast.error("Você não tem permissão para esta ação.")
+      if (typeof resp.response.data != 'undefined' && 
+          typeof resp.response.data.errors != 'undefined')
+      {
+        const returnObj = Object.entries(resp.response.data.errors);
+        returnObj.forEach((err: any) => {
+          toast.error(err[1].toString())
+        });
+      } else {
+        if (typeof resp.response.data.title != 'undefined')
+        {
+          return toast.error(`${resp.response.data.title.split("-- ")[1].split(".")[0]}.`)
+        }
+
         const returnObj = Object.entries(resp.response.data.errors);
         returnObj.forEach((err: any) => {
           err[1].forEach((ie: any) => {

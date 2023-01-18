@@ -13,12 +13,14 @@ import TabContext from '@mui/lab/TabContext'
 // import CogOutline from 'mdi-material-ui/CogOutline'
 // import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import FileDocumentEditOutline from 'mdi-material-ui/FileDocumentEditOutline'
+import PointOfSale from 'mdi-material-ui/PointOfSale'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Custom Components Imports
 import VendedorContratoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorContratoTableList'
+import VendedorComissaoListTable from 'src/views/negocios/comercial/vendedor/contrato/list/VendedorComissaoTableList'
 
 // ** Third Party Import
 import { useTranslation } from 'react-i18next'
@@ -60,13 +62,19 @@ const VendedorEditRight = ({ id }: Props) => {
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
         <Tab value='contratos' label={t("CONTRACTS")} icon={<FileDocumentEditOutline />} />
+        <Tab value='comissoes' label={t("COMMISSIONS")} icon={<PointOfSale />} />
       </TabList>
       <Box sx={{ mt: 6 }}>
         {ability?.can('list', 'ac-vendedorContrato-page') ? (
           <TabPanel sx={{ p: 0 }} value='contratos'>
             <VendedorContratoListTable id={id} />
           </TabPanel>
-        ) : <>{t("You do not have permission to view this resource.")}</>}  
+        ) : <>{t("You do not have permission to view this resource.")}</>}
+        {ability?.can('list', 'ac-vendedorComissao-page') ? (
+          <TabPanel sx={{ p: 0 }} value='comissoes'>
+            <VendedorComissaoListTable id={id} />
+          </TabPanel>
+        ) : <>{t("You do not have permission to view this resource.")}</>}
       </Box>
     </TabContext>
   )

@@ -15,9 +15,9 @@ import Tooltip from '@mui/material/Tooltip'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-
-// ** Next Import
-import Link from 'next/link'
+import ElevatorUp from 'mdi-material-ui/ElevatorUp'
+import Delete from 'mdi-material-ui/Delete'
+import Help from 'mdi-material-ui/Help'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +27,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import PageHeader from 'src/@core/components/page-header'
 
 // ** Actions Imports
-import { fetchDataByVendedor } from 'src/store/negocios/comercial/vendedor/comissao/index'
+import { deletePermanentlyVendedorComissao, fetchDataByVendedor } from 'src/store/negocios/comercial/vendedor/comissao/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -167,7 +167,7 @@ const defaultColumns = [
   }
 ]
 
-const VendedorComissaoTableListToView = ({ id }: Props) => {
+const VendedorComissaoTableList = ({ id }: Props) => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
@@ -193,6 +193,10 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
+  const handleAlterStatus = (id: string | null) => {
+    dispatch(deletePermanentlyVendedorComissao(id))
+  }
+  
   const handleVendedorComissaoView = (row : VendedorComissaoType) => {
     setRow(row)
     setVendedorComissaoViewOpen(true)
@@ -219,6 +223,14 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
                 </IconButton>
               </Tooltip>
           )}
+          {ability?.can('delete', 'ac-vendedorComissao-page') && (
+              <Tooltip title={t("Remove")}>
+                <IconButton onClick={() => handleAlterStatus(row.id)}>
+                  <Delete fontSize='small' />
+                </IconButton>
+              </Tooltip>
+            )
+          }
         </Box>
       )
     }
@@ -262,9 +274,9 @@ const VendedorComissaoTableListToView = ({ id }: Props) => {
 
 // ** Controle de acesso da página
 // ** Usuário deve possuir a habilidade para ter acesso a esta página
-VendedorComissaoTableListToView.acl = {
-  action: 'list',
+VendedorComissaoTableList.acl = {
+  action: 'update',
   subject: 'ac-vendedorComissao-page'
 }
 
-export default VendedorComissaoTableListToView
+export default VendedorComissaoTableList
