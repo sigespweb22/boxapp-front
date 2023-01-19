@@ -122,7 +122,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
     <Card>
       <CardContent>
         <Grid container>
-          <Grid item sm={6} xs={12} sx={{ mb: { sm: 0, xs: 4 }, mr: 0 }}>
+          <Grid item sm={6} xs={6} sx={{ mb: { sm: 0, xs: 4 }, mr: 0 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
                 <svg
@@ -202,50 +202,43 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               </div>
             </Box>
           </Grid>
-          <Grid item sm={6} xs={12}>
-            <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
-              {}
-              <Table sx={{ maxWidth: '400px' }}>
-                <TableBody>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='h6'>Relatório de Comissão</Typography>
-                    </MUITableCell>
-                  </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>Data início:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      {isValidDate ? (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {inicioData}
-                        </Typography>
-                      ) : (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Todo período
-                        </Typography>
-                      )}
-                    </MUITableCell>
-                  </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>Data fim:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      {isValidDate ? (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {fimData}
-                        </Typography>
-                      ) : (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Todo período
-                        </Typography>
-                      )}
-                    </MUITableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+          <Grid item sm={6} xs={6}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, mr: 5 }}>
+              <Grid>
+                <Typography>Relatório de Comissão</Typography>
+                <Typography>
+                  <MUITableCell sx={{ width: '85px' }}>
+                    <Typography variant='body2'>Data início:</Typography>
+                  </MUITableCell>
+                  <MUITableCell>
+                    {isValidDate ? (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {inicioData}
+                      </Typography>
+                    ) : (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        Todo período
+                      </Typography>
+                    )}
+                  </MUITableCell>
+                </Typography>
+                <Typography>
+                  <MUITableCell sx={{ width: '85px' }}>
+                    <Typography variant='body2'>Data fim:</Typography>
+                  </MUITableCell>
+                  <MUITableCell>
+                    {isValidDate ? (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {fimData}
+                      </Typography>
+                    ) : (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        Todo período
+                      </Typography>
+                    )}
+                  </MUITableCell>
+                </Typography>
+              </Grid>
             </Box>
           </Grid>
         </Grid>
@@ -292,7 +285,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       <CardContent>
         <Grid container sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%'}}>
+            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%' }}>
               <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '15px', mt: 2 }}>
                 {t('Salesperson')}:
               </Typography>
@@ -308,12 +301,12 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                   display: 'flex',
                   alignItems: 'flex-end',
                   maxWidth: '40%',
-                  mr: '3%',
+                  mr: '3%'
                 }}
               >
                 <CalcWrapper>
                   <Typography sx={{ fontSize: '20px' }}>Total:</Typography>
-                  <Typography sx={{ ml: 2, fontSize: '20px'}}>{formatCurrency(calcularTotal(data))}</Typography>
+                  <Typography sx={{ ml: 2, fontSize: '20px' }}>{formatCurrency(calcularTotal(data))}</Typography>
                 </CalcWrapper>
               </Grid>
             )}

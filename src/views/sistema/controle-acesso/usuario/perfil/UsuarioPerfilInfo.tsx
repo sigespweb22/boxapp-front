@@ -31,10 +31,12 @@ import axios from 'axios'
 // ** Api imports
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
-import { Renderable, Toast, toast, ValueFunction } from 'react-hot-toast'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
+
+// Import toast
+import { ToastContainer, toast } from 'react-toastify';
 
 interface Props {
   id: string | undefined
@@ -114,7 +116,7 @@ const UsuarioPerfilInfo = (props: Props) => {
       })
       .catch((err => {
         if (err.response.status === 400 || err.response.status === 404)
-        return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
+        return err.response.data.errors.map((x: any) => toast.error(x));
       }))
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
