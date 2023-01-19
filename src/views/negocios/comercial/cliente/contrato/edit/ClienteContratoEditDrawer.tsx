@@ -152,13 +152,15 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
         status: '',
         avatarColor: undefined
       },
-      fatura: {
+      clienteContratoFaturaViewModel: {
         id: '',
         dataVencimento: '',
         dataCompetencia: '',
+        dataPagamento: '',
         valor: 0,
         desconto: null,
         numeroParcela: null,
+        quitado: false,
         status: ''
       }
     }))
