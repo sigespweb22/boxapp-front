@@ -35,6 +35,7 @@
     "Annual": "Anual",
     "April": "Abril",
     "August": "Agosto",
+    "All period": "Todo período",
     "At least one number, symbol, or special character": "Pelo menos um número, símbolo ou caractere especial",
     "At least one lowercase and one uppercase character": "Pelo menos um caractere minúsculo e um maiúsculo",
     "All permissions are created automatically by our team, according to the evolution of the functionalities": "Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades",
@@ -82,6 +83,8 @@
     "Customer name linked to the contract": "Nome do cliente vinculado ao contrato",
     "Commission amount": "Valor da comissão",
     "Client name": "Nome do cliente",
+    "Commission Report": "Relatório de Comissão",
+
     "Date of payment": "Data do pagamento",
     "Documentation": "Documentação",
     "Deactivate": "Desativar",
@@ -110,6 +113,7 @@
     "End date period": "Data fim período",
     "Event routine history": "Histórico da rotina de eventos",
     "Error message": "Mensagem de erro",
+    "End date": "Data fim",
 
     "Federal registration": "Cnpj",
     "Foundation date": "Data de fundação",
@@ -251,8 +255,9 @@
     "Seller commission": "Comissão de vendedor",
     "Su": "Dom",
     "September": "Setembro",
-    "Start date": "Data de início",
+    "Start date": "Data início",
     "Salesperson": "Vendedor(a)",
+    "Seller name required": "Nome do vendedor requerido",
 
     "Total users": "Total usuários",
     "Total failed items": "Total de itens com falha",
@@ -295,6 +300,7 @@
     "View API key": "Visualizar Chave Api",
     "View": "Visualizar",
     "View Seller Contract": "Visualizar Vendedor Contrato",
+    "View Seller Comission": "Visualizar Comissão do vendedor",
 
     "Welcome to the infographics and indicators of": "Bem-vindo aos infográficos e indicadores de",
     "Welcome to the infographics and performance indicators of": "Seja bem vindo aos infográficos e indicadores de performance da",

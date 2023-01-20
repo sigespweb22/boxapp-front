@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
+import { PlayBox } from 'mdi-material-ui'
 
 // ** Icons Imports
 import ElevatorUp from 'mdi-material-ui/ElevatorUp'
@@ -38,10 +39,14 @@ import { getInitials } from 'src/@core/utils/get-initials'
 // ** Actions Imports
 import { fetchData, alterStatusVendedor } from 'src/store/negocios/comercial/vendedor'
 
+// ** Api services imports
+import rotinaApiService from 'src/@api-center/sistema/rotinas/rotinaApiService'
+
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
+import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/vendedor/new/TableHeader'
@@ -49,6 +54,11 @@ import VendedorAddDrawer from 'src/views/negocios/comercial/vendedor/new/Vendedo
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
+import axios from 'axios'
+
+// ** Toast
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 interface VendedorStatusType {
   [key: string]: ThemeColor
@@ -56,6 +66,10 @@ interface VendedorStatusType {
 
 interface CellType {
   row: VendedorType
+}
+
+interface CellTypeRotina {
+  row: RotinaType
 }
 
 const VendedorStatusObj: VendedorStatusType = {
@@ -173,12 +187,23 @@ const VendedorList = () => {
     )
   }, [dispatch, value])
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(rotinaApiService.storageTokenKeyName)!}` 
+    }
+  }
+
   const handleFilter = useCallback((val: string) => {
     setValue(val)
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
     dispatch(alterStatusVendedor(id))
+  }
+
+  const handleRotinaPlay = (row: RotinaType) => {
+    axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
+    toast.success(`Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.`)
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined; status: string }) => {
@@ -219,8 +244,15 @@ const VendedorList = () => {
       headerName: 'Ações',
       headerAlign: 'center' as const,
       align: 'center' as const,
-      renderCell: ({ row }: CellType) => (
+      renderCell: ({ row }: CellType | CellTypeRotina) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {ability?.can('create', 'ac-cliente-page') && (
+            <Tooltip title={t("Run routine")}>
+              <IconButton onClick={() => handleRotinaPlay(row)}>
+                <PlayBox fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          )}
           {ability?.can('read', 'ac-vendedor-page') && (
             <Link href={`/negocios/comercial/vendedor/view/${row.id}`} passHref>
               <Tooltip title={t('View')}>

@@ -213,12 +213,12 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                 <TableBody>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='h6'>Relatório de Comissão</Typography>
+                      <Typography variant='h6'>{t("Commission Report")}</Typography>
                     </MUITableCell>
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Data início:</Typography>
+                      <Typography variant='body2'>{t("Start date")}:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       {isValidDate ? (
@@ -227,14 +227,14 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                         </Typography>
                       ) : (
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Todo período
+                          {t("All period")}
                         </Typography>
                       )}
                     </MUITableCell>
                   </TableRow>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='body2'>Data fim:</Typography>
+                      <Typography variant='body2'>{t("End date")}:</Typography>
                     </MUITableCell>
                     <MUITableCell>
                       {isValidDate ? (
@@ -243,7 +243,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                         </Typography>
                       ) : (
                         <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          Todo período
+                          {t("All period")}
                         </Typography>
                       )}
                     </MUITableCell>

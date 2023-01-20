@@ -63,7 +63,7 @@ const VendedorComissaoViewDrawer = (props: VendedorComissaoViewDrawerType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("View Seller Contract")}</Typography>
+        <Typography variant='h6'>{t("View Seller Comission")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>

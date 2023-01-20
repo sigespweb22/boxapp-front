@@ -164,7 +164,7 @@ const ComissaoVendedoresGenerator = () => {
                 </Grid>
               </Grid>
               <Alert severity='info' sx={{ mb: 2, mt: 6 }}>
-                {t('Nome do vendedor obrigatório.')}
+                {t('Seller name required')}.
               </Alert>
               <Link
                 href={`/relatorios/comercial/comissao-vendedor/${id}&${startDateRange}&${endDateRange}`}

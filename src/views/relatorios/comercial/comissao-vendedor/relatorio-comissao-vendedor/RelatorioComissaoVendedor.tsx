@@ -205,10 +205,10 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           <Grid item sm={6} xs={6}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, mr: 5 }}>
               <Grid>
-                <Typography>Relatório de Comissão</Typography>
+                <Typography>{t("Commission Report")}</Typography>
                 <Typography>
                   <MUITableCell sx={{ width: '85px' }}>
-                    <Typography variant='body2'>Data início:</Typography>
+                    <Typography variant='body2'>{t("Start date")}:</Typography>
                   </MUITableCell>
                   <MUITableCell>
                     {isValidDate ? (
@@ -217,14 +217,14 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                       </Typography>
                     ) : (
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        Todo período
+                        {t("All period")}
                       </Typography>
                     )}
                   </MUITableCell>
                 </Typography>
                 <Typography>
                   <MUITableCell sx={{ width: '85px' }}>
-                    <Typography variant='body2'>Data fim:</Typography>
+                    <Typography variant='body2'>{t("End date")}:</Typography>
                   </MUITableCell>
                   <MUITableCell>
                     {isValidDate ? (
@@ -233,7 +233,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                       </Typography>
                     ) : (
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        Todo período
+                        {t("All period")}
                       </Typography>
                     )}
                   </MUITableCell>
