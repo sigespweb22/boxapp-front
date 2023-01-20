@@ -283,7 +283,6 @@ const ChaveApiList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
         <Grid item xs={12}>
           <PageHeader
             title={<Typography variant='h5'>{t("Api Key")}</Typography>}
@@ -314,7 +313,6 @@ const ChaveApiList = () => {
         ) : <>{t("You do not have permission to view this resource.")}</>}
         <ChaveApiPageEdit open={chaveApiPageEditOpen} toggle={toggleChaveApiPageEdit} row={row}/>
         <ChaveApiPageView open={chaveApiPageViewOpen} toggle={toggleChaveApiPageView} row={row}/>
-      </Grid>
     </Grid>
   )
 }

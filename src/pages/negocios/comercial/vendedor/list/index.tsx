@@ -72,7 +72,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 // ** renders cliente column
 const renderVendedor = (row: VendedorType) => {
   return (
-    <AvatarWithoutImageLink href="#">
+    <AvatarWithoutImageLink href='#'>
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
         {getInitials(row.nome ? row.nome : 'NF')}
       </CustomAvatar>
@@ -107,7 +107,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       {
         const { nome } = row
-  
+
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {renderVendedor(row)}
@@ -181,7 +181,7 @@ const VendedorList = () => {
     dispatch(alterStatusVendedor(id))
   }
 
-  const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
+  const RenderButton = ({ id, status }: { id: string | undefined; status: string }) => {
     if (status === 'INACTIVE') {
       return (
         <Tooltip title={t('Activate')}>
@@ -247,37 +247,37 @@ const VendedorList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <PageHeader
-            title={<Typography variant='h5'>{t('Sellers')}</Typography>}
-            subtitle={<Typography variant='body2'>{t('Sellers listing')}.</Typography>}
-          />
-        </Grid>
-        {ability?.can('list', 'ac-vendedor-page') ? (
-          <Grid item xs={12}>
-            <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleVendedorAddDrawer} />
-              <DataGrid
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                autoHeight
-                rows={store.data}
-                columns={columns}
-                checkboxSelection
-                pageSize={pageSize}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10, 25, 50]}
-                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-              />
-            </Card>
-          </Grid>
-        ) : (
-          <>{t("You do not have permission to view this resource.")}</>
-        )}
-        {ability?.can('create', 'ac-vendedor-page') ? (
-          <VendedorAddDrawer open={vendedorAddOpen} toggle={toggleVendedorAddDrawer} />
-        ): <>{t("You do not have permission to view this resource.")}</>}
+      <Grid item xs={12}>
+        <PageHeader
+          title={<Typography variant='h5'>{t('Sellers')}</Typography>}
+          subtitle={<Typography variant='body2'>{t('Sellers listing')}.</Typography>}
+        />
       </Grid>
+      {ability?.can('list', 'ac-vendedor-page') ? (
+        <Grid item xs={12}>
+          <Card>
+            <TableHeader value={value} handleFilter={handleFilter} toggle={toggleVendedorAddDrawer} />
+            <DataGrid
+              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+              autoHeight
+              rows={store.data}
+              columns={columns}
+              checkboxSelection
+              pageSize={pageSize}
+              disableSelectionOnClick
+              rowsPerPageOptions={[10, 25, 50]}
+              onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+            />
+          </Card>
+        </Grid>
+      ) : (
+        <>{t('You do not have permission to view this resource.')}</>
+      )}
+      {ability?.can('create', 'ac-vendedor-page') ? (
+        <VendedorAddDrawer open={vendedorAddOpen} toggle={toggleVendedorAddDrawer} />
+      ) : (
+        <>{t('You do not have permission to view this resource.')}</>
+      )}
     </Grid>
   )
 }

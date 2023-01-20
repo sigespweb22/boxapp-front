@@ -315,7 +315,7 @@ const UserList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
+
         <Grid item xs={12}>
           <PageHeader
             title={<Typography variant='h5'>{t("Users")}</Typography>}
@@ -347,7 +347,6 @@ const UserList = () => {
         <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
         <ViewUserDrawer open={viewUserOpen} toggle={toggleViewUserDrawer} row={row}/>
         <EditUserDrawer open={editUserOpen} toggle={toggleEditUserDrawer} row={row}/>
-      </Grid>
     </Grid>
   )
 }
