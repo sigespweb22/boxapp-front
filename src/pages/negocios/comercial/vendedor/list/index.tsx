@@ -202,8 +202,9 @@ const VendedorList = () => {
   }
 
   const handleRotinaPlay = (row: RotinaType) => {
-    axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
-    toast.success(`Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.`)
+    // axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
+    toast.success(`Não funciona ainda.`)
+    //Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined; status: string }) => {
