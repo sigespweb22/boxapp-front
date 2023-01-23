@@ -193,8 +193,9 @@ const VendedorComissaoTableList = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleAlterStatus = (id: string | null) => {
-    dispatch(deletePermanentlyVendedorComissao(id))
+  const handleDeletePermanently = (id: string | null, vendedorId: string | null) => {
+    const params = { id: id, vendedorId: vendedorId }
+    dispatch(deletePermanentlyVendedorComissao(params))
   }
   
   const handleVendedorComissaoView = (row : VendedorComissaoType) => {
@@ -225,7 +226,7 @@ const VendedorComissaoTableList = ({ id }: Props) => {
           )}
           {ability?.can('delete', 'ac-vendedorComissao-page') && (
               <Tooltip title={t("Remove")}>
-                <IconButton onClick={() => handleAlterStatus(row.id)}>
+                <IconButton onClick={() => handleDeletePermanently(row.id, row.vendedorId)}>
                   <Delete fontSize='small' />
                 </IconButton>
               </Tooltip>

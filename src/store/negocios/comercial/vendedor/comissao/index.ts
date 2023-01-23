@@ -21,6 +21,11 @@ interface Redux {
   dispatch: Dispatch<any>
 }
 
+interface DeletePermanentlyVendedorComissaoType {
+  id: string | null
+  vendedorId: string | null
+}
+
 // ** Fetch Vendedores Comissões
 export const fetchData = createAsyncThunk('appVendedoresComissoes/fetchData', async (params: DataParams) => {
   const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
@@ -89,7 +94,7 @@ export const alterStatusVendedorComissao = createAsyncThunk(
 // ** Delete permanently
 export const deletePermanentlyVendedorComissao = createAsyncThunk(
   'appVendedoresComissoes/deletePermanentlyVendedorComissao',
-  async (id: string | null, { dispatch }: Redux) => {
+  async (params: DeletePermanentlyVendedorComissaoType, { dispatch }: Redux) => {
     const storedToken = window.localStorage.getItem(vendedorComissaoApiService.storageTokenKeyName)!
     
     const config = {
@@ -98,8 +103,8 @@ export const deletePermanentlyVendedorComissao = createAsyncThunk(
       }
     }
 
-    axios.put(`${vendedorComissaoApiService.deletePermanentlyAsync}${id}`, null, config).then((resp) => {
-      dispatch(fetchData({vendedorId: resp.data.vendedorId }))
+    axios.put(`${vendedorComissaoApiService.deletePermanentlyAsync}${params.id}`, null, config).then((resp) => {
+      dispatch(fetchDataByVendedor({vendedorId: params.vendedorId }))
       toast.success(resp.data.message)
 
       return resp.data.data
