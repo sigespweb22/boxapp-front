@@ -46,7 +46,6 @@ import rotinaApiService from 'src/@api-center/sistema/rotinas/rotinaApiService'
 import { RootState, AppDispatch } from 'src/store'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { VendedorType } from 'src/types/negocios/comercial/vendedor/vendedorTypes'
-import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 // ** Custom Components Imports
 import TableHeader from 'src/views/negocios/comercial/vendedor/new/TableHeader'
@@ -66,10 +65,6 @@ interface VendedorStatusType {
 
 interface CellType {
   row: VendedorType
-}
-
-interface CellTypeRotina {
-  row: RotinaType
 }
 
 const VendedorStatusObj: VendedorStatusType = {
@@ -201,8 +196,8 @@ const VendedorList = () => {
     dispatch(alterStatusVendedor(id))
   }
 
-  const handleRotinaPlay = (row: RotinaType) => {
-    // axios.post(`${rotinaApiService.dispatchPrefixRoute}/${row.dispatcherRoute}/${row.id}`, {}, config)
+  const handleComissaoPlay = (id: string | undefined) => {
+    axios.post(`${id}`, {}, config)
     toast.success(`Não funciona ainda.`)
     //Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.
   }
@@ -233,6 +228,8 @@ const VendedorList = () => {
     }
   }
 
+  debugger
+
   const toggleVendedorAddDrawer = () => setVendedorAddOpen(!vendedorAddOpen)
 
   const columns = [
@@ -245,11 +242,11 @@ const VendedorList = () => {
       headerName: 'Ações',
       headerAlign: 'center' as const,
       align: 'center' as const,
-      renderCell: ({ row }: CellType | CellTypeRotina) => (
+      renderCell: ({ row }: CellType ) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {ability?.can('create', 'ac-cliente-page') && (
             <Tooltip title={t("Run routine")}>
-              <IconButton onClick={() => handleRotinaPlay(row)}>
+              <IconButton onClick={() => handleComissaoPlay(row.id)}>
                 <PlayBox fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
