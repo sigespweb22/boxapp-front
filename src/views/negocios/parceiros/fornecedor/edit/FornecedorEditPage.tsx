@@ -11,12 +11,17 @@ import FornecedorEditRight from 'src/views/negocios/parceiros/fornecedor/edit/Fo
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
+
 interface Props {
   fornecedorId: string | undefined
 }
 
 const FornecedorEditPage = ({ fornecedorId }: Props) => {
   // ** Hooks
+  const { t } = useTranslation()
   const ability = useContext(AbilityContext)
 
   if (fornecedorId) {
@@ -26,12 +31,12 @@ const FornecedorEditPage = ({ fornecedorId }: Props) => {
             <Grid item xs={12} md={5} lg={4}>
                 <FornecedorEditLeft id={fornecedorId} />
             </Grid>
-          ) : "Você não tem permissão para ver este recurso."}  
+          ) : <>{t("You do not have permission to view this resource.")}</>}  
           {ability?.can('update', 'ac-fornecedor-page') ? (
             <Grid item xs={12} md={7} lg={8}>
               <FornecedorEditRight id={fornecedorId} />
             </Grid>
-          ) : "Você não tem permissão para ver este recurso."}              
+          ) : <>{t("You do not have permission to view this resource.")}</>}              
         </Grid>
     )
   } else {

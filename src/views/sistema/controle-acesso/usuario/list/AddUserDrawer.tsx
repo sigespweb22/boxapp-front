@@ -183,7 +183,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("User New")}</Typography>
+        <Typography variant='h6'>{t("New user")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -196,7 +196,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome completo'
+                  label={t("Full name")}
                   onChange={onChange}
                   placeholder='(e.g.: Alan Rezende)'
                   error={Boolean(errors.fullName)}
@@ -241,7 +241,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
                       onChange={(event, newValue): void => {
                         onChange(newValue)
                       }}
-                      renderInput={params => <TextField {...params} label='Grupo' placeholder='(e.g.: Master)' />}
+                      renderInput={params => <TextField {...params} label={t("Groups")} placeholder='(e.g.: Master)' />}
                     />
                   </FormControl>
                 )
@@ -252,7 +252,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
             <InputLabel 
               htmlFor='input-new-password' 
               error={Boolean(errors.password)}>
-              Senha
+              {t("Password")}
             </InputLabel>
             <Controller
               name='password'
@@ -286,7 +286,7 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <InputLabel htmlFor='input-confirm-new-password' error={Boolean(errors.confirmNewPassword)}>
-            Confirma Nova Senha
+            {t("Confirm password")}
             </InputLabel>
             <Controller
               name='confirmNewPassword'
@@ -320,10 +320,10 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

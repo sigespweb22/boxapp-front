@@ -12,13 +12,20 @@ import produto from 'src/store/negocios/comercial/produto'
 import clienteServico from 'src/store/negocios/comercial/cliente/servico'
 import clienteProduto from 'src/store/negocios/comercial/cliente/produto'
 import clienteContrato from 'src/store/negocios/comercial/cliente/contrato'
+import clienteContratoFatura from 'src/store/negocios/comercial/cliente/contrato/fatura'
 import clienteView from 'src/store/negocios/comercial/cliente/view'
 import pipeline from 'src/store/negocios/processos/pipeline'
+import rotinaEventHistory from 'src/store/sistema/rotina/rotinaEventHistory'
 import fornecedor from 'src/store/negocios/parceiros/fornecedor'
 import fornecedorServico from 'src/store/negocios/parceiros/fornecedor/servico'
 import fornecedorProduto from 'src/store/negocios/parceiros/fornecedor/produto'
 import fornecedorView from 'src/store/negocios/parceiros/fornecedor/view'
+import vendedor from 'src/store/negocios/comercial/vendedor'
+import vendedorView from 'src/store/negocios/comercial/vendedor/view'
+import vendedorContrato from 'src/store/negocios/comercial/vendedor/contrato'
+import vendedorComissao from 'src/store/negocios/comercial/vendedor/comissao'
 import chaveApi from 'src/store/sistema/configuracoes/chave-api/index'
+import rotina from 'src/store/sistema/rotina/index'
 import email from 'src/store/apps/email'
 import calendar from 'src/store/apps/calendar'
 
@@ -33,6 +40,7 @@ export const store = configureStore({
     clienteServico,
     clienteProduto,
     clienteContrato,
+    clienteContratoFatura,
     clienteView,
     pipeline,
     fornecedor,
@@ -40,6 +48,12 @@ export const store = configureStore({
     fornecedorProduto,
     fornecedorView,
     chaveApi,
+    vendedor,
+    rotinaEventHistory,
+    vendedorView,
+    vendedorContrato,
+    vendedorComissao,
+    rotina,
     chat,
     email,
     calendar

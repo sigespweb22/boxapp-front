@@ -87,23 +87,23 @@ const defaultColumns = [
     field: 'name',
     headerName: 'Nome',
     renderCell: ({ row }: CellType) => {
-      const { id, name } = row
+      const { name } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderClient(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-                <Typography
-                  noWrap
-                  component='a'
-                  variant='body2'
-                  sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-                >
-                  {name}
-                </Typography>
-                <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                  🔐{name}
-                </Typography>
+            <Typography
+              noWrap
+              component='a'
+              variant='body2'
+              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+            >
+              {name}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              🔐{name}
+            </Typography>
           </Box>
         </Box>
       )
@@ -126,7 +126,7 @@ const defaultColumns = [
 
 const defaultValues = {
   id: '',
-  name: '', 
+  name: '',
   description: ''
 }
 
@@ -179,13 +179,13 @@ const RoleList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
-   
+
   // ** Hooks
   const {
     control,
     setValue: setFormValue,
     formState: { errors }
-  } = useForm({ 
+  } = useForm({
     defaultValues
   })
   const dispatch = useDispatch<AppDispatch>()
@@ -203,7 +203,7 @@ const RoleList = () => {
     setValue(val)
   }, [])
 
-  const handleViewRole = ({ id, name, description } : RoleData) => {
+  const handleViewRole = ({ id, name, description }: RoleData) => {
     setFormValue('id', id)
     setFormValue('name', name)
     setFormValue('description', description)
@@ -225,11 +225,11 @@ const RoleList = () => {
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-role-page') &&
+          {ability?.can('read', 'ac-role-page') && (
             <IconButton onClick={() => handleViewRole(row)}>
               <EyeOutline fontSize='small' sx={{ mr: 2 }} />
             </IconButton>
-          }
+          )}
         </Box>
       )
     }
@@ -241,14 +241,23 @@ const RoleList = () => {
         <Grid container spacing={0}>
           <Grid item xs={12} md={9.45}>
             <Typography variant='h4' sx={{ mb: 3, color: 'primary.main' }}>
-              Permissões
+              {t('Permission')}
             </Typography>
             <Typography variant='h6' sx={{ mb: 3, color: 'primary.main' }}>
-              Pronto para construir os grupos de permissões de acesso ao App? Então você está no lugar certo! Pegue seu café e bora lá! 🚀
+              {t(
+                "Ready to build App Access Permissions groups? So you are in the right place! Grab your coffee and let's go!"
+              )}{' '}
+              🚀
             </Typography>
             <Typography sx={{ mb: 9.5, color: 'text.secondary' }}>
-              Todas as permissões são criadas automaticamente pelo nosso time, de acordo com a evolução das funcionalidades.
-              Portanto, abaixo você pode conferir a descrição de cada uma, afim de poder adequá-las corretamente aos grupos de acordo com as suas necessidades de acesso.
+              {t(
+                'All permissions are created automatically by our team, according to the evolution of the functionalities'
+              )}
+              .
+              {t(
+                ' Therefore, below you can check the description of each one, in order to be able to correctly adapt them to the groups according to your access needs'
+              )}
+              .
             </Typography>
           </Grid>
           <GridStyled item xs={12} md={4}>
@@ -256,90 +265,90 @@ const RoleList = () => {
           </GridStyled>
         </Grid>
       </BoxWrapper>
-      <Grid container spacing={6} sx={{mt: 10}}>
-        <Grid container spacing={6}>
-          {ability?.can('list', 'ac-role-page') ? (
-            <Grid item xs={12}>
-              <Card>
-                <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddRoleDrawer} />
-                <DataGrid
-                  localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                  autoHeight
-                  rows={store.data}
-                  columns={columns}
-                  checkboxSelection
-                  pageSize={pageSize}
-                  disableSelectionOnClick
-                  rowsPerPageOptions={[10, 25, 50]}
-                  onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-                />
-              </Card>
-            </Grid>
-          ) : "Você não tem permissão para ver este recurso."}
-          <AddRoleDrawer open={addRoleOpen} toggle={toggleAddRoleDrawer} />
-        </Grid>
+      <Grid container spacing={6} sx={{ mt: 10 }}>
+        {ability?.can('list', 'ac-role-page') ? (
+          <Grid item xs={12}>
+            <Card>
+              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddRoleDrawer} />
+              <DataGrid
+                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+                autoHeight
+                rows={store.data}
+                columns={columns}
+                checkboxSelection
+                pageSize={pageSize}
+                disableSelectionOnClick
+                rowsPerPageOptions={[10, 25, 50]}
+                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+              />
+            </Card>
+          </Grid>
+        ) : (
+          <>{t('You do not have permission to view this resource.')}</>
+        )}
+        <AddRoleDrawer open={addRoleOpen} toggle={toggleAddRoleDrawer} />
       </Grid>
       <Dialog maxWidth='sm' fullWidth onClose={handleDialogViewToggle} open={viewDialogOpen}>
-          <DialogTitle sx={{ mx: 'auto', textAlign: 'center' }}>
-            <Typography variant='h4' component='span' sx={{ mb: 2 }}>
-              {t("View Permission")}
-            </Typography>
-          </DialogTitle>
-          <DialogContent>
-            <Alert severity='warning'>
-              <AlertTitle>{t("Warning")}!</AlertTitle>
-              {t("In this mode you can only display the data. No changes can be made")}.
-            </Alert>
-            <Box component='form' sx={{ mt: 5 }}>
-              <FormGroup sx={{ mb: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
-                <Controller
-                  name='name'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      disabled={true}
-                      size='medium'
-                      value={value}
-                      label={t('Permission Name')}
-                      onChange={onChange}
-                      error={Boolean(errors.name)}
-                      placeholder="e.g. CanUserList"
-                      sx={{ mr: [0, 0], mb: [3, 0] }}
-                    />
-                  )}
-                />
-              </FormGroup>
-              <FormGroup sx={{ mb: 2, pt: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
-                <Controller
-                  name='description'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      disabled={true}
-                      size='medium'
-                      value={value}
-                      label={t('Permission Description')}
-                      onChange={onChange}
-                      error={Boolean(errors.description)}
-                      placeholder="e.g. Pode visualizar a tela principal de usuários e ver todos os registros de usuário"
-                      sx={{ mr: [0, 0], mb: [0, 0] }}
-                    />
-                  )}
-                />
-              </FormGroup>
-            </Box>
-          </DialogContent>
+        <DialogTitle sx={{ mx: 'auto', textAlign: 'center' }}>
+          <Typography variant='h4' component='span' sx={{ mb: 2 }}>
+            {t('View Permission')}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Alert severity='warning'>
+            <AlertTitle>{t('Warning')}!</AlertTitle>
+            {t('In this mode you can only display the data. No changes can be made')}.
+          </Alert>
+          <Box component='form' sx={{ mt: 5 }}>
+            <FormGroup sx={{ mb: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+              <Controller
+                name='name'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    fullWidth
+                    disabled={true}
+                    size='medium'
+                    value={value}
+                    label={t('Permission Name')}
+                    onChange={onChange}
+                    error={Boolean(errors.name)}
+                    placeholder='e.g. CanUserList'
+                    sx={{ mr: [0, 0], mb: [3, 0] }}
+                  />
+                )}
+              />
+            </FormGroup>
+            <FormGroup sx={{ mb: 2, pt: 2, alignItems: 'center', flexDirection: 'row', flexWrap: ['wrap', 'nowrap'] }}>
+              <Controller
+                name='description'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    fullWidth
+                    disabled={true}
+                    size='medium'
+                    value={value}
+                    label={t('Permission Description')}
+                    onChange={onChange}
+                    error={Boolean(errors.description)}
+                    placeholder='e.g. Pode visualizar a tela principal de usuários e ver todos os registros de usuário'
+                    sx={{ mr: [0, 0], mb: [0, 0] }}
+                  />
+                )}
+              />
+            </FormGroup>
+          </Box>
+        </DialogContent>
       </Dialog>
     </>
   )
 }
 
 // **Controle de acesso da página
-// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso 
+// **Usuário deve possuir ao menos umas das ações como habilidade para ter acesso
 // **a esta página de subject abaixo
 RoleList.acl = {
   action: 'list',

@@ -28,7 +28,8 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import StepperCustomDot from './StepperCustomDot'
 
 // ** Third Party Imports
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Styled Component
 import StepperWrapper from 'src/@core/styles/mui/stepper'

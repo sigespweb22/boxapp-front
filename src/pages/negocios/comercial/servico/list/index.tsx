@@ -334,7 +334,7 @@ const ServicoList = () => {
             title={<Typography variant='h5'>{t("Servicos")}</Typography>}
             subtitle={
               <Typography variant='body2'>
-                Listagem dos serviços.
+                {t("Service list")}.
               </Typography>
             }
           />
@@ -356,7 +356,7 @@ const ServicoList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <AddServicoDrawer open={addServicoOpen} toggle={toggleAddServicoDrawer} />
         <ViewServicoDrawer open={viewServicoOpen} toggle={handleServicoViewToggle} row={row}/>
         <EditServicoDrawer open={editServicoOpen} toggle={handleServicoEditToggle} row={row}/>

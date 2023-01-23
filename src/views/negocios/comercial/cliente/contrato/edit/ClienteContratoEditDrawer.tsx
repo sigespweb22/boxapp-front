@@ -25,7 +25,7 @@ import { editClienteContrato } from 'src/store/negocios/comercial/cliente/contra
 
 // ** Types Imports
 import { AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 
 // ** Axios Imports
 import axios from 'axios'
@@ -35,8 +35,11 @@ import clienteApiService from 'src/@api-center/negocios/comercial/cliente/client
 import clienteContratoApiService from 'src/@api-center/negocios/comercial/cliente/contrato/clienteContratoApiService'
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 
+// ** Copmponents Imports
+import { useTranslation } from 'react-i18next'
+
 interface SidebarClienteContratoEditType {
-  row: ClienteContratoType | undefined
+  row: ClienteContratoViewModelType | undefined
   open: boolean
   toggle: () => void
 }
@@ -75,6 +78,8 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
   const { open, toggle } = props
   
   // ** Hooks
+  const { t } = useTranslation()
+
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -123,7 +128,42 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
   }, [props])
 
   const onSubmit = (data: ClienteContratoData) => {
-    dispatch(editClienteContrato({ ...data,  }))
+    dispatch(editClienteContrato({
+      ...data,
+      cliente: {
+        id: undefined,
+        nomeFantasia: '',
+        razaoSocial: '',
+        inscricaoEstadual: '',
+        tipoPessoa: '',
+        cnpj: '',
+        cpf: '',
+        telefonePrincipal: '',
+        emailPrincipal: '',
+        observacao: '',
+        dataFundacao: '',
+        codigoMunicipio: 0,
+        rua: '',
+        numero: '',
+        complemento: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        status: '',
+        avatarColor: undefined
+      },
+      clienteContratoFaturaViewModel: {
+        id: '',
+        dataVencimento: '',
+        dataCompetencia: '',
+        dataPagamento: '',
+        valor: 0,
+        desconto: null,
+        numeroParcela: null,
+        quitado: false,
+        status: ''
+      }
+    }))
     toggle()
     reset()
   }
@@ -143,7 +183,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Editar Cliente Contrato</Typography>
+        <Typography variant='h6'>{t("Edit Client Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -156,7 +196,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                 <TextField
                   disabled
                   value={value}
-                  label='ID'
+                  label='Id'
                   onChange={onChange}
                   placeholder='(e.g.: Id)'
                 />
@@ -174,7 +214,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                     shrink: true,
                   }}
                   value={value}
-                  label='Valor do contrato'
+                  label={t("Contract value")}
                   onChange={onChange}
                   placeholder='(e.g.: R$ 150,00)'
                 />
@@ -197,7 +237,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                       }}
                       id='autocomplete-controlled'
                       getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Periodicidade' />}
+                      renderInput={params => <TextField {...params} label={t("Frequency")} />}
                     />
                   )
                 }}
@@ -214,7 +254,7 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
                     shrink: true,
                   }}
                   value={value}
-                  label='Id contrato no Bom Controle'
+                  label={t("Contract ID in Bom Controle")}
                   onChange={onChange}
                   placeholder='(e.g.: 10)'
                 />
@@ -223,10 +263,10 @@ const SidebarClienteContratoEdit = (props: SidebarClienteContratoEditType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

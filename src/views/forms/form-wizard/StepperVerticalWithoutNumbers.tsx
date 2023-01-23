@@ -15,7 +15,8 @@ import StepContent from '@mui/material/StepContent'
 
 // ** Third Party Imports
 import clsx from 'clsx'
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Custom Components Imports
 import StepperCustomDot from './StepperCustomDot'

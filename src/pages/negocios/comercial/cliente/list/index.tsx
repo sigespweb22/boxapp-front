@@ -36,7 +36,7 @@ import PageHeader from 'src/@core/components/page-header'
 import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Actions Imports
-import { fetchData, alterStatusClient } from 'src/store/negocios/comercial/cliente'
+import { fetchData, alterStatusClientes } from 'src/store/negocios/comercial/cliente'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
@@ -72,7 +72,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 // ** renders cliente column
 const renderClient = (row: ClienteType) => {
   return (
-    <AvatarWithoutImageLink href="#">
+    <AvatarWithoutImageLink href='#'>
       <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
         {getInitials(row.nomeFantasia ? row.nomeFantasia : 'NF')}
       </CustomAvatar>
@@ -97,11 +97,11 @@ const RenderStatus = ({ status }: { status: string }) => {
 }
 
 const formatCnpj = (cnpj: string) => {
-  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+  return cnpj?.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
 }
 
 const formatCpf = (cpf: string) => {
-  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+  return cpf?.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
 }
 
 const defaultColumns = [
@@ -220,7 +220,6 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => <RenderStatus status={row.status} />
   }
 ]
-
 const ClientList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
@@ -247,10 +246,10 @@ const ClientList = () => {
   }, [])
 
   const handleAlterStatus = (id: string | undefined) => {
-    dispatch(alterStatusClient(id))
+    dispatch(alterStatusClientes(id))
   }
 
-  const RenderButton = ({ id, status }: { id: string | undefined , status: string }) => {
+  const RenderButton = ({ id, status }: { id: string | undefined; status: string }) => {
     if (status === 'INACTIVE') {
       return (
         <Tooltip title={t('Activate')}>
@@ -316,37 +315,37 @@ const ClientList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <PageHeader
-            title={<Typography variant='h5'>{t('Clients')}</Typography>}
-            subtitle={<Typography variant='body2'>{t('Clients listing')}.</Typography>}
-          />
-        </Grid>
-        {ability?.can('list', 'ac-cliente-page') ? (
-          <Grid item xs={12}>
-            <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleClienteAddDrawer} />
-              <DataGrid
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                autoHeight
-                rows={store.data}
-                columns={columns}
-                checkboxSelection
-                pageSize={pageSize}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10, 25, 50]}
-                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-              />
-            </Card>
-          </Grid>
-        ) : (
-          'Você não tem permissão para ver este recurso.'
-        )}
-        {ability?.can('create', 'ac-cliente-page') ? (
-          <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
-        ) : <></>}
+      <Grid item xs={12}>
+        <PageHeader
+          title={<Typography variant='h5'>{t('Clients')}</Typography>}
+          subtitle={<Typography variant='body2'>{t('Clients listing')}.</Typography>}
+        />
       </Grid>
+      {ability?.can('list', 'ac-cliente-page') ? (
+        <Grid item xs={12}>
+          <Card>
+            <TableHeader value={value} handleFilter={handleFilter} toggle={toggleClienteAddDrawer} />
+            <DataGrid
+              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+              autoHeight
+              rows={store.data}
+              columns={columns}
+              checkboxSelection
+              pageSize={pageSize}
+              disableSelectionOnClick
+              rowsPerPageOptions={[10, 25, 50]}
+              onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+            />
+          </Card>
+        </Grid>
+      ) : (
+        <>{t('You do not have permission to view this resource.')}</>
+      )}
+      {ability?.can('create', 'ac-cliente-page') ? (
+        <ClienteAddDrawer open={clienteAddOpen} toggle={toggleClienteAddDrawer} />
+      ) : (
+        <></>
+      )}
     </Grid>
   )
 }

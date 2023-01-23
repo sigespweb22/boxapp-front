@@ -72,14 +72,14 @@ const schema = yup.object().shape({
 })
 
 const defaultValues = {
-  name: '',  
+  name: '',
   applicationRoleGroups: []
 }
 
 const SidebarAddGroup = (props: SidebarAddGroupType) => {
   const config = {
-    headers: { 
-      Authorization: `Bearer ${window.localStorage.getItem(roleApiService.storageTokenKeyName)!}` 
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(roleApiService.storageTokenKeyName)!}`
     }
   }
 
@@ -132,7 +132,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Group New")}</Typography>
+        <Typography variant='h6'>{t("New group")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -145,7 +145,7 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  label='Nome do grupo'
+                  label={t("Group name")}
                   onChange={onChange}
                   placeholder='(e.g.: Suporte N1)'
                   error={Boolean(errors.name)}
@@ -181,10 +181,10 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

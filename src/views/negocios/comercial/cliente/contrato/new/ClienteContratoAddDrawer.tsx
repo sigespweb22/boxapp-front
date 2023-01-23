@@ -17,6 +17,9 @@ import { useForm, Controller } from 'react-hook-form'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
 // ** Store Imports
 import { useDispatch } from 'react-redux'
 
@@ -68,6 +71,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
   const { open, toggle } = props
   
   // ** Hooks
+  const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -119,7 +123,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Novo Cliente Contrato</Typography>
+        <Typography variant='h6'>{t("New Client Contract")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -132,7 +136,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
                 <TextField
                   type="number"
                   value={value}
-                  label='Valor do contrato'
+                  label={t("Contract value")}
                   onChange={onChange}
                   placeholder='(e.g.: R$ 1500,00)'
                 />
@@ -155,7 +159,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
                       }}
                       id='autocomplete-controlled'
                       getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Periodicidade' />}
+                      renderInput={params => <TextField {...params} label={t("Frequency")} />}
                     />
                   )
                 }}
@@ -170,17 +174,17 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
                   value={value}
                   label='Bom controle id'
                   onChange={onChange}
-                  placeholder='(e.g.: Id do contrato no Bom Controle)'
+                  placeholder={t("(e.g.: Contract ID in Bom Controle)")}
                 />
               )}
             />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              Salvar
+              {t("Save")}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

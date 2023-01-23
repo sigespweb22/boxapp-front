@@ -187,26 +187,6 @@ const VerticalNavHeader = (props: Props) => {
           </StyledLink>
         </Link>
       )}
-
-      {hidden ? (
-        <IconButton
-          disableRipple
-          disableFocusRipple
-          onClick={toggleNavVisibility}
-          sx={{ p: 0, backgroundColor: 'transparent !important' }}
-        >
-          <Close fontSize='small' />
-        </IconButton>
-      ) : (
-        <IconButton
-          disableRipple
-          disableFocusRipple
-          onClick={() => saveSettings({ ...settings, navCollapsed: !navCollapsed })}
-          sx={{ p: 0, color: 'text.primary', backgroundColor: 'transparent !important' }}
-        >
-          {navCollapsed ? MenuUnlockedIcon() : MenuLockedIcon()}
-        </IconButton>
-      )}
     </MenuHeaderWrapper>
   )
 }

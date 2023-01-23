@@ -15,7 +15,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
 
 // ** Icons Imports
 import LockCheckOutline from 'mdi-material-ui/LockCheckOutline'
@@ -66,15 +66,14 @@ interface CellType {
 }
 
 const userStatusObj = (status: string) => {
-  switch (status)
-  {
-    case "NENHUM":
+  switch (status) {
+    case 'NENHUM':
       return 'primary'
-    case "ACTIVE":
+    case 'ACTIVE':
       return 'success'
-    case "PENDING":
+    case 'PENDING':
       return 'warning'
-    case "INACTIVE":
+    case 'INACTIVE':
       return 'secondary'
     default:
       return 'secondary'
@@ -95,7 +94,7 @@ const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
   const elem: string[] = []
 
   groups.forEach(element => {
-    elem.push("| " + element.name + " | ")
+    elem.push('| ' + element.name + ' | ')
   })
 
   return elem
@@ -104,30 +103,26 @@ const permissionTransform = (groups: ApplicationUserRoleViewModel[]) => {
 // ** renders group column
 const renderGrupo = (row: GrupoType) => {
   return (
-    <AvatarWithoutImageLink href="#">
-      <CustomAvatar
-          skin='light'
-          color={'primary'}
-          sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}
-        >
-          {getInitials(row.name ? row.name : 'NP')}
+    <AvatarWithoutImageLink href='#'>
+      <CustomAvatar skin='light' color={'primary'} sx={{ mr: 3, width: 30, height: 30, fontSize: '.875rem' }}>
+        {getInitials(row.name ? row.name : 'NP')}
       </CustomAvatar>
     </AvatarWithoutImageLink>
   )
 }
 
 // ** renders status column
-const RenderStatus = ({ status } : { status: string }) => {
+const RenderStatus = ({ status }: { status: string }) => {
   // ** Hooks
   const { t } = useTranslation()
 
   return (
     <CustomChip
-        skin='light'
-        size='small'
-        label={t(status)}
-        color={userStatusObj(status)}
-        sx={{ textTransform: 'capitalize' }}
+      skin='light'
+      size='small'
+      label={t(status)}
+      color={userStatusObj(status)}
+      sx={{ textTransform: 'capitalize' }}
     />
   )
 }
@@ -141,23 +136,23 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, name } = row
+      const { name } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {renderGrupo(row)}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography
-                noWrap
-                component='a'
-                variant='body2'
-                sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
-              >
-                {name}
-              </Typography>
-              <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
-                🔑{name}
-              </Typography>
+            <Typography
+              noWrap
+              component='a'
+              variant='body2'
+              sx={{ fontWeight: 600, color: 'text.primary', textDecoration: 'none' }}
+            >
+              {name}
+            </Typography>
+            <Typography noWrap component='a' variant='caption' sx={{ textDecoration: 'none' }}>
+              🔑{name}
+            </Typography>
           </Box>
         </Box>
       )
@@ -171,7 +166,7 @@ const defaultColumns = [
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {userGroupObj["GENERALS"]}
+          {userGroupObj['GENERALS']}
           <CustomChip
             skin='light'
             size='small'
@@ -190,7 +185,7 @@ const defaultColumns = [
     headerName: 'Status',
     headerAlign: 'center' as const,
     align: 'center' as const,
-    renderCell: ({ row }: CellType) => <RenderStatus status={row.status}/>
+    renderCell: ({ row }: CellType) => <RenderStatus status={row.status} />
   }
 ]
 
@@ -198,7 +193,7 @@ const GrupoList = () => {
   // ** Hooks
   const ability = useContext(AbilityContext)
   const { t } = useTranslation()
-   
+
   // ** State
   const [value, setValue] = useState<string>('')
   const [pageSize, setPageSize] = useState<number>(10)
@@ -222,12 +217,12 @@ const GrupoList = () => {
     setValue(val)
   }, [])
 
-  const handleViewGrupo = (row : GrupoType) => {
+  const handleViewGrupo = (row: GrupoType) => {
     setRow(row)
     setViewGrupoOpen(true)
   }
 
-  const handleEditGrupo = (row : GrupoType) => {
+  const handleEditGrupo = (row: GrupoType) => {
     setRow(row)
     setEditGrupoOpen(true)
   }
@@ -236,26 +231,24 @@ const GrupoList = () => {
     dispatch(alterStatusGrupo(id))
   }
 
-  const RenderButton = ({ id, status } : { id: string, status: string }) => {
-    if (status === 'INACTIVE' || status === 'PENDING')
-    {
+  const RenderButton = ({ id, status }: { id: string; status: string }) => {
+    if (status === 'INACTIVE' || status === 'PENDING') {
       return (
-        <Tooltip title={t("Activate")}>
+        <Tooltip title={t('Activate')}>
           <IconButton onClick={() => handleAlterStatus(id)}>
             <ElevatorUp fontSize='small' />
           </IconButton>
-        </Tooltip>        
+        </Tooltip>
       )
     } else if (status === 'ACTIVE') {
       return (
-        <Tooltip title={t("Deactivate")}>
+        <Tooltip title={t('Deactivate')}>
           <IconButton onClick={() => handleAlterStatus(id)}>
             <ElevatorDown fontSize='small' />
           </IconButton>
         </Tooltip>
       )
-    }
-    else {
+    } else {
       return (
         <IconButton onClick={() => handleAlterStatus(id)}>
           <Help fontSize='small' />
@@ -274,29 +267,27 @@ const GrupoList = () => {
       flex: 0.05,
       minWidth: 90,
       sortable: false,
-      field: 'actions', 
+      field: 'actions',
       headerName: 'Ações',
       headerAlign: 'center' as const,
       align: 'center' as const,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {ability?.can('read', 'ac-group-page') &&
-            <Tooltip title={t("View")}>
+          {ability?.can('read', 'ac-group-page') && (
+            <Tooltip title={t('View')}>
               <IconButton onClick={() => handleViewGrupo(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
-          }
-          {ability?.can('update', 'ac-group-page') &&
-            <Tooltip title={t("Edit")}>
+          )}
+          {ability?.can('update', 'ac-group-page') && (
+            <Tooltip title={t('Edit')}>
               <IconButton onClick={() => handleEditGrupo(row)}>
                 <PencilOutline fontSize='small' />
               </IconButton>
             </Tooltip>
-          }
-          {ability?.can('update', 'ac-group-page') &&
-            <RenderButton id={row.id} status={row.status}/>
-          }
+          )}
+          {ability?.can('update', 'ac-group-page') && <RenderButton id={row.id} status={row.status} />}
         </Box>
       )
     }
@@ -304,39 +295,35 @@ const GrupoList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <PageHeader
-            title={<Typography variant='h5'>{t("Groups")}</Typography>}
-            subtitle={
-              <Typography variant='body2'>
-                {t("Groups listing")}.
-              </Typography>
-            }
-          />
-        </Grid> 
-        {ability?.can('list', 'ac-group-page') ? (
-          <Grid item xs={12}>
-            <Card>
-              <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
-              <DataGrid
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-                autoHeight
-                rows={store.data}
-                columns={columns}
-                checkboxSelection
-                pageSize={pageSize}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10, 25, 50]}
-                onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-              />
-            </Card>
-          </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
-        <AddGrupoDrawer open={addGrupoOpen} toggle={toggleAddGrupoDrawer} />
-        <ViewGrupoDrawer open={viewGrupoOpen} toggle={toggleViewGrupoDrawer} row={row}/>
-        <EditGrupoDrawer open={editGrupoOpen} toggle={toggleEditGrupoDrawer} row={row}/>
+      <Grid item xs={12}>
+        <PageHeader
+          title={<Typography variant='h5'>{t('Groups')}</Typography>}
+          subtitle={<Typography variant='body2'>{t('Groups listing')}.</Typography>}
+        />
       </Grid>
+      {ability?.can('list', 'ac-group-page') ? (
+        <Grid item xs={12}>
+          <Card>
+            <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddGrupoDrawer} />
+            <DataGrid
+              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+              autoHeight
+              rows={store.data}
+              columns={columns}
+              checkboxSelection
+              pageSize={pageSize}
+              disableSelectionOnClick
+              rowsPerPageOptions={[10, 25, 50]}
+              onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+            />
+          </Card>
+        </Grid>
+      ) : (
+        <>{t('You do not have permission to view this resource.')}</>
+      )}
+      <AddGrupoDrawer open={addGrupoOpen} toggle={toggleAddGrupoDrawer} />
+      <ViewGrupoDrawer open={viewGrupoOpen} toggle={toggleViewGrupoDrawer} row={row} />
+      <EditGrupoDrawer open={editGrupoOpen} toggle={toggleEditGrupoDrawer} row={row} />
     </Grid>
   )
 }

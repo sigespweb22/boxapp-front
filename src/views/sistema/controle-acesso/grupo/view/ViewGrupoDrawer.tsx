@@ -13,7 +13,7 @@ import Key from 'mdi-material-ui/Key'
 import { GrupoType } from 'src/types/sistema/controle-acesso/grupoTypes'
 import { useForm, Controller } from 'react-hook-form'
 
-// ** Copmponents Imports
+// Import Translate
 import { useTranslation } from 'react-i18next'
 
 // ** Icons Imports
@@ -35,6 +35,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const SidebarViewGroup = (props: SidebarViewGroupType) => {
   // ** Hook
+  const { t } = useTranslation()
   const {
     reset,
     control
@@ -48,8 +49,6 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
     reset()
   }
 
-  const { t } = useTranslation()
-
   return (
     <Drawer
       open={open}
@@ -60,7 +59,7 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>Visualizar Grupo</Typography>
+        <Typography variant='h6'>{t("View Group")}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -69,6 +68,8 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
             <TextField
               disabled={true}
               value={props?.row?.name}
+              label={t("Group name")}
+              defaultValue='.'
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -83,12 +84,14 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
                   value={t(props?.row?.status || '')}
                   onChange={onChange}
                   placeholder='(e.g.: ATIVO)'
+                  defaultValue='.'
+                  label='Status'
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-            <Box sx={{ fontSize: 16, mb: "10px" }}>Permissões</Box>
+            <Box sx={{ fontSize: 16, mb: "10px" }}>{t("Permissions")}</Box>
             {props?.row?.applicationRoleGroups.map(group =>
                 {
                   return (
@@ -104,7 +107,7 @@ const SidebarViewGroup = (props: SidebarViewGroupType) => {
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              Cancelar
+              {t("Cancel")}
             </Button>
           </Box>
         </form>

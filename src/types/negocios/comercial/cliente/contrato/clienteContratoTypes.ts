@@ -1,13 +1,19 @@
+import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
+import { VendedorContratoType } from '../../vendedor/contrato/vendedorContratoTypes'
+import { ClienteContratoFaturaType } from './fatura/clienteContratoFaturaTypes'
+
 export type ClienteContratoLayoutType = {
   id: string
 }
 
-export type ClienteContratoType = {
+export type ClienteContratoViewModelType = {
   id: string
   valorContrato: number | null
   periodicidade: string
   clienteId: string
   bomControleContratoId: number | null
+  cliente: ClienteType
+  clienteContratoFaturaViewModel: ClienteContratoFaturaType
   status: string
 }
 

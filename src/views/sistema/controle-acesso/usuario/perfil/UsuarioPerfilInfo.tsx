@@ -31,7 +31,12 @@ import axios from 'axios'
 // ** Api imports
 import enumApiService from 'src/@api-center/sistema/enum/enumServicoApiService'
 import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService'
-import { Renderable, Toast, toast, ValueFunction } from 'react-hot-toast'
+
+// Import Translate
+import { useTranslation } from 'react-i18next'
+
+// Import toast
+import { ToastContainer, toast } from 'react-toastify';
 
 interface Props {
   id: string | undefined
@@ -64,6 +69,7 @@ const clearMaskPhone = (telefone: string) => {
 
 const UsuarioPerfilInfo = (props: Props) => {
   // ** Stats
+  const { t } = useTranslation()
   const [generos, setGeneros] = useState(defaultValuesGeneros)
 
   // ** Hooks
@@ -110,7 +116,7 @@ const UsuarioPerfilInfo = (props: Props) => {
       })
       .catch((err => {
         if (err.response.status === 400 || err.response.status === 404)
-        return err.response.data.errors.map((x: Renderable | ValueFunction<Renderable, Toast>) => toast.error(x));
+        return err.response.data.errors.map((x: any) => toast.error(x));
       }))
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,8 +145,8 @@ const UsuarioPerfilInfo = (props: Props) => {
                       fullWidth
                       multiline
                       minRows={2}
-                      label='Biografia'
-                      placeholder='(e.g.: Meu nome é John Doe, tenho 37 anos, sou casado e amo tecnologia...)'
+                      label={t("Biography")}
+                      placeholder={t("(e.g.: My name is John Doe, I'm 37 years old, I'm married and I love technology...)")}
                       onChange={(newValue): void => {
                         onChange(newValue)
                       }}
@@ -168,7 +174,7 @@ const UsuarioPerfilInfo = (props: Props) => {
                       disabled={false}
                       name="dataAniversario"
                       type="text"
-                      label='Data aniversário'
+                      label={t("Birth date")}
                       placeholder='(e.g.: 01/04/1985)'
                     />
                   </InputMask>
@@ -194,7 +200,7 @@ const UsuarioPerfilInfo = (props: Props) => {
                         disabled={false}
                         name="telefoneCelular"
                         type="text"
-                        label='Telefone celular'
+                        label={t("Phone number")}
                         placeholder='(e.g.: (48) 98901-4524)'
                       />
                     </InputMask>
@@ -217,8 +223,8 @@ const UsuarioPerfilInfo = (props: Props) => {
                         onChange(newValue)
                       }}
                       id='autocomplete-controlled'
-                      getOptionLabel={option => option}
-                      renderInput={params => <TextField {...params} label='Gênero' />}
+                      getOptionLabel={option => t(`${option}`)}
+                      renderInput={params => <TextField {...params} label={t("Gender")} />}
                     />
                   )
                 }}
@@ -227,10 +233,10 @@ const UsuarioPerfilInfo = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Button type='submit' variant='contained' sx={{ mr: 3.5 }}>
-              Salvar alterações
+              {t("Save editions")}
             </Button>
             <Button type='button' onClick={() => handleReset()} variant='outlined' color='secondary'>
-              Limpar
+              {t("Clean")}
             </Button>
           </Grid>
         </Grid>

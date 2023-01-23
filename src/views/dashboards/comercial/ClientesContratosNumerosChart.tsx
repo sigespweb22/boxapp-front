@@ -29,10 +29,14 @@ import dashboardApiServices from 'src/@api-center/dashboards/comercial/dashboard
 import axios from 'axios'
 
 // ** Toast
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ** Context Imports
 import Divider from '@mui/material/Divider'
+
+// Import Translate
+import { useTranslation } from 'react-i18next'
 
 interface ClienteContrato {
   totalClientesSemContrato: number
@@ -71,6 +75,7 @@ const calcularPercentualClienteSemContratosEmRelacaoAoTotalClientesAtivos = (dat
 
 const ClientesContratosNumerosChart = () => {
   // ** Hook
+  const { t } = useTranslation()
   const theme = useTheme()
 
   // ** State
@@ -96,7 +101,7 @@ const ClientesContratosNumerosChart = () => {
     }).catch((error: { response: { data: { errors: { [s: string]: unknown } | ArrayLike<unknown> } } }): void => {
       const returnObj = Object.entries(error.response.data.errors);
       returnObj.forEach((err: any) => {
-        toast.error(err)
+        toast.error(err[1].toString())
       })
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,11 +168,11 @@ const ClientesContratosNumerosChart = () => {
                 <AccountCheck sx={{ fontSize: '1.875rem', color: 'primary.main' }} />
               </CustomAvatar>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h5"  sx={{ fontWeight: 600 }}>Clientes com contrato(s)</Typography>
+                <Typography variant="h5"  sx={{ fontWeight: 600 }}>{t("Clients with contract")}(s)</Typography>
               </Box>
             </Box>
             <Typography component='p' variant='caption' sx={{ mt: 12 }}>
-              Total de clientes que possui contrato(s) ativo(s)
+              {t("Total customers with active contract(s)")}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
@@ -175,7 +180,7 @@ const ClientesContratosNumerosChart = () => {
               </Typography>
               <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'primary.main' }}>
-                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+                {Math.round(percentualClienteComContratosEmRelacaoAoTotalClientesAtivos)}% {t("in relation to total active customers")}
               </Typography>
             </Box>
           </Box>
@@ -197,11 +202,11 @@ const ClientesContratosNumerosChart = () => {
                 <AccountRemove sx={{ fontSize: '1.875rem', color: 'primary.main' }} />
               </CustomAvatar>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h5"  sx={{ fontWeight: 600 }}>Clientes sem contrato(s)</Typography>
+                <Typography variant="h5"  sx={{ fontWeight: 600 }}>{t("Clients without a contract")}(s)</Typography>
               </Box>
             </Box>
             <Typography component='p' variant='caption' sx={{ mt: 12 }}>
-              Total de clientes sem contrato(s) ativo(s)
+              {t("Total customers without active contract(s)")}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='h6'>
@@ -209,7 +214,7 @@ const ClientesContratosNumerosChart = () => {
               </Typography>
               <ChartTimelineVariant sx={{ color: 'secondary.main', ml: 2, mr: 2 }} />
               <Typography variant='caption' sx={{ color: 'primary.main' }}>
-                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% em relação ao total dos clientes ativos
+                {Math.round(percentualClienteSemContratosEmRelacaoAoTotalClientesAtivos)}% {t("in relation to total active customers")}
               </Typography>
             </Box>
           </Box>

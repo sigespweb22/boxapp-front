@@ -137,7 +137,7 @@ const defaultColumns = [
     headerAlign: 'left' as const,
     align: 'left' as const,
     renderCell: ({ row }: CellType) => {
-      const { id, fullName, userName } = row
+      const { fullName, userName } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -315,7 +315,7 @@ const UserList = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid container spacing={6}>
+
         <Grid item xs={12}>
           <PageHeader
             title={<Typography variant='h5'>{t("Users")}</Typography>}
@@ -343,11 +343,10 @@ const UserList = () => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
         <ViewUserDrawer open={viewUserOpen} toggle={toggleViewUserDrawer} row={row}/>
         <EditUserDrawer open={editUserOpen} toggle={toggleEditUserDrawer} row={row}/>
-      </Grid>
     </Grid>
   )
 }

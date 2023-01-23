@@ -36,7 +36,7 @@ import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/index'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { ClienteContratoType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
+import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
 
 // ** Custom Components Imports
 import ClienteContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/ClienteContratoViewDrawer'
@@ -48,7 +48,7 @@ interface Props {
   id: string | string[] | undefined
 }
 interface CellType {
-  row: ClienteContratoType
+  row: ClienteContratoViewModelType
 }
 
 const clienteContratoStatusObj = (status: string) => {
@@ -76,7 +76,7 @@ const AvatarWithoutImageLink = styled(Link)(({ theme }) => ({
 }))
 
 // ** renders group column
-const renderContratoNome = (row: ClienteContratoType) => {
+const renderContratoNome = (row: ClienteContratoViewModelType) => {
   return (
     <AvatarWithoutImageLink href="#">
       <CustomAvatar
@@ -172,7 +172,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
-  const [row, setRow] = useState<ClienteContratoType | undefined>()
+  const [row, setRow] = useState<ClienteContratoViewModelType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
   const store = useSelector((state: RootState) => state.clienteContrato)
@@ -189,7 +189,8 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
     )
   }, [dispatch, value])
 
-  const handleClienteContratoView = (row : ClienteContratoType) => {
+  const handleClienteContratoView = (row : ClienteContratoViewModelType) => {
+    // filter faturas - apenas as quitadas conforme solicitação do cliente
     setRow(row)
     setClienteContratoViewOpen(true)
   }
@@ -228,7 +229,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             title={<Typography variant='h5'></Typography>}
             subtitle={
               <Typography variant='body2'>
-                Lista de contratos
+                {t('Contract list')}
               </Typography>
             }
           />
@@ -249,7 +250,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
               />
             </Card>
           </Grid>
-        ) : "Você não tem permissão para ver este recurso."}
+        ) : <>{t("You do not have permission to view this resource.")}</>}
         <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
       </Grid>
     </Grid>

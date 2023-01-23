@@ -17,7 +17,8 @@ import InputAdornment from '@mui/material/InputAdornment'
 import CircularProgress from '@mui/material/CircularProgress'
 
 // ** Third Party Imports
-import toast from 'react-hot-toast'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icons Imports
