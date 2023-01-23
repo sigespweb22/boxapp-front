@@ -66,26 +66,21 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>()
-  const {
-    reset,
-    control,
-    setValue,
-    handleSubmit
-  } = useForm({
+  const { reset, control, setValue, handleSubmit } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange'
   })
 
-  const periodicidade = ["Diario", "Semanal", "Mensal"]
+  const periodicidade = ['Diario', 'Semanal', 'Mensal']
 
   const onSubmit = (data: RotinaType) => {
-    dispatch(updateRotina({...data}))
+    dispatch(updateRotina({ ...data }))
     toggle()
     reset()
   }
 
   useEffect(() => {
-    if(props?.row){
+    if (props?.row) {
       setValue('id', props?.row?.id || '')
       setValue('nome', props?.row?.nome || '')
       setValue('descricao', props?.row?.descricao || '')
@@ -95,7 +90,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const handleClose = () => {
@@ -104,8 +99,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   }
 
   const handleMaskDataCompetenciaInicio = (newValue: any) => {
-    if (newValue)
-    {
+    if (newValue) {
       if (newValue.currentTarget.value.length === 2) {
         setValue('dataCompetenciaInicio', `${newValue.currentTarget.value}/`)
       } else if (newValue.currentTarget.value.length === 5) {
@@ -117,8 +111,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   }
 
   const handleMaskDataCompetenciaFim = (newValue: any) => {
-    if (newValue)
-    {
+    if (newValue) {
       if (newValue.currentTarget.value.length === 2) {
         setValue('dataCompetenciaFim', `${newValue.currentTarget.value}/`)
       } else if (newValue.currentTarget.value.length === 5) {
@@ -139,7 +132,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
-        <Typography variant='h6'>{t("Routine Edit")}</Typography>
+        <Typography variant='h6'>{t('Routine Edit')}</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>
@@ -148,13 +141,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
             <Controller
               name='id'
               control={control}
-              render={({ field: { value } }) => (
-                <TextField
-                  disabled
-                  label='Id'
-                  value={value}
-                />
-              )}
+              render={({ field: { value } }) => <TextField disabled label='Id' value={value} />}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
@@ -165,8 +152,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={t("Name")}
-                  placeholder={t("(e.g.: Client synchronization)")}
+                  label={t('Name')}
+                  placeholder={t('(e.g.: Client synchronization)')}
                 />
               )}
             />
@@ -178,12 +165,12 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  onChange={(newValue) => {
+                  onChange={newValue => {
                     onChange(newValue)
                     handleMaskDataCompetenciaInicio(newValue)
                   }}
-                  label={t("Start date period")}
-                  placeholder={t("(e.g.: Data início período)")}
+                  label={t('Start date period')}
+                  placeholder={t('(e.g.: Data início período)')}
                 />
               )}
             />
@@ -195,12 +182,12 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  onChange={(newValue) => {
+                  onChange={newValue => {
                     onChange(newValue)
                     handleMaskDataCompetenciaFim(newValue)
                   }}
-                  label={t("End date period")}
-                  placeholder={t("(e.g.: Data fim período)")}
+                  label={t('End date period')}
+                  placeholder={t('(e.g.: Data fim período)')}
                 />
               )}
             />
@@ -213,8 +200,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={t("Description")}
-                  placeholder={t("(e.g.: This routine inserts new customers)")}
+                  label={t('Description')}
+                  placeholder={t('(e.g.: This routine inserts new customers)')}
                 />
               )}
             />
@@ -227,8 +214,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 <TextField
                   value={value}
                   onChange={onChange}
-                  label={t("Note")}
-                  placeholder={t("(e.g.: This routine can change important customer base data)")}
+                  label={t('Note')}
+                  placeholder={t('(e.g.: This routine can change important customer base data)')}
                 />
               )}
             />
@@ -242,48 +229,48 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                   disabled={false}
                   value={value}
                   onChange={onChange}
-                  label={t("Sequencial key")}
-                  placeholder={t("(e.g.: Generated automatically)")}
+                  label={t('Sequencial key')}
+                  placeholder={t('(e.g.: Generated automatically)')}
                 />
               )}
             />
           </FormControl>
           <Typography variant='h6' sx={{ ml: 1 }}>
-            {t("Schedule routines")}
+            {t('Schedule routines')}
           </Typography>
           <FormControl fullWidth sx={{ mb: 6, mt: 6 }}>
             <PickerTime popperPlacement={undefined} />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
-          <Controller
-                    name='Periodicidade'
-                    control={control}
-                    render={({ field: { value, onChange } }) => {
-                      return (
-                        <Autocomplete
-                          multiple={false}
-                          options={periodicidade}
-                          filterSelectedOptions
-                          value={value}
-                          id='autocomplete-multiple-outlined'
-                          getOptionLabel={option => option}
-                          onChange={(event, newValue) => {
-                            onChange(newValue)
-                          }}
-                          renderInput={params => (
-                            <TextField required={true} {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
-                          )}
-                        />
-                      )
+            <Controller
+              name='Periodicidade'
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Autocomplete
+                    multiple={false}
+                    options={periodicidade}
+                    filterSelectedOptions
+                    value={value}
+                    id='autocomplete-multiple-outlined'
+                    getOptionLabel={option => option}
+                    onChange={(event, newValue) => {
+                      onChange(newValue)
                     }}
+                    renderInput={params => (
+                      <TextField required={true} {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
+                    )}
                   />
+                )
+              }}
+            />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
-              {t("Save")}
+              {t('Save')}
             </Button>
             <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              {t("Cancel")}
+              {t('Cancel')}
             </Button>
           </Box>
         </form>
