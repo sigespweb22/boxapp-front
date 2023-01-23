@@ -215,6 +215,14 @@ const ClienteContratoViewDrawer = (props: ClienteContratoViewDrawerType) => {
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
+            <TextField
+              disabled={true}
+              label={t("Sellers linked to the contract")}
+              // value={props?.row?.vendedor?.id}
+              defaultValue="."
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='status'
               control={control}

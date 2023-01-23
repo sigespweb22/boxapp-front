@@ -36,7 +36,6 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 import PageHeader from 'src/@core/components/page-header'
 import RotinaEditDrawer from 'src/views/sistema/rotinas/edit/RotinaEditDrawer'
 import RotinaViewDrawer from 'src/views/sistema/rotinas/view/RotinaViewDrawer'
-import RotinaCronogramaDrawer from '../components/RotinaCronogramaDrawer';
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -235,7 +234,6 @@ const RotinaList = () => {
   const [pageSize, setPageSize] = useState<number>(10)
   const [rotinaEditOpen, setRotinaEditOpen] = useState<boolean>(false)
   const [rotinaViewOpen, setRotinaViewOpen] = useState<boolean>(false)
-  const [rotinaCronogramaOpen, setRotinaCronogramaOpen] = useState<boolean>(false)
   const [row, setRow] = useState<RotinaType | undefined>()
   const [connection, setConnection] = useState<any | null>(null);
 
@@ -338,7 +336,6 @@ const RotinaList = () => {
     }
   }
 
-  const toggleRotinaCronogramaDrawer = () => setRotinaCronogramaOpen(!rotinaCronogramaOpen)
   const toggleRotinaEditDrawer = () => setRotinaEditOpen(!rotinaEditOpen)
   const toggleRotinaViewDrawer = () => setRotinaViewOpen(!rotinaViewOpen)
 
@@ -392,7 +389,7 @@ const RotinaList = () => {
       {ability?.can('list', 'ac-rotina-page') ? (
         <Grid item xs={12}>
           <Card>
-            <TableHeader value={value} handleFilter={handleFilter} toggle={toggleRotinaCronogramaDrawer} />
+            <TableHeader value={value} handleFilter={handleFilter}/>
             <DataGrid
               localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
               autoHeight
@@ -411,11 +408,6 @@ const RotinaList = () => {
       )}
       <RotinaEditDrawer open={rotinaEditOpen} toggle={toggleRotinaEditDrawer} row={row}/>
       <RotinaViewDrawer open={rotinaViewOpen} toggle={toggleRotinaViewDrawer} row={row}/>
-      {ability?.can('create', 'ac-rotina-page') ? (
-        <RotinaCronogramaDrawer open={rotinaCronogramaOpen} toggle={toggleRotinaCronogramaDrawer} />
-      ) : (
-        <></>
-      )}
     </Grid>
   )
 }

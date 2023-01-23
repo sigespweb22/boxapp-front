@@ -28,6 +28,8 @@ import { updateRotina } from 'src/store/sistema/rotina/index'
 // ** Types Imports
 import { AppDispatch } from 'src/store'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
+import PickerTime from '../components/relogioCronograma/PickerTime'
+import { Autocomplete } from '@mui/material'
 
 interface RotinaEditType {
   row: RotinaType | undefined
@@ -51,6 +53,7 @@ const defaultValues = {
   chaveSequencial: '',
   dataCompetenciaInicio: '',
   dataCompetenciaFim: '',
+  Periodicidade: '',
   status: ''
 }
 
@@ -72,6 +75,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
     defaultValues: defaultValues,
     mode: 'onChange'
   })
+
+  const periodicidade = ["Diario", "Semanal", "Mensal"]
 
   const onSubmit = (data: RotinaType) => {
     dispatch(updateRotina({...data}))
@@ -242,6 +247,36 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                 />
               )}
             />
+          </FormControl>
+          <Typography variant='h6' sx={{ ml: 1 }}>
+            {t("Schedule routines")}
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 6, mt: 6 }}>
+            <PickerTime popperPlacement={undefined} />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}>
+          <Controller
+                    name='Periodicidade'
+                    control={control}
+                    render={({ field: { value, onChange } }) => {
+                      return (
+                        <Autocomplete
+                          multiple={false}
+                          options={periodicidade}
+                          filterSelectedOptions
+                          value={value}
+                          id='autocomplete-multiple-outlined'
+                          getOptionLabel={option => option}
+                          onChange={(event, newValue) => {
+                            onChange(newValue)
+                          }}
+                          renderInput={params => (
+                            <TextField required={true} {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
+                          )}
+                        />
+                      )
+                    }}
+                  />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }}>
