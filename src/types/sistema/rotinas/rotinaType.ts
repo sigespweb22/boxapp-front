@@ -6,6 +6,8 @@ export type RotinaLayoutType = {
 }
 
 export type RotinaType = {
+  periodicidadeRotina: string
+  tempoCronograma: string
   id: string
   nome: string
   descricao: string

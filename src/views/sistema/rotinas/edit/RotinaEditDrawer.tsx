@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
+import { Autocomplete } from '@mui/material'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -29,7 +30,6 @@ import { updateRotina } from 'src/store/sistema/rotina/index'
 import { AppDispatch } from 'src/store'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 import PickerTime from '../components/relogioCronograma/PickerTime'
-import { Autocomplete } from '@mui/material'
 
 interface RotinaEditType {
   row: RotinaType | undefined
@@ -53,13 +53,15 @@ const defaultValues = {
   chaveSequencial: '',
   dataCompetenciaInicio: '',
   dataCompetenciaFim: '',
-  Periodicidade: '',
+  periodicidadeRotina: '',
+  tempoCronograma: '',
   status: ''
 }
 
 const RotinaEditDrawer = (props: RotinaEditType) => {
   // ** Hook
   const { t } = useTranslation()
+  const [periodicidadeRotina, setPeriodicidadeRotina] = useState<string | null>()
 
   // ** Props
   const { open, toggle } = props
@@ -88,6 +90,9 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('dataCompetenciaInicio', props?.row?.dataCompetenciaInicio || '')
       setValue('dataCompetenciaFim', props?.row?.dataCompetenciaFim || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
+      setValue('chaveSequencial', props?.row?.chaveSequencial || '')
+      setValue('periodicidadeRotina', props?.row?.periodicidadeRotina || '')
+      setValue('tempoCronograma', props?.row?.tempoCronograma || '')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,11 +244,15 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
             {t('Schedule routines')}
           </Typography>
           <FormControl fullWidth sx={{ mb: 6, mt: 6 }}>
-            <PickerTime popperPlacement={undefined} />
+            <Controller
+              name='tempoCronograma'
+              control={control}
+              render={({ field: { value, onChange } }) => <PickerTime popperPlacement={undefined} />}
+            />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='Periodicidade'
+              name='periodicidadeRotina'
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
@@ -251,11 +260,12 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                     multiple={false}
                     options={periodicidade}
                     filterSelectedOptions
-                    value={value}
+                    value={periodicidadeRotina}
                     id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option}
                     onChange={(event, newValue) => {
                       onChange(newValue)
+                      setPeriodicidadeRotina(newValue)
                     }}
                     renderInput={params => (
                       <TextField required={true} {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />

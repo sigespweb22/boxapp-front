@@ -12,7 +12,7 @@ import CustomInput from './PickersCustomInput'
 
 const PickerTime = ({ popperPlacement }: { popperPlacement: ReactDatePickerProps['popperPlacement'] }) => {
   // ** States
-  const [time, setTime] = useState<DateType>(new Date())
+  const [time, setTime] = useState<DateType>()
 
   return (
     <DatePicker
@@ -20,10 +20,12 @@ const PickerTime = ({ popperPlacement }: { popperPlacement: ReactDatePickerProps
       selected={time}
       timeIntervals={15}
       showTimeSelectOnly
-      dateFormat='h:mm aa'
+      dateFormat='HH:mm'
       id='time-only-picker'
       popperPlacement={popperPlacement}
-      onChange={(date: Date) => setTime(date)}
+      onChange={(date: Date) => {
+        setTime(date)
+      }}
       customInput={<CustomInput label='Hórario agendamento' />}
     />
   )
