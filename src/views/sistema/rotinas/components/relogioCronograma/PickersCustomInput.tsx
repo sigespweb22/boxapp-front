@@ -14,7 +14,7 @@ const PickersComponent = forwardRef(({ ...props }: PickerProps, ref) => {
   const { label, readOnly } = props
 
   return (
-    <TextField inputRef={ref} {...props} label={label || ''} {...(readOnly && { inputProps: { readOnly: true } })} />
+    <TextField fullWidth inputRef={ref} {...props} label={label || ''} {...(readOnly && { inputProps: { readOnly: true } })} />
   )
 })
 

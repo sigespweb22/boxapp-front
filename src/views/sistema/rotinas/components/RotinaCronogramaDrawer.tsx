@@ -11,7 +11,6 @@ import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
-import DatePicker from '@mui/lab/DatePicker'
 import { Autocomplete } from '@mui/material'
 
 // ** Third Party Imports
@@ -24,19 +23,12 @@ import { useTranslation } from 'react-i18next'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
-// ** Store Imports
-import { useDispatch } from 'react-redux'
-
-// ** Actions Imports
-import { addClientes } from 'src/store/negocios/comercial/cliente'
-
 // ** Types Imports
-import { AppDispatch } from 'src/store'
 import { DateType } from 'src/types/forms/reactDatepickerTypes'
-import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
 
 // ** Axios Imports
 import axios from 'axios'
+import PickerTime from './relogioCronograma/Pickertime'
 
 interface RotinaCronogramaDrawerType {
   open: boolean
@@ -61,12 +53,7 @@ const RotinaCronogramaDrawer = (props: RotinaCronogramaDrawerType) => {
   const { t } = useTranslation()
   const [time, setTime] = useState<DateType>(new Date())
 
-  const dispatch = useDispatch<AppDispatch>()
-
-  const {
-    control,
-    handleSubmit,
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     mode: 'onChange'
   })
 
@@ -81,8 +68,6 @@ const RotinaCronogramaDrawer = (props: RotinaCronogramaDrawerType) => {
       rotinas = response.data
     })
   }, [rotinas])
-
-  debugger
 
   const onSubmit = () => {
     toggle()
@@ -113,7 +98,7 @@ const RotinaCronogramaDrawer = (props: RotinaCronogramaDrawerType) => {
             </Alert>
             <FormControl fullWidth sx={{ mb: 6 }}>
               <Controller
-                name='applicationUserGroups'
+                name='rotinas'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => {
@@ -136,27 +121,18 @@ const RotinaCronogramaDrawer = (props: RotinaCronogramaDrawerType) => {
                 }}
               />
             </FormControl>
-            {/* <div>
-              <DatePicker
-                showTimeSelect
-                selected={time}
-                timeIntervals={15}
-                showTimeSelectOnly
-                dateFormat='h:mm aa'
-                id='time-only-picker'
-                onChange={(date: Date) => setTime(date)}
-                customInput={<CustomInput label='Time Only' />}
-              />
-            </div> */}
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <PickerTime popperPlacement={undefined} />
+            </FormControl>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
+                {t('Save')}
+              </Button>
+              <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
+                {t('Cancel')}
+              </Button>
+            </Box>
           </Grid>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Button size='large' type='submit' variant='contained' sx={{ mr: 3 }} onClick={handleSubmit(onSubmit)}>
-              {t('Save')}
-            </Button>
-            <Button size='large' variant='outlined' color='secondary' onClick={handleClose}>
-              {t('Cancel')}
-            </Button>
-          </Box>
         </form>
       </Grid>
     </Drawer>
