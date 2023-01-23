@@ -247,14 +247,14 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
             <Controller
               name='tempoCronograma'
               control={control}
-              render={({ field: { value, onChange } }) => <PickerTime popperPlacement={undefined} />}
+              render={({ field: { } }) => <PickerTime popperPlacement={undefined} />}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='periodicidadeRotina'
               control={control}
-              render={({ field: { value, onChange } }) => {
+              render={({ field: { onChange } }) => {
                 return (
                   <Autocomplete
                     multiple={false}

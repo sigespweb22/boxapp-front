@@ -15,9 +15,7 @@ import Tooltip from '@mui/material/Tooltip'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import ElevatorUp from 'mdi-material-ui/ElevatorUp'
 import Delete from 'mdi-material-ui/Delete'
-import Help from 'mdi-material-ui/Help'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'

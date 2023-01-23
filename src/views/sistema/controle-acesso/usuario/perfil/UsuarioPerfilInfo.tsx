@@ -36,7 +36,7 @@ import usuarioApiService from 'src/@api-center/sistema/usuario/usuarioApiService
 import { useTranslation } from 'react-i18next'
 
 // Import toast
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface Props {
   id: string | undefined

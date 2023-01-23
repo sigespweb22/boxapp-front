@@ -1,6 +1,3 @@
-// ** React Imports
-import { useState, useEffect } from 'react'
-
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 
@@ -13,26 +10,7 @@ interface RelatorioComissaoType {
 }
 
 const RelatorioComissao = ({ id }: RelatorioComissaoType) => {
-  // ** State
-  const [isMultiple, setIsMultiple] = useState<boolean>(false)
-
   const split = id.split('&')
-
-  const handleIsMultiplo = (split: any) => {
-    switch (split) {
-      case "":
-        setIsMultiple(true)
-        break;
-      case "undefined":
-        setIsMultiple(true)
-        break;
-    }
-  } 
-
-  useEffect(() => {
-    handleIsMultiplo(split[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <Grid container spacing={6}>

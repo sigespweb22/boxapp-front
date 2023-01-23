@@ -1,5 +1,4 @@
 import { ClienteType } from 'src/types/negocios/comercial/cliente/clienteTypes'
-import { VendedorContratoType } from '../../vendedor/contrato/vendedorContratoTypes'
 import { ClienteContratoFaturaType } from './fatura/clienteContratoFaturaTypes'
 
 export type ClienteContratoLayoutType = {
