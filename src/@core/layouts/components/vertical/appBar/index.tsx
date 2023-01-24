@@ -12,6 +12,7 @@ import { Settings } from 'src/@core/context/settingsContext'
 
 // ** Util Import
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import zIndex from '@mui/material/styles/zIndex'
 
 interface Props {
   hidden: boolean
@@ -70,7 +71,7 @@ const LayoutAppBar = (props: Props) => {
   }
 
   return (
-    <AppBar elevation={0} color='default' className='layout-navbar' position={appBar === 'fixed' ? 'sticky' : 'static'}>
+    <AppBar elevation={0} color='default' className='layout-navbar' position={appBar === 'fixed' ? 'sticky' : 'static'} sx={{ zIndex: 1 }}>
       <Toolbar
         className='navbar-content-container'
         sx={{

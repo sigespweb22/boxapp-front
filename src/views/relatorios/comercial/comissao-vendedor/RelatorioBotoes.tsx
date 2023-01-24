@@ -34,7 +34,7 @@ const RelatorioBotoesVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoV
         >
            {t('Print')}
         </Button> */}
-        <Link href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
+        <Link target='_blank' href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
           <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
             {t('Print')}
           </Button> 
