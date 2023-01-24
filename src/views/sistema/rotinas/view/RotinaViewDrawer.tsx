@@ -121,7 +121,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
     defaultValues: defaultValues,
     mode: 'onChange'
   })
-
+  
   // ** States
   useEffect(() => {
     if(props?.row){
@@ -149,7 +149,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
         rotinaId: props?.row?.id
       })
     )
-  }, [dispatch, props?.row?.id])
+  }, [open])
 
   const handleViewRotinaEventHistory = (row : RotinaEventHistoryType) => {
     setRow(row)

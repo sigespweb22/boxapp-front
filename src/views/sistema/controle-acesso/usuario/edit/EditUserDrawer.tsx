@@ -199,7 +199,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
             />
             {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }} >
+          <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name={"applicationUserGroups"}
               control={control}

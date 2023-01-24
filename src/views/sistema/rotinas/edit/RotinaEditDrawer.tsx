@@ -268,7 +268,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
                       setPeriodicidadeRotina(newValue)
                     }}
                     renderInput={params => (
-                      <TextField required={true} {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
+                      <TextField {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
                     )}
                   />
                 )
