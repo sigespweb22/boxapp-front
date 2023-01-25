@@ -31,10 +31,21 @@ import { AppDispatch } from 'src/store'
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 import PickerTime from '../components/relogioCronograma/PickerTime'
 
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import apiVendedores from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
+
 interface RotinaEditType {
   row: RotinaType | undefined
   open: boolean
   toggle: () => void
+}
+
+interface VendedorTypeSelect {
+  id: string
+  nome: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -55,7 +66,7 @@ const defaultValues = {
   dataCompetenciaFim: '',
   periodicidadeRotina: '',
   tempoCronograma: '',
-  propertyId: '',
+  property: {id: '', nome: ''},
   status: ''
 }
 
@@ -63,6 +74,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   // ** Hook
   const { t } = useTranslation()
   const [periodicidadeRotina, setPeriodicidadeRotina] = useState<string | null>()
+  const [propertyId, setPropertyId] = useState<string>()
+  const [vendedores, setVendedores] = useState<VendedorTypeSelect[] | undefined>()
 
   // ** Props
   const { open, toggle } = props
@@ -82,6 +95,12 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
     reset()
   }
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(apiVendedores.storageTokenKeyName)!}` 
+    }
+  }
+
   useEffect(() => {
     if (props?.row) {
       setValue('id', props?.row?.id || '')
@@ -94,11 +113,19 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
       setValue('periodicidadeRotina', props?.row?.periodicidadeRotina || '')
       setValue('tempoCronograma', props?.row?.tempoCronograma || '')
-      setValue('propertyId', props?.row?.propertyId || '')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
+
+  useEffect(() => {
+    axios
+      .get(`${apiVendedores.listToSelectAsync}`, config)
+      .then(response => {
+        setVendedores(response.data)
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClose = () => {
     toggle()
@@ -242,6 +269,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               )}
             />
           </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}></FormControl>
           <Typography variant='h6' sx={{ ml: 1 }}>
             {t('Schedule routines')}
           </Typography>
