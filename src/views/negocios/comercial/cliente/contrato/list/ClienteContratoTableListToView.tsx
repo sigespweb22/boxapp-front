@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
+import AccountCircle from 'mdi-material-ui/AccountCircle';
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,6 +41,7 @@ import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/clien
 
 // ** Custom Components Imports
 import ClienteContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/ClienteContratoViewDrawer'
+import VendedorVinculadoContratoViewDrawer from 'src/views/negocios/comercial/cliente/contrato/view/VendedorVinculadoContratoViewDrawer'
 
 // ** Context Imports
 import { AbilityContext } from 'src/layouts/components/acl/Can'
@@ -172,6 +174,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   const [value, setValue] = useState<string | string[] | undefined>('')
   const [pageSize, setPageSize] = useState<number>(10)
   const [clienteContratoViewOpen, setClienteContratoViewOpen] = useState<boolean>(false)
+  const [vendedorVinculadoContratoOpen, setVendedorVinculadoContratoViewOpen] = useState<boolean>(false)
   const [row, setRow] = useState<ClienteContratoViewModelType | undefined>()
 
   const dispatch = useDispatch<AppDispatch>()
@@ -195,7 +198,14 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
     setClienteContratoViewOpen(true)
   }
 
+  const handleVendedorVinculadoContratoView = (row : ClienteContratoViewModelType) => {
+    // filter faturas - apenas as quitadas conforme solicitação do cliente
+    setRow(row)
+    setVendedorVinculadoContratoViewOpen(true)
+  }
+
   const toggleClienteContratoViewDrawer = () => setClienteContratoViewOpen(!clienteContratoViewOpen)
+  const toggleVendedorVinculadoContratoViewDrawer = () => setVendedorVinculadoContratoViewOpen(!vendedorVinculadoContratoOpen)
 
   const columns = [
     ...defaultColumns,
@@ -213,6 +223,13 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
             <Tooltip title={t("View")}>
               <IconButton onClick={() => handleClienteContratoView(row)}>
                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
+              </IconButton>
+            </Tooltip>
+          }
+          {ability?.can('read', 'ac-clienteContrato-page') &&
+            <Tooltip title={t("View seller(s)")}>
+              <IconButton onClick={() => handleVendedorVinculadoContratoView(row)}>
+                <AccountCircle fontSize='small' sx={{ mr: 2 }} />
               </IconButton>
             </Tooltip>
           }
@@ -252,6 +269,7 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
           </Grid>
         ) : <>{t("You do not have permission to view this resource.")}</>}
         <ClienteContratoViewDrawer open={clienteContratoViewOpen} toggle={toggleClienteContratoViewDrawer} row={row}/>
+        <VendedorVinculadoContratoViewDrawer open={vendedorVinculadoContratoOpen} toggle={toggleVendedorVinculadoContratoViewDrawer} row={row}/>
       </Grid>
     </Grid>
   )
