@@ -55,6 +55,7 @@ const defaultValues = {
   dataCompetenciaFim: '',
   periodicidadeRotina: '',
   tempoCronograma: '',
+  propertyId: '',
   status: ''
 }
 
@@ -93,6 +94,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
       setValue('periodicidadeRotina', props?.row?.periodicidadeRotina || '')
       setValue('tempoCronograma', props?.row?.tempoCronograma || '')
+      setValue('propertyId', props?.row?.propertyId || '')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

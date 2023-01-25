@@ -22,5 +22,6 @@ export type RotinaType = {
   statusUltimoEvento: string
   totalItensInsucessoUltimoEvento: number
   totalItensSucessoUltimoEvento: number
+  propertyId: string
   exceptionMessageUltimoEvento: string
 }
