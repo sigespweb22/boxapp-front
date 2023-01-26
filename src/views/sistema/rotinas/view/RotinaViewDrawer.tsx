@@ -229,6 +229,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
               control={control}
               render={({ field: { value } }) => (
                 <TextField
+                  type='date'
                   disabled
                   value={value}
                   label={t("Start date period")}
@@ -242,6 +243,7 @@ const RotinaViewDrawer = (props: RotinaViewType) => {
               control={control}
               render={({ field: { value } }) => (
                 <TextField
+                  type='date'
                   disabled
                   value={value}
                   label={t("End date period")}
