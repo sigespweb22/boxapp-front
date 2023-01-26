@@ -32,11 +32,21 @@ import PickerTime from '../components/relogioCronograma/PickerTime'
 
 // ** Types
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
+// ** Axios Imports
+import axios from 'axios'
+
+// ** Api Services
+import apiVendedores from 'src/@api-center/negocios/comercial/vendedor/vendedorApiService'
 
 interface RotinaEditType {
   row: RotinaType | undefined
   open: boolean
   toggle: () => void
+}
+
+interface VendedorTypeSelect {
+  id: string
+  nome: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -57,12 +67,16 @@ const defaultValues = {
   dataCompetenciaFim: '',
   periodicidadeRotina: '',
   tempoCronograma: '',
+  property: {id: '', nome: ''},
   status: ''
 }
 
 const RotinaEditDrawer = (props: RotinaEditType) => {
   // ** Hook
   const { t } = useTranslation()
+  const [periodicidadeRotina, setPeriodicidadeRotina] = useState<string | null>()
+  const [propertyId, setPropertyId] = useState<string>()
+  const [vendedores, setVendedores] = useState<VendedorTypeSelect[] | undefined>()
 
   // ** Props
   const { open, toggle } = props
@@ -82,6 +96,12 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
     reset()
   }
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem(apiVendedores.storageTokenKeyName)!}` 
+    }
+  }
+
   useEffect(() => {
     if (props?.row) {
       setValue('id', props?.row?.id || '')
@@ -98,6 +118,15 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
+
+  useEffect(() => {
+    axios
+      .get(`${apiVendedores.listToSelectAsync}`, config)
+      .then(response => {
+        setVendedores(response.data)
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClose = () => {
     toggle()
@@ -212,6 +241,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               )}
             />
           </FormControl>
+          <FormControl fullWidth sx={{ mb: 6 }}></FormControl>
           <Typography variant='h6' sx={{ ml: 1 }}>
             {t('Schedule routines')}
           </Typography>

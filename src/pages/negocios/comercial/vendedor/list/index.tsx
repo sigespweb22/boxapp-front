@@ -197,9 +197,11 @@ const VendedorList = () => {
   }
 
   const handleComissaoPlay = (id: string | undefined) => {
-    axios.post(`${id}`, {}, config)
-    toast.success(`Não funciona ainda.`)
-    //Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.
+    const rotinaId = 'b0c60d41-7b31-4e02-ab9e-ad2c9e351443'
+    const vendedorId = id
+
+    axios.post(`${rotinaApiService.dispatchPrefixRoute}/dispatch-vendedores-comissoes-create-by-vendedorId/${rotinaId}`, { vendedorId: vendedorId }, config)
+    toast.success("Comissão disparada com sucesso. \nAgora você pode continuar o uso do BoxApp enquanto trabalhamos sua solicitação.")
   }
 
   const RenderButton = ({ id, status }: { id: string | undefined; status: string }) => {

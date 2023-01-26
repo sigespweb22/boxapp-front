@@ -1,6 +1,11 @@
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
+interface Property {
+  id: string
+  nome: string
+}
+
 export type RotinaLayoutType = {
   id: string | undefined
 }
@@ -22,5 +27,7 @@ export type RotinaType = {
   statusUltimoEvento: string
   totalItensInsucessoUltimoEvento: number
   totalItensSucessoUltimoEvento: number
+  property: Property
+  propertyId: string
   exceptionMessageUltimoEvento: string
 }
