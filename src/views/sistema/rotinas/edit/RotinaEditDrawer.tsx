@@ -65,8 +65,8 @@ const defaultValues = {
   chaveSequencial: '',
   dataCompetenciaInicio: '',
   dataCompetenciaFim: '',
-  periodicidadeRotina: '',
-  tempoCronograma: '',
+  periodicidade: '',
+  horaExecucao: '',
   property: { id: '', nome: '' },
   status: ''
 }
@@ -74,7 +74,7 @@ const defaultValues = {
 const RotinaEditDrawer = (props: RotinaEditType) => {
   // ** Hook
   const { t } = useTranslation()
-  const [periodicidadeRotina, setPeriodicidadeRotina] = useState<string | null>()
+  const [periodicidade, setPeriodicidade] = useState<string | null>()
   const [propertyId, setPropertyId] = useState<string>()
   const [vendedores, setVendedores] = useState<VendedorTypeSelect[] | undefined>()
 
@@ -88,7 +88,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
     mode: 'onChange'
   })
 
-  const periodicidade = ['Diario', 'Semanal', 'Mensal']
+  // ** Trazer as periodicidades do backend
+  const periodicidades = ['DIARIA', 'SEMANAL', 'MENSAL']
 
   const onSubmit = (data: RotinaType) => {
     dispatch(updateRotina({ ...data }))
@@ -112,8 +113,8 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
       setValue('dataCompetenciaFim', props?.row?.dataCompetenciaFim || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
       setValue('chaveSequencial', props?.row?.chaveSequencial || '')
-      setValue('periodicidadeRotina', props?.row?.periodicidadeRotina || '')
-      setValue('tempoCronograma', props?.row?.tempoCronograma || '')
+      setValue('periodicidade', props?.row?.periodicidade || '')
+      setValue('horaExecucao', props?.row?.horaExecucao || '')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,7 +235,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
           </Typography>
           <FormControl fullWidth sx={{ mb: 6, mt: 6 }}>
             <Controller
-              name='tempoCronograma'
+              name='horaExecucao'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
@@ -248,13 +249,13 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
-              name='periodicidadeRotina'
+              name='periodicidade'
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     multiple={false}
-                    options={periodicidade}
+                    options={periodicidades}
                     filterSelectedOptions
                     value={value}
                     id='autocomplete-multiple-outlined'

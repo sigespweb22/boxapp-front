@@ -24,6 +24,8 @@ export type RotinaType = {
   dispatcherRoute: string
   avatarColor?: ThemeColor
   dataCriacaoUltimoEvento: string
+  horaExecucao: string
+  periodicidade: string
   statusUltimoEvento: string
   totalItensInsucessoUltimoEvento: number
   totalItensSucessoUltimoEvento: number
