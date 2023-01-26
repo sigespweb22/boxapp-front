@@ -184,6 +184,8 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
     setValue(id)
   }, [id])
 
+  debugger
+
   useEffect(() => {
     dispatch(
       fetchData({
@@ -199,7 +201,6 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
   }
 
   const handleVendedorVinculadoContratoView = (row : ClienteContratoViewModelType) => {
-    // filter faturas - apenas as quitadas conforme solicitação do cliente
     setRow(row)
     setVendedorVinculadoContratoViewOpen(true)
   }

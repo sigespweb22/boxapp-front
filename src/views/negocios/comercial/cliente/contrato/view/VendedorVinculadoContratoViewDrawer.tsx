@@ -34,7 +34,7 @@ import { RootState, AppDispatch } from 'src/store'
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Actions Imports
-import { fetchData } from 'src/store/negocios/comercial/cliente/contrato/fatura/index'
+import { fetchData } from 'src/store/negocios/comercial/vendedor/contrato/index'
 
 // ** Third Party Imports
 import { ClienteContratoViewModelType } from 'src/types/negocios/comercial/cliente/contrato/clienteContratoTypes'
@@ -162,8 +162,7 @@ const VendedorVinculadoContratoViewDrawer = (props: VendedorVinculadoContratoVie
   const [pageSize, setPageSize] = useState<number>(10)
   const dispatch = useDispatch<AppDispatch>()
   const { t } = useTranslation()
-    const store = useSelector((state: RootState) => state.clienteContratoFatura)
-//   const [store, setStore] = useState<CellType>([])
+  const store = useSelector((state: RootState) => state.vendedorContrato)
 
   const { reset } = useForm()
 
@@ -172,23 +171,13 @@ const VendedorVinculadoContratoViewDrawer = (props: VendedorVinculadoContratoVie
     reset()
   }
 
-    useEffect(() => {
-      dispatch(
-        fetchData({
-          clienteContratoId: props?.row?.id,
-          quitadas: true
-        })
-      )
-    }, [dispatch, props?.row?.id])
-
-//   useEffect(() => {
-//     const doGetUsers = async () => {
-//       const result = await getUsers()
-//       setUsers(result)
-//     }
-
-//     doGetUsers()
-//   }, [])
+  useEffect(() => {
+    dispatch(
+      fetchData({
+        vendedorId: props?.row?.id
+      })
+    )
+  }, [dispatch])
 
   return (
     <Drawer

@@ -67,7 +67,7 @@ const defaultValues = {
   dataCompetenciaFim: '',
   periodicidadeRotina: '',
   tempoCronograma: '',
-  property: {id: '', nome: ''},
+  property: { id: '', nome: '' },
   status: ''
 }
 
@@ -98,7 +98,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem(apiVendedores.storageTokenKeyName)!}` 
+      Authorization: `Bearer ${window.localStorage.getItem(apiVendedores.storageTokenKeyName)!}`
     }
   }
 
@@ -120,20 +120,16 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
   }, [props])
 
   useEffect(() => {
-    axios
-      .get(`${apiVendedores.listToSelectAsync}`, config)
-      .then(response => {
-        setVendedores(response.data)
-      })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    axios.get(`${apiVendedores.listToSelectAsync}`, config).then(response => {
+      setVendedores(response.data)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleClose = () => {
     toggle()
     reset()
   }
-
-  debugger
 
   return (
     <Drawer
@@ -176,12 +172,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               name='dataCompetenciaInicio'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  onChange={onChange}
-                  type='date'
-                  label={t('Start date period')} 
-                   />
+                <TextField value={value} onChange={onChange} type='date' label={t('Start date period')} />
               )}
             />
           </FormControl>
@@ -190,11 +181,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               name='dataCompetenciaFim'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField 
-                  type='date'
-                  label={t('Start date period')} 
-                  value={value} 
-                  onChange={onChange} />
+                <TextField type='date' label={t('Start date period')} value={value} onChange={onChange} />
               )}
             />
           </FormControl>
@@ -249,7 +236,14 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
             <Controller
               name='tempoCronograma'
               control={control}
-              render={({ field: {} }) => <PickerTime popperPlacement={undefined} />}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  type='time'
+                  value={value}
+                  onChange={onChange}
+                  label={t("Scheduling time")}
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
