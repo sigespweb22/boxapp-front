@@ -22,14 +22,16 @@ import Close from 'mdi-material-ui/Close'
 
 // ** Store Imports
 import { useDispatch } from 'react-redux'
+import { AppDispatch } from 'src/store'
 
 // ** Actions Imports
 import { updateRotina } from 'src/store/sistema/rotina/index'
 
-// ** Types Imports
-import { AppDispatch } from 'src/store'
-import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
+// ** Custom Component Imports
 import PickerTime from '../components/relogioCronograma/PickerTime'
+
+// ** Types
+import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
 
 interface RotinaEditType {
   row: RotinaType | undefined
@@ -61,7 +63,6 @@ const defaultValues = {
 const RotinaEditDrawer = (props: RotinaEditType) => {
   // ** Hook
   const { t } = useTranslation()
-  const [periodicidadeRotina, setPeriodicidadeRotina] = useState<string | null>()
 
   // ** Props
   const { open, toggle } = props
@@ -103,29 +104,7 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
     reset()
   }
 
-  const handleMaskDataCompetenciaInicio = (newValue: any) => {
-    if (newValue) {
-      if (newValue.currentTarget.value.length === 2) {
-        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value}/`)
-      } else if (newValue.currentTarget.value.length === 5) {
-        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value}/`)
-      } else {
-        setValue('dataCompetenciaInicio', `${newValue.currentTarget.value.substring(0, 10)}`)
-      }
-    }
-  }
-
-  const handleMaskDataCompetenciaFim = (newValue: any) => {
-    if (newValue) {
-      if (newValue.currentTarget.value.length === 2) {
-        setValue('dataCompetenciaFim', `${newValue.currentTarget.value}/`)
-      } else if (newValue.currentTarget.value.length === 5) {
-        setValue('dataCompetenciaFim', `${newValue.currentTarget.value}/`)
-      } else {
-        setValue('dataCompetenciaFim', `${newValue.currentTarget.value.substring(0, 10)}`)
-      }
-    }
-  }
+  debugger
 
   return (
     <Drawer
@@ -170,13 +149,10 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               render={({ field: { value, onChange } }) => (
                 <TextField
                   value={value}
-                  onChange={newValue => {
-                    onChange(newValue)
-                    handleMaskDataCompetenciaInicio(newValue)
-                  }}
-                  label={t('Start date period')}
-                  placeholder={t('(e.g.: Data início período)')}
-                />
+                  onChange={onChange}
+                  type='date'
+                  label={t('Start date period')} 
+                   />
               )}
             />
           </FormControl>
@@ -185,15 +161,11 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
               name='dataCompetenciaFim'
               control={control}
               render={({ field: { value, onChange } }) => (
-                <TextField
-                  value={value}
-                  onChange={newValue => {
-                    onChange(newValue)
-                    handleMaskDataCompetenciaFim(newValue)
-                  }}
-                  label={t('End date period')}
-                  placeholder={t('(e.g.: Data fim período)')}
-                />
+                <TextField 
+                  type='date'
+                  label={t('Start date period')} 
+                  value={value} 
+                  onChange={onChange} />
               )}
             />
           </FormControl>
@@ -247,25 +219,24 @@ const RotinaEditDrawer = (props: RotinaEditType) => {
             <Controller
               name='tempoCronograma'
               control={control}
-              render={({ field: { } }) => <PickerTime popperPlacement={undefined} />}
+              render={({ field: {} }) => <PickerTime popperPlacement={undefined} />}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 6 }}>
             <Controller
               name='periodicidadeRotina'
               control={control}
-              render={({ field: { onChange } }) => {
+              render={({ field: { value, onChange } }) => {
                 return (
                   <Autocomplete
                     multiple={false}
                     options={periodicidade}
                     filterSelectedOptions
-                    value={periodicidadeRotina}
+                    value={value}
                     id='autocomplete-multiple-outlined'
                     getOptionLabel={option => option}
                     onChange={(event, newValue) => {
                       onChange(newValue)
-                      setPeriodicidadeRotina(newValue)
                     }}
                     renderInput={params => (
                       <TextField {...params} label={t('Frequency')} placeholder='(e.g.: Diariamente)' />
