@@ -81,12 +81,12 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
   const [isValidDate, setIsValidDate] = useState(true)
   const [is404, setIs404] = useState(false)
 
-  const inicioData = dataInicio?.toString().slice(0, 16)
-  const fimData = dataFim?.toString().slice(0, 16)
+  const inicioData = moment(dataInicio!).format('DD/MM/yyyy')
+  const fimData = moment(dataFim!).format('DD/MM/yyyy')
 
   const isInvalidDate = (inicioData: any) => {
     switch (inicioData) {
-      case 'Invalid Date':
+      case 'Invalid date':
         setIsValidDate(false)
     }
   }
@@ -205,8 +205,8 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
           <Grid item sm={6} xs={6}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, mr: 5 }}>
               <Grid>
-                <Typography>{t("Commission Report")}</Typography>
-                <Typography>
+                <Typography variant='h6'>{t("Commission Report")}</Typography>
+                <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
                   <MUITableCell sx={{ width: '85px' }}>
                     <Typography variant='body2'>{t("Start date")}:</Typography>
                   </MUITableCell>
@@ -222,7 +222,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                     )}
                   </MUITableCell>
                 </Typography>
-                <Typography>
+                <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
                   <MUITableCell sx={{ width: '85px' }}>
                     <Typography variant='body2'>{t("End date")}:</Typography>
                   </MUITableCell>
@@ -261,6 +261,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                 <TableRow>
                   <TableCell>{t('Client name')}</TableCell>
                   <TableCell align='center'>{t('Date of competence')}</TableCell>
+                  <TableCell align='center'>{t('Pay day')}</TableCell>
                   <TableCell align='center'>{t('Contract value')}</TableCell>
                   <TableCell align='center'>{t('Commission amount')}</TableCell>
                 </TableRow>
@@ -271,6 +272,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
                     <TableRow>
                       <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
                       <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell>
+                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataPagamento}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
                     </TableRow>

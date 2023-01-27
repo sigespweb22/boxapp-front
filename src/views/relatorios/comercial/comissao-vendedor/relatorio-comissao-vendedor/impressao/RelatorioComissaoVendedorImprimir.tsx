@@ -80,12 +80,13 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   const [data, setData] = useState<VendedorComissaoType[]>()
   const [isValidDate, setIsValidDate] = useState(true)
   const [is404, setIs404] = useState(false)
-  const inicioData = dataInicio?.toString().slice(0, 16)
-  const fimData = dataFim?.toString().slice(0, 16)
+
+  const inicioData = moment(dataInicio!).format('DD/MM/yyyy')
+  const fimData = moment(dataFim!).format('DD/MM/yyyy')
 
   const isInvalidDate = (inicioData: any) => {
     switch (inicioData) {
-      case 'Invalid Date':
+      case 'Invalid date':
         setIsValidDate(false)
     }
   }
@@ -207,49 +208,43 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
               </div>
             </Box>
           </Grid>
-          <Grid sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <Box>
-              <Table sx={{ maxWidth: '400px' }}>
-                <TableBody>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='h6'>{t("Commission Report")}</Typography>
-                    </MUITableCell>
-                  </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>{t("Start date")}:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      {isValidDate ? (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {inicioData}
-                        </Typography>
-                      ) : (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {t("All period")}
-                        </Typography>
-                      )}
-                    </MUITableCell>
-                  </TableRow>
-                  <TableRow>
-                    <MUITableCell>
-                      <Typography variant='body2'>{t("End date")}:</Typography>
-                    </MUITableCell>
-                    <MUITableCell>
-                      {isValidDate ? (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {fimData}
-                        </Typography>
-                      ) : (
-                        <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                          {t("All period")}
-                        </Typography>
-                      )}
-                    </MUITableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+          <Grid item sm={6} xs={6}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, mr: 5 }}>
+              <Grid>
+                <Typography variant='h6'>{t("Commission Report")}</Typography>
+                <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <MUITableCell sx={{ width: '85px' }}>
+                    <Typography variant='body2'>{t("Start date")}:</Typography>
+                  </MUITableCell>
+                  <MUITableCell>
+                    {isValidDate ? (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {inicioData}
+                      </Typography>
+                    ) : (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {t("All period")}
+                      </Typography>
+                    )}
+                  </MUITableCell>
+                </Typography>
+                <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <MUITableCell sx={{ width: '85px' }}>
+                    <Typography variant='body2'>{t("End date")}:</Typography>
+                  </MUITableCell>
+                  <MUITableCell>
+                    {isValidDate ? (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {fimData}
+                      </Typography>
+                    ) : (
+                      <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                        {t("All period")}
+                      </Typography>
+                    )}
+                  </MUITableCell>
+                </Typography>
+              </Grid>
             </Box>
           </Grid>
         </Grid>
@@ -272,6 +267,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                 <TableRow>
                   <TableCell>{t('Client name')}</TableCell>
                   <TableCell align='center'>{t('Date of competence')}</TableCell>
+                  <TableCell align='center'>{t('Pay day')}</TableCell>
                   <TableCell align='center'>{t('Contract value')}</TableCell>
                   <TableCell align='center'>{t('Commission amount')}</TableCell>
                 </TableRow>
@@ -282,6 +278,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                     <TableRow>
                       <TableCell>{x?.clienteContratoViewModel?.cliente?.nomeFantasia}</TableCell>
                       <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataCompetencia}</TableCell>
+                      <TableCell align='center'>{x?.clienteContratoFaturaViewModel?.dataPagamento}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.clienteContratoViewModel?.valorContrato)}</TableCell>
                       <TableCell align='center'>{formatCurrency(x?.valorComissao)}</TableCell>
                     </TableRow>
