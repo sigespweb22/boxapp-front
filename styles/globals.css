@@ -22,3 +22,9 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}

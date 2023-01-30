@@ -228,9 +228,7 @@ const VendedorList = () => {
         </IconButton>
       )
     }
-  }
-
-  debugger
+  }  
 
   const toggleVendedorAddDrawer = () => setVendedorAddOpen(!vendedorAddOpen)
 

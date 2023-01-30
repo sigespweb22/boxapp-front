@@ -287,7 +287,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
       <CardContent>
         <Grid container sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%' }}>
+            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', maxWidth: '40%' }}>
               <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '15px', mt: 2 }}>
                 {t('Salesperson')}:
               </Typography>
@@ -301,7 +301,7 @@ const RelatorioComissaoVendedor = ({ id, dataInicio, dataFim }: RelatorioComissa
               <Grid
                 sx={{
                   display: 'flex',
-                  alignItems: 'flex-end',
+                  alignItems: 'center',
                   maxWidth: '40%',
                   mr: '3%'
                 }}

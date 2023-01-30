@@ -184,8 +184,6 @@ const ClienteContratoTableListToView = ({ id }: Props) => {
     setValue(id)
   }, [id])
 
-  debugger
-
   useEffect(() => {
     dispatch(
       fetchData({

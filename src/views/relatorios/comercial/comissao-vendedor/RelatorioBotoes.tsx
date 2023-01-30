@@ -24,16 +24,6 @@ const RelatorioBotoesVendedor = ({ id, dataInicio, dataFim }: RelatorioComissaoV
   return (
     <Card>
       <CardContent>
-        {/* <Button
-          fullWidth
-          sx={{ mb: 3.5 }}
-          component={Link}
-          color='primary'
-          variant='contained'
-          href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`}
-        >
-           {t('Print')}
-        </Button> */}
         <Link target='_blank' href={`/relatorios/comercial/comissao-vendedor/print/${id}&${dataInicio}&${dataFim}`} passHref>
           <Button fullWidth sx={{ mb: 3.5 }} color='primary' variant='contained'>
             {t('Print')}

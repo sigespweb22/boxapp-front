@@ -34,7 +34,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 interface RelatorioComissaoVendedorType {
-  id: string | string[] | undefined
+  id: string
   dataInicio: Date | number | null
   dataFim: Date | number | null
 }
@@ -102,12 +102,6 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      window.print()
-    }, 100)
-  }, [])
-
-  useEffect(() => {
     axios
       .post(
         `${relatorioComercialApiService.listComissoesAsyns}/${id}`,
@@ -121,13 +115,18 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
       .catch(error => {
         if (error.message === 'Request failed with status code 404') setIs404(true)
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.print()
+    }, 500)
   }, [])
 
   return (
     <Card>
       <CardContent>
-        <Grid container sx={{ display: 'flex', justifyContent: 'space-between'}}>
+        <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Grid>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
@@ -211,10 +210,10 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
           <Grid item sm={6} xs={6}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, mr: 5 }}>
               <Grid>
-                <Typography variant='h6'>{t("Commission Report")}</Typography>
+                <Typography variant='h6'>{t('Commission Report')}</Typography>
                 <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
                   <MUITableCell sx={{ width: '85px' }}>
-                    <Typography variant='body2'>{t("Start date")}:</Typography>
+                    <Typography variant='body2'>{t('Start date')}:</Typography>
                   </MUITableCell>
                   <MUITableCell>
                     {isValidDate ? (
@@ -223,14 +222,14 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                       </Typography>
                     ) : (
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        {t("All period")}
+                        {t('All period')}
                       </Typography>
                     )}
                   </MUITableCell>
                 </Typography>
                 <Typography sx={{ display: 'flex', justifyContent: 'space-around' }}>
                   <MUITableCell sx={{ width: '85px' }}>
-                    <Typography variant='body2'>{t("End date")}:</Typography>
+                    <Typography variant='body2'>{t('End date')}:</Typography>
                   </MUITableCell>
                   <MUITableCell>
                     {isValidDate ? (
@@ -239,7 +238,7 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
                       </Typography>
                     ) : (
                       <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                        {t("All period")}
+                        {t('All period')}
                       </Typography>
                     )}
                   </MUITableCell>
@@ -289,10 +288,10 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
           </TableContainer>
         </>
       )}
-     <CardContent>
+      <CardContent>
         <Grid container sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '40%'}}>
+            <Grid sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', maxWidth: '40%' }}>
               <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '15px', mt: 2 }}>
                 {t('Salesperson')}:
               </Typography>
@@ -306,9 +305,9 @@ const RelatorioComissaoVendedorImprimir = ({ id, dataInicio, dataFim }: Relatori
               <Grid
                 sx={{
                   display: 'flex',
-                  alignItems: 'flex-end',
+                  alignItems: 'center',
                   maxWidth: '40%',
-                  mr: '15px',
+                  mr: '15px'
                 }}
               >
                 <CalcWrapper>
