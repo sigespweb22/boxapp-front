@@ -27,11 +27,9 @@ import { AppDispatch } from 'src/store'
 // ** Actions Imports
 import { updateRotina } from 'src/store/sistema/rotina/index'
 
-// ** Custom Component Imports
-import PickerTime from '../components/relogioCronograma/PickerTime'
-
 // ** Types
 import { RotinaType } from 'src/types/sistema/rotinas/rotinaType'
+
 // ** Axios Imports
 import axios from 'axios'
 

@@ -34,6 +34,7 @@
     "All contracts": "Todos os contratos",
     "Annual": "Anual",
     "April": "Abril",
+    "AppBar Type": "Tipo de cabeçalho",
     "August": "Agosto",
     "All period": "Todo período",
     "Add schedule": "Adicionar cronograma",
@@ -49,6 +50,7 @@
     "Birth date": "Data de nascimento",
     "Bom Controle Key": "Chave Bom Controle",
     "Back": "Voltar",
+    "Bordered": "Bordas",
 
     "Cancel": "Cancelar",
     "COMMERCIAL": "COMERCIAL",
@@ -87,6 +89,7 @@
     "Commission amount": "Valor da comissão",
     "Client name": "Nome do cliente",
     "Commission Report": "Relatório de Comissão",
+    "Customize & Preview in Real Time": "Personalize e visualize em tempo real",
 
     "Date of payment": "Data do pagamento",
     "Documentation": "Documentação",
@@ -101,6 +104,8 @@
     "December": "Dezembro",
     "Date of the conclusion": "Data de conclusão",
     "Date Issued": "Data de Emissão",
+    "Dark": "Escuro",
+    "Default": "Padrão",
     "does not exist. Please check the sellers listing": "não existe. Por favor verifique a listagem de vendedores",
 
     "Edit": "Editar",
@@ -125,6 +130,8 @@
     "Frequency": "Periodicidade",
     "Fri": "Sex",
     "February": "Fevereiro",
+    "Fixed": "Fixo",
+    "Footer Type": "Tipo de rodapé",
 
     "Groups": "Grupos permissões",
     "Group Edit": "Editar Grupo",
@@ -136,6 +143,8 @@
 
     "Here you can check the active users on the platform": "Aqui você confere os usuário ativos na plataforma",
     "Here you can check the main numbers of the Commercial Sector": "Aqui você confere os principais números do Setor Comercial",
+    "Hidden": "Oculto",
+    
     "Invoices": "Faturas",
     "In this mode you can only display the data. No changes can be made": "Neste modo você só pode visualizar os dados. Nenhuma alteração poderá ser feita",
     "INACTIVE": "INATIVO",
@@ -159,6 +168,9 @@
     "Link seller": "Vincular vendedor",
     "List of Sellers": "Lista de vendedores",
     "Loading Document...": "Carregando documento...",
+    "Light": "Claro",
+    "Layout": "Disposição",
+    "Content Width": "Largura do conteúdo",
 
     "MALE": "MASCULINO",
     "Monthly contracts": "Contratos mensais",
@@ -166,6 +178,9 @@
     "Mo": "Seg",
     "March": "Março",
     "May": "Maio",
+    "Mode": "Tema",
+    "Menu Collapsed": "Menu recolhido",
+    "Menu Hidden": "Menu oculto",
     "Minimum 6 characters - the more the better": "Mínimo de 6 caracteres - quanto mais, melhor",
 
     "Name": "Nome",
@@ -211,6 +226,8 @@
     "Percentage commission (%)": "Comissão percentual (%)",
     "Print": "Imprimir",
     "Pay day": "Data do pagamento",
+    "Public": "Pública",
+    "Primary Color": "Cor primária",
 
     "Remove": "Remover",
     "Routine View": "Visualizar Rotina",
@@ -267,6 +284,9 @@
     "Sellers linked to the contract": "Vendedores vinculados ao contrato",
     "Seller name required": "Nome do vendedor requerido",
     "Scheduling time": "Horário do agendamento",
+    "Skin": "Estilo",
+    "Semi Dark": "Semi escuro",
+    "Static": "Estático",
 
     "Total users": "Total usuários",
     "Total failed items": "Total de itens com falha",
@@ -290,6 +310,8 @@
     "To link services, products and contracts to a customer, access its editing area": "Para vincular serviços, produtos e contratos a um cliente, acesse a sua área de edição",
     "Total value of the contract": "Valor total do contrato",
     "To link contracts to a seller, access its editing area": "Para vincular contratos a um vendedor, acesse a sua área de edição",
+    "Theme Customizer": "Personalizador de tema",
+    "Theming": "Tematização",
 
     "User": "Usuário",
     "Users Per Group": "Usuários por grupo",

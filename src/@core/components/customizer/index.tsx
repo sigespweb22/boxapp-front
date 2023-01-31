@@ -4,6 +4,9 @@ import { useState } from 'react'
 // ** Third Party Components
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 // ** MUI Imports
 import Radio from '@mui/material/Radio'
 import Switch from '@mui/material/Switch'
@@ -78,6 +81,7 @@ const Customizer = () => {
   const [open, setOpen] = useState<boolean>(false)
 
   // ** Hook
+  const { t } = useTranslation()
   const { settings, saveSettings } = useSettings()
 
   // ** Vars
@@ -115,9 +119,9 @@ const Customizer = () => {
           }}
         >
           <Typography variant='h6' sx={{ fontWeight: 600, textTransform: 'uppercase' }}>
-            Theme Customizer
+            {t("Theme Customizer")}
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Customize & Preview in Real Time</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{t("Customize & Preview in Real Time")}</Typography>
           <IconButton
             onClick={() => setOpen(false)}
             sx={{
@@ -138,35 +142,35 @@ const Customizer = () => {
               variant='caption'
               sx={{ mb: 4, color: 'text.disabled', textTransform: 'uppercase' }}
             >
-              Theming
+              {t("Theming")}
             </Typography>
 
             {/* Skin */}
             <Box sx={{ mb: 4 }}>
-              <Typography>Skin</Typography>
+              <Typography>{t("Skin")}</Typography>
               <RadioGroup
                 row
                 value={skin}
                 onChange={e => handleChange('skin', e.target.value as Settings['skin'])}
                 sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
               >
-                <FormControlLabel value='default' label='Default' control={<Radio />} />
-                <FormControlLabel value='bordered' label='Bordered' control={<Radio />} />
+                <FormControlLabel value='default' label={t("Default")} control={<Radio />} />
+                <FormControlLabel value='bordered' label={t("Bordered")} control={<Radio />} />
                 {layout === 'horizontal' ? null : (
-                  <FormControlLabel value='semi-dark' label='Semi Dark' control={<Radio />} />
+                  <FormControlLabel value='semi-dark' label={t("Semi Dark")} control={<Radio />} />
                 )}
               </RadioGroup>
             </Box>
 
             {/* Mode */}
             <Box sx={{ mb: 4 }}>
-              <Typography>Mode</Typography>
+              <Typography>{t("Mode")}</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InputLabel
                   htmlFor='change-mode'
                   sx={{ cursor: 'pointer', fontSize: '0.875rem', color: 'text.secondary' }}
                 >
-                  Light
+                  {t("Light")}
                 </InputLabel>
                 <Switch
                   id='change-mode'
@@ -178,14 +182,14 @@ const Customizer = () => {
                   htmlFor='change-mode'
                   sx={{ cursor: 'pointer', fontSize: '0.875rem', color: 'text.secondary' }}
                 >
-                  Dark
+                  {t("Dark")}
                 </InputLabel>
               </Box>
             </Box>
 
             {/* Color Picker */}
             <Box>
-              <Typography sx={{ mb: 2.5 }}>Primary Color</Typography>
+              <Typography sx={{ mb: 2.5 }}>{t("Primary Color")}</Typography>
               <Box sx={{ display: 'flex' }}>
                 <ColorBox
                   onClick={() => handleChange('themeColor', 'primary')}
@@ -255,75 +259,75 @@ const Customizer = () => {
               variant='caption'
               sx={{ mb: 4, color: 'text.disabled', textTransform: 'uppercase' }}
             >
-              Layout
+              {t("Layout")}
             </Typography>
 
             {/* Content Width */}
-            <Box sx={{ mb: 4 }}>
-              <Typography>Content Width</Typography>
+            {/* <Box sx={{ mb: 4 }}>
+              <Typography>{t("Content Width")}</Typography>
               <RadioGroup
                 row
                 value={contentWidth}
                 onChange={e => handleChange('contentWidth', e.target.value as Settings['contentWidth'])}
                 sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
               >
-                <FormControlLabel value='full' label='Full' control={<Radio />} />
+                <FormControlLabel value='full' label={t("Full")} control={<Radio />} />
                 <FormControlLabel value='boxed' label='Boxed' control={<Radio />} />
               </RadioGroup>
-            </Box>
+            </Box> */}
 
             {/* AppBar */}
             <Box sx={{ mb: 4 }}>
-              <Typography>AppBar Type</Typography>
+              <Typography>{t("AppBar Type")}</Typography>
               <RadioGroup
                 row
                 value={appBar}
                 onChange={e => handleChange('appBar', e.target.value as Settings['appBar'])}
                 sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
               >
-                <FormControlLabel value='fixed' label='Fixed' control={<Radio />} />
-                <FormControlLabel value='static' label='Static' control={<Radio />} />
+                <FormControlLabel value='fixed' label={t("Fixed")} control={<Radio />} />
+                <FormControlLabel value='static' label={t("Static")} control={<Radio />} />
                 {layout === 'horizontal' ? null : (
-                  <FormControlLabel value='hidden' label='Hidden' control={<Radio />} />
+                  <FormControlLabel value='hidden' label={t("Hidden")} control={<Radio />} />
                 )}
               </RadioGroup>
             </Box>
 
             {/* Footer */}
             <Box sx={{ mb: 4 }}>
-              <Typography>Footer Type</Typography>
+              <Typography>{t("Footer Type")}</Typography>
               <RadioGroup
                 row
                 value={footer}
                 onChange={e => handleChange('footer', e.target.value as Settings['footer'])}
                 sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
               >
-                <FormControlLabel value='fixed' label='Fixed' control={<Radio />} />
-                <FormControlLabel value='static' label='Static' control={<Radio />} />
-                <FormControlLabel value='hidden' label='Hidden' control={<Radio />} />
+                <FormControlLabel value='fixed' label={t("Fixed")} control={<Radio />} />
+                <FormControlLabel value='static' label={t("Static")} control={<Radio />} />
+                <FormControlLabel value='hidden' label={t("Hidden")} control={<Radio />} />
               </RadioGroup>
             </Box>
 
             {/* AppBar Blur */}
-            <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {/* <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography>AppBar Blur</Typography>
               <Switch
                 name='appBarBlur'
                 checked={appBarBlur}
                 onChange={e => handleChange('appBarBlur', e.target.checked)}
               />
-            </Box>
+            </Box> */}
 
             {/* RTL */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography>RTL</Typography>
               <Switch
                 name='direction'
                 checked={direction === 'rtl'}
                 onChange={e => handleChange('direction', e.target.checked ? 'rtl' : 'ltr')}
               />
-            </Box>
-          </CustomizerSpacing>
+            </Box>*/}
+          </CustomizerSpacing> 
 
           <Divider sx={{ m: 0 }} />
 
@@ -335,9 +339,7 @@ const Customizer = () => {
             >
               Menu
             </Typography>
-
-            {/* Menu Layout */}
-            <Box sx={{ mb: layout === 'horizontal' && appBar === 'hidden' ? {} : 4 }}>
+            {/* <Box sx={{ mb: layout === 'horizontal' && appBar === 'hidden' ? {} : 4 }}>
               <Typography>Menu Layout</Typography>
               <RadioGroup
                 row
@@ -354,10 +356,9 @@ const Customizer = () => {
                 <FormControlLabel value='vertical' label='Vertical' control={<Radio />} />
                 <FormControlLabel value='horizontal' label='Horizontal' control={<Radio />} />
               </RadioGroup>
-            </Box>
+            </Box> */}
 
-            {/* Menu Toggle */}
-            {navHidden || layout === 'horizontal' ? null : (
+            {/* {navHidden || layout === 'horizontal' ? null : (
               <Box sx={{ mb: 4 }}>
                 <Typography>Menu Toggle</Typography>
                 <RadioGroup
@@ -372,12 +373,11 @@ const Customizer = () => {
                   <FormControlLabel value='collapse' label='Collapse' control={<Radio />} />
                 </RadioGroup>
               </Box>
-            )}
+            )} */}
 
-            {/* Menu Collapsed */}
             {navHidden || layout === 'horizontal' ? null : (
               <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography>Menu Collapsed</Typography>
+                <Typography>{t("Menu Collapsed")}</Typography>
                 <Switch
                   name='navCollapsed'
                   checked={navCollapsed}
@@ -386,10 +386,9 @@ const Customizer = () => {
               </Box>
             )}
 
-            {/* Menu Hidden */}
             {layout === 'horizontal' && appBar === 'hidden' ? null : (
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography>Menu Hidden</Typography>
+                <Typography>{t("Menu Hidden")}</Typography>
                 <Switch
                   name='navHidden'
                   checked={navHidden}
