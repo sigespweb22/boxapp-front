@@ -192,7 +192,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
                       filterSelectedOptions
                       id='multiple-group'
                       value={value}
-                      getOptionLabel={option => option.fullName}
+                      getOptionLabel={option => option.name}
                       onChange={(event, newValue): void => {
                         onChange(newValue)
                       }}
