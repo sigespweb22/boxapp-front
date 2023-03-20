@@ -155,7 +155,7 @@ const ComissaoVendedoresGenerator = () => {
                       <CustomInput
                         dates={dates}
                         setDates={setDates}
-                        label={t('Competence invoice period')}
+                        label="Período pagamento faturas"
                         start={startDateRange as number | Date}
                         end={endDateRange as number | Date}
                       />

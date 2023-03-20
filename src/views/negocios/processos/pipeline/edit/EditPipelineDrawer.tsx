@@ -197,7 +197,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
                     filterSelectedOptions
                     value={user}
                     id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.name}
+                    getOptionLabel={option => option.fullName}
                     renderInput={params => (
                       <TextField {...params} label="Assinantes" placeholder='(e.g.: Loren Ipsun)' />
                     )}

@@ -101,7 +101,7 @@ const SidebarViewPipeline = (props: SidebarViewPipelineType) => {
                                 <IconButton size='small' sx={{ mr: '1px', mb: '3px', color: '#FF671F' }} >
                                   <AccountGroupOutline fontSize='small' />
                                 </IconButton>
-                                {item.name}
+                                {item.fullName}
                               </Box>
                           )
                         }
