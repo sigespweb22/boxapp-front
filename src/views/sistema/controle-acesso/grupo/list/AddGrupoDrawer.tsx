@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -105,13 +105,13 @@ const SidebarAddGroup = (props: SidebarAddGroupType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<GrupoType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: GrupoType) => {
+  const onSubmit: SubmitHandler<GrupoType> = (data: GrupoType) => {
     dispatch(addGroup({ ...data,  }))
     toggle()
     reset()

@@ -126,7 +126,7 @@ const ChangePasswordCard = (props: Props) => {
     event.preventDefault()
   }
 
-  const onPasswordFormSubmit = (data: UsuarioSegurancaType) => {
+  const onSubmit = (data: UsuarioSegurancaType) => {
     data.id = props?.id || ''
     dispatch(editUsuarioSeguranca({ ...data  }))
     reset(defaultValues)
@@ -136,7 +136,7 @@ const ChangePasswordCard = (props: Props) => {
     <Card>
       <CardHeader sx={{ mt: 5 }} title={t("Change my password")} />
       <CardContent>
-        <form onSubmit={handleSubmit(onPasswordFormSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>

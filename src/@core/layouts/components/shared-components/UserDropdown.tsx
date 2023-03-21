@@ -59,6 +59,7 @@ const defaultValues: UsersType = {
   applicationUserGroups: [],
   email: '',
   password: '',
+  confirmNewPassword:'',
   status: '',
   avatar: '',
   company: '',

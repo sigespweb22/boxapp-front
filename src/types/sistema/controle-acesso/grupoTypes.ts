@@ -6,6 +6,7 @@ export type GrupoLayoutType = {
 }
 
 export type ApplicationRoleGroupViewModelType = {
+  id: string
   roleId: string
   groupId: string
   name: string

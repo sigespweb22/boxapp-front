@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -84,7 +84,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<UsersType>({
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
@@ -107,7 +107,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onSubmit = (data: UsersType) => {
+  const onSubmit: SubmitHandler<UsersType> = (data: UsersType) => {
     dispatch(editUser({ ...data  }))
     toggle()
     reset()
@@ -129,7 +129,7 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
     reset()
     setValue('id', props?.row?.id ?? '')
     setValue('fullName', props?.row?.fullName ?? '')
-    setValue('email', props?.row?.email ?? null)
+    setValue('email', props?.row?.email ?? '')
     setValue('applicationUserGroups', props?.row?.applicationUserGroups ?? [])
     setGroup(props?.row?.applicationUserGroups ?? [])
   }

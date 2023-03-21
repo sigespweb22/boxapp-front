@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -82,7 +82,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
     setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<GrupoEditType>({
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
@@ -105,7 +105,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onSubmit = (data: GrupoEditType) => {
+  const onSubmit: SubmitHandler<GrupoEditType> = (data: GrupoEditType) => {
     dispatch(editGroup({ ...data,  }))
     toggle()
     reset()

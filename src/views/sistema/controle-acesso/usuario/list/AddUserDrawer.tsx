@@ -22,7 +22,7 @@ import Icon from 'src/@core/components/icon'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -142,13 +142,13 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<UsersType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: UsersType) => {
+  const onSubmit: SubmitHandler<UsersType> = (data: UsersType) => {
     dispatch(addUser({ ...data,  }))
     toggle()
     reset()

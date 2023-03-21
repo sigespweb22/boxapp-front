@@ -14,7 +14,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -96,7 +96,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<PipelineType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -118,7 +118,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: PipelineType) => {
+  const onSubmit: SubmitHandler<PipelineType> = (data: PipelineType) => {
     dispatch(addPipeline({ ...data,  }))
     toggle()
     reset()

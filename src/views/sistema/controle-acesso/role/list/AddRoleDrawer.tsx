@@ -11,7 +11,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -82,13 +82,13 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<RoleType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: RoleType) => {
+  const onSubmit: SubmitHandler<RoleType> = (data: RoleType) => {
     dispatch(addRole({ ...data,  }))
     toggle()
     reset()
