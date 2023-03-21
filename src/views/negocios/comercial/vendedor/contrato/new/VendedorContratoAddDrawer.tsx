@@ -14,7 +14,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -58,7 +58,7 @@ interface VendedorContratoType {
   clienteContrato: null
   clienteContratoId: string
   vendedorId: string
-  vendedor: { id: string, nome: string }
+  vendedor: { id: string, nome: string, vendedorId: string }
   status: string
 }
 
@@ -84,7 +84,7 @@ const schema = yup.object().shape({
 const defaultValues = {
   comissaoReais: 0,
   comissaoPercentual: 0,
-  vendedor: { vendedorId: '', nome: '' }
+  vendedor: { id: '', nome: '', vendedorId: '' }
 }
 
 const isValidComissao = (data: VendedorContratoType) => {
@@ -109,7 +109,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
     control,
     handleSubmit,
     formState: { }
-  } = useForm({
+  } = useForm<VendedorContratoType>({
     defaultValues: defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -131,7 +131,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onSubmit = (data: VendedorContratoType): void => {
+  const onSubmit: SubmitHandler<VendedorContratoType> = (data: VendedorContratoType): void => {
     if (isValidComissao(data)) {
       data.clienteContratoId = props.clienteContratoId
       data.vendedorId = data.vendedor.id

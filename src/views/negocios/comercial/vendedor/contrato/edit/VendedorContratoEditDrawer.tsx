@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -101,7 +101,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
     control,
     setValue,
     handleSubmit
-  } = useForm({
+  } = useForm<VendedorContratoType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -131,7 +131,7 @@ const SidebarVendedorContratoEdit = (props: SidebarVendedorContratoEditType) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const onSubmit = (data: VendedorContratoType): void => {
+  const onSubmit: SubmitHandler<VendedorContratoType> = (data: VendedorContratoType): void => {
     if (isValidComissao(data)) {
       dispatch(editVendedorContrato({...data}))
       toggle()

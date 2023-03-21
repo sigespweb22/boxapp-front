@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // Import Translate
 import { useTranslation } from 'react-i18next'
@@ -114,13 +114,13 @@ const VendedorAddDrawer = (props: VendedorAddDrawerType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<VendedorData>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: VendedorData) => {
+  const onSubmit: SubmitHandler<VendedorData> = (data: VendedorData) => {
     data.userId = data.applicationUser?.userId
     data.applicationUser = null
     dispatch(addVendedor({

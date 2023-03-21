@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -88,7 +88,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     reset,
     control,
     handleSubmit
-  } = useForm({
+  } = useForm<ClienteServicoType>({
       defaultValues,
       mode: 'onChange'
   })
@@ -119,7 +119,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     }
   }
 
-  const onSubmit = (data: ClienteServicoType): void => {
+  const onSubmit: SubmitHandler<ClienteServicoType> = (data: ClienteServicoType): void => {
     data.clienteId = props?.clienteId
     dispatch(addClienteServico({ ...data }))
     toggle()

@@ -12,7 +12,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -72,7 +72,7 @@ const defaultValues = {
   valorCusto: '',
   descricao: '',
   caracteristicas: '',
-  fornecedorProduto: '',
+  fornecedorProduto: {id: '', nome: ''},
   status: ''
 }
 
@@ -87,7 +87,7 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<ProdutoType>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -99,7 +99,7 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
     }
   }
 
-  const onSubmit = (data: ProdutoType) => {
+  const onSubmit: SubmitHandler<ProdutoType> = (data: ProdutoType) => {
     dispatch(addProduto({ ...data }))
     toggle()
     reset()

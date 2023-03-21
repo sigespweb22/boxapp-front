@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -105,7 +105,7 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<ProdutoData>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -149,7 +149,7 @@ const ProdutoEditDrawer = (props: ProdutoEditDrawerType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
-  const onSubmit = (data: ProdutoData) => {
+  const onSubmit: SubmitHandler<ProdutoData> = (data: ProdutoData) => {
     dispatch(editProduto({ ...data }))
     toggle()
     reset()

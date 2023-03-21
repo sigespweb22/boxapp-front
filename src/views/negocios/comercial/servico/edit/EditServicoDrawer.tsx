@@ -17,7 +17,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Copmponents Imports
 import Select from '@mui/material/Select'
@@ -131,7 +131,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<ServicoData>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -167,7 +167,7 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fornecedoresServicos]);
   
-  const onSubmit = (data: ServicoData) => {
+  const onSubmit: SubmitHandler<ServicoData> = (data: ServicoData) => {
     dispatch(editServico({ ...data }))
     toggle()
     reset()

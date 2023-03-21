@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -59,10 +59,10 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  valorContrato: '',
+  valorContrato: 0,
   periodicidade: '',
   clienteId: '',
-  bomControleContratoId: '',
+  bomControleContratoId: 0,
   status: '',
 }
 
@@ -78,7 +78,7 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
     control,
     setValue,
     handleSubmit
-  } = useForm({
+  } = useForm<ClienteContratoType>({
       defaultValues,
       mode: 'onChange'
   })
@@ -101,8 +101,9 @@ const SidebarClienteContratoAdd = (props: SidebarClienteContratoAddType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: ClienteContratoType): void => {
+  const onSubmit: SubmitHandler<ClienteContratoType> = (data: ClienteContratoType): void => {
     data.clienteId = props?.clienteId
+
     dispatch(addClienteContrato({...data,  }))
     toggle()
     reset()

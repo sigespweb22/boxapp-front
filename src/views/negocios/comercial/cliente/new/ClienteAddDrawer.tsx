@@ -18,7 +18,7 @@ import Grid from '@mui/material/Grid'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -111,7 +111,7 @@ const defaultValues = {
   emailPrincipal: '',
   observacao: '',
   dataFundacao: '0001-01-01 00:00:00',
-  codigoMunicipio: '',
+  codigoMunicipio: 0,
   rua: '',
   numero: '',
   complemento: '',
@@ -175,13 +175,13 @@ const ClienteAddDrawer = (props: ClienteAddDrawerType) => {
     setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<ClientData>({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: ClientData) => {
+  const onSubmit: SubmitHandler<ClientData> = (data: ClientData) => {
     dispatch(addClientes({ ...data }))
     toggle()
     reset()

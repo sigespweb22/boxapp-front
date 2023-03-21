@@ -23,7 +23,7 @@ import Alert from '@mui/material/Alert'
 import Link from 'next/link'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Custom Components
 import CustomChip from 'src/@core/components/mui/chip'
@@ -91,7 +91,7 @@ const VendedorEditLeft = ({ id }: Props) => {
   const store = useSelector((state: RootState) => state.vendedorView)
   const [usuarios, setUsuarios] = useState<ApplicationUser[]>([])
 
-  const { reset, setValue, control, handleSubmit } = useForm({
+  const { reset, setValue, control, handleSubmit } = useForm<VendedorType>({
     mode: 'onChange'
   })
 
@@ -148,7 +148,7 @@ const VendedorEditLeft = ({ id }: Props) => {
     }
   }
 
-  const onSubmit = (data: VendedorType) => {
+  const onSubmit: SubmitHandler<VendedorType> = (data: VendedorType) => {
     data.userId = data.applicationUser?.userId
     data.applicationUser = null
 

@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -82,7 +82,7 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
     reset,
     control,
     handleSubmit
-  } = useForm({
+  } = useForm<ClienteProdutoType>({
       defaultValues,
       mode: 'onChange'
   })
@@ -105,7 +105,7 @@ const ClienteProdutoAddDrawer = (props: ClienteProdutoAddDrawerType) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: ClienteProdutoType): void => {
+  const onSubmit: SubmitHandler<ClienteProdutoType> = (data: ClienteProdutoType): void => {
     data.clienteId = props?.clienteId
     dispatch(addClienteProduto({...data}))
     toggle()

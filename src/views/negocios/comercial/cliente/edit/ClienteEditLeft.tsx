@@ -26,7 +26,7 @@ import InputMask from 'react-input-mask'
 import Link from 'next/link'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Custom Components
 import CustomChip from 'src/@core/components/mui/chip'
@@ -111,7 +111,7 @@ const ClienteEditLeft = ({id}: Props) => {
     setValue,
     control,
     handleSubmit
-  } = useForm({
+  } = useForm<ClienteType>({
     mode: 'onChange'
   })
 
@@ -172,7 +172,7 @@ const ClienteEditLeft = ({id}: Props) => {
     }
   }
 
-  const onSubmit = (data: ClienteType) => {
+  const onSubmit: SubmitHandler<ClienteType> = (data: ClienteType) => {
     dispatch(editCliente({ ...data  }))
     handleEditClose()
     reset()
@@ -536,7 +536,7 @@ const ClienteEditLeft = ({id}: Props) => {
                       <Grid item xs={12} sm={6}>
                         <FormControl fullWidth sx={{ mb: 6 }}>
                           <Controller
-                            name='store?.dataFundacao'
+                            name='dataFundacao'
                             control={control}
                             render={({ field: { value, onChange } }) => (
                               <TextField

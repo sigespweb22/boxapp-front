@@ -87,7 +87,7 @@ const accountSchema = yup.object().shape({
   'confirm-password': yup
     .string()
     .required()
-    .oneOf([yup.ref('password'), null], 'Passwords must match')
+    .oneOf([yup.ref('password'), ''], 'Passwords must match')
 })
 const personalSchema = yup.object().shape({
   country: yup.string().required(),
