@@ -26,7 +26,7 @@ import Link from 'next/link'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Custom Components
 import CustomChip from 'src/@core/components/mui/chip'
@@ -114,7 +114,7 @@ const FornecedorEditLeft = ({id}: Props) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<FornecedorType>({
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
@@ -176,7 +176,7 @@ const FornecedorEditLeft = ({id}: Props) => {
     }
   }
 
-  const onSubmit = (data: FornecedorType) => {
+  const onSubmit: SubmitHandler<FornecedorType> = (data: FornecedorType) => {
     dispatch(editFornecedor({ ...data,  }))
     handleEditClose()
     reset()

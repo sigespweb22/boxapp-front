@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -39,7 +39,7 @@ interface FornecedorServicoData {
   unidadeMedida: string,
   caracteristicas: string,
   fornecedorId: string,
-  fornecedor: { id: '', nome: ''},
+  fornecedor: { id: string, nome: string},
   status: string
 }
 
@@ -56,7 +56,8 @@ const defaultValues = {
   codigoServico: '',
   unidadeMedida: '',
   caracteristicas: '',
-  fornecedor: {id: '', nome: ''},
+  fornecedorId: '',
+  fornecedor: { id: '', nome: '' },
   status: ''
 }
 
@@ -70,7 +71,7 @@ const SidebarFornecedorServicoAdd = (props: SidebarFornecedorServicoAddType) => 
     reset,
     control,
     handleSubmit
-  } = useForm({
+  } = useForm<FornecedorServicoData>({
       defaultValues,
       mode: 'onChange'
   })
@@ -86,7 +87,7 @@ const SidebarFornecedorServicoAdd = (props: SidebarFornecedorServicoAddType) => 
     }
   }
 
-  const onSubmit = (data: FornecedorServicoData) => {
+  const onSubmit: SubmitHandler<FornecedorServicoData> = (data: FornecedorServicoData) => {
     data.fornecedorId = props?.fornecedorId || ""
     dispatch(addFornecedorServico({ ...data,  }))
     toggle()
