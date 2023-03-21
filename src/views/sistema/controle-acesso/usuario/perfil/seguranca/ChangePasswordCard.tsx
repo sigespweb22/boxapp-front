@@ -126,7 +126,7 @@ const ChangePasswordCard = (props: Props) => {
     event.preventDefault()
   }
 
-  const onSubmit = (data: UsuarioSegurancaType) => {
+  const onSubmit: any = (data: UsuarioSegurancaType) => {
     data.id = props?.id || ''
     dispatch(editUsuarioSeguranca({ ...data  }))
     reset(defaultValues)
