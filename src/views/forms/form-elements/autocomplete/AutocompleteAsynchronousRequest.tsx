@@ -64,7 +64,7 @@ const AutocompleteAsynchronousRequest = () => {
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       id='autocomplete-asynchronous-request'
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option.toString()}
       isOptionEqualToValue={(option, value) => option.title === value.title}
       renderInput={params => (
         <TextField

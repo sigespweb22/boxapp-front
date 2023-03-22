@@ -11,6 +11,11 @@ export type ApplicationGroupType = {
   name: string
 }
 
+export type ApplicationUserGroups = {
+  groupId: string
+  name: string
+}
+
 export type ApplicationUserGroupViewModelType = {
   id: string
   userId: string
@@ -51,7 +56,7 @@ export type UsuarioContaType = {
   userName: string
   email: string
   fullName: string
-  applicationUserGroups: []
+  applicationUserGroups: ApplicationUserGroups[]
 }
 
 export type UsuarioInfoType = {

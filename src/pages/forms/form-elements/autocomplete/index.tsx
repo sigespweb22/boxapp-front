@@ -16,7 +16,7 @@ import AutocompleteLimitTags from 'src/views/forms/form-elements/autocomplete/Au
 import AutocompleteSmallSize from 'src/views/forms/form-elements/autocomplete/AutocompleteSmallSize'
 import AutocompleteCheckboxes from 'src/views/forms/form-elements/autocomplete/AutocompleteCheckboxes'
 import AutocompleteCustomInput from 'src/views/forms/form-elements/autocomplete/AutocompleteCustomInput'
-import AutocompleteFixedOptions from 'src/views/forms/form-elements/autocomplete/AutocompleteFixedOptions'
+// import AutocompleteFixedOptions from 'src/views/forms/form-elements/autocomplete/AutocompleteFixedOptions'
 import AutocompleteCustomFilter from 'src/views/forms/form-elements/autocomplete/AutocompleteCustomFilter'
 import AutocompleteMultipleValues from 'src/views/forms/form-elements/autocomplete/AutocompleteMultipleValues'
 import AutocompleteDisabledOptions from 'src/views/forms/form-elements/autocomplete/AutocompleteDisabledOptions'
@@ -165,7 +165,7 @@ const Autocomplete = () => {
           <AutocompleteMultipleValues />
         </CardSnippet>
       </Grid>
-      <Grid item xs={12} md={6}>
+      {/* <Grid item xs={12} md={6}>
         <CardSnippet
           title='Fixed Options'
           code={{
@@ -176,7 +176,7 @@ const Autocomplete = () => {
           <Typography sx={{ mb: 4 }}>You can fix an option in the input and add any other option as well.</Typography>
           <AutocompleteFixedOptions />
         </CardSnippet>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} md={6}>
         <CardSnippet
           title='Checkboxes'

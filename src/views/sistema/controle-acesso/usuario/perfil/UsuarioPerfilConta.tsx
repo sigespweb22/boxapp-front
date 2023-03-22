@@ -2,7 +2,7 @@
 import { useState, useEffect, ElementType, ChangeEvent } from 'react'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -66,20 +66,13 @@ interface Props {
 }
 
 interface ApplicationUserGroup {
+  id: string
+  userId: string
   groupId: string
   name: string
 }
 
-interface UsuarioContaData {
-  id: string
-  avatar: string
-  userName: string
-  email: string
-  fullName: string
-  applicationUserGroups: ApplicationUserGroup[]
-}
-
-const defaultValues: UsuarioContaData = {
+const defaultValues = {
   id: '',
   avatar: '/images/avatars/2.png',
   userName: '',
@@ -100,7 +93,7 @@ const UsuarioPerfilConta = (props: Props) => {
     control,
     setValue,
     handleSubmit
-  } = useForm({
+  } = useForm<UsuarioContaType>({
     defaultValues,
     mode: 'onChange'
   })
@@ -154,7 +147,7 @@ const UsuarioPerfilConta = (props: Props) => {
     }
   }
 
-  const onSubmit = (data: UsuarioContaType) => {
+  const onSubmit: SubmitHandler<UsuarioContaType> = (data: UsuarioContaType) => {
     dispatch(editUsuarioConta({ ...data  }))
   }
 

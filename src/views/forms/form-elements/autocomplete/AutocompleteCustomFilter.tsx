@@ -21,7 +21,7 @@ const AutocompleteCustomFilter = () => {
       options={top100Films}
       filterOptions={filterOptions}
       id='autocomplete-custom-filter'
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option.toString()}
       renderInput={params => <TextField {...params} label='Custom filter' />}
     />
   )

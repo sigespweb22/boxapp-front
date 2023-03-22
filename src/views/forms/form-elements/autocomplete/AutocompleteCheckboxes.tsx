@@ -13,7 +13,7 @@ const AutocompleteCheckboxes = () => {
       disableCloseOnSelect
       options={top100Films}
       id='autocomplete-checkboxes'
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option.toString()}
       renderInput={params => <TextField {...params} label='Checkboxes' placeholder='Favorites' />}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
