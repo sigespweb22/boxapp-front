@@ -9,17 +9,11 @@ import Autocomplete from '@mui/material/Autocomplete'
 // ** Data
 import { top100Films } from 'src/@fake-db/autocomplete'
 
-// ** Type
-interface DataType {
-  year: number
-  title: string
-}
-
 const fixedOptions = [top100Films[6]]
 
 const AutocompleteFixedOptions = () => {
   // ** State
-  const [value, setValue] = useState<DataType[]>([...fixedOptions, top100Films[13]])
+  const [value, setValue] = useState<any[]>([...fixedOptions, top100Films[13]])
 
   return (
     <Autocomplete

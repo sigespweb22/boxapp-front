@@ -12,7 +12,7 @@ const AutocompleteLimitTags = () => {
       limitTags={2}
       options={top100Films}
       id='autocomplete-limit-tags'
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option.toString()}
       defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
       renderInput={params => <TextField {...params} label='limitTags' placeholder='Favorites' />}
     />

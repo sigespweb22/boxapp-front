@@ -16,7 +16,7 @@ const AutocompleteMultipleValues = () => {
         filterSelectedOptions
         defaultValue={[top100Films[13]]}
         id='autocomplete-multiple-outlined'
-        getOptionLabel={option => option.title}
+        getOptionLabel={option => option.toString()}
         sx={{ width: 250, mt: 5, mr: 5 }}
         renderInput={params => <TextField {...params} label='filterSelectedOptions' placeholder='Favorites' />}
       />
@@ -40,7 +40,7 @@ const AutocompleteMultipleValues = () => {
         defaultValue={[top100Films[13]]}
         sx={{ width: 250, mt: 5 }}
         id='autocomplete-multiple-standard'
-        getOptionLabel={option => option.title}
+        getOptionLabel={option => option.toString()}
         renderInput={params => (
           <TextField {...params} label='Multiple values' placeholder='Favorites' variant='standard' />
         )}

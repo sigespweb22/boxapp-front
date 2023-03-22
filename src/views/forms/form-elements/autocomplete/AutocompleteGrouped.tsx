@@ -20,7 +20,7 @@ const AutocompleteGrouped = () => {
       sx={{ width: 250 }}
       id='autocomplete-grouped'
       groupBy={option => option.firstLetter}
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option.toString()}
       renderInput={params => <TextField {...params} label='With categories' />}
       options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
     />

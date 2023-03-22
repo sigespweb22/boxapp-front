@@ -14,7 +14,7 @@ const AutocompleteProps = () => {
         disableCloseOnSelect
         options={top100Films}
         id='autocomplete-disableCloseOnSelect'
-        getOptionLabel={option => option.title}
+        getOptionLabel={option => option.toString()}
         renderInput={params => <TextField {...params} label='disableCloseOnSelect' />}
       />
       <Autocomplete
@@ -22,7 +22,7 @@ const AutocompleteProps = () => {
         sx={{ width: 250 }}
         options={top100Films}
         id='autocomplete-clearOnEscape'
-        getOptionLabel={option => option.title}
+        getOptionLabel={option => option.toString()}
         renderInput={params => <TextField {...params} label='clearOnEscape' />}
       />
       <Autocomplete
