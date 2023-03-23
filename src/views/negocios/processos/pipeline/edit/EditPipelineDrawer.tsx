@@ -95,7 +95,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
     resolver: yupResolver(schema)
   })
   const [users, setUsers] = useState<UserDataType[]>(usersDefaultValues)
-  const [user, setUser] = useState<UserDataType[]>(usersDefaultValues)
+  const [user, setUser] = useState<any[]>(usersDefaultValues)
 
   const config = {
     headers: {
@@ -197,7 +197,7 @@ const SidebarEditPipeline = (props: SidebarEditPipelineType) => {
                     filterSelectedOptions
                     value={user}
                     id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.name}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => (
                       <TextField {...params} label="Assinantes" placeholder='(e.g.: Loren Ipsun)' />
                     )}

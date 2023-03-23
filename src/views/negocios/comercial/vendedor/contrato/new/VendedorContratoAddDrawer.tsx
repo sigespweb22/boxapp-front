@@ -204,7 +204,7 @@ const VendedorContratoAddDrawer = (props: VendedorContratoAddType) => {
                     filterSelectedOptions
                     value={value}
                     id='autocomplete-multiple-outlined'
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => <TextField {...params} label={t("Seller")} placeholder='(e.g.: Jhon Dare)' />}
                     onChange={(event, newValue) => {
                       // setRole(newValue)

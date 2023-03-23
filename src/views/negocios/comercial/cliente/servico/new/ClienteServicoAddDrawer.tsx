@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -43,11 +43,10 @@ interface SidebarClienteServicoAddType {
 }
 
 interface ServicoType {
-  id: string | ''
-  nome: string | ''
+  id: string
+  nome: string
 }
 
-let servicos: { id: string, nome: string  }[] = [];
 const cobrancaTipos : string[] = ["NENHUM", "UNICO", "RECORRENTE"];
 
 interface ClienteServicoType {
@@ -83,6 +82,8 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
   const { open, toggle } = props
   
   // ** Hooks
+  const [servicos, setServicos] = useState<ServicoType[]>()
+
   const dispatch = useDispatch<AppDispatch>()
   const {
     reset,
@@ -103,7 +104,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
     axios
       .get(`${servicoApiService.listToSelectAsync}`, config)
       .then(response => {
-        servicos = response.data
+        setServicos(response.data)
       })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -160,7 +161,7 @@ const SidebarClienteServicoAdd = (props: SidebarClienteServicoAddType) => {
                       onChange(newValue)
                     }}
                     id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => <TextField {...params} label='Serviço' />}
                   />
                 )

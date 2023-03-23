@@ -192,7 +192,7 @@ const SidebarAddPipeline = (props: SidebarAddPipelineType) => {
                       filterSelectedOptions
                       id='multiple-group'
                       value={value}
-                      getOptionLabel={option => option.name}
+                      getOptionLabel={option => typeof option === 'string' ? option : option.name} // add type guard here
                       onChange={(event, newValue): void => {
                         onChange(newValue)
                       }}

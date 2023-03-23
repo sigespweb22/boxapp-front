@@ -223,7 +223,7 @@ const ProdutoAddDrawer = (props: ProdutoAddDrawerType) => {
                       onChange(newValue)
                     }}
                     id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => <TextField {...params} label='Fornecedor Produto' />}
                   />
                 )

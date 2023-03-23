@@ -281,7 +281,7 @@ const VendedorEditLeft = ({ id }: Props) => {
                                 options={usuarios}
                                 filterSelectedOptions
                                 value={value}
-                                getOptionLabel={option => option.fullName}
+                                getOptionLabel={option => typeof option === 'string' ? option : option.fullName} // add type guard here
                                 onChange={(event, newValue): void => {
                                   onChange(newValue)
                                 }}

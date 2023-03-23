@@ -211,11 +211,11 @@ const SidebarEditUser = (props: SidebarEditUserType) => {
                     filterSelectedOptions
                     value={group}
                     id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.name}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.name} // add type guard here
                     renderInput={params => (
                       <TextField {...params} label={t("Groups")} placeholder='(e.g.: Master)' />
                     )}
-                    onChange={(event, newValue) => {
+                    onChange={(event, newValue: GroupDataType[]) => {
                       setGroup(newValue)
                       onChange(newValue)
                     }}

@@ -88,7 +88,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
   })
 
   const [roles, setRoles] = useState<RoleDataType[]>(rolesDefaultValues)
-  const [role, setRole] = useState<RoleDataType[]>(rolesDefaultValues)
+  const [role, setRole] = useState<any[]>(rolesDefaultValues)
 
   const config = {
     headers: {
@@ -191,7 +191,7 @@ const SidebarEditGroup = (props: SidebarEditGroupType) => {
                     filterSelectedOptions
                     value={role}
                     id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.name}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => (
                       <TextField {...params} label={t("Permissions")} placeholder='(e.g.: Master)' />
                     )}

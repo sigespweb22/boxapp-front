@@ -246,7 +246,7 @@ const SidebarAddServico = (props: SidebarAddServicoType) => {
                       onChange(newValue)
                     }}
                     id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => <TextField {...params} label='Fornecedor Serviço' />}
                   />
                 )

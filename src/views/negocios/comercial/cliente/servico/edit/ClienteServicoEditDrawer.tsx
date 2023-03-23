@@ -172,11 +172,15 @@ const SidebarClienteServicoEdit = (props: SidebarClienteServicoEditType) => {
                     sx={{ width: 360 }}
                     options={servicos}
                     onChange={(event, newValue) => {
-                      setValue('servico', newValue || {id: '', nome: ''})
-                      onChange(newValue)
+                      if (typeof newValue === 'string') {
+                        // handle case where newValue is a string
+                      } else {
+                        setValue('servico', newValue);
+                        onChange(newValue);
+                      }
                     }}
                     id='autocomplete-controlled'
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => <TextField {...params} label='Serviço' />}
                   />
                 )

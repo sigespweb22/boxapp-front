@@ -299,13 +299,17 @@ const SidebarServicoEdit = (props: SidebarAddServicoType) => {
                     filterSelectedOptions
                     value={value}
                     id="autocomplete-multiple-outlined"
-                    getOptionLabel={option => option.nome}
+                    getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
                     renderInput={params => (
                       <TextField {...params} label="Fornecedor Serviço" placeholder='(e.g.: E-mail 50GB)' />
                     )}
                     onChange={(event, newValue) => {
-                      setValue('fornecedorServico', newValue || {id: '', nome: ''})
-                      onChange(newValue)
+                      if (typeof newValue === 'string') {
+                        // handle case where newValue is a string
+                      } else {
+                        setValue('fornecedorServico', newValue);
+                        onChange(newValue);
+                      }
                     }}
                   />
                 )

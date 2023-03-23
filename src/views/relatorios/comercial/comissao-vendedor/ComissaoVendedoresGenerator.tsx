@@ -125,8 +125,8 @@ const ComissaoVendedoresGenerator = () => {
                           filterSelectedOptions
                           value={value}
                           id='autocomplete-multiple-outlined'
-                          getOptionLabel={option => option.nome}
-                          onChange={(event, newValue) => {
+                          getOptionLabel={option => typeof option === 'string' ? option : option.nome} // add type guard here
+                          onChange={(event, newValue: { id: string, nome: string }) => {
                             onChange(newValue)
                             setId(newValue?.id || undefined)
                           }}
